@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Accelon21",
+  "version": "0.0.2",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "icons": { "72": "icons/accelon_72.png" 
+   },
+
+  "host_permissions":[
+    "http://localhost/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "./background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*","http://*/*","file://*/*"],
+      "js": ["build/injection.js"]
+    }
+  ]
+}
