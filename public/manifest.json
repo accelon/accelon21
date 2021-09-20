@@ -6,7 +6,7 @@
     "storage",
     "tabs"
   ],
-  "icons": { "72": "icons/accelon_72.png" 
+  "icons": { "72": "accelon_72.png" 
    },
 
   "host_permissions":[
@@ -22,7 +22,7 @@
   "content_scripts": [
     {
       "matches": ["https://*/*","http://*/*","file://*/*"],
-      "js": ["build/injection.js"]
+      "js": ["injection.js"]
     }
   ]
 }

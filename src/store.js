@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 export const files=writable([]);
-export const logs=writable(['ab','cd']);
+export const logs=writable([]);
 export const tab=writable('tab-files');
 export const summarize=writable(true);
 export const ignorecase=writable(false);

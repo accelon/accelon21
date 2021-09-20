@@ -1,11 +1,20 @@
 <script>
-import {files} from './store.js'
+import {logs,files} from './store.js'
+import {readFile} from 'pitaka/platform';
+import {escapeHTML} from 'pitaka/utils'
+const read=async evt=>{
+    const f=$files[parseInt(evt.target.dataset.idx)];
+    const content=escapeHTML(await readFile(f));
+    $logs=content.split(/\r?\n/);
+}
 </script>
 <div>
-    {#each $files as file}
-    <div class="filename">{file.name}</div>
+    {#each $files as file,idx}
+    <div class="filename" on:click={read} data-idx={idx}>{file.name}</div>
     {/each}
 </div>
 <style>
-    .filename {font-size:0.8rem;font-family: Consolas, monospace;}
+
+    .filename {font-size:0.8rem;font-family: Consolas, monospace; cursor:pointer}
+    .filename:hover{color:limegreen}
 </style>

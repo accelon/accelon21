@@ -4,17 +4,17 @@
     "description": "Accelon 2021",
     "icons": [
         {
-            "src": "icons/accelon_192.png",
+            "src": "accelon_192.png",
             "sizes": "128x192",
             "type": "image/png"
         },
         {
-            "src": "icons/accelon_72.png",
+            "src": "accelon_72.png",
             "sizes": "72x72",
             "type": "image/png"
         },
         {
-            "src": "icons/accelon_512.png",
+            "src": "accelon_512.png",
             "sizes": "512x512",
             "type": "image/png"
         }

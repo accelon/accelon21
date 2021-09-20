@@ -13,7 +13,11 @@
     <button title={title} class:active="{$tab==tabid}" on:click={onclick} >{@html svg}</button>
     
     <style>
-        :root {--selected : #333; --unselected: #999 ; --hover: orange}
+        :root {
+			--unselected : #333; 
+			--selected: #FFFFFF ; 
+			--hover: greenyellow
+		}
     	button {
 		background: rgba(0,0,0,0);
 		text-align: left;
@@ -29,7 +33,7 @@
 	}
 	
 	button.active {
-		border-bottom: 3px solid darkorange;
+		border-bottom: 3px solid lime;
 		color:var(--selected);
 		fill: var(--selected) ;
 	}

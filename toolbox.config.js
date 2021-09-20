@@ -35,38 +35,28 @@ function serve() {
 
 export default [
   {
-    input: "src/main.js",
+    input: "src/toolbox.js",
     output: {
       sourcemap: true,
       format: "umd",
       name: "app",
-      file: "public/main.js"
+      file: "public/toolbox.js",
+      globals:{'lazip':'lazip'}
     },
     plugins: [
       svelte({
         compilerOptions: {dev: !production && !chrome_extension},
       }),
-      css({ output: "main.css" }),
       resolve({ browser: true, dedupe: ["svelte"]}),
+      css({ output: "toolbox.css" }),
       commonjs(),
-      !production && !chrome_extension && serve(),
-      !production && !chrome_extension && livereload("public"),
+      !production && !chrome_extension &&serve(),
+      !production && !chrome_extension &&livereload("public"),
       production && terser(),
     ],
     watch: {
       clearScreen: false,
     },
   },
-  {
-    input: "src/injection.js",
-    output: {
-      sourcemap: true,
-      format: "iife",
-      file: "public/injection.js"
-    },
-    plugins: [resolve(), commonjs()],
-    watch: {
-      clearScreen: false,
-    },
-  }
+
 ];

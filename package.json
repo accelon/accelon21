@@ -4,9 +4,11 @@
   "type":"module",
   "scripts": {
     "build": "rollup -c",
-    "extension": "rollup -c -w --environment CHROME_EXTENSION",
+    "buildtoolbox": "rollup -c toolbox.config.js",
+    "start": "sirv public --no-clear --host --port 5001",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear --host --port 5001"
+    "toolbox": "rollup -c toolbox.config.js -w",
+    "extension": "rollup -c -w --environment CHROME_EXTENSION"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",

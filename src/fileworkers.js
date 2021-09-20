@@ -1,9 +1,9 @@
-import {scanFiles} from 'pitaka/platform';
-import {sleep} from 'pitaka/utils'
+import {readFiles} from 'pitaka/platform';
+import {sleep,escapeHTML} from 'pitaka/utils'
 export async function extractregex (files,opts,onfileend,onfinish){
     const occurs={};
 
-    await scanFiles(files,async (filecontent,filename)=>{
+    await readFiles(files,async (filecontent,filename)=>{
         const arr=[];
         if (opts.summarize) {
             filecontent.replace(opts.regex,(m,m1)=>{
@@ -26,7 +26,7 @@ export async function extractregex (files,opts,onfileend,onfinish){
                         arr.push('<hr>'+filename); 
                         found=true;
                     }
-                    const line=lines[i].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                    const line=escapeHTML(lines[i]);
                     arr.push( (i+1)+':'+line.replace(opts.regex,m=> '<b>'+m+'</b>') );
                     if (arr.length>100) {
                         arr.push('---too many---')

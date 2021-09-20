@@ -3,7 +3,7 @@
     import Btn from './button.svelte';
     import {extractregex} from './fileworkers.js'
     import {playing,files, summarize,logs, ignorecase} from './store.js'
-
+    import FilterFileList from './filterfilelist.svelte'
     import { tick } from 'svelte';
 
     let invalid=false;
@@ -54,17 +54,21 @@
     {:else if !invalid && value.length && $files.length} 
     <Btn icon='play' onclick={play}/>
     {/if}
-    {#if playtime}{(playtime/1000).toFixed(2) +'s'}{/if}
     <br/>
-    <CheckBox label="Σ　" id="summarize" title="计算总数 summarize"/>
+    <CheckBox label="Σ " id="summarize" title="计算总数 summarize"/>
     <CheckBox label="A=a" id="ignorecase" title="勿略大小写 ignore case"/>
+    
+    <br/>
     <span class='msg'>{msg}</span>
+    {#if playtime}{(playtime/1000).toFixed(2) +'s'}{/if}
+
     <span class='errormsg'>{errormsg}</span>
+    <FilterFileList/>
 </div>
 <style>
     .extracttab {margin-left:0.5em;}
-    .regex {height:1.5em;width:15em;border:0px;border-bottom:1px solid black}
-    .regex:focus{border:0px}
+    .regex {height:1.5em;width:calc(30vw - 3rem)}
+
     .errormsg {color:red}
     .invalid {color:red}
 </style>

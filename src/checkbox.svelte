@@ -12,8 +12,8 @@
 <span class="button" title={title} class:yes={$storeid} on:click={toggle}>{label}</span>
 
 <style>
-    .button{cursor: pointer;color:black;padding-right:5px}
-    .button:hover{color:orange}
-    .button:before{content:'☐'}
-    .yes:before {content:'☑';color:brown}
+    .button{cursor: pointer;padding-right:5px}
+    .button:hover{color:greenyellow}
+    .button:before{content:'☐ '}
+    .yes:before {content:'☑ ';color:lime}
 </style>

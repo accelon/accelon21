@@ -3,7 +3,9 @@ import {chromefs} from 'pitaka/platform'
 import {tab} from './store.js';
 import FilesTab from './filestab.svelte'
 import ExtractTab from './extracttab.svelte'
+import MetaTab from './metatab.svelte'
 import LogsTab from './logstab.svelte'
+import BuildTab from './buildtab.svelte'
 import TabBtn from './tabbutton.svelte';
 </script>
 {#if !chromefs.ready}
@@ -13,30 +15,18 @@ import TabBtn from './tabbutton.svelte';
   <div id="leftpanel">
       <div class="tabs">    
         <TabBtn icon="files" title="源文件 source files"/>
-        <TabBtn icon="meta" title="后设数据 meta info"/>
+        <TabBtn icon="meta" title="数据库设置 database meta"/>
         <TabBtn icon="build" title="建置 build"/>
         <TabBtn icon="validate" title="标记检验 markup validation"/>
         <TabBtn icon="extract" title="抽取特征 extract pattern"/>
         <TabBtn icon="help" title="说明 instruction"/>
       </div>
       <div class="tab-content" class:visible={$tab=='tab-files'}><FilesTab/></div>
-      <div class="tab-content" class:visible={$tab=='tab-meta'}>		
-        Metainfo
-      </div>
-  
-      <div class="tab-content" class:visible={$tab=='tab-validate'}>		
-        validate
-      </div>
-  
+      <div class="tab-content" class:visible={$tab=='tab-meta'}><MetaTab/></div>
+      <div class="tab-content" class:visible={$tab=='tab-validate'}>validate</div>
       <div class="tab-content" class:visible={$tab=='tab-extract'}><ExtractTab/></div>
-
-      <div class="tab-content" class:visible={$tab=='tab-build'}>		
-        build
-      </div>
-
-      <div class="tab-content" class:visible={$tab=='tab-help'}>		
-        help
-      </div>
+      <div class="tab-content" class:visible={$tab=='tab-build'}><BuildTab/></div>
+      <div class="tab-content" class:visible={$tab=='tab-help'}>Help</div>
   </div>
   <div id="rightpanel"><LogsTab/></div>
 </div>

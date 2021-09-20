@@ -8,6 +8,6 @@ const svg=Icons[icon];
 <span class="button" title={title} on:click={onclick} >{@html svg}</span>
 
 <style>
-    span.button{cursor:pointer}
-    span.button:hover {fill:brown}
+    span.button{cursor:pointer;fill:silver}
+    span.button:hover {border-bottom:white 1px solid}
 </style>
