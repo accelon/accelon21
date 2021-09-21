@@ -38,7 +38,7 @@ export default [
     input: "src/toolbox.js",
     output: {
       sourcemap: true,
-      format: "umd",
+      format: "iife",
       name: "app",
       file: "public/toolbox.js",
       globals:{'lazip':'lazip'}

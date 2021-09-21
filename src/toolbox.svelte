@@ -1,28 +1,29 @@
 <script>
 import {chromefs} from 'pitaka/platform'
-import {tab} from './store.js';
+import {tab,errormsg} from './store.js';
 import FilesTab from './filestab.svelte'
 import ExtractTab from './extracttab.svelte'
-import MetaTab from './metatab.svelte'
+import DatabaseTab from './databasetab.svelte'
 import LogsTab from './logstab.svelte'
 import BuildTab from './buildtab.svelte'
 import TabBtn from './tabbutton.svelte';
 </script>
 {#if !chromefs.ready}
-<div class="error">Need Chrome version 86 or above</div>
+<div class="errormsg">Need Chrome version 86 or above</div>
 {:else}
 <div id="toolbox">
   <div id="leftpanel">
       <div class="tabs">    
         <TabBtn icon="files" title="源文件 source files"/>
-        <TabBtn icon="meta" title="数据库设置 database meta"/>
         <TabBtn icon="build" title="建置 build"/>
+        <TabBtn icon="database" title="数据库 database"/>
         <TabBtn icon="validate" title="标记检验 markup validation"/>
         <TabBtn icon="extract" title="抽取特征 extract pattern"/>
         <TabBtn icon="help" title="说明 instruction"/>
+        <span class="errormsg">{$errormsg}</span>
       </div>
       <div class="tab-content" class:visible={$tab=='tab-files'}><FilesTab/></div>
-      <div class="tab-content" class:visible={$tab=='tab-meta'}><MetaTab/></div>
+      <div class="tab-content" class:visible={$tab=='tab-database'}><DatabaseTab/></div>
       <div class="tab-content" class:visible={$tab=='tab-validate'}>validate</div>
       <div class="tab-content" class:visible={$tab=='tab-extract'}><ExtractTab/></div>
       <div class="tab-content" class:visible={$tab=='tab-build'}><BuildTab/></div>
@@ -36,7 +37,7 @@ import TabBtn from './tabbutton.svelte';
 #toolbox {height: 100vh;width:100vw;display:flex;flex-direction: row;}
 #leftpanel {width:30vw;height:100vh;overflow:hidden}
 #rightpanel {width:70vw;height:100vh;overflow:auto}
-.error {color:red}
+.errormsg {color:red}
 
 .tabs {-webkit-user-select: none;}
 .tab-content {

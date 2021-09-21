@@ -3,7 +3,16 @@ import { writable } from "svelte/store";
 export const files=writable([]);
 export const logs=writable([]);
 export const tab=writable('tab-files');
+export const errormsg=writable('');
 export const summarize=writable(true);
 export const ignorecase=writable(false);
 export const playing=writable(false);
-export default {playing,files,tab,summarize,ignorecase}
+
+export const cachestorage=writable(true);  //存入 browser cacheStorage
+export const exportpitaka=writable(false); //自動匯出 ptk (若saveptkhandle 為null ，call saveFilePicker)
+export const saveptkhandle=writable(null); //建置中的存檔的handle, 從cacheStorage 匯出其他資料庫不修改此handle
+
+export const config=writable({});
+
+export default {playing, files,tab,summarize,ignorecase,
+    cachestorage,exportpitaka,saveptkhandle}

@@ -1,10 +1,10 @@
 <script>
 import {logs,files} from './store.js'
-import {readFile} from 'pitaka/platform';
+import {readContent} from 'pitaka/format';
 import {escapeHTML} from 'pitaka/utils'
 const read=async evt=>{
     const f=$files[parseInt(evt.target.dataset.idx)];
-    const content=escapeHTML(await readFile(f));
+    const content=escapeHTML(await readContent(f));
     $logs=content.split(/\r?\n/);
 }
 </script>
