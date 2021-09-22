@@ -1,10 +1,19 @@
 <script>
 import {logs,files} from './store.js'
-import {readContent} from 'pitaka/format';
+import {readPlainTextFile,readHaodooFile} from 'pitaka/format';
 import {escapeHTML} from 'pitaka/utils'
 const read=async evt=>{
     const f=$files[parseInt(evt.target.dataset.idx)];
-    const content=escapeHTML(await readContent(f));
+    let content;
+    if (f.zip) {
+        content=await f.zip.files[f.name].async('string');
+    } else {
+        if (f.name.endsWith('.updb')) {
+            content=await readHaodooFile(f);
+        } else {
+            content=escapeHTML(await readPlainTextFile(f));
+        }
+    }
     $logs=content.split(/\r?\n/);
 }
 </script>

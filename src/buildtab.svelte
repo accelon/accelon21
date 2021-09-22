@@ -12,6 +12,7 @@
     $: buildable= $config && $files.length>1 && ($cachestorage||$exportpitaka);
 
     const pickSaveFile=async evt=>{
+        if (!$config.name)return;
         const saveOpts={suggestedName:$config.name+'.ptk',...chromefs.savePitakaOption}
         const savehandle=await showSaveFilePicker(saveOpts);
         if (savehandle) {

@@ -23,10 +23,10 @@ class:disabled on:click={toggle}>{@html svg}{label}</span>
 
 <style>
     .button{cursor: pointer;padding-right:5px}
-    .button:hover{color:greenyellow;stroke:greenyellow}
-    .button:before{content:'☐ '}
-    .yes:before {content:'☑ ';color:lime}
+    .button:before{content:'☐'}
+    .button:hover{color:var(--button-highlight-color);stroke:var(--svg-highlight-stroke-color)}
+    .yes:before {content:'☑';color:var(--checkbox-checked-color)}
 
     .disabled {color:silver;text-decoration: line-through;}
-    .disabled:before{content:'☐ ';color:silver}
+    .disabled:before{content:'☐';color:silver}
 </style>
