@@ -7,6 +7,8 @@ export const errormsg=writable('');
 export const summarize=writable(true);
 export const ignorecase=writable(false);
 export const playing=writable(false);
+export const playingfile=writable(-1);
+export const sourcezip=writable(null);//source files in a single zip file (contain pitaka.json)
 
 export const cachestorage=writable(true);  //存入 browser cacheStorage
 export const exportpitaka=writable(false); //自動匯出 ptk (若saveptkhandle 為null ，call saveFilePicker)

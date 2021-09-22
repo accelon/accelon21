@@ -2,19 +2,14 @@
     import Btn from './button.svelte';
     import ConfigInfo from './configinfo.svelte'
     import CheckBox from './checkbox.svelte';
-    import {files,playing,config,errormsg, logs,saveptkhandle,exportpitaka,cachestorage} from './store';
+    import {files,playing,playingfile,
+        config,errormsg, logs,saveptkhandle,exportpitaka,cachestorage} from './store';
     import {cacheStorageReady,chromefs} from 'pitaka/platform';
     import {Builder} from 'pitaka/basket';
+    //import { sleep } from 'pitaka/utils';
 
     let playtime=0,playstart=0;
-    $: buildable= $config.name && $files.length>1 && ($cachestorage||$exportpitaka);
-
-    const opencache=()=>{
-        caches.open('v1').then(function(cache) {
-            const res=new Response({body:'abc'});
-            cache.put('/abc',res)
-        });
-    }
+    $: buildable= $config && $files.length>1 && ($cachestorage||$exportpitaka);
 
     const pickSaveFile=async evt=>{
         const saveOpts={suggestedName:$config.name+'.ptk',...chromefs.savePitakaOption}
@@ -25,29 +20,41 @@
         }
         return false;
     }
-    
-    const build=async ()=>{
-        const log=function(...msg){
+    let timer1;
+    const log=function(...msg){
             $logs.push(msg.join(' '));
             $logs=$logs;
-        }
+    }
+    const build=async ()=>{
+         timer1=setInterval(()=>{
+            playtime=new Date()-playstart;
+        },100)
         $logs=[];
         $playing=true;
         playstart=new Date();
         log('start build',playstart);
+
+        const diskfiles={};
+        for (let i=0;i<$files.length;i++) {
+            diskfiles[$files[i].name]=$files[i];
+        }
        
         const name=$config.name;
         const builder=new Builder({name,config:$config,log}); //core chinese text
-        for (let i=0;i< $files.length;i++) {
-            playtime=new Date()-playstart;
+        for (let i=0;i< $config.files.length;i++) {
+            const diskfile=diskfiles[ $config.files[i] ];
+            
             if (!$playing) {
                 $errormsg='build process stop';
-                return;
+                break;
             }
-            await builder.addFile($files[i]);
+            $playingfile=i;
+            // await sleep(1000)
+            await builder.addFile(diskfile);
         }
+        clearInterval(timer1);
+        if ($errormsg) return;
         builder.finalize();
-        
         if ($cachestorage) {
             builder.save({cache:true});
             log('written to cachestorage');
@@ -59,10 +66,11 @@
 
         log('build completed',new Date())
         $playing=false;
-
     }
     const stop=()=>{
-
+        log('Force stop')
+        clearInterval(timer1);
+        $playing=false;
     }
 </script>
 <div>
@@ -74,8 +82,10 @@
     <Btn icon='stop' onclick={stop}/>
     {:else if buildable} 
     <Btn icon='play' onclick={build}/>
-    {#if playtime}{(playtime/1000).toFixed(2) +'s'}{/if}
     {/if}
+
+    {#if playtime}{(playtime/1000).toFixed(1) +'s'} ,  {($playingfile+1)+"/"+$config.files.length} {/if}
+   
     <br/>
     <ConfigInfo config={$config}/>
 
