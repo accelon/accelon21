@@ -1,11 +1,12 @@
 <script>
 import {chromefs,readTextFile} from 'pitaka/platform'
 import Btn from './button.svelte';
-import {files,tab,errormsg,config} from './store.js';
+import {files,tab,fileidx,errormsg,config} from './store.js';
 import Filelist from './filelist.svelte'
 import {validateConfig} from 'pitaka/basket';
 import {JSZip} from 'lazip';
 let msg='',zipfilename='';
+
 const loadConfig=(json,inputFilenames)=>{
     let configjson={};
     try{
@@ -63,6 +64,14 @@ const addsourcezip=async ()=>{
         }
     }
 }
+const exportable=()=>{
+    if ($files.length&&$fileidx<$files.length) {
+        return $files[$fileidx].name.endsWith('.updb')
+    }
+}
+const exporttotxt=()=>{
+
+}
 </script>
 <div id="filestab">
     <div id="controls">
@@ -70,6 +79,12 @@ const addsourcezip=async ()=>{
         {msg}
         <Btn icon="addsourcezip" onclick={addsourcezip} title="选取压縮源文件 pick source zip"/>
         {zipfilename}
+
+        {#key $fileidx}
+        {#if exportable( )}
+        <Btn icon='exporttotxt' onclick={exporttotxt}/>
+        {/if}
+        {/key}
     </div>
     <div id="filelist">
         <Filelist/>

@@ -16,5 +16,7 @@ export const saveptkhandle=writable(null); //建置中的存檔的handle, 從cac
 
 export const config=writable({});
 
+export const fileidx=writable(null);
+
 export default {playing, files,tab,summarize,ignorecase,
-    cachestorage,exportpitaka,saveptkhandle}
+    cachestorage,exportpitaka,saveptkhandle,fileidx}
