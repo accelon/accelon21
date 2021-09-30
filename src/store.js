@@ -1,6 +1,4 @@
 import { writable } from "svelte/store";
-import items from "./data.js";
-export const listitems=writable(items);
 export const files=writable([]);
 export const logs=writable([]);
 export const tab=writable('tab-files');

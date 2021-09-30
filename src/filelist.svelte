@@ -1,34 +1,23 @@
 <script>
 import {logs,files,config,fileidx,texttoc} from './store.js'
-import {readPlainTextFile,readHaodooFile} from 'pitaka/format';
+import {readFormatFile} from 'pitaka/format';
 import {escapeHTML} from 'pitaka/utils'
-import Btn from './button.svelte'
 
 const read=async evt=>{
     const idx=parseInt(evt.target.dataset.idx);
     $fileidx=idx;
     const f=$files[idx];
-    let lines,toc;
+    let lines;
     if (f.zip) {
-        lines=await f.zip.files[f.name].async('string').split(/\?\r?\n/);
+        lines=(await f.zip.files[f.name].async('string')).split(/\?\r?\n/);
     } else {
-        if (f.name.endsWith('.updb')) {
-            const haodoo=await readHaodooFile(f);
-            lines=haodoo.lines;
-            $texttoc=haodoo.toc;
-        } else {
-            lines=escapeHTML(await readPlainTextFile(f)).split(/\?\r?\n/);
-        }
+        const out=await readFormatFile(f,$config.format);
+        lines=out.lines;
+        if (out.toclines) $texttoc=out.toclines;
     }
-    
     $logs=lines.map((text,idx)=>{return {ukey:idx,text }});
 }
-const exportable=fn=>{
-    return fn.endsWith('.updb');
-}
-const exporttotxt=()=>{
 
-}
 </script>
 <div>
     {#each $files as file,idx}
