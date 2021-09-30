@@ -36,7 +36,7 @@ import TabBtn from './tabbutton.svelte';
 <style>
 #toolbox {height: 100vh;width:100vw;display:flex;flex-direction: row;}
 #leftpanel {width:30vw;height:100vh;overflow:hidden}
-#rightpanel {width:70vw;height:100vh;overflow:auto}
+#rightpanel {width:70vw;height:100vh;overflow:hidden}
 .errormsg {color:red}
 
 .tabs {-webkit-user-select: none;}

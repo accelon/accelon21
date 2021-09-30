@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
-
+import items from "./data.js";
+export const listitems=writable(items);
 export const files=writable([]);
 export const logs=writable([]);
 export const tab=writable('tab-files');
@@ -17,6 +18,6 @@ export const saveptkhandle=writable(null); //建置中的存檔的handle, 從cac
 export const config=writable({});
 
 export const fileidx=writable(null);
-
+export const texttoc=writable({});
 export default {playing, files,tab,summarize,ignorecase,
     cachestorage,exportpitaka,saveptkhandle,fileidx}
