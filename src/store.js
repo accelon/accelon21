@@ -1,6 +1,10 @@
-import { writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 export const files=writable([]);
 export const logs=writable([]);
+export const srcfilename=writable('');
+export const srcfilelines=writable([]); //lines of current selected src file
+export const tofind=writable('');
+
 export const tab=writable('tab-files');
 export const errormsg=writable('');
 export const summarize=writable(true);
@@ -17,5 +21,15 @@ export const config=writable({});
 
 export const fileidx=writable(null);
 export const texttoc=writable({});
-export default {playing, files,tab,summarize,ignorecase,
+
+const filterlines=([_lines,_tofind])=>{
+    if (_tofind.trim()) {
+        const regex=new RegExp(_tofind,'ui');
+        return _lines.filter(({text})=> text.match(regex) );
+    } return _lines;
+}
+export const srcexcerpts=derived([srcfilelines,tofind],filterlines)
+
+
+export default {playing, tofind, files,tab,summarize,ignorecase,
     cachestorage,exportpitaka,saveptkhandle,fileidx}

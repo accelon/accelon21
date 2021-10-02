@@ -1,7 +1,6 @@
 <script>
-import {logs,files,config,fileidx,texttoc} from './store.js'
+import {srcfilename,srcfilelines,files,config,fileidx,texttoc} from './store.js'
 import {readFormatFile} from 'pitaka/format';
-import {escapeHTML} from 'pitaka/utils'
 
 const read=async evt=>{
     const idx=parseInt(evt.target.dataset.idx);
@@ -12,10 +11,11 @@ const read=async evt=>{
         lines=(await f.zip.files[f.name].async('string')).split(/\?\r?\n/);
     } else {
         const out=await readFormatFile(f,$config.format);
-        lines=out.lines;
+        lines=out.rawlines;
         if (out.toclines) $texttoc=out.toclines;
     }
-    $logs=lines.map((text,idx)=>{return {ukey:idx,text }});
+    $srcfilename=f.name;
+    $srcfilelines=lines.map((text,idx)=>{return {ukey:idx,text }});
 }
 
 </script>

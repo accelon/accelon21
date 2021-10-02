@@ -4,10 +4,18 @@ import {tab,errormsg} from './store.js';
 import FilesTab from './filestab.svelte'
 import ExtractTab from './extracttab.svelte'
 import DatabaseTab from './databasetab.svelte'
-import LogsTab from './logstab.svelte'
+import PlainTextView from './plaintextview.svelte'
+import LogView from './logview.svelte'
 import BuildTab from './buildtab.svelte'
 import TabBtn from './tabbutton.svelte';
+
+const rightpanels = {
+  'tab-files' : PlainTextView,
+}
+
+$: rightpanel = rightpanels[$tab] || LogView ; console.log(rightpanel)
 </script>
+
 {#if !chromefs.ready}
 <div class="errormsg">Need Chrome version 86 or above</div>
 {:else}
@@ -29,7 +37,7 @@ import TabBtn from './tabbutton.svelte';
       <div class="tab-content" class:visible={$tab=='tab-build'}><BuildTab/></div>
       <div class="tab-content" class:visible={$tab=='tab-help'}>Help</div>
   </div>
-  <div id="rightpanel"><LogsTab/></div>
+  <div id="rightpanel"><svelte:component this={rightpanel} /></div>
 </div>
 {/if}
 
@@ -39,7 +47,7 @@ import TabBtn from './tabbutton.svelte';
 #rightpanel {width:70vw;height:100vh;overflow:hidden}
 .errormsg {color:red}
 
-.tabs {-webkit-user-select: none;}
+.tabs {-webkit-user-select: none; background:var(--panel-background)}
 .tab-content {
 		position: absolute;
     height:90vh;

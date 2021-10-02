@@ -1,7 +1,7 @@
 <script>
 import {chromefs,readTextFile} from 'pitaka/platform'
 import Btn from './button.svelte';
-import {files,tab,fileidx,errormsg,config} from './store.js';
+import {files,tab,fileidx,errormsg,config, srcfilelines} from './store.js';
 import Filelist from './filelist.svelte'
 import {validateConfig} from 'pitaka/basket';
 import {JSZip} from 'lazip';
@@ -65,12 +65,22 @@ const addsourcezip=async ()=>{
     }
 }
 const exportable=()=>{
+    let ok=false;
     if ($files.length&&$fileidx<$files.length) {
-        return $files[$fileidx].name.endsWith('.updb')
-    }
-}
-const exporttotxt=()=>{
+        const name=$files[$fileidx].name, format=$config.format;
 
+        ok ||= name.endsWith('.updb')&& format=='haodoo';
+        ok ||= name.endsWith('.zip')&& format=='openlit'
+    }
+    return ok;
+}
+const exporttotxt=async ()=>{
+    const suggestedName=$files[$fileidx].name.replace(/\.[a-z]+$/g,'')+'.off';
+    const handle=await showSaveFilePicker( Object.assign({suggestedName},chromefs.saveTxtOption));
+    if (!handle)return;
+    const writable = await handle.createWritable();
+    await writable.write($srcfilelines.map(im=>im.text).join('\n'));
+    await writable.close();
 }
 </script>
 <div id="filestab">
