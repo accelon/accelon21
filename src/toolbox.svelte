@@ -7,10 +7,10 @@ import DatabaseTab from './databasetab.svelte'
 import PlainTextView from './plaintextview.svelte'
 import LogView from './logview.svelte'
 import BuildTab from './buildtab.svelte'
-import TabBtn from './tabbutton.svelte';
+import TabBtn from './radiobutton.svelte';
 
 const rightpanels = {
-  'tab-files' : PlainTextView,
+  'files' : PlainTextView,
 }
 
 $: rightpanel = rightpanels[$tab] || LogView ; console.log(rightpanel)
@@ -22,20 +22,20 @@ $: rightpanel = rightpanels[$tab] || LogView ; console.log(rightpanel)
 <div id="toolbox">
   <div id="leftpanel">
       <div class="tabs">    
-        <TabBtn icon="files" title="源文件 source files"/>
-        <TabBtn icon="build" title="建置 build"/>
-        <TabBtn icon="database" title="数据库 database"/>
-        <TabBtn icon="validate" title="标记检验 markup validation"/>
-        <TabBtn icon="extract" title="抽取特征 extract pattern"/>
-        <TabBtn icon="help" title="说明 instruction"/>
+        <TabBtn store={tab} icon="files" title="源文件 source files"/>
+        <TabBtn store={tab} icon="build" title="建置 build"/>
+        <TabBtn store={tab} icon="database" title="数据库 database"/>
+        <TabBtn store={tab} icon="validate" title="标记检验 markup validation"/>
+        <TabBtn store={tab} icon="extract" title="抽取特征 extract pattern"/>
+        <TabBtn store={tab} icon="help" title="说明 instruction"/>
         <span class="errormsg">{$errormsg}</span>
       </div>
-      <div class="tab-content" class:visible={$tab=='tab-files'}><FilesTab/></div>
-      <div class="tab-content" class:visible={$tab=='tab-database'}><DatabaseTab/></div>
-      <div class="tab-content" class:visible={$tab=='tab-validate'}>validate</div>
-      <div class="tab-content" class:visible={$tab=='tab-extract'}><ExtractTab/></div>
-      <div class="tab-content" class:visible={$tab=='tab-build'}><BuildTab/></div>
-      <div class="tab-content" class:visible={$tab=='tab-help'}>Help</div>
+      <div class="tab-content" class:visible={$tab=='files'}><FilesTab/></div>
+      <div class="tab-content" class:visible={$tab=='database'}><DatabaseTab/></div>
+      <div class="tab-content" class:visible={$tab=='validate'}>validate</div>
+      <div class="tab-content" class:visible={$tab=='extract'}><ExtractTab/></div>
+      <div class="tab-content" class:visible={$tab=='build'}><BuildTab/></div>
+      <div class="tab-content" class:visible={$tab=='help'}>Help</div>
   </div>
   <div id="rightpanel"><svelte:component this={rightpanel} /></div>
 </div>

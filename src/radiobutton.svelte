@@ -1,17 +1,12 @@
 <script>
     import Icons from './icons';
-    import {tab} from './store';
-    
     export let icon;
+	export let store;
 	export let title='';
     const svg=Icons[icon];
-    $: tabid='tab-'+icon;
-    const onclick=()=>{
-        $tab= 'tab-'+icon;
-    }
+    const onclick=()=>$store= icon;
     </script>
-    <button title={title} class:active="{$tab==tabid}" on:click={onclick} >{@html svg}</button>
-    
+    <button title={title} class:active="{$store==icon}" on:click={onclick} >{@html svg}</button>
     <style>
     	button {
 		background: rgba(0,0,0,0);
@@ -24,17 +19,21 @@
 		/* padding: 12px 12px 8px 12px; */
 		color: var(--button-unselected);
 		fill : var(--button-unselected);
+		stroke : var(--button-unselected);
 		border-radius: 0;
 	}
 	
 	button.active {
-		border-bottom: 3px solid var(--svg-highlight-stroke-color);
-		color:var(--button-selected);
-		fill: var(--button-selected) ;
+		/* border-bottom: 3px solid var(--svg-highlight-stroke-color); */
+		color:var(--highlight);
+		stroke:var(--highlight);
+		fill: var(--highlight) ;
 	}
 
 	button:hover { 
-		fill: var(--svg-highlight-stroke-color)
+		stroke: var(--hover);
+		fill: var(--hover);
+		color: var(--hover);
 	}
 
     </style>

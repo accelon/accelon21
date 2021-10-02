@@ -5,7 +5,7 @@ export const srcfilename=writable('');
 export const srcfilelines=writable([]); //lines of current selected src file
 export const tofind=writable('');
 
-export const tab=writable('tab-files');
+export const tab=writable('files');
 export const errormsg=writable('');
 export const summarize=writable(true);
 export const ignorecase=writable(false);
@@ -22,14 +22,15 @@ export const config=writable({});
 export const fileidx=writable(null);
 export const texttoc=writable({});
 
+export const txtashtml=writable(false);
 const filterlines=([_lines,_tofind])=>{
     if (_tofind.trim()) {
-        const regex=new RegExp(_tofind,'ui');
-        return _lines.filter(({text})=> text.match(regex) );
+        const keywords=_tofind.trim().split(/ +/).filter(i=>!!i.trim());
+        //only support AND operation
+        return _lines.filter( ({text})=> keywords.reduce( (r,key)=>r && text.includes(key),true));
     } return _lines;
 }
 export const srcexcerpts=derived([srcfilelines,tofind],filterlines)
-
 
 export default {playing, tofind, files,tab,summarize,ignorecase,
     cachestorage,exportpitaka,saveptkhandle,fileidx}

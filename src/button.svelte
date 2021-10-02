@@ -6,18 +6,36 @@ export let disabled=false;
 export let title='';
 export let caption='';
 export let leftcaption='';
+export let storeid=null;
 const svg=Icons[icon];
-const click=evt=>!disabled&&onclick(evt)
+const click=evt=>{
+    if(disabled)return;
+    if (storeid) $storeid=!$storeid;
+    return onclick&&onclick(evt)
+}
 </script>
-<span class:disabled class="button" title={title} on:click={click} >
+<span class="button" class:disabled class:checked={storeid&&$storeid} class:unchecked={storeid && !$storeid} 
+     title={title} on:click={click} >
     {#if leftcaption}<span>{leftcaption}</span>{/if}
     <span>{@html svg}</span>
     {#if caption}<span>{caption}</span>{/if}
 </span>
 
 <style>
-    .button.button{ cursor:pointer;fill:var(--button-selected);padding-right:0.3em}
+    .button{ cursor:pointer;fill:var(--button-selected);padding-right:0.3em}
+    .button.unchecked {
+        color:var(--button-unselected);
+		fill: var(--button-unselected) ;
+		stroke: var(--button-unselected) ;
+    }
+    .button.checked {
+        /* border-bottom: 3px solid var(--svg-highlight-stroke-color); */
+		color:var(--highlight);
+		fill: var(--highlight) ;
+		stroke: var(--highlight) ;
+    }
+    
     .button.disabled {cursor:auto;fill:none;stroke:var(--button-unselected) }
     .button.disabled:hover {fill:none; stroke: var(--button-unselected)}
-    .button:hover {color:var(--highlight); fill:var(--highlight);stroke:var(--highlight);}
+    .button:hover {color:var(--hover); fill:var(--hover);stroke:var(--hover);}
 </style>
