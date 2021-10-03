@@ -1,16 +1,17 @@
 <script>
 import Btn from './button.svelte';
+import StateBtn from './statebutton.svelte';
 import { OfftextToHtml } from 'pitaka/offtext';
 import Icons from './icons';
 import {getItem,setItem} from './storage.js';
-import {srcfilename,srcexcerpts, texttoc,tofind,txtashtml} from './store.js'
+import {srcfilename,srcexcerpts, texttoc,tofind,txtashtml,tosim} from './store.js'
 import VirtualScroll from 'svelte-virtual-scroll-list'
 import {getCursorWord} from 'kaigua'
 import { tick } from 'svelte';
-import { text } from 'svelte/internal';
+
 $: items = $srcexcerpts;
 let vs , rulerline=0 , scrollindex=0;
-
+let optionmenu=false;
 $: getItem($srcfilename+"@rulerline",r=>parseInt(r)?(rulerline=parseInt(r)):torulerline(0,true))
 
 const totop=()=>{
@@ -32,10 +33,11 @@ const torulerline=(newruler,nosave=false)=>{
 };
 let lastUkey=0;
 
-const findoccur=(tofind,from,to)=>{
+const findoccur=(tf,from,to)=>{
+    if (!cursorword) return;//no action in filter mode
     const lines=$srcexcerpts;
     if (!to) to=lines.length;
-    const keywords=tofind.split(/ +/).filter(i=>!!i.trim());
+    const keywords=tf.split(/ +/).filter(i=>!!i.trim());
     if (to==-1) {//backward
         for (let i=from-1;i>0;i--) {
             if ( keywords.reduce( (r,key)=>r&&lines[i].text.includes(key) ,true )) {
@@ -82,13 +84,15 @@ const gotoc=ukey=>{
         else setrulerline(ukey)
     }
 }
-const renderLine=({text,ukey},cw,renderinlinetag)=>{
+const renderLine=({text,ukey},cw,renderinlinetag,sim)=>{
     lastUkey=ukey;
-    return OfftextToHtml(text,[(cw==$tofind?'':$tofind),cw],renderinlinetag);
+    let s=OfftextToHtml(text,[cw,(cw==$tofind?'':$tofind)],renderinlinetag,sim);
+    return s;
 }
 const inputkeyup=async evt=>{
     if (evt.key=='Enter') {
         $tofind=cursorword;
+        cursorword='';
         await tick();
         totop();
     } else if (evt.key==='ArrowDown') {
@@ -103,19 +107,27 @@ const cleartofind=async ()=>{
     await tick();
     scrollindex=rulerline;
 }
+const toggleoptionmenu=()=>{
+    optionmenu=!optionmenu;
+}
 $: leftcaption= $tofind?($tofind+'('+$srcexcerpts.length+')'):'';
 </script>
 <svelte:options accessors/>
 <div class="logger">
     <div class="controls">
     <Btn icon='ruler' disabled={!rulerline} title={rulerline} onclick={torulerline} />
-    <input type=number style="width:4em" bind:value={scrollindex} />
     <Btn icon="totop" onclick={totop}/>
-    <Btn icon="html5" storeid={txtashtml}/>
 
     <input bind:value={cursorword} title='↑Prev  ↓Next  ⮠ Search' on:keyup={inputkeyup} />
     <Btn disabled={!cursorword} onclick={nextoccur} icon='rightanglearrow'/>
     <Btn disabled={!$tofind}  onclick={cleartofind} {leftcaption} icon="deletecancel"/>
+
+    <Btn icon="setting" onclick={toggleoptionmenu}/>
+    {#if optionmenu}
+    <input type=number style="width:4em" bind:value={scrollindex} />
+    <Btn icon="html5" storeid={txtashtml}/>
+    <StateBtn states={{0:"原本",1:"简體",2:"简体"}} storeid={tosim}/>
+    {/if}
 
     </div>
     <VirtualScroll bind:this={vs} keeps={50} data={items} key="ukey" let:data>
@@ -126,7 +138,7 @@ $: leftcaption= $tofind?($tofind+'('+$srcexcerpts.length+')'):'';
              class:clickable={$texttoc[data.ukey] } 
              on:click={()=>gotoc(data.ukey)} style="height:{data.height}px">
             <span class="itemindex">{paranum(data)}</span>
-            <span index={data.ukey}>{@html renderLine(data,cursorword,$txtashtml)}</span>
+            <span index={data.ukey} data-ori={data.text}>{@html renderLine(data,cursorword,$txtashtml,$tosim)}</span>
         </div>
 
     </VirtualScroll>
@@ -138,7 +150,7 @@ $: leftcaption= $tofind?($tofind+'('+$srcexcerpts.length+')'):'';
 :global(.hl1) {color:var(--highlight1)}
 :global(.linetext) {padding-bottom:5px;padding-top:5px;line-height:1.8;}
 
-.controls {background : var(--panel-background)}
+.controls{ -webkit-user-select: none;background : var(--panel-background)}
 .clickable {cursor:pointer; }
 .clickable:hover { text-decoration: underline;}
 .ruler {height:1em;border-top:3px dotted var(--highlight)}

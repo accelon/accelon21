@@ -22,7 +22,7 @@ export const config=writable({});
 export const fileidx=writable(null);
 export const texttoc=writable({});
 
-export const txtashtml=writable(false);
+export const txtashtml=writable(true);
 const filterlines=([_lines,_tofind])=>{
     if (_tofind.trim()) {
         const keywords=_tofind.trim().split(/ +/).filter(i=>!!i.trim());
@@ -31,6 +31,6 @@ const filterlines=([_lines,_tofind])=>{
     } return _lines;
 }
 export const srcexcerpts=derived([srcfilelines,tofind],filterlines)
-
+export const tosim=writable(0)
 export default {playing, tofind, files,tab,summarize,ignorecase,
     cachestorage,exportpitaka,saveptkhandle,fileidx}

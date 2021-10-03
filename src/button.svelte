@@ -7,7 +7,7 @@ export let title='';
 export let caption='';
 export let leftcaption='';
 export let storeid=null;
-const svg=Icons[icon];
+const svg=Icons[icon]||'';
 const click=evt=>{
     if(disabled)return;
     if (storeid) $storeid=!$storeid;
@@ -35,7 +35,7 @@ const click=evt=>{
 		stroke: var(--highlight) ;
     }
     
-    .button.disabled {cursor:auto;fill:none;stroke:var(--button-unselected) }
+    .button.disabled {display:none; cursor:auto;fill:none;stroke:var(--button-unselected) }
     .button.disabled:hover {fill:none; stroke: var(--button-unselected)}
     .button:hover {color:var(--hover); fill:var(--hover);stroke:var(--hover);}
 </style>
