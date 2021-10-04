@@ -1,5 +1,5 @@
 <script>
-import {srcfilename,srcfilelines,files,config,fileidx,texttoc} from './store.js'
+import {srcfilename,srcfilelines,files,config,fileidx,texttoc} from './store_toolbox.js'
 import {readFormatFile} from 'pitaka/format';
 
 const read=async evt=>{

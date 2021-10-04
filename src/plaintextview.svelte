@@ -4,7 +4,7 @@ import StateBtn from './statebutton.svelte';
 import { OfftextToHtml } from 'pitaka/offtext';
 import Icons from './icons';
 import {getItem,setItem} from './storage.js';
-import {srcfilename,srcexcerpts, texttoc,tofind,txtashtml,tosim} from './store.js'
+import {srcfilename,srcexcerpts, texttoc,tofind,txtashtml,tosim} from './store_toolbox.js'
 import VirtualScroll from 'svelte-virtual-scroll-list'
 import {getCursorWord} from 'kaigua'
 import { tick } from 'svelte';

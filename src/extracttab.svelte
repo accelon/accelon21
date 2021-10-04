@@ -2,7 +2,7 @@
     import CheckBox from './checkbox.svelte';
     import Btn from './button.svelte';
     import {extractregex} from './fileworkers.js'
-    import {playing,files, summarize,logs, ignorecase} from './store.js'
+    import {playing,files, summarize,logs, ignorecase} from  './store_toolbox.js'
     import FilterFileList from './filterfilelist.svelte'
     import { tick } from 'svelte';
 

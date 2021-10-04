@@ -1,6 +1,6 @@
 <script>
 import Icons from './icons';
-export let onclick;
+export let onclick=null;
 export let icon;
 export let disabled=false;
 export let title='';

@@ -3,7 +3,7 @@
     import ConfigInfo from './configinfo.svelte'
     import CheckBox from './checkbox.svelte';
     import {files,playing,playingfile,
-        config,errormsg, logs,saveptkhandle,exportpitaka,cachestorage} from './store';
+        config,errormsg, logs,saveptkhandle,exportpitaka,cachestorage} from './store_toolbox.js';
     import {cacheStorageReady,chromefs} from 'pitaka/platform';
     import {Builder} from 'pitaka/basket';
     //import { sleep } from 'pitaka/utils';

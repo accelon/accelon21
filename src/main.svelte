@@ -1,92 +1,53 @@
 <script>
-/*
-function addtocache(evt){
-  const reader = new FileReader();
-  reader.addEventListener('load',async (event) => {
-    const body = event.target.result;
-	// const contentlength=new Blob([body]).size
-	const contentlength=body.length;
-	const cache = await caches.open('cache');
-	const res=new Response(body,{status:200,statusText:'OK'
-		,headers:{
-			'Content-Type':'application/x-binary',
-			'Content-Length': contentlength,
-			'Date':file.lastModifiedDate,
-			'Last-Modified':file.lastModifiedDate,
-			'Cache-Control':'no-store',
-			'Vary': 'Accept-Encoding',
-		}
-  	});
-	console.log('putting file',file.name,'to cache')
-	cache.put(file.name,res);
-  });
-
-  reader.addEventListener('progress', (event) => {
-    if (event.loaded && event.total) {
-      const percent = (event.loaded / event.total) * 100;
-      console.log(`Progress: ${Math.round(percent)}`);
-    }
-  });
-  const file=evt.target.files[0];
-  reader.readAsBinaryString(file);// .readAsText(file);// .readAsArrayBuffer(file);// readAsText(file);
-}
-*/
-// import VirtualList from './virtualist'
-import VirtualScroll from 'svelte-virtual-scroll-list'
-import {listitems} from './store.js';
-$: items=$listitems ;
-// import ListItem from './listitem.svelte';
-// let start,end,startFrom;
-let toindex=0;
+import {column,activecolumn,targetcolumn,cols,tosim} from './store.js'
+import PitakaViewer from './pitakaviewer.svelte'
+import Btn from './button.svelte';
+import StateBtn from './statebutton.svelte';
+let toindex=0,systemsetting=false;
 let vs;
 $: vs&&vs.scrollToIndex(toindex)
+const setActiveColumn=n=>{
+        if (isNaN(n)) $activecolumn++;
+        else $activecolumn=parseInt(n);
+        if ($activecolumn>$column) $activecolumn=0; 
+}
+const togglesystemsetting=()=>{
+	systemsetting=!systemsetting;
+}
+const updateActiveColumn=()=>{
+	if ($activecolumn>$column) $activecolumn=0; 
+	$targetcolumn=$column?$column:0; 
+}
+$: col=$activecolumn;
 </script>
 <div class="main">
-	Accelon22 <input type=number bind:value={toindex} />
-	<!-- <div class='container'>
-		<VirtualList {scrollToIndex} width="100%" height={800}
-		itemCount={items.length} stickyIndices={[1,10,20]}  >
-		<div slot="item" let:style {style} let:index class="row">{index+'.'+items[index].content}</div>
-		</VirtualList>
-	</div> -->
-
 	<div class='container'>
-		<VirtualScroll bind:this={vs} data={items}	key="key" let:data>
-			<div style="height: {data.height}px}">{data.key}/{data.content} </div>
-		</VirtualScroll>
+		<div class="systemsetting">
+			<Btn icon="setting" onclick={togglesystemsetting} />
+			{#if systemsetting}
+			<StateBtn states={{0:'column1',1:'column2',2:'column3'}}  onclick={updateActiveColumn}
+		storeid={column} stylestore={cols} forceupdate={col}/>
+		<StateBtn states={{0:"原本",1:"简體",2:"简体"}} storeid={tosim}/>
+			{/if}
+		</div>
+
+		<div id="viewers">
+			<div on:click={()=>setActiveColumn(0)} class="viewer"><PitakaViewer/></div>
+			{#if $column>=1}
+			<div on:click={()=>setActiveColumn(1)} class="viewer"><PitakaViewer col={1}/></div>
+			{/if}
+			{#if $column==2}
+			<div on:click={()=>setActiveColumn(2)} class="viewer"><PitakaViewer col={2}/></div>
+			{/if}
+		</div>
 	</div>
 </div>
 <style>
-	.inputfile {background:lime;width:2rem;border-radius: 5px;}
-	input[type="file"] {
-    display: none;
-	}
-	.main {overflow-y:hidden; background:white; color:black;
-		font-size:125%}
+    #viewers {display:flex;flex-direction: row;}
+    .viewer {width:100%}
 	.container {
-		/* border-top: 1px solid #333;
-		border-bottom: 1px solid #333; */
 		min-height: 100px;
 		height: calc(100vh - 2em);
 	}
-
-:global(.virtual-list-wrapper) {
-	/* margin: 20px; */
-	/* background: #fff;
-	border-radius: 2px;
-	box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
-	background: #fafafa;
-	/* color: #333; */
-	font-family: -apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
-	/* -webkit-font-smoothing: antialiased; */
-}
-
-.row {
-	padding: 0 0px;
-	/* border-bottom: 1px solid #eee; */
-	box-sizing: border-box;
-	/* line-height: 50px; */
-	/* font-weight: 500; */
-	background: #fff;
-}
+	.systemsetting {position:absolute;right:0px}
 </style>
