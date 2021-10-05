@@ -1,19 +1,18 @@
 <script>
     export let text='';
     export let key='';
-    export let tree;
+    export let address;
     export let ptk='';
     export let updateItems=null;
 
 const click=evt=>{
-    if (tree) {
-        const items=ptk.getTree(tree);
-        updateItems(items,tree);
+    if (address) {
+        const items=ptk.fetch(address);
     }
     
 }
 </script>
-<div class="tocitem" on:click={click}>{text}</div>
+<div class="tocitem" {address} on:click={click}>{text}</div>
 
 <style>
     .tocitem {cursor:pointer}

@@ -1,25 +1,23 @@
 <script>
     import Btn from './button.svelte';
-    import TocBreadCrumb from './tocbreadcrumb.svelte';
+    import TocBar from './tocbar.svelte';
     import {column,cols,vstates,targetcolumn} from './store.js'
     let showsetting=false;
     const togglesetting=()=>{
         showsetting=!showsetting;
     }
     export let col=0;
-    export let updateItems;
-    export let tree='';
-
+    export let ptk;
     const setTargetColumn=()=>{
         $targetcolumn++;
         if ($targetcolumn>$column) $targetcolumn=0;
     }
     $: vstate=vstates[col]||{};
-
+$: address = $vstate.address;
 </script>
 <div id="controlbar">
     <Btn icon="target" disabled={$targetcolumn!==col} onclick={setTargetColumn}/>
-    <TocBreadCrumb ptk={$vstate.ptk} {updateItems} {tree}/>
+    <TocBar {ptk} {col}/>
     <Btn icon="menu" onclick={togglesetting} />
     {#if showsetting}
         <Btn icon="bookmark"/>
