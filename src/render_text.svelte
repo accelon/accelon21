@@ -1,5 +1,6 @@
 <script>
     import {vstates} from './store.js';
+    import {composeSnippet,OfftextToSnippet} from 'pitaka/offtext'
 
     export let key=''
     export let text=''
@@ -9,13 +10,20 @@
     const vstate=vstates[col];
     const click=async evt=>{
         if (address) {
-            const items=await ptk.fetch(address);
+            const items=ptk.fetch(address);
+            await ptk.prefetchLines(items[0].key,items.length);
             vstate.set(Object.assign($vstate,{items,address}));
         }
     }
 </script>
 <div>
+{#if address}
     <div class="tocitem" class:address on:click={click}>{text||(ptk&&ptk.getLine(key))}</div>
+{:else}
+    {#each OfftextToSnippet(ptk.text||ptk.getLine(key)) as s}
+    {@html composeSnippet(s)}
+    {/each}
+{/if}
 </div>
 
 <style>

@@ -15,7 +15,8 @@ onMount(async ()=>{
         const p=await openBasket($vstate.name);
         if (p) {
             ptk=p;
-            const items=await ptk.fetch($vstate.address);
+            const items=ptk.fetch($vstate.address);
+            await ptk.prefetchLines(items[0].key,items.length);
             vstate.set(Object.assign($vstate,{ptk,items}));
         }
     }

@@ -12,7 +12,7 @@ export const col3=derived([column,activecolumn],([c,ac])=> ac==2?'auto':'none'  
 
 export const cols={col1,col2,col3};
 
-export const vs0=writable({name:'openlit',address:''});
+export const vs0=writable({name:'openlit',address:'6,13'});
 export const vs1=writable({name:'',address:'',items:[]});
 export const vs2=writable({name:'',address:'',items:[]});
 export const vstates=[vs0,vs1,vs2];

@@ -1,9 +1,7 @@
 <script>
     export let text='';
-    export let key='';
     export let address;
     export let ptk='';
-    export let updateItems=null;
 
 const click=evt=>{
     if (address) {

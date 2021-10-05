@@ -8,7 +8,8 @@ $: vstate=vstates[col];
 $: address=$vstate.address;
 const click=async evt=>{
     const address=evt.target.attributes.address.value;
-    const items=await ptk.fetch(address);
+    const items=ptk.fetch(address);
+    await ptk.prefetchLines(items[0].key,items.length);
     vstate.set(Object.assign($vstate,{items,address}));
 }
 let toctree=[];
