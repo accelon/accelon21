@@ -2,11 +2,11 @@
 import Btn from './button.svelte';
 import StateBtn from './statebutton.svelte';
 import { OfftextToHtml } from 'pitaka/offtext';
-import Icons from './icons';
-import {getItem,setItem} from './storage.js';
-import {srcfilename,srcexcerpts, texttoc,tofind,txtashtml,tosim} from './store_toolbox.js'
+import Icons from './js/icons';
+import {getItem,setItem} from './js/storage.js';
+import {srcfilename,srcexcerpts, texttoc,tofind,txtashtml,tosim} from './js/store_toolbox.js'
 import VirtualScroll from 'svelte-virtual-scroll-list'
-import {getCursorWord} from 'kaigua'
+import {getCursorWord} from './js/selection.js'
 import { tick } from 'svelte';
 
 $: items = $srcexcerpts;

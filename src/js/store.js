@@ -19,5 +19,6 @@ export const vstates=[vs0,vs1,vs2];
 
 export const renderer=writable({});
 
+export const texthook=writable({});
 tosim.subscribe(tosim=>updateSettings({tosim}));
 column.subscribe(column=>updateSettings({column}));

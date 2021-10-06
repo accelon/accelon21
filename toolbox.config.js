@@ -35,7 +35,7 @@ function serve() {
 
 export default [
   {
-    input: "src/toolbox.js",
+    input: "src/js/toolbox.js",
     output: {
       sourcemap: true,
       format: "iife",

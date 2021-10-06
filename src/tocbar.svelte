@@ -3,7 +3,7 @@ export let ptk;
 export let col;
 export let address='';
 
-import {vstates} from './store.js';
+import {vstates} from './js/store.js';
 $: vstate=vstates[col];
 $: address=$vstate.address;
 const click=async evt=>{

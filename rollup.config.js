@@ -35,7 +35,7 @@ function serve() {
 
 export default [
   {
-    input: "src/main.js",
+    input: "src/js/main.js",
     output: {
       sourcemap: true,
       format: "umd",
@@ -58,7 +58,7 @@ export default [
     },
   },
   {
-    input: "src/injection.js",
+    input: "src/js/injection.js",
     output: {
       sourcemap: true,
       format: "iife",

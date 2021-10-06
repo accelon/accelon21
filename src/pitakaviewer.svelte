@@ -1,7 +1,7 @@
 <script>
 import { openBasket } from 'pitaka';
 import { onMount } from 'svelte';
-import { vstates,renderer } from './store.js';
+import { vstates,renderer } from './js/store.js';
 
 import VirtualScroll from 'svelte-virtual-scroll-list'
 import ControlBar from './controlbar.svelte'

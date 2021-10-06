@@ -1,7 +1,7 @@
 <script>
-import {column,activecolumn,targetcolumn,cols,tosim} from './store.js'
+import {column,activecolumn,targetcolumn,cols,tosim} from './js/store.js'
 import PitakaViewer from './pitakaviewer.svelte'
-import renderer from './renderer.js';
+import renderer from './js/renderer.js';
 import Btn from './button.svelte';
 import StateBtn from './statebutton.svelte';
 let toindex=0,systemsetting=false;
