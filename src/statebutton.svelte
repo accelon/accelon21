@@ -9,16 +9,22 @@ export let title='';
 export let forceupdate='';
 export let states={};
 export let storeid=null;
-export let stylestore=null;
-let caption='';
+export let styles=null;
+export let caption='';
 const setcaption=()=>{
-    caption=states[$storeid]
+    if (storeid) caption=states[$storeid]
     caption=Icons[caption]||caption;
 }
 const highlight=str=>{
-    if (!stylestore) return str;
+    if (!styles) return str;
     return str.replace(/\$(\w+)/g,(m,m1)=>{
-        return get(stylestore[m1]);
+        if (typeof styles[m1]=='string') {
+            return styles[m1];
+        }else if (typeof styles=='function') {
+            return styles(m1);
+        } else {
+            return get(styles[m1])||'auto';
+        }
     })
 }
 const click=evt=>{

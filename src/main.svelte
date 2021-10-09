@@ -2,6 +2,7 @@
 import {column,activecolumn,targetcolumn,cols,tosim} from './js/store.js'
 import PitakaViewer from './pitakaviewer.svelte'
 import renderer from './js/renderer.js';
+import searchbox from './js/searchbox.js';
 import Btn from './button.svelte';
 import StateBtn from './statebutton.svelte';
 let toindex=0,systemsetting=false;
@@ -27,7 +28,7 @@ $: col=$activecolumn;
 			<Btn icon="setting" onclick={togglesystemsetting} />
 			{#if systemsetting}
 			<StateBtn states={{0:'column1',1:'column2',2:'column3'}}  onclick={updateActiveColumn}
-		storeid={column} stylestore={cols} forceupdate={col}/>
+		storeid={column} styles={cols} forceupdate={col}/>
 		<StateBtn states={{0:"原本",1:"简體",2:"简体"}} storeid={tosim}/>
 			{/if}
 		</div>

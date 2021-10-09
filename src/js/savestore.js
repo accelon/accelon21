@@ -3,7 +3,10 @@ export const loadSettings=()=>{
     const tosim=parseInt(localStorage.getItem(AppPrefix+'tosim')||'0');
     const column=localStorage.getItem(AppPrefix+'column')||0;
     const tab=localStorage.getItem(AppPrefix+'tab')||'files';
-    return {tosim,column,tab};
+    const vs0=JSON.parse(localStorage.getItem(AppPrefix+'vs0'))||{name:'openlit',loc:'6/14',hook:''};
+    const vs1=JSON.parse(localStorage.getItem(AppPrefix+'vs1'))||{name:'gycd',loc:'',hook:''};
+    const vs2=JSON.parse(localStorage.getItem(AppPrefix+'vs2'))||{};
+    return {tosim,column,tab,vs0,vs1,vs2};
 }
 
 export const saveSettings=()=>{ //immediate save
@@ -40,7 +43,7 @@ export const updateSettings=_settings=>{
     }
     if (updated) {
         clearTimeout(updateTimer);
-        updateTimer=setTimeout(saveSettings,3000); //autosave in 5 seconds
+        updateTimer=setTimeout(saveSettings,5000); //autosave in 5 seconds
     }
 }
 

@@ -1,24 +1,23 @@
 <script>
 export let ptk;
 export let col;
-export let address='';
+let loc='';
 
-import {vstates} from './js/store.js';
+import {vstates,vlines, setLoc} from './js/store.js';
 $: vstate=vstates[col];
-$: address=$vstate.address;
+$: vl=vlines[col];
+$: loc=$vstate.loc;
 const click=async evt=>{
-    const address=evt.target.attributes.address.value;
-    const items=ptk.fetch(address);
-    await ptk.prefetchLines(items[0].key,items.length);
-    vstate.set(Object.assign($vstate,{items,address}));
+    const loc=evt.target.attributes.loc.value;
+    setLoc(ptk,col,loc);
 }
 let toctree=[];
-$: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(address))||[];
+$: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc))||[];
 </script>
 {#each toctree as tocnode,idx}
-<span class="tocitem" address={tocnode.address} on:click={click}>{idx?'/':''}{tocnode.name}</span>
+<span class="tocitem" loc={tocnode.loc} on:click={click}>{idx?'/':''}{tocnode.name}</span>
 {/each}
 <style>
-    span[address] {cursor:pointer}
-    span[address]:hover{color:var(--highlight)}
+    span[loc] {cursor:pointer}
+    span[loc]:hover{color:var(--highlight)}
 </style>

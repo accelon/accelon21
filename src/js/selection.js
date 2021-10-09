@@ -5,32 +5,42 @@ export const getTextHook=(ptk,evt)=>{
     const selection=getSelection();
     const an=selection.anchorNode;
     const ele=an.parentElement;
-    if (ele.tagName!=='T') return null;
+    if (ele.tagName!=='T') return {};
 
     let sel=selection.toString();
     let offset=selection.anchorOffset;
-    
+    let w=sel.length;
+
     const x=parseInt(ele.attributes.x.value)+offset;
     const y=parseInt(ele.attributes.y.value);
-    let punc=an.data.substr(offset).match(ENDINGCHARS);
-    let end=offset+20;
-    if (punc) end=punc.index;
-    let t=an.data.substr(offset,end);
     const [linetext]=parseOfftextLine(ptk.getLine(y));
+
+    if (w+x>linetext.length) {
+        w=linetext.length-x;
+        sel=sel.substr(0,w);
+    }
+
+    let punc=linetext.substr(x).match(ENDINGCHARS);
+    let end=x+w;
+    if (punc) end=punc.index;
+    let t=linetext.substr(x,w);
+    
     let ori=linetext.substr(offset);
     punc=ori.match(ENDINGCHARS);
     if (punc) ori=ori.substr(0,punc.index); //original text
-    const hook=makeHook(linetext, x, sel.length);
+
+    const hook=makeHook(linetext, x, w);
 
     return {hook,x,y, sel , t, ori}
 }
 
 export const setSelection=(startnode,x,endnode,x2)=>{
     if (x>=x2) x2=x+1;
+    if (!startnode)return;
     let range=new Range();
     range.setStart(startnode.firstChild,x);
     range.setEnd(endnode.firstChild,x2);
-    
+
     document.getSelection().removeAllRanges();
     document.getSelection().addRange(range);
 }
