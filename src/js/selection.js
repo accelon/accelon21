@@ -25,7 +25,7 @@ export const getTextHook=(ptk,evt)=>{
     if (punc) end=punc.index;
     let t=linetext.substr(x,w);
     
-    let ori=linetext.substr(offset);
+    let ori=linetext.substr(x);
     punc=ori.match(ENDINGCHARS);
     if (punc) ori=ori.substr(0,punc.index); //original text
 

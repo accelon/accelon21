@@ -1,7 +1,8 @@
 <script>
 import {column,activecolumn,targetcolumn,cols,tosim} from './js/store.js'
 import PitakaViewer from './pitakaviewer.svelte'
-import renderer from './js/renderer.js';
+import R from './js/renderer.js'; //make sure renderer is loaded
+import L from './js/labeler.js'; //maker sure labeler is loaded
 import searchbox from './js/searchbox.js';
 import Btn from './button.svelte';
 import StateBtn from './statebutton.svelte';

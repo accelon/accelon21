@@ -6,16 +6,16 @@ export let ptk;
 export let col;
 let history=[];
 const vl=vlines[col];
-let prevw='';
+let prevw='',prevcw='';
 let mode=0;
-const matchCursorWord=(cw)=>{
+const matchCursorWord=cw=>{
     const matches = ptk&&ptk.matchEntry(cw)||[]
     const items=matches.map((i,idx)=>{
     const show=idx<2
         return {key:'cw'+i[0],show,idx,entry:i[1],from:i[2],to:i[3]} 
     });
     vlines[col].set( {items} );
-    if (matches.length) {   
+    if (prevcw!==cw&&matches.length) { //do not change tofind when user input
         if (prevw&&prevw!==matches[0][1]) {
             history=history.filter(i=>i!==prevw);
             history.unshift(prevw);
@@ -25,6 +25,7 @@ const matchCursorWord=(cw)=>{
         mode=0;
         prevw=tofind;
     }
+    prevcw=cw;
 }
 $: matchCursorWord($cursor.ori)
 $: inputSearch(mode);

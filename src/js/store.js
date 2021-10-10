@@ -1,7 +1,7 @@
 import {updateSettings,settings} from './savestore.js'
-import { derived, writable ,get} from "svelte/store";
+import {derived, writable ,get} from "svelte/store";
 import {getUserData,setUserData} from './userdata.js';
-
+import {parsePointer} from 'pitaka/offtext';
 export const tosim=writable(settings.tosim);
 
 export const column=writable(settings.column);
@@ -29,13 +29,21 @@ export const vstates=[vs0,vs1,vs2];
 export const vlines=[vl0,vl1,vl2];
 export const searchbox=writable({});
 
-export const renderer=writable({});
+export const renderer=writable({});   //custom renderer for different format
+export const labeler=writable({});   //custom components for labels
+
+export const labelerOf=cls=>{
+    if (!cls) return;
+    const L=get(labeler);
+    return L[cls];
+}
 
 tosim.subscribe(tosim=>updateSettings({tosim}));
 column.subscribe(column=>updateSettings({column}));
 vs0.subscribe(vs0=>updateSettings({vs0}));
 vs1.subscribe(vs1=>updateSettings({vs1}));
 vs2.subscribe(vs2=>updateSettings({vs2}));
+
 
 export const  setLoc=async (ptk,col,loc,y,hook='')=>{
     const vstate=vstates[col];
@@ -47,6 +55,8 @@ export const  setLoc=async (ptk,col,loc,y,hook='')=>{
     await ptk.prefetchLines(y,y+items.length);
     vstate.set(Object.assign(get(vstate),{name:ptk.name,loc,hook,y}))    
 
+    //get foriegn links
+    const backlinks=ptk.getBacklinks( Object.assign(parsePointer(loc)), {y} );
     const userdata=getUserData(vstate.name,vstate.loc);
     vline.set(Object.assign(get(vline),{items, userdata}));
 }
