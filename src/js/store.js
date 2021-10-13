@@ -1,7 +1,6 @@
 import {updateSettings,settings} from './savestore.js'
 import {derived, writable ,get} from "svelte/store";
 import {getUserData,setUserData} from './userdata.js';
-import {PATHSEP} from 'pitaka';
 export const tosim=writable(settings.tosim);
 
 export const column=writable(settings.column);

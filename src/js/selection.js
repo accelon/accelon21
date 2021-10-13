@@ -47,11 +47,11 @@ export const markSelection=(ele,x,w)=>{
 
     for (let i=0;i<textSnippets.length;i++) {
         const [offset, node]=textSnippets[i];
-        if (!startnode && offset>= x) {
+        if (x>=offset) {
             startnode=node;
             startx=x-offset;
         }
-        if (offset>= x+w) {
+        if (!endnode && offset+node.innerText.length>=x+w) {
             endx= x+w-offset;
             endnode=node;
             break;
@@ -65,7 +65,7 @@ export const setSelection=(startnode,x,endnode,x2)=>{
     if (!startnode)return;
     let range=new Range();
     if (x<startnode.firstChild.length) range.setStart(startnode.firstChild,x);
-    if (x2>endnode.firstChild.length) x2=endnode.firstChild.length-1;
+    if (x2>endnode.firstChild.length) x2=endnode.firstChild.length;
     range.setEnd(endnode.firstChild,x2);
 
     document.getSelection().removeAllRanges();

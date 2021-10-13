@@ -1,16 +1,13 @@
 <script>
-    export let text='';
-    export let address;
-    export let ptk='';
+import BacklinkGroup from './backlinkgroups.svelte';
+export let text='';
+export let backlinkCount={};
+export let ptk='';
 
-const click=evt=>{
-    if (address) {
-        const items=ptk.fetch(address);
-    }
-    
-}
 </script>
-<div class="tocitem" {address} on:click={click}>{text}</div>
+<div><span class="tocitem">{text}</span>
+<BacklinkGroup counts={backlinkCount} />
+</div>
 
 <style>
     .tocitem {cursor:pointer}

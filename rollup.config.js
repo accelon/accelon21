@@ -38,9 +38,10 @@ export default [
     input: "src/js/main.js",
     output: {
       sourcemap: true,
-      format: "umd",
+      format: "iife",
       name: "app",
-      file: "public/main.js"
+      file: "public/main.js",
+      globals:{'lazip':'lazip'}
     },
     plugins: [
       svelte({

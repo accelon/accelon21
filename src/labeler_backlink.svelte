@@ -22,6 +22,8 @@ const toggle=async ()=>{
     }
 }
 const mouseenter=evt=>{
+    const x=parseInt(evt.target.attributes.x.value);
+    const w=parseInt(evt.target.attributes.w.value);
     markSelection(evt.target,x,w);
 }
 const mouseleave=()=>{
@@ -31,7 +33,7 @@ const mouseleave=()=>{
 
 
 {#if opening}
-<span {i} class={clss} {x} {y}><span class="backlink" target={attrs['@']} 
+<span {i} class={clss} {x} {y}><span class="backlink" target={attrs['@']} x={attrs.x} w={attrs.w}
     on:mouseenter={mouseenter} on:mouseleave={mouseleave} on:click={toggle}>{opening?'◎':'●'}</span>
 <svelte:component this={renderer_backlink} {...backlink}/>
 </span>

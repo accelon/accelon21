@@ -1,5 +1,5 @@
 <script>
-    import {vstates,vlines,tosim,setLoc,cursor,labelerOf} from './js/store.js';
+    import {vstates,vlines,tosim,setLoc,cursor,labelerOf, renderer} from './js/store.js';
     import {composeSnippet,OfftextToSnippet, parseHook} from 'pitaka/offtext'
     import {OffTag} from 'pitaka/offtext';
     import {getTextHook} from './js/selection.js';
@@ -10,6 +10,7 @@
     export let text=''
     export let loc=''
     export let backlinks='';
+    export let backlinkCount={};
     export let q=''; //the quote text
     export let hook='';
     export let ptk=null;
@@ -21,14 +22,15 @@
             const [hstr,srcptr]=bl;
             const linetext=text||(ptk&&ptk.getLine(y||key));
             const hook=parseHook(hstr, linetext);
-            if (!linksAt[hook.y+'_'+hook.x]) linksAt[hook.y+'_'+hook.x]=[];
-            linksAt[hook.y+'_'+hook.x].push( [srcptr, hook.y, hook.x,hook.w] );
+            const lkey=hook.y+'_'+(hook.x+hook.w);
+            if (!linksAt[lkey]) linksAt[lkey]=[];
+            linksAt[lkey].push( [srcptr, hook.y, hook.x,hook.w] );
         })
         for (let i in linksAt) {
             const links=linksAt[i];
             const [srcptr, y,x,w]=links[0];
             const srcptrs=links.map(i=>i[0]).join(';');
-            extra.push( new OffTag('blnk',{'@':srcptrs}, y,x,w))
+            extra.push( new OffTag('blnk',{'@':srcptrs,x,w}, y,x+w,0))
         }
     }
     if (hook) {
@@ -53,8 +55,8 @@
     }
 </script>
 <div class="linetext" on:mouseup={mouseup}>
-{#if loc}
-<div class="tocitem" class:loc>{text||(ptk&&ptk.getLine(y||key))}</div>
+{#if loc} <!-- 目錄行 -->
+<svelte:component this={$renderer._toc} {ptk} {text} {backlinkCount} />
 {:else}
 {#if $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if}
 {#each OfftextToSnippet(text||ptk&&ptk.getLine&&ptk.getLine(y||key), extra) as snpt}

@@ -10,6 +10,7 @@ export const scrollToHook=(ptk,y,hook)=>{
     
     for (let i=0;i<snips.length;i++) {
         const snip=snips[i];
+        if (!snip.innerText)continue;
         const X=parseInt(snip.attributes.x.value);
         if (x> X) {startnode=snip; sx=x-X; }
         if (x+w> X) {endnode=snip; ex=x+w-X;}
