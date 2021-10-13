@@ -33,12 +33,39 @@ export const getTextHook=(ptk,evt)=>{
 
     return {hook,x,y, sel , t, ori}
 }
+export const markSelection=(ele,x,w)=>{
+    while (ele&& (ele.tagName!=='T' && ele.tagName!=='DIV')) {
+        ele=ele.parentElement;
+    }
+    const div=ele.tagName=='DIV'?ele:ele.parentElement;
+    const allT=div.querySelectorAll('t[x]');
+
+    const textSnippets=Array.from(allT).filter(item=>item.innerText).map(item=>
+        [parseInt(item.attributes.x.value) ,item] );
+
+    let startnode,endnode,startx,endx;
+
+    for (let i=0;i<textSnippets.length;i++) {
+        const [offset, node]=textSnippets[i];
+        if (!startnode && offset>= x) {
+            startnode=node;
+            startx=x-offset;
+        }
+        if (offset>= x+w) {
+            endx= x+w-offset;
+            endnode=node;
+            break;
+        }
+    }
+    setSelection(startnode,startx,endnode,endx);
+}
 
 export const setSelection=(startnode,x,endnode,x2)=>{
     if (x>=x2) x2=x+1;
     if (!startnode)return;
     let range=new Range();
-    range.setStart(startnode.firstChild,x);
+    if (x<startnode.firstChild.length) range.setStart(startnode.firstChild,x);
+    if (x2>endnode.firstChild.length) x2=endnode.firstChild.length-1;
     range.setEnd(endnode.firstChild,x2);
 
     document.getSelection().removeAllRanges();

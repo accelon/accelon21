@@ -4,9 +4,9 @@ import { useBasket } from 'pitaka/basket';
 import {dereferencing} from 'pitaka/offtext';
 import { renderer } from './js/store';
 export let attrs={}
-export let text;
-export let opening;
-export let ptk,i,clss,x,y; //just for hidding the warning
+export let text='';
+export let opening=false;
+export let ptk,i,clss,x,y,starty=0; //just for hidding the warning
 
 let tptk,transclusion='';
 let renderer_transclusion=null;

@@ -1,7 +1,7 @@
 import {updateSettings,settings} from './savestore.js'
 import {derived, writable ,get} from "svelte/store";
 import {getUserData,setUserData} from './userdata.js';
-import {parsePointer} from 'pitaka/offtext';
+import {PATHSEP} from 'pitaka';
 export const tosim=writable(settings.tosim);
 
 export const column=writable(settings.column);
@@ -56,7 +56,15 @@ export const  setLoc=async (ptk,col,loc,y,hook='')=>{
     vstate.set(Object.assign(get(vstate),{name:ptk.name,loc,hook,y}))    
 
     //get foriegn links
-    const backlinks=ptk.getBacklinks( Object.assign(parsePointer(loc)), {y} );
+    const backlinks=ptk.getBacklinks(loc);
+    items.forEach(item=>{
+        for (let ptkname in backlinks) {
+            if (backlinks[ptkname][item.key]) {
+                item.backlinks=backlinks[ptkname][item.key];
+            }
+        }
+    })
+
     const userdata=getUserData(vstate.name,vstate.loc);
-    vline.set(Object.assign(get(vline),{items, userdata}));
+    vline.set(Object.assign(get(vline),{items, userdata, backlinks}));
 }

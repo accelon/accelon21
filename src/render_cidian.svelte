@@ -3,11 +3,12 @@
     import {getTextHook} from './js/selection.js';
 import { onMount } from 'svelte';
     export let loc=''
-    export let key
-    export let idx;
-    export let from;
-    export let to;
+    export let key=0
+    export let idx='';
+    export let from='';
+    export let to='';
     export let entry='';
+    export let text='';
     export let ptk=null;
     export let col=0;
     const vstate=vstates[col];
