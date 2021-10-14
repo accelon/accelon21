@@ -3,10 +3,11 @@ import { readLines } from 'pitaka';
 import { useBasket } from 'pitaka/basket';
 import {dereferencing} from 'pitaka/offtext';
 import { renderer } from './js/store';
+import Btn from './button.svelte'
 export let attrs={}
 export let text='';
 export let opening=false;
-export let ptk,i,clss,x,y,starty=0; //just for hidding the warning
+export let name,w,ptk,i,clss,x,y,starty=0; //just for hidding the warning
 
 let tptk,transclusion='';
 let renderer_transclusion=null;
@@ -29,11 +30,12 @@ const toggle=async ()=>{
 }
 </script>
 {#if !opening}
-<span {i} class={clss} {x} {y}><span class="transclusion" on:click={toggle}>●</span>
+<span {i} class={clss} {x} {y}><span class="transclusion" on:click={toggle}> </span>
 <svelte:component this={renderer_transclusion} {...transclusion}/>
+{#if renderer_transclusion}<Btn icon='link'/>{/if}
 </span>
 {/if}
 <style>
-    .transclusion {cursor:pointer;border-bottom:0px}
-    .transclusion:hover {color: var(--highlight)}
+    .transclusion {cursor:pointer;border-bottom:0px;padding-left:5px;background:var(--button-unselected)}
+    .transclusion:hover {background: var(--highlight)}
 </style>

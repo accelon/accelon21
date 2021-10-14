@@ -22,7 +22,7 @@ onMount(async ()=>{
                 const node=scrollToHook(ptk, $vstate.y, $vstate.hook);
                 await tick();
                 //scroll to LineMenu
-                node&&node.previousElementSibling.scrollIntoView();
+                node&&node.previousElementSibling&&node.previousElementSibling.scrollIntoView();
             }
         }
     }
@@ -39,5 +39,5 @@ onMount(async ()=>{
 </div>
 
 <style>
-    .container {height:calc(100vh - 2em);   }
+    .container {height:calc(100vh - 2em);  }
 </style>

@@ -1,4 +1,7 @@
 <script>
+import {tosim} from './js/store.js';
+import {toSim} from 'lossless-simplified-chinese'
+
 export let ptk;
 export let col;
 let loc='';
@@ -15,7 +18,7 @@ let toctree=[];
 $: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc))||[];
 </script>
 {#each toctree as tocnode,idx}
-<span class="tocitem" loc={tocnode.loc} on:click={click}>{idx?'/':''}{tocnode.name}</span>
+<span class="tocitem" loc={tocnode.loc} on:click={click}>{idx?'/':''}{toSim(tocnode.name,$tosim)}</span>
 {/each}
 <style>
     span[loc] {cursor:pointer}

@@ -1,20 +1,42 @@
 <script>
-import { useBasket } from "pitaka/basket";
+import { useBasket} from "pitaka/basket";
+import ForeignLink from './foreignlink.svelte';
 
-export let counts={};
-const gengroups=C=>{
+export let counts={} , loc='', ptk;
+const gengroups=Counts=>{
     const out=[];
-    for (let i in C) {
-        const ptk=useBasket(i);
-        out.push([ptk.header.title,C[i]||0])
+    for (let name in Counts) {
+        const ptk=useBasket(name);
+        out.push({name,title:ptk.header.title,count:Counts[name]||0})
     }
     return out;
 }
 $: groups=gengroups(counts);
+let showing='';
+let srclinks=[];
+const toggleShow=(ptkname)=>{
+    srclinks=[];
 
+    if (showing==ptkname) {
+        showing='';
+        return;
+    }
+
+    const srcptk=useBasket(ptkname);
+    const transclusions=srcptk.findTransclusion(ptk,loc);
+
+    const out=[];
+    for (let y in transclusions) {
+        out.push(...transclusions[y]);
+    }
+    showing=ptkname;
+    srclinks=out.map(it=>[it[1],srcptk]);   
+}
 </script>
 {#each groups as g}
-{#if g[1]}<span class="count" title="{g[0]}">{g[1]}</span>{/if}
+{#if g.count}<span class="count" ptk={g.name} title={g.title} on:click={()=>toggleShow(g.name)}>{g.count}</span>
+{#each srclinks as link}<ForeignLink from={ptk} ptk={link[1]} link={link[0]}/>{/each}
+{/if}
 {/each}
 
 <style>

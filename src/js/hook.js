@@ -3,6 +3,7 @@ import {setSelection} from './selection.js';
 
 export const scrollToHook=(ptk,y,hook)=>{
     const linetext=ptk.getLine(y);
+    if (!linetext)return;
     const {x,w,lead,leadn,end,endn}=parseHook(hook,linetext);
 
     const snips=document.querySelectorAll('t[y="'+y+'"]');

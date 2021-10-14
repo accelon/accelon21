@@ -1,21 +1,34 @@
 <script>
-export let opening=false;
+
+import {readLines,useBasket} from 'pitaka';
+import {dereferencing} from 'pitaka/offtext';
 import {markSelection} from './js/selection.js';
-export let ptk,i=0,clss,x,y,starty=0,w=0,name='',attrs={}; //just for hidding the warning
 import { renderer } from './js/store';
+
+export let ptk,i=0,clss,x,y,starty=0,w=0,name='',attrs={}; //just for hidding the warning
+
+export let opening=false;
+
 let renderer_backlink=null;
-let backlink;
+let lines=[];
 const toggle=async ()=>{
     if (!renderer_backlink) {
-        const hook=attrs['@'];
-        const ptr=await dereferencing(hook);
-        if (ptr.length) {
-            const {h,ptk}=ptr[0];
-            const lines=await readLines({basket:ptk,nline:h.y,count:1});
-            tptk=useBasket(ptk);
-            backlink={ text:lines[0][1] , hook:h, 
-                q:text, ptk:tptk, y:lines[0][0] , key:'bl'+Math.random() } ;       
-                renderer_backlink=$renderer.default;     
+        const hooks=attrs['@'].split(';');
+        lines.length=0;
+
+        for (let i=0;i<hooks.length;i++){
+            const hook=hooks[i];
+            const ptr=await dereferencing(hook);
+            if (ptr.length) {
+                const {h,ptk,y}=ptr[0];
+                const hlines=await readLines({basket:ptk,nline:y,count:h.y-y+1});
+                for (let j=0;j<hlines.length;j++) {
+                    lines.push({ text:hlines[j][1], y:hlines[j][0] , 
+                        ptk:useBasket(ptk), key:'bl'+Math.random() }) ; 
+                }
+                lines=lines;
+                renderer_backlink=$renderer._lines;
+            }
         }
     } else {
         renderer_backlink=null;
@@ -33,13 +46,19 @@ const mouseleave=()=>{
 
 
 {#if opening}
-<span {i} class={clss} {x} {y}><span class="backlink" target={attrs['@']} x={attrs.x} w={attrs.w}
-    on:mouseenter={mouseenter} on:mouseleave={mouseleave} on:click={toggle}>{opening?'◎':'●'}</span>
-<svelte:component this={renderer_backlink} {...backlink}/>
+<span {i}  {x} {y}><span  target={attrs['@']} x={attrs.x} w={attrs.w}
+    on:mouseenter={mouseenter} on:mouseleave={mouseleave} on:click={toggle}
+     class:backlink_open={renderer_backlink} class="backlink"> </span>
+{#if renderer_backlink}<div class="hr"></div>{/if}
+<svelte:component this={renderer_backlink} {lines}/>
+{#if renderer_backlink}<div class="hr"></div>{/if}
 </span>
 {/if}
 
 <style>
-    .backlink {cursor:pointer;border-bottom:0px;color:green}
-    .backlink:hover {color: var(--highlight)}
+    div.hr {border-top:1px solid var(--button-selected)}
+    .backlink_open {padding-right:15px;}
+    .backlink {font-size:10%;padding-left:8px;border-radius:5px; background:var(--button-unselected);
+        cursor:pointer;border-bottom:0px;}
+    .backlink:hover {background: Highlight}
 </style>
