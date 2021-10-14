@@ -14,21 +14,9 @@ let lines=[];
 const toggle=async ()=>{
     if (!renderer_backlink) {
         const hooks=attrs['@'].split(';');
-        lines.length=0;
-
-        for (let i=0;i<hooks.length;i++){
-            const hook=hooks[i];
-            const ptr=await dereferencing(hook);
-            if (ptr.length) {
-                const {h,ptk,y}=ptr[0];
-                const hlines=await readLines({basket:ptk,nline:y,count:h.y-y+1});
-                for (let j=0;j<hlines.length;j++) {
-                    lines.push({ text:hlines[j][1], y:hlines[j][0] , 
-                        ptk:useBasket(ptk), key:'bl'+Math.random() }) ; 
-                }
-                lines=lines;
-                renderer_backlink=$renderer._lines;
-            }
+        lines=fetchHooks(hooks);
+        if (lines.length) {
+            renderer_backlink=$renderer._lines;
         }
     } else {
         renderer_backlink=null;

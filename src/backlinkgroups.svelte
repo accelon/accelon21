@@ -29,17 +29,22 @@ const toggleShow=(ptkname)=>{
     for (let y in transclusions) {
         out.push(...transclusions[y]);
     }
-    showing=ptkname;
+    if (out.length) showing=ptkname;
     srclinks=out.map(it=>[it[1],srcptk]);   
 }
 </script>
 {#each groups as g}
-{#if g.count}<span class="count" ptk={g.name} title={g.title} on:click={()=>toggleShow(g.name)}>{g.count}</span>
+{#if g.count}<span class="count" class:showing ptk={g.name} title={g.title} on:click={()=>toggleShow(g.name)}>
+{g.count}
+</span>
 {#each srclinks as link}<ForeignLink from={ptk} ptk={link[1]} link={link[0]}/>{/each}
 {/if}
 {/each}
 
 <style>
+    .showing {color:HighlightText;
+        border-radius: 5px; 
+        background:Highlight;font-weight: bold;}
     .count {font-size:75%;cursor:pointer}
     .count:hover {color:var(--highlight)}
 </style>
