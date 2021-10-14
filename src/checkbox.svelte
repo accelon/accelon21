@@ -1,24 +1,22 @@
 <script>
 import Icons from './asset/icons';
-import store from './js/store.js';
 export let label='';
-export let id;
 export let title='';
 export let icon='';
+export let store=null;
 export let beforeChecked=null;
 const svg=Icons[icon]||'';
-const storeid=store[id];
 export let disabled=false;
 const toggle=async evt=>{
     if (disabled) return;
-    if (!$storeid && beforeChecked) {
-        if (await beforeChecked(evt)) $storeid = true;
+    if (!$store && beforeChecked) {
+        if (await beforeChecked(evt)) $store = true;
     } else{
-        $storeid = ! $storeid; //normal toggle
+        $store = ! $store; //normal toggle
     }
 }
 </script>
-<span class="button" title={title} class:yes={$storeid} 
+<span class="button" title={title} class:yes={$store} 
 class:disabled on:click={toggle}>{@html svg}{label}</span>
 
 <style>

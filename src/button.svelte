@@ -6,15 +6,15 @@ export let disabled=false;
 export let title='';
 export let caption='';
 export let leftcaption='';
-export let storeid=null;
+export let store=null;
 const svg=Icons[icon]||'';
 const click=evt=>{
     if(disabled)return;
-    if (storeid) $storeid=!$storeid;
+    if (store) $store=!$store;
     return onclick&&onclick(evt)
 }
 </script>
-<span class="button" class:disabled class:checked={storeid&&$storeid} class:unchecked={storeid && !$storeid} 
+<span class="button" class:disabled class:checked={store&&$store} class:unchecked={store && !$store} 
      title={title} on:click={click} >
     {#if leftcaption}<span>{leftcaption}</span>{/if}
     <span>{@html svg}</span>

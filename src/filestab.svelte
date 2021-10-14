@@ -1,7 +1,7 @@
 <script>
 import {chromefs,readTextFile} from 'pitaka/platform'
 import Btn from './button.svelte';
-import {files,tab,fileidx,errormsg,config, srcfilelines} from './store.js';
+import {files,tab,fileidx,errormsg,config, srcfilelines} from './js/store_toolbox.js';
 import Filelist from './filelist.svelte'
 import {validateConfig} from 'pitaka/basket';
 import {JSZip} from 'lazip';

@@ -1,7 +1,6 @@
 <script>
 
-import {readLines,useBasket} from 'pitaka';
-import {dereferencing} from 'pitaka/offtext';
+import {fetchHooks} from 'pitaka';
 import {markSelection} from './js/selection.js';
 import { renderer } from './js/store';
 
@@ -14,7 +13,7 @@ let lines=[];
 const toggle=async ()=>{
     if (!renderer_backlink) {
         const hooks=attrs['@'].split(';');
-        lines=fetchHooks(hooks);
+        lines=await fetchHooks(hooks);
         if (lines.length) {
             renderer_backlink=$renderer._lines;
         }

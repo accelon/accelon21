@@ -1,6 +1,6 @@
 <script>
 import {chromefs} from 'pitaka/platform'
-import {tab,errormsg} from './store_toolbox.js';
+import {tab,errormsg} from './js/store_toolbox.js';
 import FilesTab from './filestab.svelte'
 import ExtractTab from './extracttab.svelte'
 import DatabaseTab from './databasetab.svelte'

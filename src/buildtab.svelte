@@ -3,7 +3,7 @@
     import ConfigInfo from './configinfo.svelte'
     import CheckBox from './checkbox.svelte';
     import {files,playing,playingfile,
-        config,errormsg, logs,saveptkhandle,exportpitaka,cachestorage} from './store_toolbox.js';
+        config,errormsg, logs,saveptkhandle,exportpitaka,cachestorage} from './js/store_toolbox.js';
     import {cacheStorageReady,chromefs} from 'pitaka/platform';
     import {Builder} from 'pitaka/basket';
     //import { sleep } from 'pitaka/utils';
@@ -76,8 +76,8 @@
 </script>
 <div>
     
-    <CheckBox icon="importPitaka" disabled={!cacheStorageReady} id="cachestorage" title="离线数据库 Offline Database"/>
-    <CheckBox icon="exportPitaka" id="exportpitaka" beforeChecked={pickSaveFile} title="汇出文件 Export file"/>
+    <CheckBox icon="importPitaka" disabled={!cacheStorageReady} store={cachestorage} title="离线数据库 Offline Database"/>
+    <CheckBox icon="exportPitaka" store={exportpitaka} beforeChecked={pickSaveFile} title="汇出文件 Export file"/>
    
     {#if $playing} 
     <Btn icon='stop' onclick={stop}/>

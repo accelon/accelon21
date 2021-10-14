@@ -2,7 +2,7 @@
 import Btn from './button.svelte';
 import StateBtn from './statebutton.svelte';
 import { OfftextToHtml } from 'pitaka/offtext';
-import Icons from './js/icons';
+import Icons from './asset/icons.js';
 import {getItem,setItem} from './js/storage.js';
 import {srcfilename,srcexcerpts, texttoc,tofind,txtashtml,tosim} from './js/store_toolbox.js'
 import VirtualScroll from 'svelte-virtual-scroll-list'
@@ -125,8 +125,8 @@ $: leftcaption= $tofind?($tofind+'('+$srcexcerpts.length+')'):'';
     <Btn icon="setting" onclick={toggleoptionmenu}/>
     {#if optionmenu}
     <input type=number style="width:4em" bind:value={scrollindex} />
-    <Btn icon="html5" storeid={txtashtml}/>
-    <StateBtn states={{0:"原本",1:"简體",2:"简体"}} storeid={tosim}/>
+    <Btn icon="html5" store={txtashtml}/>
+    <StateBtn states={{0:"原本",1:"简體",2:"简体"}} store={tosim}/>
     {/if}
 
     </div>

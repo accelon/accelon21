@@ -1,8 +1,8 @@
 <script>
     import CheckBox from './checkbox.svelte';
     import Btn from './button.svelte';
-    import {extractregex} from './fileworkers.js'
-    import {playing,files, summarize,logs, ignorecase} from  './store_toolbox.js'
+    import {extractregex} from './js/fileworkers.js'
+    import {playing,files, summarize,logs, ignorecase} from  './js/store_toolbox.js'
     import FilterFileList from './filterfilelist.svelte'
     import { tick } from 'svelte';
 
@@ -55,8 +55,8 @@
     <Btn icon='play' onclick={play}/>
     {/if}
     <br/>
-    <CheckBox label="Σ " id="summarize" title="计算总数 summarize"/>
-    <CheckBox label="A=a" id="ignorecase" title="勿略大小写 ignore case"/>
+    <CheckBox label="Σ " store={summarize} title="计算总数 summarize"/>
+    <CheckBox label="A=a" store={ignorecase} title="勿略大小写 ignore case"/>
     
     <br/>
     <span class='msg'>{msg}</span>
