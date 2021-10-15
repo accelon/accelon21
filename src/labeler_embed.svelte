@@ -11,7 +11,7 @@ export let ptk,i=0,clss,x,y,starty=0,w=0,name='',attrs={}; //just for hidding th
 let lines=[];
 let color='hsl('+((nesting+3)*60) +' ,50%,30%)';
 async function update(attrs){
-
+    if (opening) return;
     if (!attrs || !attrs['@']) {
         lines=[];
         return;
@@ -23,7 +23,7 @@ async function update(attrs){
 const closeme=()=>{
     dispatch('close')
 }
-$: update(attrs);
+$: if (!opening) update(attrs);
 
 </script>
 {#if !opening}

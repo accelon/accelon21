@@ -37,25 +37,25 @@ if (hook) {
     extra.push( new OffTag('cite',{},hook.y-y,hook.x,hook.w) );
     extra=extra;
 }
-// $: extra=extra.filter(i=> i.y===y || i.name!=='embed');
-
 extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
+
 export let col=0;
-const mouseup=async evt=>{
+const click=evt=>{
     if (evt.button!==0) return;
     if (evt.target.tagName=='T') {
         if (evt.target.classList.contains('e')) return;
         const {hook,x,y,sel,t,ori}=getTextHook(ptk,evt);
-        if (sel) { //selection menu
+        const entries = bestEntries(ori)||[];
+        if (!entries.length) return;
+        const E=entries[0];
+        const ptr=PATHSEP+E.ptk+PATHSEP+E.e;
+        const w=E.e.length;
+        const lblx=x+w;
 
-        } else {
-            const entries = bestEntries(ori)||[];
-            if (!entries.length) return;
-            const E=entries[0];
-            const ptr=PATHSEP+E.ptk+PATHSEP+E.e;
-            const w=E.e.length;
-            const lblx=x+w;
-            extra=extra.filter(i=>i.name!=='embed');
+        //single click to close the embed
+        const opened=extra.filter(i=>i.name=='embed'&&i.x===lblx&&i.attrs['@']===ptr);
+        extra=extra.filter(i=>i.name!=='embed');
+        if (opened.length===0) {
             extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,lblx,0) );
             extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
             extra=extra;
@@ -78,7 +78,7 @@ const closelabel=()=>{
 on:close={closelabel} {ptk} starty={y||key} {...snpt.open} />
 {/if}
 <!-- 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 -->
-<span on:mouseup={mouseup}>{@html composeSnippet(snpt,y||key,$tosim)}</span>
+<span on:click={click}>{@html composeSnippet(snpt,y||key,$tosim)}</span>
 {#if labelerOf(snpt.close.name)}
 <!-- close.name 存在，則是該標籤的終點。屬性在 sntp.open-->
 <svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}

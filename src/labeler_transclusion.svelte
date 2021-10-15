@@ -7,7 +7,7 @@ import Btn from './button.svelte'
 export let attrs={}
 export let text='';
 export let opening=false;
-export let name,w,ptk,i,clss,x,y,starty=0; //just for hidding the warning
+export let name,w,ptk,i,clss,x,y,starty=0,nesting=0; //just for hidding the warning
 
 let tptk,transclusion='';
 let showing=null;
