@@ -35,19 +35,19 @@ $: col=$activecolumn;
 		</div>
 
 		<div id="viewers">
-			<div on:click={()=>setActiveColumn(0)} class="viewer"><PitakaViewer/></div>
+			<div class="viewer"><PitakaViewer/></div>
 			{#if $column>=1}
-			<div on:click={()=>setActiveColumn(1)} class="viewer"><PitakaViewer col={1}/></div>
+			<div class="viewer"><PitakaViewer col={1}/></div>
 			{/if}
 			{#if $column==2}
-			<div on:click={()=>setActiveColumn(2)} class="viewer"><PitakaViewer col={2}/></div>
+			<div class="viewer"><PitakaViewer col={2}/></div>
 			{/if}
 		</div>
 	</div>
 </div>
 <style>
     #viewers {display:flex;flex-direction: row;}
-    .viewer {width:100%}
+    .viewer {width:100%;overflow:hidden}
 	.container {
 		min-height: 100px;
 		height: calc(100vh - 2em);

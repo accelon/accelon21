@@ -25,14 +25,12 @@ $: rightpanel = rightpanels[$tab] || LogView ; console.log(rightpanel)
         <TabBtn store={tab} icon="files" title="源文件 source files"/>
         <TabBtn store={tab} icon="build" title="建置 build"/>
         <TabBtn store={tab} icon="database" title="数据库 database"/>
-        <TabBtn store={tab} icon="validate" title="标记检验 markup validation"/>
         <TabBtn store={tab} icon="extract" title="抽取特征 extract pattern"/>
         <TabBtn store={tab} icon="help" title="说明 instruction"/>
         <span class="errormsg">{$errormsg}</span>
       </div>
       <div class="tab-content" class:visible={$tab=='files'}><FilesTab/></div>
       <div class="tab-content" class:visible={$tab=='database'}><DatabaseTab/></div>
-      <div class="tab-content" class:visible={$tab=='validate'}>validate</div>
       <div class="tab-content" class:visible={$tab=='extract'}><ExtractTab/></div>
       <div class="tab-content" class:visible={$tab=='build'}><BuildTab/></div>
       <div class="tab-content" class:visible={$tab=='help'}>Help</div>

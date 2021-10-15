@@ -13,10 +13,11 @@
 		text-align: left;
 		position: relative;
 		border: none;
-		height:36px;
+		height:35px;
 		cursor:pointer;
-		border-bottom: 3px solid transparent;
-		/* padding: 12px 12px 8px 12px; */
+		/* border-bottom: 3px solid transparent; */
+		padding-left: 12px;
+		/* padding-right: 8px; */
 		color: var(--button-unselected);
 		fill : var(--button-unselected);
 		stroke : var(--button-unselected);

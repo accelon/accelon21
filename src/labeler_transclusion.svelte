@@ -10,10 +10,10 @@ export let opening=false;
 export let name,w,ptk,i,clss,x,y,starty=0; //just for hidding the warning
 
 let tptk,transclusion='';
-let renderer_transclusion=null;
+let showing=null;
 
 const toggle=async ()=>{
-    if (!renderer_transclusion) {
+    if (!showing) {
         const hook=attrs['@'];
         const ptr=await dereferencing(hook);
         if (ptr.length) {
@@ -22,20 +22,22 @@ const toggle=async ()=>{
             tptk=useBasket(ptk);
             transclusion={ text:lines[0][1] , hook:h, 
                 q:text, ptk:tptk, y:lines[0][0] , key:'tc'+Math.random() } ;       
-            renderer_transclusion=$renderer.default;     
+                showing=$renderer.default;     
         }
     } else {
-        renderer_transclusion=null;
+        showing=null;
     }
 }
 </script>
 {#if !opening}
-<span {i} class={clss} {x} {y}><span class="transclusion" on:click={toggle}> </span>
-<svelte:component this={renderer_transclusion} {...transclusion}/>
-{#if renderer_transclusion}<Btn icon='link'/>{/if}
+<span {i} class={clss} {x} {y}><span class:showing class="transclusion" on:click={toggle}> </span>
+<svelte:component this={showing} {...transclusion}/>
+{#if showing}<Btn icon='link'/>{/if}
 </span>
 {/if}
 <style>
-    .transclusion {cursor:pointer;border-bottom:0px;padding-left:5px;background:var(--button-unselected)}
+    .showing {padding-right:20px;border-radius:10px}
+    .transclusion {cursor:pointer;border-bottom:0px;padding-left:5px;
+        background:var(--button-unselected)}
     .transclusion:hover {background: var(--highlight)}
 </style>

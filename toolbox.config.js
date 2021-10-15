@@ -41,7 +41,7 @@ export default [
       format: "iife",
       name: "app",
       file: "public/toolbox.js",
-      globals:{'lazip':'lazip'}
+      globals:{'lazip':'lazip','events':'events'}
     },
     plugins: [
       svelte({
