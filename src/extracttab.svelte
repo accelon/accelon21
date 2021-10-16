@@ -67,7 +67,7 @@
 </div>
 <style>
     .extracttab {margin-left:0.5em;}
-    .regex {height:1.5em;width:calc(30vw - 3rem)}
+    .regex {height:1.5em;width:100%}
 
     .errormsg {color:red}
     .invalid {color:red}

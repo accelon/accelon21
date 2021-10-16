@@ -1,6 +1,7 @@
 import {updateSettings,settings} from './savestore.js'
 import { derived, writable } from "svelte/store";
 
+export const toolbox_panepos=writable(settings.toolbox_panepos||30);
 export const files=writable([]);
 export const logs=writable([]);
 export const srcfilename=writable('');
@@ -39,3 +40,4 @@ export const srcexcerpts=derived([srcfilelines,tofind],filterlines)
 
 tosim.subscribe(tosim=>updateSettings({tosim}));
 tab.subscribe(tab=>updateSettings({tab}));
+toolbox_panepos.subscribe(toolbox_panepos=>updateSettings({toolbox_panepos}));
