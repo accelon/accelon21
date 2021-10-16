@@ -2,24 +2,16 @@
     import Btn from './button.svelte';
     import TocBar from './tocbar.svelte';
     import SearchBar from './searchbar.svelte';
-
-    import {column,cols,vstates,targetcolumn} from './js/store.js'
     let showsetting=false;
     const togglesetting=()=>{
         showsetting=!showsetting;
     }
-    export let col=0;
     export let ptk;
-    const setTargetColumn=()=>{
-        $targetcolumn++;
-        if ($targetcolumn>$column) $targetcolumn=0;
-    }
-    $: vstate=vstates[col]||{};
+
 
 </script>
 <div id="controlbar">
-    <Btn icon="target" disabled={$targetcolumn!==col} onclick={setTargetColumn}/>
-    <TocBar {ptk} {col}/>
+    <TocBar {ptk}/>
     <SearchBar {ptk}/>
     <Btn icon="menu" onclick={togglesetting} />
     {#if showsetting}
@@ -32,6 +24,5 @@
 
 <style>
 
-    #controlbar {
-    -webkit-user-select: none;  width:100%; background:var(--panel-background)}
+    #controlbar {   -webkit-user-select: none;  width:100%; background:var(--panel-background)}
 </style>

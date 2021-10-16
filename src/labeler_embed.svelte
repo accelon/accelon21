@@ -27,14 +27,11 @@ $: if (!opening) update(attrs);
 
 </script>
 {#if !opening}
-<span class='closebutton' on:click={closeme}> </span>
 {#if R}<div class="hr" style={"background:"+color }></div>{/if}
 <svelte:component nesting={nesting+1} this={R} {lines}/>
 {#if R}<div class="hr" style={"background:"+color }></div>{/if}
 {/if}
 
 <style>
-    div.hr {height:1px;}
-    .closebutton{font-size:10%;border-radius:5px; padding-left:15px;cursor:pointer;border-radius: 10px;
-    background:Highlight}
+    div.hr {height:1px}
 </style>

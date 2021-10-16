@@ -4,11 +4,19 @@ import {parseOfftextLine, makeHook } from 'pitaka/offtext'
 export const getTextHook=(ptk,evt)=>{
     const selection=getSelection();
     const an=selection.anchorNode;
-    const ele=an.parentElement;
-    if (ele.tagName!=='T') return {};
-
+    let ele;
     let sel=selection.toString();
     let offset=selection.anchorOffset;
+
+    if (an.nodeType==3 && an.nextElementSibling) {
+        ele=an.nextElementSibling;
+        if (ele.tagName!=='T' && ele.firstElementChild.tagName==='T') {
+            ele=ele.firstElementChild;
+            offset--;
+        }
+    } else ele=an.parentElement;
+    if (ele.tagName!=='T') return {};
+
     let w=sel.length;
 
     const x=parseInt(ele.attributes.x.value)+offset;

@@ -1,5 +1,5 @@
 <script>
-import {vstates,tosim,setLoc,cursor,renderer} from './js/store.js';
+import {vstate,tosim,setLoc,cursor,renderer} from './js/store.js';
 import {getTextHook} from './js/selection.js';
 import { onMount } from 'svelte';
 import { toSim } from 'lossless-simplified-chinese';
@@ -11,11 +11,10 @@ export let to='';
 export let entry='';
 export let text='';
 export let ptk=null;
-export let col=0;
+
 
 $: entry_sim=($tosim && toSim(entry,$tosim)!==entry)?toSim(entry,$tosim):'';
 
-const vstate=vstates[col];
 export let show=false;
 let items=[];
 onMount(async ()=>{
@@ -35,7 +34,7 @@ const toggleShowEntry=async(evt)=>{
 const mouseup=async evt=>{
     if (evt.button!==0) return;
     if (loc) {
-        await setLoc(ptk,col,loc);
+        await setLoc(ptk,loc);
     } else if (evt.target.tagName=='T') {
         const {hook,y,sel,t,ori}=getTextHook(ptk,evt);
         cursor.set({sel,t,ori});
@@ -48,7 +47,7 @@ const mouseup=async evt=>{
 <span class="wordhead">{entry}</span>
 <span class="wordhead simplified">{entry_sim}</span></div>
 {#each items as data,idx (idx)}
-    <svelte:component col={col} this={$renderer.default} {ptk} {...data}/>
+    <svelte:component this={$renderer.default} {ptk} {...data}/>
 {/each}
 </div>
 

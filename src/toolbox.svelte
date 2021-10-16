@@ -30,7 +30,7 @@ window.onresize=()=>{
 {#if !chromefs.ready}
 <div class="errormsg">Need Chrome version 86 or above</div>
 {:else}
-<SplitPane bind:pos={$toolbox_panepos} bind:type>
+<SplitPane bind:pos={$toolbox_panepos} min={20} max={60} bind:type>
     <div slot="a" id="leftpanel">
       <div class="tabs">    
         <TabBtn store={tab} icon="files" title="源文件 source files"/>

@@ -57,10 +57,10 @@ const click=evt=>{
         const lblx=x+w;
 
         //single click to close the embed
-        const opened=extra.filter(i=>i.name=='embed'&&i.x===lblx&&i.attrs['@']===ptr);
+        const opened=extra.filter(i=>i.name=='embed'&&i.x===x&&i.attrs['@']===ptr);
         extra=extra.filter(i=>i.name!=='embed').filter(i=>!!i);
         if (opened.length===0) {
-            extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,lblx,0) );
+            extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,x,w) );
             // console.log()
             extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
             extra=extra;

@@ -1,11 +1,9 @@
 <script>
-import {cursor,vlines,column, cols} from './js/store.js'
+import {cursor,vline} from './js/store.js'
 import StateBtn from './statebutton.svelte';
 import {debounce} from 'pitaka/utils'
 export let ptk;
-export let col;
 let history=[];
-const vl=vlines[col];
 let prevw='',prevcw='';
 let mode=0;
 const matchCursorWord=cw=>{
@@ -14,7 +12,7 @@ const matchCursorWord=cw=>{
     const show=idx<2
         return {key:'cw'+i[0],show,idx,entry:i[1],from:i[2],to:i[3]} 
     });
-    vlines[col].set( {items} );
+    vline.set( {items} );
     if (prevcw!==cw&&matches.length) { //do not change tofind when user input
         if (prevw&&prevw!==matches[0][1]) {
             history=history.filter(i=>i!==prevw);
@@ -44,7 +42,7 @@ const inputSearch=(m)=>{
     const items=res.map((i,idx)=>{
         return {key:i[0] , idx, entry:i[1], from:i[2],to:i[3]}
     });
-    vlines[col].set({items});
+    vline.set({items});
 }
 
 const input=debounce(()=>{
@@ -65,19 +63,11 @@ const changemode=()=>{
     }
 }
 let tofind='';
-const calRightPos=(cols,col)=>{
-    if (cols==1 && col==0) return '50%';
-    else if (cols==2) {
-        if (col==1) return '33%'
-        if (col==2) return '66%'
-    }
-    return '0px';
-}
-$: rightpos='right:'+calRightPos($column,col);
+
 </script>
 <div class="searchbox">
-    <div class="inputbox" style={rightpos} >
-        <span class="matchcount">{$vl.items.length}</span>
+    <div class="inputbox">
+        <span class="matchcount">{$vline.items.length}</span>
         <StateBtn onclick={changemode} styles={matchmodestyles} 
         forceupdate={mode} caption="matchmode"/>
         <input class="tofind" bind:value={tofind} on:input={input}/>

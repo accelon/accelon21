@@ -1,18 +1,14 @@
 <script>
 import {tosim} from './js/store.js';
 import {toSim} from 'lossless-simplified-chinese'
-
 export let ptk;
-export let col;
 let loc='';
+import {vstate,setLoc} from './js/store.js';
 
-import {vstates,vlines, setLoc} from './js/store.js';
-$: vstate=vstates[col];
-$: vl=vlines[col];
 $: loc=$vstate.loc;
 const click=async evt=>{
     const loc=evt.target.attributes.loc.value;
-    setLoc(ptk,col,loc);
+    setLoc(ptk,loc);
 }
 let toctree=[];
 $: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc))||[];
