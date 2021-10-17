@@ -1,5 +1,5 @@
 <script>
-import {vstate,vline} from './js/store.js';
+import {vstate} from './js/store.js';
 import Btn from './button.svelte'
 export let y;
 export let ptk;

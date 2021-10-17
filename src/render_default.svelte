@@ -39,7 +39,7 @@ if (hook) {
 }
 extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
 
-export let col=0;
+
 const onSelection=evt=>{//user note and highlight etc
     console.log('selected')
 }
@@ -57,7 +57,7 @@ const click=evt=>{
         const lblx=x+w;
 
         //single click to close the embed
-        const opened=extra.filter(i=>i.name=='embed'&&i.x===x&&i.attrs['@']===ptr);
+        const opened=extra.filter(i=>i.name=='embed'&&(x>=i.x&&(i.x+i.w>x)));
         extra=extra.filter(i=>i.name!=='embed').filter(i=>!!i);
         if (opened.length===0) {
             extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,x,w) );
@@ -73,7 +73,7 @@ const closelabel=()=>{
 </script>
 <div class="linetext">
 {#if ptk && loc} <!-- 目錄行 -->
-<svelte:component this={$renderer._toc} {ptk} {text} {loc} {col}/>
+<svelte:component this={$renderer._toc} {ptk} {text} {loc}/>
 {:else}
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
 {#each OfftextToSnippet(text||ptk&&ptk.getLine&&ptk.getLine(y||key), extra) as snpt}

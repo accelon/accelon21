@@ -118,7 +118,8 @@
 		float: left;
 		width: 100%;
 		height: 100%;
-		overflow: auto;
+		overflow:hidden;
+		/* overflow: auto; */
 	}
 
 	.mousecatcher {
@@ -134,7 +135,7 @@
 		position: absolute;
 		z-index: 10;
 		display: none;
-		background:rgba(0,0,0,0.15);
+		background:rgba(10,10,10,.15);
 		filter: blur(1px)
 	}
 

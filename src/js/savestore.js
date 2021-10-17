@@ -1,4 +1,5 @@
 const AppPrefix='ACC21.'
+const config=accelon21_configuration;
 export const loadSettings=()=>{
     const tosim=parseInt(localStorage.getItem(AppPrefix+'tosim')||'0');
     const column=localStorage.getItem(AppPrefix+'column')||0;
@@ -6,9 +7,7 @@ export const loadSettings=()=>{
     const toolbox_panepos=localStorage.getItem(AppPrefix+'toolbox_panepos')||30;
     const panepos=localStorage.getItem(AppPrefix+'panepos')||70;
 
-    const vstate=JSON.parse(localStorage.getItem(AppPrefix+'vstate'))||{name:'openlit',loc:'6/14',hook:''};
-    // const vs1=JSON.parse(localStorage.getItem(AppPrefix+'vs1'))||{name:'gycd',loc:'',hook:''};
-    // const vs2=JSON.parse(localStorage.getItem(AppPrefix+'vs2'))||{};
+    const vstate=JSON.parse(localStorage.getItem(AppPrefix+'vstate'))||config.homepage;
     
     return {tosim,column,tab,vstate,toolbox_panepos,panepos};
 }

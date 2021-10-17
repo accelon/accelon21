@@ -15,7 +15,6 @@ Loading Data...
 {:else}
 <div class="container">
 	<MainView/>
-
 </div>
 {/if}
 <style>

@@ -1,5 +1,5 @@
 <script>
-    export let ptk
+
     const inputkeyup=()=>{
 
     }

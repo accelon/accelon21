@@ -1,18 +1,19 @@
 <script>
-import {cursor,vline} from './js/store.js'
+import {cursor} from './js/store.js'
 import StateBtn from './statebutton.svelte';
 import {debounce} from 'pitaka/utils'
 export let ptk;
 let history=[];
 let prevw='',prevcw='';
 let mode=0;
+let items=[];
 const matchCursorWord=cw=>{
     const matches = ptk&&ptk.matchEntry(cw)||[]
-    const items=matches.map((i,idx)=>{
+    items=matches.map((i,idx)=>{
     const show=idx<2
         return {key:'cw'+i[0],show,idx,entry:i[1],from:i[2],to:i[3]} 
     });
-    vline.set( {items} );
+    
     if (prevcw!==cw&&matches.length) { //do not change tofind when user input
         if (prevw&&prevw!==matches[0][1]) {
             history=history.filter(i=>i!==prevw);
@@ -39,10 +40,9 @@ const inputSearch=(m)=>{
     tofind=tofind.trim();
     if (!tofind) return matchCursorWord($cursor.ori)
     const res=ptk.filterEntry(tofind, m);
-    const items=res.map((i,idx)=>{
+    items=res.map((i,idx)=>{
         return {key:i[0] , idx, entry:i[1], from:i[2],to:i[3]}
     });
-    vline.set({items});
 }
 
 const input=debounce(()=>{
@@ -67,7 +67,7 @@ let tofind='';
 </script>
 <div class="searchbox">
     <div class="inputbox">
-        <span class="matchcount">{$vline.items.length}</span>
+        <span class="matchcount">{items.length}</span>
         <StateBtn onclick={changemode} styles={matchmodestyles} 
         forceupdate={mode} caption="matchmode"/>
         <input class="tofind" bind:value={tofind} on:input={input}/>

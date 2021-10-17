@@ -1,18 +1,19 @@
 <script>
-    import Btn from './button.svelte';
-    import TocBar from './tocbar.svelte';
-    import SearchBar from './searchbar.svelte';
-    let showsetting=false;
-    const togglesetting=()=>{
-        showsetting=!showsetting;
-    }
-    export let ptk;
-
+import Btn from './button.svelte';
+import TocBar from './tocbar.svelte';
+import SearchBar from './searchbar.svelte';
+import TabSelector from './tabselector.svelte';
+let showsetting=false;
+const togglesetting=()=>{
+    showsetting=!showsetting;
+}
+export let tabid;
 
 </script>
 <div id="controlbar">
-    <TocBar {ptk}/>
-    <SearchBar {ptk}/>
+    <TabSelector {tabid}/>
+    <TocBar/>
+    <SearchBar/>
     <Btn icon="menu" onclick={togglesetting} />
     {#if showsetting}
         <Btn icon="bookmark"/>

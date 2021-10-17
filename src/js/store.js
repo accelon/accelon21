@@ -3,34 +3,14 @@ import {derived, writable ,get} from "svelte/store";
 import {getUserData,setUserData} from './userdata.js';
 export const tosim=writable(settings.tosim);
 
-// export const column=writable(settings.column);
-// export const activecolumn=writable(0);
-// export const targetcolumn=writable(0);
-// export const col1=derived([column,activecolumn],([c,ac])=> ac==0?'auto':'none'  );
-// export const col2=derived([column,activecolumn],([c,ac])=> ac==1?'auto':'none'  );
-// export const col3=derived([column,activecolumn],([c,ac])=> ac==2?'auto':'none'  );
-
-// export const cols={col1,col2,col3};
-// export const vs0=writable({});
-// export const vs1=writable({});
-// export const vs2=writable({});
-// vs0.set(Object.assign({},settings.vs0));
-// vs1.set(Object.assign({},settings.vs1));
-// vs2.set(Object.assign({},settings.vs2));
-// export const vl0=writable([]);
-// export const vl1=writable([]);
-// export const vl2=writable([]);
-// export const vstates=[vs0,vs1,vs2];
-// export const vlines=[vl0,vl1,vl2];
-
-export const vline=writable([]);
 export const vstate=writable(settings.vstate||{});
 
 export const userdata=writable({});
 export const cursor=writable({});
 export const panepos=writable(settings.panepos);
 
-
+export const addresses=writable(['/openlit/12/1','/openlit/6/1']);
+export const ntab=writable(0);
 export const searchbox=writable({});
 
 export const renderer=writable({});   //custom renderer for different format
@@ -41,23 +21,16 @@ export const labelerOf=cls=>{
     const L=get(labeler);
     return L[cls];
 }
-
 tosim.subscribe(tosim=>updateSettings({tosim}));
-// column.subscribe(column=>updateSettings({column}));
-// vs0.subscribe(vs0=>updateSettings({vs0}));
-// vs1.subscribe(vs1=>updateSettings({vs1}));
-// vs2.subscribe(vs2=>updateSettings({vs2}));
-
 vstate.subscribe(vstate=>updateSettings({vstate}));
 panepos.subscribe(panepos=>updateSettings({panepos}));
 
-
-export const setLoc=async (ptk,loc,y,hook='')=>{
-
-    setUserData(vstate.name,vstate.loc, get(vline).userdata );
+export const setLoc=async ({ptk,loc,y,hook=''},store)=>{
+    if (!ptk) ptk=get(store).ptk;
     const items=ptk.fetchPage(loc);
 
     y=y|| (items.length&&items[0].key)||0;
+    
     await ptk.prefetchLines(y,y+items.length);
     vstate.set(Object.assign(get(vstate),{name:ptk.name,loc,hook,y}))    
 
@@ -72,5 +45,27 @@ export const setLoc=async (ptk,loc,y,hook='')=>{
     })
 
     const userdata=getUserData(vstate.name,vstate.loc);
-    vline.set(Object.assign(get(vline),{items, userdata, backlinks}));
+
+    if (store) {
+        store.set( {items,userdata,backlinks,ptk,loc})
+    } else {
+        return {items,backlinks,userdata,loc};
+    }
+}
+
+export const gotab=n=>{
+    const addrs=get(addresses);
+    if (n>9 || n<0) return;
+    for (let i=0;i<n+1;i++) {
+        if (!addrs[i]) addrs[i]='/';
+    } 
+    addresses.set(addrs);
+    ntab.set(n);
+}
+
+export const cleartab=n=>{
+    if (n>9 || n<0) return;
+    const addrs=get(addresses);
+    addrs[n]='/';
+    addresses.set(addrs);
 }

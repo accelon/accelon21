@@ -1,11 +1,11 @@
 <script>
 //render lines from various pitaka
 import {renderer } from './js/store.js';
-export let col=0;
+
 export let nesting=0;
 export let lines=[];
 </script>
 
 {#each lines as data}
-<svelte:component col={col} {nesting} this={$renderer.default} {...data}/>
+<svelte:component  {nesting} this={$renderer.default} {...data}/>
 {/each}

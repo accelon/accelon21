@@ -60,24 +60,8 @@ window.onresize=()=>{
 <style>
 #toolbox {height: 100vh;width:100vw;display:flex;flex-direction: row;}
 #leftpanel {overflow:hidden}
-.tabs {overflow:hidden}
+
 #rightpanel {overflow:hidden}
 .errormsg {color:red}
-
-.tabs {-webkit-user-select: none; background:var(--panel-background)}
-.tab-content {
-		position: absolute;
-    height:90vh;
-    /* width:30vw; */
-		/* !important; */
-		opacity: 0;
-		pointer-events: none;
-		overflow:hidden;
-	}
-.tab-content.visible {/* can't use visibility due to a weird painting bug in Chrome */
-  opacity: 1;
-  pointer-events: all;
-}
-
 
 </style>
