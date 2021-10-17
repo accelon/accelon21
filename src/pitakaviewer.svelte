@@ -3,9 +3,12 @@ import { openBasket } from 'pitaka';
 import { onMount, tick } from 'svelte';
 import { vstate,vline,renderer, setLoc,searchbox } from './js/store.js';
 import {scrollToHook} from './js/hook.js';
-import VirtualScroll from 'svelte-virtual-scroll-list'
+import VirtualScroll from './3rdparty/virtualscroll'
 import ControlBar from './controlbar.svelte'
-let ptk={},vs;
+let ptk={};
+let toindex=0,systemsetting=false;
+let vs,ready=false;
+$: vs&&vs.scrollToIndex(toindex)
 
 $: items=$vline.items||[]; vs&&vs.scrollToOffset(0,items);
 $: vs&&vs.scrollToOffset(0,items.length)  //force scrolltotop when items changed
