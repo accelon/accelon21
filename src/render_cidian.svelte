@@ -1,5 +1,6 @@
 <script>
-import {vstate,tosim,setLoc,cursor,renderer} from './js/store.js';
+import {tosim,cursor,renderer} from './js/store.js';
+import {vstate,setLoc} from './js/addresses.js'
 import {getTextHook} from './js/selection.js';
 import { onMount } from 'svelte';
 import { toSim } from 'lossless-simplified-chinese';

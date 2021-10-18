@@ -4,6 +4,7 @@ import TocBar from './tocbar.svelte';
 import SearchBar from './searchbar.svelte';
 import TabSelector from './tabselector.svelte';
 let showsetting=false;
+
 const togglesetting=()=>{
     showsetting=!showsetting;
 }
@@ -13,7 +14,6 @@ export let tabid;
 <div id="controlbar">
     <TabSelector {tabid}/>
     <TocBar/>
-    <SearchBar/>
     <Btn icon="menu" onclick={togglesetting} />
     {#if showsetting}
         <Btn icon="bookmark"/>

@@ -2,7 +2,7 @@
 import {tosim} from './js/store.js';
 import {toSim} from 'lossless-simplified-chinese'
 import {getContext} from 'svelte'
-import {setLoc} from './js/store.js';
+import {settab} from './js/addresses.js';
 const viewstore=getContext('viewstore');
 
 $: ptk=$viewstore.ptk;
@@ -11,7 +11,7 @@ $: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc))||[];
 
 </script>
 {#each toctree as tocnode,idx}
-<span class="tocitem" loc={tocnode.loc} on:click={()=>setLoc({loc:tocnode.loc},viewstore)}>
+<span class="tocitem" loc={tocnode.loc} on:click={()=>settab({loc:tocnode.ptr})}>
 {idx?'/':''}{toSim(tocnode.name,$tosim)}</span>
 {/each}
 <style>

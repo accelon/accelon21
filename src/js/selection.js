@@ -39,7 +39,7 @@ export const getTextHook=(ptk,evt)=>{
 
     const hook=makeHook(linetext, x, w);
 
-    return {hook,x,y, sel , t, ori}
+    return {hook,x,y,sel , t, ori}
 }
 export const markSelection=(ele,x,w)=>{
     while (ele&& (ele.tagName!=='T' && ele.tagName!=='DIV')) {

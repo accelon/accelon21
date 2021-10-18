@@ -3,7 +3,7 @@ import { onMount } from 'svelte';
 import { get } from 'svelte/store';
 
 import Icons from './asset/icons';
-export let onclick;
+export let onclick=null;
 export let disabled=false;
 export let title='';
 export let forceupdate='';

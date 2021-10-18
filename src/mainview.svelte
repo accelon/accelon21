@@ -1,30 +1,34 @@
 <script>
 import SplitPane from './3rdparty/splitpane.svelte';
 import Btn from './button.svelte';
-import StateBtn from './statebutton.svelte';
-
-import {panepos,tosim} from './js/store.js';
+import Settings from './settings.svelte'
+import {addresses_a,addresses_b,ntab_a,ntab_b} from './js/addresses.js'
+import {panepos,tosim,systemsetting} from './js/store.js';
 import PitakaViews from './pitakaviews.svelte';
 import { debounce,detectOrientation } from 'pitaka/utils';
 let type=detectOrientation();
-let systemsetting=false;
+
 window.onresize=debounce(()=>type=detectOrientation(),500);
 const togglesystemsetting=()=>{
-	systemsetting=!systemsetting;
+	systemsetting.set($systemsetting);
 }
 </script>
 <div class="container">
 <SplitPane bind:type bind:pos={$panepos} min={15} max={85}>
     <div slot="a">
-        <div class="systemsetting">
-            <Btn icon="setting" onclick={togglesystemsetting} />
-            {#if systemsetting}
-        <StateBtn states={{0:"原本",1:"简體",2:"简体"}} storeid={tosim}/>
-            {/if}
-        </div>
+        <PitakaViews addresses={addresses_a} ntab={ntab_a}/>
     </div>
     <div  slot="b">
-        <PitakaViews/>
+        {#if !$systemsetting}
+        <PitakaViews addresses={addresses_b} ntab={ntab_b}/>
+        {/if}
+        <div class="systemsetting">
+            <Btn title="设置 setting" icon="setting" 
+            onclick={togglesystemsetting} store={systemsetting}/>
+        </div>
+        {#if $systemsetting}
+        <Settings/>
+        {/if}
     </div>
 </SplitPane>
 </div>

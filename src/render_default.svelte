@@ -3,13 +3,15 @@ import {tosim,labelerOf, renderer} from './js/store.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag} from 'pitaka/offtext'
 import {bestEntries,PATHSEP} from 'pitaka';
 import {getTextHook} from './js/selection.js';
+import {cursorAddress} from './js/address.js';
     // import LineMenu from './linemenu.svelte';
 
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y=0   //優先權較高
 export let nesting=0;
 export let text=''
-export let loc=''
+export let loc='' ; //location of the page
+export let ptr=''   //  (for toc page)
 export let backlinks='';
 export let q=''; //the quote text
 export let hook='';
@@ -39,10 +41,11 @@ if (hook) {
 }
 extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
 
-
 const onSelection=evt=>{//user note and highlight etc
-    console.log('selected')
+    const {hook,x,y}=getTextHook(ptk,evt);
+    cursorAddress.set({ptk,loc,x,y,hook});
 }
+
 const click=evt=>{
     if (evt.button!==0) return;
     if (evt.target.tagName=='T') {
@@ -70,25 +73,28 @@ const click=evt=>{
 const closelabel=()=>{
     extra=extra.filter(i=>i.name!=='embed');
 }
+
 </script>
 <div class="linetext">
-{#if ptk && loc} <!-- 目錄行 -->
-<svelte:component this={$renderer._toc} {ptk} {text} {loc}/>
+{#if ptk && ptr} <!-- 目錄行 -->
+<svelte:component this={$renderer._toc} {ptk} {text} loc={ptr}/>
 {:else}
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
 {#each OfftextToSnippet(text||ptk&&ptk.getLine&&ptk.getLine(y||key), extra) as snpt}
-{#if labelerOf(snpt.open.name)}
-<!-- open.name 存在則是此標籤的起點 -->
-<svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting}
-on:close={closelabel} {ptk} starty={y||key} {...snpt.open} />
-{/if}
-<!-- 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 -->
-<span on:click={click}>{@html composeSnippet(snpt,y||key,$tosim)}</span>
-{#if labelerOf(snpt.close.name)}
-<!-- close.name 存在，則是該標籤的終點。屬性在 sntp.open-->
-<svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
-on:close={closelabel} {ptk} starty={y||key} {...snpt.open} />
-{/if}
+    {#if labelerOf(snpt.open.name)}
+    <!-- open.name 存在則是此標籤的起點 -->
+    <svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting}
+    on:close={closelabel} {ptk} starty={y||key} {...snpt.open} />
+    {/if}
+    
+    <!-- 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 -->
+    <span on:click={click}>{@html composeSnippet(snpt,y||key,$tosim)}</span>
+    {#if labelerOf(snpt.close.name)}
+
+    <!-- close.name 存在，則是該標籤的終點。屬性在 sntp.open-->
+    <svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
+    on:close={closelabel} {ptk} starty={y||key} {...snpt.open} />
+    {/if}
 {/each}
 {/if}
 </div>
