@@ -7,13 +7,11 @@ import {toSim} from 'lossless-simplified-chinese';
 export let text='';
 export let ptk='';
 export let loc='';
-
-const viewstore=getContext('viewstore');
-
+const addresses=getContext('addresses');
 $: backlinkCount=ptk.backlinkCount(loc);
 
 </script>
-<div><span class="tocitem" on:click={()=>settab({loc})}>{toSim(text,$tosim)}</span>
+<div><span class="tocitem" on:click={()=>settab({loc},addresses)}>{toSim(text,$tosim)}</span>
 <BacklinkGroup counts={backlinkCount} {ptk} {loc}/>
 </div>
 

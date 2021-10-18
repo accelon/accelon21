@@ -4,8 +4,8 @@ import { parsePointer ,serializePointer} from 'pitaka/offtext';
 import { copyAddress ,getCursorAddress} from './address.js';
 import {updateSettings,settings} from './savestore.js'
 import {getUserData,setUserData} from './userdata.js';
-export const addresses_a=writable(['/openlit/12/1','/openlit/12/3','/openlit/12/5']);
-export const addresses_b=writable(['/openlit/6/1','/openlit/6/2','/openlit/6/3']);
+export const addresses_a=writable(accelon21_configuration.addresses_a||['/']);
+export const addresses_b=writable(accelon21_configuration.addresses_b||['/']);
 
 export const ntab_a=writable(0);
 export const ntab_b=writable(0);
@@ -30,6 +30,7 @@ export const setLoc=async ({ptk,loc,y,hook=''},store)=>{
             }
         }
     })
+    items.push({text:'---',key:'end'});//workaround
 
     const userdata=getUserData(vstate.name,vstate.loc);
 

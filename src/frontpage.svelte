@@ -4,16 +4,20 @@
 </script>
 
 <div class="container"><TabSelector {tabid}/>
-<div>front page {tabid}</div>
-<div>front page {tabid}</div>
-<div>front page {tabid}</div>
-<div>front page {tabid}</div>
+<div>front page {tabid+1}</div>
 
-<div>front page {tabid}</div>
-<div>front page {tabid}</div>
-<div>front page {tabid}</div>
-<div>front page {tabid}</div>
-<div>front page {tabid}</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
+<div>front page</div>
 </div>
 
 <style>

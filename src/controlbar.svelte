@@ -25,5 +25,6 @@ export let tabid;
 
 <style>
 
-    #controlbar {   -webkit-user-select: none;  width:100%; background:var(--panel-background)}
+    #controlbar { font-size:1rem;
+      -webkit-user-select: none;  width:100%; background:var(--panel-background)}
 </style>

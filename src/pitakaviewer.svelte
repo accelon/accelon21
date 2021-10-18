@@ -1,6 +1,6 @@
 <script>
 import { useBasket } from 'pitaka';
-import { onMount, tick , setContext} from 'svelte';
+import { onMount, setContext} from 'svelte';
 import { renderer,searchbox } from './js/store.js';
 import {setLoc} from './js/addresses.js'
 import {scrollToHook} from './js/hook.js';
@@ -9,21 +9,21 @@ import ControlBar from './controlbar.svelte'
 import { writable,get } from 'svelte/store';
 import { parsePointer } from 'pitaka/offtext';
 export let address='',tabid='';
-
+export let visible=false;
 // let toindex=0,systemsetting=false;
-let vs,ptk;
-// $: vs&&vs.scrollToIndex(toindex)
-let {basket,loc}=parsePointer(address);
-$: res = parsePointer(address) ; if (res) {basket=res.basket; loc=res.loc;}
-$: ptk=useBasket(basket);
-
+let vs,ptk='';
 const viewstore=writable({});
+setContext('viewstore',viewstore);
+// $: vs&&vs.scrollToIndex(toindex)
+let {basket,loc} =parsePointer(address);
+$: ptk=useBasket(basket);
+$: res = parsePointer(address) ; if (res) {basket=res.basket; loc=res.loc;}
 
-$:ptk&&setLoc({ptk,loc},viewstore);
+$:ptk&&visible?setLoc({ptk,loc},viewstore):setTimeout(()=>setLoc({ptk,loc},viewstore),1000);
 
 
 $: items=$viewstore.items||[];
-setContext('viewstore',viewstore);
+
 
 // $: items=$vline.items||[]; vs&&vs.scrollToOffset(0,items);
 // $: vs&&vs.scrollToOffset(0,items.length)  //force scrolltotop when items changed
@@ -39,5 +39,5 @@ setContext('viewstore',viewstore);
 </div>
 
 <style>
-    .container {overflow:hidden;height:calc(100vh)}
+    .container {overflow:hidden;height:100vh}
 </style>

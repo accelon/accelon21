@@ -11,6 +11,6 @@ export const loadconfig=cb=>{
     if (!config.advance) config.advance={};
     Promise.all(jobs).then(()=>{
         if (!config.advance.keepLog) console.clear();
-        cb&&cb(config)
+        cb&&cb(config);
     });
 }

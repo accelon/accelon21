@@ -6,8 +6,8 @@ import { getContext } from 'svelte';
 
 export let tabid;
 const side=getSide();
-const needaltkey=(side=='a'?'+Alt':'')
-const keyhint="Ctrl"+ + "+1...9";
+const needaltkey=(side=='a'?'-Alt':'')
+const keyhint="Ctrl"+ needaltkey + "-1...9";
 const addresses=getContext('addresses');
 const reset=evt=>{
     const idx=parseInt(evt.target.attributes.idx.value);
@@ -56,7 +56,7 @@ on:click={()=>$selectorShown=!$selectorShown}>{tabid+1}</span>
     </div>
     {/if}
     {/each}
-    <span title={"Ctrl"+needaltkey+"+0"} class="addtab" 
+    <span title={"Ctrl"+needaltkey+"-0 新空白页 New Blank Tab"} class="addtab" 
     on:click={()=>addtab($copiedAddress,addresses,true)}>{$addresses.length+1}+ 
     <span>{$copiedAddress}</span></span>
 </div>

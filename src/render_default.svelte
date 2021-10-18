@@ -4,6 +4,7 @@ import {composeSnippet,OfftextToSnippet, parseHook,OffTag} from 'pitaka/offtext'
 import {bestEntries,PATHSEP} from 'pitaka';
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
+import { onMount } from 'svelte';
     // import LineMenu from './linemenu.svelte';
 
 export let key=0 //缺少 y 的話，以 key 作 y
@@ -18,11 +19,13 @@ export let hook='';
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
 let extra=[];
 
+
 if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
     const linksAt={};
     backlinks.forEach(bl=>{
         const [hstr,srcptr]=bl;
         const linetext=text||(ptk&&ptk.getLine(y||key));
+        if (!linetext)return;
         const hook=parseHook(hstr, linetext);
         const lkey=hook.y+'_'+(hook.x+hook.w);
         if (!linksAt[lkey]) linksAt[lkey]=[];
@@ -35,6 +38,8 @@ if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
         extra.push( new OffTag('blnk',{'@':srcptrs,x,w}, y,x+w,0))
     }
 }
+
+
 if (hook) {
     extra.push( new OffTag('cite',{},hook.y-y,hook.x,hook.w) );
     extra=extra;
