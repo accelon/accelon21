@@ -16,6 +16,7 @@ const viewstore=writable({});
 setContext('viewstore',viewstore);
 // $: vs&&vs.scrollToIndex(toindex)
 let {basket,loc} =parsePointer(address);
+
 $: ptk=useBasket(basket);
 $: res = parsePointer(address) ; if (res) {basket=res.basket; loc=res.loc;}
 

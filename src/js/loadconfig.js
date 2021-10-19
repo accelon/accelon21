@@ -5,6 +5,8 @@ export const loadconfig=cb=>{
     if (!config)return;
     const jobs=[];
 
+    if (config.addresses_a.length==0) config.addresses_a.push('/');
+    if (config.addresses_b.length==0) config.addresses_b.push('/');
     config.preload&&config.preload.split(/[,;]/).forEach(ptk=>{
         jobs.push(openBasket(ptk))
     })

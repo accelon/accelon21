@@ -11,7 +11,7 @@ const togglesetting=()=>{
 export let tabid;
 
 </script>
-<div id="controlbar">
+<div class="controlbar">
     <TabSelector {tabid}/>
     <TocBar/>
     <Btn icon="menu" onclick={togglesetting} />
@@ -24,7 +24,9 @@ export let tabid;
 </div>
 
 <style>
-
-    #controlbar { font-size:1rem;
-      -webkit-user-select: none;  width:100%; background:var(--panel-background)}
+    :global(.controlbar){
+        font-size:1rem;-webkit-user-select: none; 
+        width:100%; 
+        background:var(--panel-background)
+    }
 </style>

@@ -1,25 +1,14 @@
 <script>
     import TabSelector from './tabselector.svelte';
+    import PitakaList from './pitakalist.svelte'
     export let tabid;
 </script>
 
-<div class="container"><TabSelector {tabid}/>
-<div>front page {tabid+1}</div>
-
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
-<div>front page</div>
+<div class="container">
+<div class="controlbar"><TabSelector {tabid}/></div>
+<div><PitakaList  {tabid}/></div>
 </div>
 
 <style>
-    .container {height:100%}
+
 </style>

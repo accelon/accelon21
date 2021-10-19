@@ -54,13 +54,15 @@ export const gotab=(n,addresses=addresses_b)=>{
 
 export const settab=(addr,addresses=addresses_b)=>{
     const ntab=addresses===addresses_a?ntab_a:ntab_b;
-    if (typeof addr!=='string') {
+    if (typeof addr!=='string' && addr.loc!=='/') {
         const oldaddr=get(addresses)[ get(ntab)];
         let {basket,hook,loc}=parsePointer(oldaddr);
 
         if (typeof addr.loc=='string') loc=addr.loc;
         if (typeof addr.basket=='string') basket=addr.basket;
         addr=serializePointer(basket, loc, hook);
+    } else {
+        if (addr.loc) addr=addr.loc;
     }
     
     const addrs=get(addresses);

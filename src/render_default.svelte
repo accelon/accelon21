@@ -13,6 +13,7 @@ export let nesting=0;
 export let text=''
 export let loc='' ; //location of the page
 export let ptr=''   //  (for toc page)
+export let childcount=0;
 export let backlinks='';
 export let q=''; //the quote text
 export let hook='';
@@ -82,7 +83,7 @@ const closelabel=()=>{
 </script>
 <div class="linetext">
 {#if ptk && ptr} <!-- 目錄行 -->
-<svelte:component this={$renderer._toc} {ptk} {text} loc={ptr}/>
+<svelte:component this={$renderer._toc} {ptk} {text} {childcount} loc={ptr}/>
 {:else}
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
 {#each OfftextToSnippet(text||ptk&&ptk.getLine&&ptk.getLine(y||key), extra) as snpt}

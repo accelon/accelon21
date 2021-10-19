@@ -64,7 +64,7 @@ on:click={()=>$selectorShown=!$selectorShown}>{tabid+1}</span>
 <style>
     .active {color:var(--highlight)}
     .pulldown {position:absolute;background:var(--menubackground);
-        box-shadow: 0 0 10px ;max-height: 15em;overflow-y:scroll}
+        box-shadow: 0 0 10px ;min-height:5em;min-width:10em;max-height: 15em;overflow-y:scroll}
     .tabid {padding-left:3px;padding-right:3px;
         font-weight: bolder;cursor:pointer;
         font-family: 'Courier New', Courier, monospace;
