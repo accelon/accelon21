@@ -26,7 +26,7 @@ function setfocus(node){
 <span class="tocitem" loc={tocnode.loc} on:click={()=>settab({loc:tocnode.ptr},addresses)}>
 {idx?'/':''}{_(tocnode.name)}</span>
 {/each}
-{#if childcount}
+{#if childcount>1}
 <input class="juaninput" use:setfocus
  type='number' on:change={go} bind:value max={childcount} min="1"/>
 {/if}

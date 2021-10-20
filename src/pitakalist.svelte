@@ -5,7 +5,6 @@ import { getContext } from 'svelte';
 import { settab } from './js/addresses';
 const addresses=getContext('addresses');
 $: pitakas=pool.getAll();
-export let tabid=0;
 </script>
 {#each pitakas as ptk}
 <div><span class="tocitem" on:click={settab('/'+ptk.name,addresses)}>

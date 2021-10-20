@@ -4,10 +4,10 @@ import {parsePointer} from 'pitaka/offtext'
 import {tosim,renderer} from './js/store.js';
 import {toSim} from 'lossless-simplified-chinese'
 import { fetchHooks } from 'pitaka';
-export let count=0;
-export let ptk=null;
-export let link=null;
-export let from=null;
+// export let count=0;
+// export let ptk=null;
+// export let link=null;
+// export let from=null;
 let renderer_foreignlink=null;
 const parsed=parsePointer(link);
 let showing=false;

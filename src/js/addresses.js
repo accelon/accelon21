@@ -15,11 +15,12 @@ export const selectorShown=writable(false);
 export const setLoc=async ({ptk,loc,y,hook=''},store)=>{
     if (!ptk) ptk=get(store).ptk;
     const items=ptk.fetchPage(loc);
-
+    
     y=y|| (items.length&&items[0].key)||0;
     
     await ptk.prefetchLines(y,y+items.length);
     vstate.set(Object.assign(get(vstate),{name:ptk.name,loc,hook,y}))    
+    const mulu=ptk.getMulu(y,y+items.length);
 
     //get foriegn links
     const backlinks=ptk.getBacklinks(loc);
@@ -34,10 +35,11 @@ export const setLoc=async ({ptk,loc,y,hook=''},store)=>{
 
     const userdata=getUserData(vstate.name,vstate.loc);
 
+    
     if (store) {
-        store.set( {items,userdata,backlinks,ptk,loc})
+        store.set( {items,userdata,backlinks,ptk,loc,mulu})
     } else {
-        return {items,backlinks,userdata,loc};
+        return {items,backlinks,userdata,loc,mulu};
     }
 }
 

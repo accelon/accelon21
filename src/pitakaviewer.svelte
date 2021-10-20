@@ -6,7 +6,7 @@ import {setLoc} from './js/addresses.js'
 import {scrollToHook} from './js/hook.js';
 import VirtualScroll from './3rdparty/virtualscroll'
 import ControlBar from './controlbar.svelte'
-import { writable,get } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { parsePointer } from 'pitaka/offtext';
 export let address='',tabid='';
 export let visible=false;

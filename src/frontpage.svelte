@@ -6,7 +6,7 @@
 
 <div class="container">
 <div class="controlbar"><TabSelector {tabid}/></div>
-<div><PitakaList  {tabid}/></div>
+<div><PitakaList/></div>
 </div>
 
 <style>
