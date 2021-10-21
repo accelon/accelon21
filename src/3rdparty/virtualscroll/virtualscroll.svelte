@@ -235,7 +235,16 @@
     }
 
     function emitEvent(offset, clientSize, scrollSize, event) {
-        dispatch("scroll", {event, range: virtual.getRange()})
+        const range = virtual.getRange();
+        let sz=0,index=range.end;
+        for (let i=range.start;i<range.end;i++) {
+            sz+=getSize(virtual.param.uniqueIds[i]);
+            if (sz>=offset) {
+                index=i;
+                break;
+            }
+        }
+        dispatch("scroll", {event, offset, index , range})
 
         if (virtual.isFront() && !!data.length && (offset - topThreshold <= 0)) {
             dispatch("top")

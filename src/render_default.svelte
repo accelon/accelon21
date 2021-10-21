@@ -11,6 +11,7 @@ export let key=0 //缺少 y 的話，以 key 作 y
 export let y=0   //優先權較高
 export let nesting=0;
 export let text=''
+export let id=''
 export let loc='' ; //location of the page
 export let ptr=''   //  (for toc page)
 export let childcount=0;
@@ -83,7 +84,7 @@ const closelabel=()=>{
 </script>
 <div class="linetext">
 {#if ptk && ptr} <!-- 目錄行 -->
-<svelte:component this={$renderer._toc} {ptk} {text} {childcount} loc={ptr}/>
+<svelte:component this={$renderer._toc} {ptk} {text} {childcount} {id} loc={ptr}/>
 {:else}
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
 {#each OfftextToSnippet(text||ptk&&ptk.getLine&&ptk.getLine(y||key), extra) as snpt}

@@ -1,6 +1,6 @@
 <script>
 import { useBasket } from 'pitaka';
-import { onMount, setContext} from 'svelte';
+import {  setContext} from 'svelte';
 import { renderer,searchbox } from './js/store.js';
 import {setLoc} from './js/addresses.js'
 import {scrollToHook} from './js/hook.js';
@@ -14,28 +14,36 @@ export let visible=false;
 let vs,ptk='';
 const viewstore=writable({});
 setContext('viewstore',viewstore);
-// $: vs&&vs.scrollToIndex(toindex)
-let {basket,loc} =parsePointer(address);
+let {basket,loc,dy} =parsePointer(address);
 
 $: ptk=useBasket(basket);
 $: res = parsePointer(address) ; if (res) {basket=res.basket; loc=res.loc;}
+$: vs&&dy&&vs.scrollToIndex(dy)
 
 $:ptk&&visible?setLoc({ptk,loc},viewstore):setTimeout(()=>setLoc({ptk,loc},viewstore),1000);
 
-
 $: items=$viewstore.items||[];
-
-
+let scrollStart=0;
+const scroll=(evt)=>{
+    scrollStart=evt.detail.index;
+}
+const scrollTo=({detail})=>{
+    if (detail.y) {
+        const y=parseInt(detail.y);
+        vs.scrollToIndex(y-$viewstore.y0);
+    }
+}
 // $: items=$vline.items||[]; vs&&vs.scrollToOffset(0,items);
 // $: vs&&vs.scrollToOffset(0,items.length)  //force scrolltotop when items changed
 
 </script>
 
 <div class="container">
-    <div><ControlBar {tabid}/></div>
+    <div><ControlBar {tabid} {scrollStart}  on:scrollTo={scrollTo}/></div>
     <svelte:component this={$searchbox[ptk.format]} {ptk}/>
-    <VirtualScroll bind:this={vs} keeps={30} data={items} key="key" let:data>
-        <svelte:component this={$renderer[ptk.format]||$renderer.default} {loc} {ptk} {...data}/>
+    <VirtualScroll bind:this={vs} keeps={30} data={items} key="key" let:data on:scroll={scroll}>
+        <svelte:component this={$renderer[ptk.format]||$renderer.default} 
+            {loc} {ptk} {...data} />
     </VirtualScroll>
 </div>
 

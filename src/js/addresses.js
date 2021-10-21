@@ -12,15 +12,19 @@ export const ntab_b=writable(0);
 export const userdata=writable({});
 export const vstate=writable(settings.vstate||{});
 export const selectorShown=writable(false);
-export const setLoc=async ({ptk,loc,y,hook=''},store)=>{
+export const setLoc=async ({ptk,loc,y0,hook=''},store)=>{
     if (!ptk) ptk=get(store).ptk;
     const items=ptk.fetchPage(loc);
     
-    y=y|| (items.length&&items[0].key)||0;
+    y0=y0|| (items.length&&items[0].key)||0;
     
-    await ptk.prefetchLines(y,y+items.length);
-    vstate.set(Object.assign(get(vstate),{name:ptk.name,loc,hook,y}))    
-    const mulu=ptk.getMulu(y,y+items.length);
+    await ptk.prefetchLines(y0,y0+items.length);
+    vstate.set(Object.assign(get(vstate),{name:ptk.name,loc,hook,y0}))    
+    
+    let mulu=[];
+    if (items.length && !items[0].ptr) { //no mulu for toc page
+        mulu=ptk.getMulu(y0,y0+items.length);
+    }
 
     //get foriegn links
     const backlinks=ptk.getBacklinks(loc);
@@ -37,9 +41,9 @@ export const setLoc=async ({ptk,loc,y,hook=''},store)=>{
 
     
     if (store) {
-        store.set( {items,userdata,backlinks,ptk,loc,mulu})
+        store.set( {items,userdata,backlinks,ptk,loc,mulu,y0})
     } else {
-        return {items,backlinks,userdata,loc,mulu};
+        return {items,backlinks,userdata,loc,mulu,y0};
     }
 }
 
@@ -54,7 +58,7 @@ export const gotab=(n,addresses=addresses_b)=>{
     else ntab_b.set(n);
 }
 
-export const settab=(addr,addresses=addresses_b)=>{
+export const settab=(addr,{addresses=addresses_b,newtab=false}={})=>{
     const ntab=addresses===addresses_a?ntab_a:ntab_b;
     if (typeof addr!=='string' && addr.loc!=='/') {
         const oldaddr=get(addresses)[ get(ntab)];
@@ -67,9 +71,14 @@ export const settab=(addr,addresses=addresses_b)=>{
         if (addr.loc) addr=addr.loc;
     }
     
-    const addrs=get(addresses);
-    addrs[get(ntab)]=addr;
-    addresses.set(addrs);
+    if (newtab) {
+        addtab(addr,addresses);
+    } else {
+        const addrs=get(addresses);
+        addrs[get(ntab)]=addr;
+        addresses.set(addrs);
+    
+    }
 }
 
 export const addtab=(addr='/',addresses=addresses_b,remove=false)=>{

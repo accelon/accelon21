@@ -3,49 +3,43 @@ import {getContext} from 'svelte'
 import Btn from './button.svelte';
 import TocBar from './tocbar.svelte';
 import SearchBar from './searchbar.svelte';
+import Mulu from './mulu.svelte';
+import TocMenu from './tocmenu.svelte';
 import TabSelector from './tabselector.svelte';
+import { createEventDispatcher } from 'svelte'
+const dispatch = createEventDispatcher()
+
 let showsetting=false;
+export let scrollStart=0;
 const viewstore=getContext('viewstore');
 const togglesetting=()=>{
     showsetting=!showsetting;
 }
 $: mulu = $viewstore.mulu || [];
+$: y0= $viewstore.y0;
 export let tabid;
-let showing=true;
-let color=(level,external)=>'hsl('+((level)*40) +' ,80%,'+(external?'35%)':'50%)');
-
+const scrollTo=({detail})=>{
+    dispatch('scrollTo',detail);
+}
 </script>
 <div class="controlbar">
     <TabSelector {tabid}/>
     <TocBar/>
-    <span icon="menu" onclick={togglesetting} />
+    <Btn icon="menu" onclick={togglesetting} />
     {#if showsetting}
         <Btn icon="bookmark"/>
         <Btn icon="markerpen"/>
         <Btn icon="usernote"/>
     {/if}
-    <span class="mulubtn" on:click={()=>showing=!showing}>☰</span>
-    {#if showing}
-    <div class="mulu">
-        {#each mulu as mu }
-            <div class:external={mu[2]} 
-            style={"padding-left:"+((mu[0]-1)*3)+"px;color:"+color(mu[0],mu[2])}>
-            {mu[1]} {#if mu[2]}→{/if}
-            </div>
-        {/each}
-    </div>
+    {#if mulu.length}
+        <Mulu {mulu} {scrollStart} {y0} on:scrollTo={scrollTo}/>
+    {:else}
+        <TocMenu {scrollStart}/>
     {/if}
 </div>
 
 <style>
-    .external {font-size:80%}
-    .mulu {font-size:1rem;position:absolute;overflow-y:auto;
-        padding-left:2px;padding-bottom:0.5em;height:50%;
-        border-top-left-radius: 0.5em;
-        border-bottom-left-radius: 0.5em;
-        right:0;max-width:20em;background:var(--panel-background)}
-    .mulubtn {float:right;padding-right:2em}
-    .mulubtn:hover {color:var(--highlight)}
+
     :global(.controlbar){
         font-size:1rem;-webkit-user-select: none; 
         width:100%; 
