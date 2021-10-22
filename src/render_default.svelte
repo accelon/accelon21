@@ -4,12 +4,15 @@ import {composeSnippet,OfftextToSnippet, parseHook,OffTag} from 'pitaka/offtext'
 import {bestEntries,PATHSEP} from 'pitaka';
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
-import { onMount } from 'svelte';
+import { createEventDispatcher } from 'svelte';
+
+const dispatch = createEventDispatcher();
     // import LineMenu from './linemenu.svelte';
 
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y=0   //優先權較高
 export let nesting=0;
+export let keywords=[];
 export let text=''
 export let id=''
 export let loc='' ; //location of the page
@@ -80,11 +83,14 @@ const click=evt=>{
 const closelabel=()=>{
     extra=extra.filter(i=>i.name!=='embed');
 }
+const setkeyword=({detail})=>{
+    dispatch('setkeyword',detail);
+}
 
 </script>
 <div class="linetext">
 {#if ptk && ptr} <!-- 目錄行 -->
-<svelte:component this={$renderer._toc} {ptk} {text} {childcount} {id} loc={ptr}/>
+<svelte:component this={$renderer._toc} on:setkeyword={setkeyword} {ptk} {text} {keywords} {childcount} {id} loc={ptr}/>
 {:else}
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
 {#each OfftextToSnippet(text||ptk&&ptk.getLine&&ptk.getLine(y||key), extra) as snpt}

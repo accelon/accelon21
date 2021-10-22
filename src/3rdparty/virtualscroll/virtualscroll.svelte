@@ -236,10 +236,11 @@
 
     function emitEvent(offset, clientSize, scrollSize, event) {
         const range = virtual.getRange();
-        let sz=0,index=range.end;
+        let index=range.end;
+        let sz=virtual.getIndexOffset(range.start);
         for (let i=range.start;i<range.end;i++) {
             sz+=getSize(virtual.param.uniqueIds[i]);
-            if (sz>=offset) {
+            if (sz>=offset+clientSize) {
                 index=i;
                 break;
             }

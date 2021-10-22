@@ -1,5 +1,5 @@
 <script>
-    import Icons from './asset/icons.js';
+    import Icons from './icons.js';
     export let icon;
 	export let store;
 	export let title='';

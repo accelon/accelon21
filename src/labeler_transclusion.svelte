@@ -3,7 +3,7 @@ import { readLines } from 'pitaka';
 import { useBasket } from 'pitaka/basket';
 import {dereferencing} from 'pitaka/offtext';
 import { renderer } from './js/store';
-import Btn from './button.svelte'
+import Btn from './comps/button.svelte'
 export let attrs={}
 export let text='';
 export let opening=false;

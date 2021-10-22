@@ -1,7 +1,7 @@
 <script>
 import {getSide,gotab ,resettab,removetab,inserttab, addtab,selectorShown} from './js/addresses.js'
 import {copyAddress,copiedAddress} from './js/address.js'
-import Btn from './button.svelte';
+import Btn from './comps/button.svelte';
 import { getContext } from 'svelte';
 
 export let tabid;
@@ -42,7 +42,7 @@ on:click={()=>$selectorShown=!$selectorShown}>{tabid+1}</span>
             <span title="克隆此頁 clone" on:click={cloneTab} at={idx+1} {address} class="addtab">
                 <span class="tabid">{idx+2}</span>+</span>
         {:else if address!=='/'}
-            <Btn title="复制位址 copyaddress" icon="copyaddress" onclick={()=>copyAddress(address)}/>
+            <Btn title="复制位址 copy address" icon="copy" onclick={()=>copyAddress(address)}/>
         {/if}
     </div>
     {:else}

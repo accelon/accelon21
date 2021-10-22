@@ -1,5 +1,5 @@
 <script>
-import Icons from './asset/icons';
+import Icons from './icons.js';
 export let onclick=null;
 export let icon;
 export let disabled=false;

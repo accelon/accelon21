@@ -1,5 +1,5 @@
 <script>
-import StateBtn from './statebutton.svelte';
+import StateBtn from './comps/statebutton.svelte';
 import {_,tosim} from './js/store.js'
 
 </script>

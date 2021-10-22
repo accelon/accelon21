@@ -2,7 +2,7 @@
 import { onMount } from 'svelte';
 import { get } from 'svelte/store';
 
-import Icons from './asset/icons';
+import Icons from './icons.js';
 export let onclick=null;
 export let disabled=false;
 export let title='';

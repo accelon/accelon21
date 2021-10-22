@@ -1,6 +1,6 @@
 <script>
 import SplitPane from './3rdparty/splitpane.svelte';
-import Btn from './button.svelte';
+import Btn from './comps/button.svelte';
 import Settings from './settings.svelte'
 import {addresses_a,addresses_b,ntab_a,ntab_b} from './js/addresses.js'
 import {panepos,tosim,systemsetting} from './js/store.js';

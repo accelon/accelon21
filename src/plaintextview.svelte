@@ -1,8 +1,8 @@
 <script>
-import Btn from './button.svelte';
-import StateBtn from './statebutton.svelte';
+import Btn from './comps/button.svelte';
+import StateBtn from './comps/statebutton.svelte';
 import { OfftextToHtml } from 'pitaka/offtext';
-import Icons from './asset/icons.js';
+import Icons from './comps/icons.js';
 import {getItem,setItem} from './js/storage.js';
 import {srcfilename,srcexcerpts, texttoc,tofind,txtashtml,tosim} from './js/store_toolbox.js'
 import VirtualScroll from 'svelte-virtual-scroll-list'

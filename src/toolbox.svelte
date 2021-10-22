@@ -7,7 +7,7 @@ import DatabaseTab from './databasetab.svelte'
 import PlainTextView from './plaintextview.svelte'
 import LogView from './logview.svelte'
 import BuildTab from './buildtab.svelte'
-import TabBtn from './radiobutton.svelte';
+import TabBtn from './comps/radiobutton.svelte';
 import SplitPane from './3rdparty/splitpane.svelte';
 const rightpanels = {
   'files' : PlainTextView,

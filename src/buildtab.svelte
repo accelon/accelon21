@@ -1,7 +1,7 @@
 <script>
-    import Btn from './button.svelte';
+    import Btn from './comps/button.svelte';
     import ConfigInfo from './configinfo.svelte'
-    import CheckBox from './checkbox.svelte';
+    import CheckBox from './comps/checkbox.svelte';
     import {files,playing,playingfile,
         config,errormsg, logs,saveptkhandle,exportpitaka,cachestorage} from './js/store_toolbox.js';
     import {cacheStorageReady,chromefs} from 'pitaka/platform';

@@ -1,6 +1,6 @@
 <script>
 import {vstate} from './js/addresses.js';
-import Btn from './button.svelte'
+import Btn from './comps/button.svelte'
 export let y;
 export let ptk;
 export let loc;

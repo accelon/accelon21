@@ -2,6 +2,7 @@ import {addresses_a,addresses_b, addtab, gotab} from './addresses.js'
 import {copyAddress,getCursorAddress} from './address.js'
 
 window.onkeydown=evt=>{
+    if (!evt || evt.key) return;
     const code=evt.key.charCodeAt(0);
     if (evt.ctrlKey && code>=0x30&&code<=0x40) {
         evt.preventDefault()
@@ -9,6 +10,7 @@ window.onkeydown=evt=>{
 }
 
 window.onkeyup=evt=>{
+    if (!evt || evt.key) return;
     const code=evt.key.charCodeAt(0);
     if (evt.ctrlKey)  {
         const addresses=(evt.altKey) ?addresses_a:addresses_b;

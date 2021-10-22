@@ -15,6 +15,7 @@ export const selectorShown=writable(false);
 export const setLoc=async ({ptk,loc,y0,hook=''},store)=>{
     if (!ptk) ptk=get(store).ptk;
     const items=ptk.fetchPage(loc);
+    const criteria=get(store.criteria)||{};
     
     y0=y0|| (items.length&&items[0].key)||0;
     
@@ -38,12 +39,11 @@ export const setLoc=async ({ptk,loc,y0,hook=''},store)=>{
     items.push({text:'---',key:'end'});//workaround
 
     const userdata=getUserData(vstate.name,vstate.loc);
-
-    
+    const out={items,userdata,backlinks,ptk,loc,mulu,y0,criteria};
     if (store) {
-        store.set( {items,userdata,backlinks,ptk,loc,mulu,y0})
+        store.set(out)
     } else {
-        return {items,backlinks,userdata,loc,mulu,y0};
+        return out;
     }
 }
 
