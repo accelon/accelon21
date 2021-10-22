@@ -67,8 +67,6 @@ const click=evt=>{
         const E=entries[0];
         const ptr=PATHSEP+E.ptk+PATHSEP+E.e;
         const w=E.e.length;
-        const lblx=x+w;
-
         //single click to close the embed
         const opened=extra.filter(i=>i.name=='embed'&&(x>=i.x&&(i.x+i.w>x)));
         extra=extra.filter(i=>i.name!=='embed').filter(i=>!!i);

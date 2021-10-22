@@ -13,7 +13,7 @@ export let address='',tabid='';
 export let visible=false;
 // let toindex=0,systemsetting=false;
 let vs,ptk='';
-const viewstore=writable({criteria:{}});
+const viewstore=writable({criteria:{},partial:''});
 setContext('viewstore',viewstore);
 let {basket,loc,dy} =parsePointer(address);
 
@@ -23,7 +23,7 @@ $: vs&&dy&&vs.scrollToIndex(dy)
 
 $:ptk&&visible?setLoc({ptk,loc},viewstore):setTimeout(()=>setLoc({ptk,loc},viewstore),1000);
 
-$: items=matchCriteria($viewstore.items,$viewstore.criteria)||[];
+$: items=matchCriteria($viewstore.items,$viewstore.criteria,$viewstore.partial)||[];
 
 let scrollStart=0;
 const scroll=(evt)=>{

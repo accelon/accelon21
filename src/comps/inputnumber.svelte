@@ -22,9 +22,9 @@ function setfocus(node){
 }
 </script>
 <span class="numinput">
-    {#if stepper}<span title="Ctrl > min" class="stepper" class:disabled={val==min} on:click={valdec}>⏴</span> {/if}
+    {#if stepper}<span title="Ctrl ← min" class="stepper" class:disabled={val==min} on:click={valdec}>⏴</span> {/if}
     <input title="↑ ↓ Ctrl-↑  Ctrl-↓"  use:setfocus {style} on:keyup={onkeyup} bind:value={val}/>
-    {#if stepper}<span title="Ctrl > max" class="stepper"  class:disabled={val==max} on:click={valinc}>⏵</span> {/if}
+    {#if stepper}<span title="Ctrl → max" class="stepper"  class:disabled={val==max} on:click={valinc}>⏵</span> {/if}
 </span>
 <style>
     .numinput{-webkit-user-select: none;}

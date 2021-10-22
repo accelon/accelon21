@@ -107,7 +107,7 @@
   export let dropdownClassName = undefined;
   // adds the disabled tag to the HTML input
   export let disabled = false;
-  export let debug = false;
+  const debug = false;
   // --- Public State ----
   // selected item state
   export let selectedItem = undefined;
@@ -820,7 +820,7 @@
     max-width: 100%;
     position: relative;
     vertical-align: top;
-    height: 2.25em;
+    /* height: 2.25em; */
   }
   .autocomplete:not(.hide-arrow):not(.is-loading)::after {
     border: 3px solid transparent;
@@ -853,7 +853,7 @@
     font: inherit;
     width: 100%;
     height: 100%;
-    padding: 5px 11px;
+    padding: 2px 5px;
   }
   .autocomplete:not(.hide-arrow) .autocomplete-input {
     padding-right: 2em;
@@ -870,7 +870,7 @@
     width: 100%;
     overflow-y: auto;
     z-index: 99;
-    padding: 10px 0;
+    padding: 5px 0;
     top: 0px;
     border: 1px solid #999;
     max-height: calc(15 * (1rem + 10px) + 15px);
@@ -915,8 +915,8 @@
     text-align: center;
     position: absolute;
     right: 0.1em;
-    padding: 0.3em 0.6em;
-    top: 50%;
+    padding: 0.1em 0.2em;
+    top: 35%;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
