@@ -5,4 +5,5 @@ import render_lines from '../render_lines.svelte';
 import {renderer} from './store.js'
 
 export default render_default;
-renderer.set({default:render_default,cidian:render_cidian,_toc:render_toc,_lines:render_lines});
+renderer.set({default:render_default,
+    cidian:render_cidian,_toc:render_toc,_lines:render_lines});

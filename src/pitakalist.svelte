@@ -8,7 +8,7 @@ $: pitakas=pool.getAll();
 </script>
 {#each pitakas as ptk}
 <div><span class="tocitem" on:click={evt=>settab('/'+ptk.name,{addresses,newtab:evt.ctrlKey})}>
-    {_(ptk.header.title)} ({ptk.bookCount()}) </span>
+    {_(ptk.header.title)} ({ptk.contentCount()}) </span>
     {#if ptk.header.homepage}
     <a href={ptk.header.homepage} target=_new>www</a>
     {/if}

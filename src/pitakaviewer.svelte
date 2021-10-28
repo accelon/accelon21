@@ -1,7 +1,8 @@
 <script>
 import { useBasket } from 'pitaka';
 import {  setContext} from 'svelte';
-import { renderer,searchbox } from './js/store.js';
+import { renderer } from './js/store.js';
+
 import {setLoc} from './js/addresses.js'
 import {scrollToHook} from './js/hook.js';
 import VirtualScroll from './3rdparty/virtualscroll'
@@ -40,11 +41,11 @@ const scrollTo=({detail})=>{
 const setkeyword=({detail})=>{
     $viewstore.criteria={[detail.label]:detail.value};
 }
+
 </script>
 
 <div class="container">
     <div><ControlBar {tabid} {scrollStart} {ptk} on:scrollTo={scrollTo}/></div>
-    <svelte:component this={$searchbox[ptk.format]} {ptk}/>
     <VirtualScroll bind:this={vs} keeps={30} data={items} key="key" let:data on:scroll={scroll}>
         <svelte:component this={$renderer[ptk.format]||$renderer.default} 
             {loc} {ptk} {...data} on:setkeyword={setkeyword}/>

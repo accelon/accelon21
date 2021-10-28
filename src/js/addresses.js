@@ -36,7 +36,7 @@ export const setLoc=async ({ptk,loc,y0,hook=''},store)=>{
             }
         }
     })
-    items.push({text:'---',key:'end'});//workaround
+    items.push({text:'　',key:'end'});//workaround
 
     const userdata=getUserData(vstate.name,vstate.loc);
     const out={items,userdata,backlinks,ptk,loc,mulu,y0,criteria};

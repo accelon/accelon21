@@ -1,7 +1,9 @@
 <script>
 import {cursor} from './js/store.js'
-import StateBtn from './statebutton.svelte';
+import StateBtn from './comps/statebutton.svelte';
 import {debounce} from 'pitaka/utils'
+import { getContext } from 'svelte';
+const viewstore=getContext('viewstore');
 export let ptk;
 let history=[];
 let prevw='',prevcw='';
@@ -37,12 +39,14 @@ const goback=idx=>{
     matchCursorWord(cw);
 }
 const inputSearch=(m)=>{
+    if (!tofind)return;
     tofind=tofind.trim();
     if (!tofind) return matchCursorWord($cursor.ori)
     const res=ptk.filterEntry(tofind, m);
-    items=res.map((i,idx)=>{
-        return {key:i[0] , idx, entry:i[1], from:i[2],to:i[3]}
+    items=res.map((item,idx)=>{
+        return {idx,key:item.nth, ...item}
     });
+    viewstore.set({items});
 }
 
 const input=debounce(()=>{
@@ -82,7 +86,7 @@ let tofind='';
 <style>
     .empty {width:1em}
     .searchbox {-webkit-user-select: none;z-index:10;pointer-events: none;}
-    .inputbox{padding-top:0.5em; position:absolute;pointer-events:all;}
+    .inputbox{padding-top:0.5em;pointer-events:all;}
     .tofind {width:5em}
     .historyitem {right:10px;pointer-events:all;}
     .matchcount {font-size:75%;color:var(--button-selected)}

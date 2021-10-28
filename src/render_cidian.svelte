@@ -3,18 +3,16 @@ import {tosim,cursor,renderer} from './js/store.js';
 import {vstate,setLoc} from './js/addresses.js'
 import {getTextHook} from './js/selection.js';
 import { onMount } from 'svelte';
-import { toSim } from 'lossless-simplified-chinese';
 export let loc=''
 export let key=0
+export let nth=0;
 export let idx='';
 export let from='';
 export let to='';
 export let entry='';
+export let attrs=[];
 export let text='';
 export let ptk=null;
-
-
-$: entry_sim=($tosim && toSim(entry,$tosim)!==entry)?toSim(entry,$tosim):'';
 
 export let show=false;
 let items=[];
@@ -38,15 +36,19 @@ const mouseup=async evt=>{
         await setLoc(ptk,loc);
     } else if (evt.target.tagName=='T') {
         const {hook,y,sel,t,ori}=getTextHook(ptk,evt);
+        if (!sel)return;
         cursor.set({sel,t,ori});
         vstate.set(Object.assign($vstate,{hook,y,len:sel.length}))
     }
 }
 </script>
 <div data-key={key} class="entry" on:mouseup={mouseup}>
-<div class:wordheadline={idx} on:click={toggleShowEntry}>
-<span class="wordhead">{entry}</span>
-<span class="wordhead simplified">{entry_sim}</span></div>
+<div class:entryline={idx} on:click={toggleShowEntry}>
+{#if !show}{#each attrs as attr}
+<span class={"entry-"+attr[0]}>{attr[1]}</span>
+{/each}{/if}
+<span class="entry">{entry}</span>
+</div>
 {#each items as data,idx (idx)}
     <svelte:component this={$renderer.default} {ptk} {...data}/>
 {/each}
@@ -54,12 +56,13 @@ const mouseup=async evt=>{
 
 <style>
     .simplified {color:goldenrod}
-    .wordheadline{border-top:2px solid var(--button-unselected)}
-    .wordhead {padding-left:5px;padding-right:5px;
+    .entryline{border-top:2px solid var(--button-unselected)}
+    .entry {padding-left:5px;padding-right:5px;
         border-radius:5px;
         font-size:1.2em;
         cursor:pointer}
     .entry {margin-left:3px;line-height:1.8}
     .loc {cursor:pointer}
     .loc:hover{color:var(--highlight)}
+    .xx{font-family: Georgia, 'Times New Roman', Times, serif;}
 </style>

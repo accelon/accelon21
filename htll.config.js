@@ -19,8 +19,8 @@ function serve() {
     writeBundle() {
       if (server) return;
       server = require("child_process").spawn(
-        "npm",
-        ["run", "start", "--", "--dev"],
+        "npx",
+        ["sirv", "public", "--port","5002"],
         {
           stdio: ["ignore", "inherit", "inherit"],
           shell: true,
@@ -35,12 +35,12 @@ function serve() {
 
 export default [
   {
-    input: "src/js/toolbox.js",
+    input: "src/js/htll.js",
     output: {
       sourcemap: true,
       format: "iife",
       name: "app",
-      file: "public/toolbox.js",
+      file: "public/htll.js",
       globals:{'lazip':'lazip'}
     },
     plugins: [
@@ -48,7 +48,7 @@ export default [
         compilerOptions: {dev: !production && !chrome_extension},
       }),
       resolve({ browser: true, dedupe: ["svelte"]}),
-      css({ output: "toolbox.css" }),
+      css({output: "htll.css" }),
       commonjs(),
       !production && !chrome_extension &&serve(),
       !production && !chrome_extension &&livereload("public"),

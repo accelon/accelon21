@@ -8,6 +8,7 @@
     "start": "sirv public --no-clear --host --port 5001",
     "dev": "rollup -c -w",
     "toolbox": "rollup -c toolbox.config.js -w",
+    "htll": "rollup -c htll.config.js -w",
     "extension": "rollup -c -w --environment CHROME_EXTENSION"
   },
   "devDependencies": {
