@@ -29,7 +29,8 @@ const scrolltotocitem=evt=>{
 {#if showing || scrollStart==0}
 <div  class="dropdownpanel">
     {#each mulu as [level,name,itemy,addr] }
-        <div class:upper={y0+scrollStart>itemy} class="item" style={"padding-left:"+((level-1)*3)+"px;color:"+color(level,addr)}>
+        <div class:upper={y0+scrollStart>itemy} class="item" 
+            style={"padding-left:"+((level-1)*3)+"px;color:"+color(level,addr)}>
         {#if addr}
         <span class="external" lnk={addr.join('/')} on:click={golink}>{name}
         →{caption(addr)}</span>
