@@ -2,6 +2,7 @@
 import {tosim,labelerOf, renderer} from './js/store.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag} from 'pitaka/offtext'
 import {bestEntries,PATHSEP} from 'pitaka';
+import {diffCJK,trimPunc} from 'pitaka/utils';
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import { createEventDispatcher } from 'svelte';
@@ -18,12 +19,11 @@ export let id=''
 export let loc='' ; //location of the page
 export let ptr=''   //  (for toc page)
 export let childcount=0;
-export let backlinks='';
+export let backlinks=[];
 export let q=''; //the quote text
 export let hook='';
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
 let extra=[];
-
 
 if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
     const linksAt={};
@@ -31,10 +31,10 @@ if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
         const [hstr,srcptr]=bl;
         const linetext=text||(ptk&&ptk.getLine(y||key));
         if (!linetext)return;
-        const hook=parseHook(hstr, linetext);
-        const lkey=hook.y+'_'+(hook.x+hook.w);
+        const H=parseHook(hstr, linetext);
+        const lkey=H.y+'_'+(H.x+H.w);
         if (!linksAt[lkey]) linksAt[lkey]=[];
-        linksAt[lkey].push( [srcptr, hook.y, hook.x,hook.w] );
+        linksAt[lkey].push( [srcptr, H.y, H.x,H.w] );
     })
     for (let i in linksAt) {
         const links=linksAt[i];
@@ -47,6 +47,9 @@ if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
 
 if (hook) {
     extra.push( new OffTag('cite',{},hook.y-y,hook.x,hook.w) );
+    const linetext=text||(ptk&&ptk.getLine(y||key));
+    const d=diffCJK(trimPunc(q),linetext,hook.x,hook.w)
+    console.log(d)
     extra=extra;
 }
 extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
@@ -95,7 +98,7 @@ const setkeyword=({detail})=>{
     {#if labelerOf(snpt.open.name)}
     <!-- open.name 存在則是此標籤的起點 -->
     <svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting}
-    on:close={closelabel} {ptk} starty={y||key} {...snpt.open} />
+    on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
     {/if}
     
     <!-- 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 -->
@@ -104,7 +107,7 @@ const setkeyword=({detail})=>{
 
     <!-- close.name 存在，則是該標籤的終點。屬性在 sntp.open-->
     <svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
-    on:close={closelabel} {ptk} starty={y||key} {...snpt.open} />
+    on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
     {/if}
 {/each}
 {/if}

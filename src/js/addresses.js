@@ -29,6 +29,7 @@ export const setLoc=async ({ptk,loc,y0,hook=''},store)=>{
 
     //get foriegn links
     const backlinks=ptk.getBacklinks(loc);
+
     items.forEach(item=>{
         for (let ptkname in backlinks) {
             if (backlinks[ptkname][item.key]) {

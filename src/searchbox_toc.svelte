@@ -1,7 +1,10 @@
 <script>
+import {debounce} from 'pitaka/utils'
 import AutoComplete from './3rdparty/simpleautocomplete.svelte';
 import {_} from './js/store.js';
+import {getContext} from 'svelte'
 let value='';
+export let ptk;
 const viewstore=getContext('viewstore');
 $: keywords=(ptk&&ptk.getLabel('bk')&&Object.keys(ptk.getLabel('bk').keywords))||[] ;
 let selectedKeyword={}

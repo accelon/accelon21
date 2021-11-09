@@ -7,7 +7,7 @@ import { renderer } from './js/store';
 export let ptk,i=0,clss,x,y,starty=0,w=0,name='',attrs={},nesting=0; //just for hidding the warning
 
 export let opening=false;
-
+export let text='';
 let renderer_backlink=null;
 let lines=[];
 const toggle=async ()=>{
