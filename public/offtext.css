@@ -1,0 +1,287 @@
+
+.offtag-op {
+    /* color:rgba(0,0,0,0.3); */
+    color:burlywood;
+  }
+.offtag-name {
+    background:burlywood;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+.offtag-bracket {
+    color:burlywood;
+
+}
+.offtag-val {
+    color:firebrick
+  }
+.offtag-putback {
+    background:white;
+    color:black;
+  }
+.offtag-attr {
+    color:olive
+  }
+.offtag-attributes {
+    background:wheat;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+.offtag-blank {
+    border-bottom:1px solid burlywood;
+}
+
+
+t.fn.highlight:after{
+    background-color: rgb(255, 150, 150,0.5);
+}
+/*
+t.fn[i]:after{
+    position: absolute;
+    cursor: pointer;
+    margin-top:-1.0em;
+    margin-left:-1em;
+    font-size:0.6rem;
+    font-weight: bold;
+    color:gray;
+    font-family: monospace; 
+    padding:2px; content:attr(n)
+}*/
+t.fn[n]:after{
+	content:attr(n);display:inline-block;
+	width:0px;
+	margin-top:-2em;
+	vertical-align:top;
+	font-size:40%;
+	font-family: "Tahoma"; 
+}
+
+t.fn[n]:hover {border-bottom:double}
+t.fn[n]:hover:after {
+    color:brown;
+    content: attr(n) "↓"; 
+    transition: color 1s;
+}
+
+t.p:before { 
+    /* position: absolute; */
+    cursor: pointer;
+    margin-top:1.5em;
+    margin-left:-1em;
+    font-size:0.6rem;
+    font-weight: bold;
+    color:rgb(112, 203, 255);
+    font-family: monospace; 
+    padding:2px; content:"[" attr(n) "]"
+}
+
+
+t.pdf:after {content: "pdf"attr(n)  ;
+   display:inline-block;width:0px;padding-top:2.5em;vertical-align:top;font-size:0.5rem;color:blue}
+    
+    
+t.en::after {
+    content: attr(n)  ;
+    border-bottom:3px solid darkblue;
+    /* border-radius: 0.25em; */
+    font-weight: bold;
+    cursor:pointer;
+    font-size:0.8rem;
+}
+t.pts:after {content: "pts"attr(n)  ;
+   display:inline-block;width:0px;padding-top:2.5em;
+   vertical-align:top;font-size:0.5rem;color:brown
+}
+   
+    
+t.cs::after {
+    content: attr(n)  ;
+    border-bottom:3px solid goldenrod;
+    /* border-radius: 0.25em; */
+    font-weight: bold;
+    cursor:pointer;
+    font-size:0.8rem;
+    color:black;
+    padding-left:2px;padding-right:2px;
+    font-family:'Courier New', Courier, monospace;
+}
+    
+    
+t.w[pli] {
+    cursor:pointer;
+    position:relative; /* making the .tooltip span a container for the tooltip text */
+    border-bottom:2px dotted #000; /* little indicater to indicate it's hoverable */
+  }
+t.w[pli]:hover:before {
+    display:block;
+}
+t.w[pli]:hover {background-color:lightgoldenrodyellow;}
+
+t.w[pli]:before {
+    content: attr(pli); /* here's the magic */
+    position:absolute;
+    top:4rem;
+    transform:translateY(-50%);
+    left:0%;
+    padding-left:10px;padding-right:10px;
+    border-radius:10px;
+    background:#000;
+    color: lightgoldenrodyellow;
+    text-align:center;
+    z-index: 99;
+    display:none; /* hide by default */
+    font-family:"Georgia"
+}
+
+
+t.w[sk] {
+    cursor:pointer;
+    position:relative; /* making the .tooltip span a container for the tooltip text */
+    border-bottom:2px dotted #333; /* little indicater to indicate it's hoverable */
+  }
+t.w[sk]:hover:before {
+    display:block;
+}
+t.w[sk]:hover {background-color:lightgoldenrodyellow;}
+
+t.w[sk]:before {
+    content: attr(sk); /* here's the magic */
+    position:absolute;
+    top:4rem;
+    transform:translateY(-50%);
+    left:0%;
+    padding-left:10px;padding-right:10px;
+    border-radius:10px;
+    background:#333;
+    color: lightgoldenrodyellow;
+    text-align:center;
+    z-index: 99;
+    display:none; /* hide by default */
+    font-family:"Georgia"
+}
+
+
+t.bk{
+    font-size:1.5em;
+    color:goldenrod;
+    font-family: 楷体,標楷體;
+}
+t.bk-:before {
+    content:"《";
+}
+t.bk:after{
+    content:"》";
+}
+t.c{
+    font-size:1.2em;
+    font-family: 楷体,標楷體,DFKai-SB;
+    color:orange;
+}
+t.h {
+    /* font-weight: bold; */
+    font-family: 楷体,標楷體,DFKai-SB;
+}
+t.mu:after {
+    color:  goldenrod;
+    font-size:0.8em;
+    content: attr(t)
+}
+t.h[o=author] {color:darkseagreen}
+t.li-::before {  /* [i] means only put on real position */
+    background:linear-gradient(red,blue);
+    display:inline-block;
+    content:"";
+    border-radius: 0.5em;
+    margin-right:0.5em;
+    height:1em;
+    width:1em;
+}
+t.g {
+    color:brown
+}
+t.gatha {padding-left: 2em;color:brown;font-family: Arial, 楷体,楷體,DFKai-SB;white-space: pre-wrap}
+t.pr { /*人名*/
+    color:green;
+    font-family:楷体,DFKai-SB;
+}
+t.er { /*年代*/
+    color:darkolivegreen;
+    font-family:楷体,DFKai-SB;
+}
+
+t.b {font-weight: bold	}
+t.i {font-style: italic	}
+t.u {text-decoration:underline}
+t.red {color:red}
+
+
+.d-[o]:before {border: 1px solid gold; 
+    margin-right:0.2em;
+    padding:0.1em;border-radius: 3px; content: attr(o)}
+t.e {font-size:1.2em}
+t.eg:before {}
+t.q-:before {content:'引';
+    border:1px solid salmon;
+    margin-right:0.2em;
+    padding:3px;
+    border-radius: 3px;
+}
+t.t[hook]{font-family:楷体,DFKai-SB;}
+
+t.blnk {border-bottom: 1px dotted var(--button-unselected)}
+t.d {color:goldenrod}
+t.y-:before {content:'音';
+    padding:0.1em;
+    margin-right:0.2em;
+    border-radius: 3px;
+    border: 2px solid rgb(0, 88, 100)
+}
+
+
+t.embed {cursor:no-drop ;background:highlight;color:highlightText;
+    padding-left:5px;padding-right:5px;border-radius: 5px;}
+t.se {border-bottom : solid 1px var(--highlight);cursor:pointer}
+
+t.pr[d]::before {
+    color:blue;
+    content: attr(b) "-" attr(d)
+}
+
+
+t.sk {color:goldenrod;font-family:"Georgia"}
+t.pli {color:gold;font-family:"Georgia"}
+
+t.yu[sk]:after{content:attr(sk);color:goldenrod;font-family:"Georgia"}
+t.yu[pli]:after{content:attr(pli);color:gold;font-family:"Georgia"}
+t.cite {color:lightsalmon}
+t.del:after{content:attr(t);color:red;display:inline-block;width:0px;margin-top:-0.8em;vertical-align:top;font-size:75%;height:0px;white-space:nowrap}
+t.ins{color:lime}
+span.entry-sk { display:inline-block;width:0px;padding-top:2.5em;vertical-align:top;font-size:1rem;color:goldenrod;white-space:nowrap}
+span.entry-pli {display:inline-block;width:0px;margin-top:-0.5em;vertical-align:top;font-size:1rem;color:gold;white-space:nowrap}
+ 
+/*
+.backlink[target] {
+    cursor:pointer;
+    position:relative; 
+    border-bottom:2px dotted #000; 
+  }
+.backlink[target]:hover:before {
+    display:block;
+}
+.backlink[target]:hover {color:var(--highlight)}
+
+.backlink[target]:before {
+    content: attr(target);
+    position:absolute;
+    top:6rem;
+    transform:translateY(-30%);
+    left:0%;
+    padding-left:10px;padding-right:10px;
+    border-radius:10px;
+    background:#000;
+    color: lightgoldenrodyellow;
+    text-align:center;
+    z-index: 99;
+    display:none; 
+}
+*/

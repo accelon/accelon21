@@ -48,8 +48,17 @@ if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
 if (hook) {
     extra.push( new OffTag('cite',{},hook.y-y,hook.x,hook.w) );
     const linetext=text||(ptk&&ptk.getLine(y||key));
-    const d=diffCJK(trimPunc(q),linetext,hook.x,hook.w)
-    console.log(d)
+    const D=diffCJK(trimPunc(q),linetext,hook.x,hook.w)
+    let x=hook.x;
+    D[0].forEach(d=>{
+        if (d.added) {
+            extra.push( new OffTag('ins',{}, 0,x, d.value.length)) ;
+            x+=d.count;
+        } else if (d.removed) {
+            extra.push( new OffTag('del',{'t': d.value}, 0, x,1)) ;
+            
+        } else x+=d.count;
+    })
     extra=extra;
 }
 extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);

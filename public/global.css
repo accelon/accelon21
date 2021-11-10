@@ -1,0 +1,135 @@
+:root{
+	--svg-highlight-stroke-color :limegreen;
+	--button-highlight-color :limegreen;
+	--checkbox-checked-color :limegreen;
+	--highlight:rgb(99, 240, 99);
+	--highlightText:black;
+	--highlight0:limegreen;
+	--highlight1:rgb(255, 146, 146);
+	--hover: rgb(167, 255, 167);
+	--button-unselected : #555; 
+	--button-selected: #FFFFFF ; 
+	--panel-background: rgba(22,22,22,0.9);
+	--quotetext: limegreen;
+	--splitter: #131313;
+	--menubackground: rgba(86, 92, 2, 0.9);
+}
+
+html, body {
+	position: relative;
+	overflow:hidden;
+	width: 100%;
+	height: 100%;
+	background:black;
+	color:silver;
+	stroke: silver;
+}
+
+body {
+	font-size:125%;
+	/* color: #333; */
+	margin: 0;
+	/* padding: 8px; */
+	box-sizing: border-box;
+	font-family: -apple-system, "Helvetica Neue",BlinkMacSystemFont, "Segoe UI", 
+	"Microsoft Yahei UI Light",	Roboto, Oxygen-Sans, Ubuntu, Cantarell,  sans-serif;
+}
+
+a {
+	color: rgb(0,100,200);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: rgb(0,80,160);
+}
+
+label {
+	display: block;
+}
+
+input, button, select, textarea {
+	font-family: inherit;
+	font-size: inherit;
+	-webkit-padding: 0.0em 0;
+	padding: 0em;
+	margin: 0 0 0.1rem 0;
+	background-color: #ccc;
+	box-sizing: border-box;
+	/* border: 1px solid #ccc; */
+	border-radius: 4px;
+}
+input {
+	background:#333333;color:gray;
+	border:0px;
+	/* border-bottom:1px solid black */
+}
+input:focus{
+	background:#aaa;color:black;
+	border-radius: 0px;
+}
+input:disabled {
+	color: silver;
+	background:#111;
+}
+
+button {
+	/* color: #333; */
+	/* background-color: #f4f4f4; */
+	outline: none;
+}
+
+button:disabled {
+	color: #999;
+}
+
+button:not(:disabled):active {
+	background-color: #ddd;
+}
+
+button:focus {
+	border-color: #666;
+}
+
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: rgba(116, 250, 39, 0.2);
+}
+
+::-webkit-scrollbar-track {
+    background: #85858534;
+    border-radius: 10px;
+}
+
+
+
+
+.tabs {-webkit-user-select: none; background:var(--panel-background);overflow:hidden}
+.tab-content {
+		position: absolute;
+    /* height:90vh; */
+	width:100%;
+    /* width:30vw; */
+		/* !important; */
+		opacity: 0;
+		pointer-events: none;
+		overflow:hidden;
+	}
+.tab-content.visible {/* can't use visibility due to a weird painting bug in Chrome */
+  opacity: 1;
+  pointer-events: all;
+}
+
+.hyperlink{cursor:pointer}
+.hyperlink:hover{ text-decoration:underline}
+.bookid {font-size:80%;font-weight:bold;font-family: Courier;color:goldenrod}
+.clickable {cursor:pointer}
+.clickable:hover {text-decoration:underline}

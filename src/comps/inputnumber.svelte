@@ -14,8 +14,8 @@ $: if(val!==value) {  value=val; dispatch('change',val);}
 const valinc=evt=>val=evt.ctrlKey?max:val+1;
 const valdec=evt=>val=evt.ctrlKey?min:val-1;
 const onkeyup=evt=>{
-    if (evt.key=="ArrowUp") valinc(evt);
-    if (evt.key=="ArrowDown") valdec(evt);
+    if (evt.key=="ArrowDown") valinc(evt);
+    if (evt.key=="ArrowUp") valdec(evt);
 }
 function setfocus(node){
     if(autofocus) node.focus();
