@@ -72,12 +72,17 @@ const click=evt=>{
     if (evt.button!==0) return;
     if (evt.target.tagName=='T') {
         if (evt.target.classList.contains('e')) return;
+        
         if (getSelection().toString().length) return onSelection(evt);
-        const {hook,x,y,sel,t,ori}=getTextHook(ptk,evt);
+        let {x,y,ori}=getTextHook(ptk,evt);
+        if (evt.target.classList.contains('se')) {
+            ori=evt.target.innerText;
+            x=parseInt(evt.target.attributes.x.value);
+        }
         const entries = bestEntries(ori)||[];
         if (!entries.length) return;
         const E=entries[0];
-        const ptr=PATHSEP+E.ptk+PATHSEP+E.e;
+        const ptr=entries.map(entry=>PATHSEP+entry.ptk+PATHSEP+entry.e).join(';');
         const w=E.e.length;
         //single click to close the embed
         const opened=extra.filter(i=>i.name=='embed'&&(x>=i.x&&(i.x+i.w>x)));
