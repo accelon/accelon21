@@ -11,7 +11,7 @@ const read=async evt=>{
         lines=(await f.zip.files[f.name].async('string')).split(/\?\r?\n/);
     } else {
         const out=await readFormatFile(f,$config.format);
-        lines=out.rawlines;
+        lines=out.rawtext;
         if (out.toclines) $texttoc=out.toclines;
     }
     $srcfilename=f.name;

@@ -8,7 +8,7 @@ export let attrs={}
 export let text='';
 export let opening=false;
 export let name='',w=0,ptk=null,i=0,clss,x,y,starty=0,nesting=0; //just for hidding the warning
-
+let color='hsl('+((nesting+3)*60) +' ,50%,30%)';
 let tptk,transclusion='';
 let showing=null;
 
@@ -31,11 +31,15 @@ const toggle=async ()=>{
 </script>
 {#if !opening}
 <span {i} class={clss} {x} {y}><span class:showing class="transclusion" on:click={toggle}> </span>
+{#if showing}<Btn icon='read' title={JSON.stringify(transclusion.hook)}/>
+<div class="hr" style={"background:"+color }></div>
 <svelte:component this={showing} {...transclusion}/>
-{#if showing}<Btn icon='link'/>{/if}
+<div class="hr" style={"background:"+color }></div>
+{/if}
 </span>
 {/if}
 <style>
+    div.hr {height:1px}
     .showing {padding-right:20px;border-radius:10px}
     .transclusion {cursor:pointer;border-bottom:0px;padding-left:5px;
         background:var(--button-unselected)}

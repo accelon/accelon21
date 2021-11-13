@@ -62,22 +62,33 @@ t.fn[n]:hover:after {
     content: attr(n) "↓"; 
     transition: color 1s;
 }
-
+t.pg{
+    display:inline-block;width:0px;padding-top:3em;height:0px;
+    vertical-align:top;font-size:0.5rem;color:rgb(112, 203, 255);
+ }
+    
 t.p:before { 
     /* position: absolute; */
+    display:inline-block;
+    width:0px;height:0px;
     cursor: pointer;
-    margin-top:1.5em;
-    margin-left:-1em;
+    padding-top:2.5em;
+    vertical-align:top;
+    /* margin-left:-1em; */
     font-size:0.6rem;
     font-weight: bold;
     color:rgb(112, 203, 255);
     font-family: monospace; 
-    padding:2px; content:"[" attr(n) "]"
+    /* padding:2px;  */
+    content: attr(n) 
 }
 
-
+t.lg {
+    color:lightseagreen;font-family: 楷体,標楷體,DFKai-SB;
+}
 t.pdf:after {content: "pdf"attr(n)  ;
-   display:inline-block;width:0px;padding-top:2.5em;vertical-align:top;font-size:0.5rem;color:blue}
+   display:inline-block;width:0px;padding-top:2.5em;
+   vertical-align:top;font-size:0.5rem;color:blue}
     
     
 t.en::after {
@@ -92,7 +103,7 @@ t.pts:after {content: "pts"attr(n)  ;
    display:inline-block;width:0px;padding-top:2.5em;
    vertical-align:top;font-size:0.5rem;color:brown
 }
-   
+
     
 t.cs::after {
     content: attr(n)  ;

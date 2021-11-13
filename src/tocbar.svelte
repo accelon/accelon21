@@ -12,10 +12,10 @@ $: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc))||[];
 const addresses=getContext('addresses');
 
 $: childcount=ptk&&ptk.childCount(loc) ;
-$: value=loc&&parseInt(loc.match(/:(\d+)/)[1])+1;
+$: value=loc&&parseInt(loc.match(/(\d+)$/)[1]);
 
 const go=({ctrlKey,detail})=>{
-    const newloc='/'+ptk.name+'/'+loc.replace(/:\d+/,':'+(detail-1));
+    const newloc='/'+ptk.name+'/'+loc.replace(/\d+$/,detail);
     settab(newloc,{addresses,newtab:ctrlKey});
 }
 const gotoc=evt=>{

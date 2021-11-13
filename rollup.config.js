@@ -58,6 +58,7 @@ export default [
       clearScreen: false,
     },
   },
+  /*
   {
     input: "src/js/injection.js",
     output: {
@@ -70,4 +71,5 @@ export default [
       clearScreen: false,
     },
   }
+  */
 ];

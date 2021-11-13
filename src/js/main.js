@@ -1,4 +1,4 @@
-import {registerServiceWorker} from './pwa.js';
+// import {registerServiceWorker} from './pwa.js';
 import App from '../main.svelte';
-registerServiceWorker();
+// registerServiceWorker();
 export default new App({target: document.body});
