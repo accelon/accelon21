@@ -5,6 +5,7 @@ import { createEventDispatcher } from 'svelte'
 const dispatch = createEventDispatcher()
 
 export let opening;
+export let text='';
 export let nesting=0;
 let R;
 export let ptk,i=0,clss,x,y,starty=0,w=0,name='',attrs={}; //just for hidding the warning

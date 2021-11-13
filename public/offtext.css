@@ -237,7 +237,7 @@ t.q-:before {content:'引';
     padding:3px;
     border-radius: 3px;
 }
-t.t[hook]{font-family:楷体,DFKai-SB;}
+t.t{font-family:楷体,DFKai-SB;}
 
 t.blnk {border-bottom: 1px dotted var(--button-unselected)}
 t.d {color:goldenrod}
