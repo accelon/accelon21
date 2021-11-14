@@ -69,15 +69,14 @@ const delta=(y||key)-y0;
 
 const update=({detail})=>{
     if (detail.note) {
-        const i=extra.findIndex(it=>(it.name==='unote' && it.attrs.note===detail.note));
+        const locnote=$usernotes[delta];
+        const i=locnote.findIndex(it=>it.hook===detail.note.hook);
+        const j=extra.findIndex(it=>it.name=='unote'&&it.attrs.note===detail.note);
         if (i>-1) {
-            updateNote(extra[i].attrs,detail.op);
-            extra.splice(i,1);
-            if (!detail.remove) {
-                addNote(detail.note);
-            }
-            extra=extra;
+            updateNote(extra[j].attrs,detail.op);
+            if (detail.op=='remove') locnote.splice(i,1);
         }
+        refreshnote($usernotes[delta]);
     }
 }
 

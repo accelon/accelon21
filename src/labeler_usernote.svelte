@@ -27,33 +27,32 @@ function blur(evt) {
 }
 function setmarker(marker){
     note.marker=marker;
-    dispatch('update',{note:attrs.note, marker})
+    editdone();
     input.focus();
 }
 function removenote(){
+    editing=false;
     dispatch('update',{note:attrs.note, op:'remove'})
 }
 function editdone(){
     note.text=input.value;
-    dispatch('update',{note:attrs.note, text:note.text})
+    dispatch('update',{note:attrs.note})
     editing=false;
 }
 </script>
 {#if !opening}
 {#if editing}
-{#if deletable}<Btn icon="deletecancel" onclick={removenote} />{:else}
+{#if deletable}<Btn icon="deletecancel" onclick={removenote} />{/if}
 {#each [1,2,3] as mrk}
-<span on:click={()=>setmarker(mrk)} class={"clickable marker"+mrk}>{note.marker==mrk?"■":"□"}</span>
+<span on:click={()=>setmarker(mrk)} class={"clickable marker"+mrk}>{note.marker==mrk?"●":"　"}</span>
 {/each}
-<Btn icon="ok" onclick={editdone} />
-{/if}
 <br/><input bind:this={input} on:blur={blur} on:keyup={keyup} value={note.text} use:focus maxlength=100/>
 <br/>
 {:else}
 {#if !note.text}
 <Btn onclick={()=>editing=true} icon="usernote"/>
 {:else}
-<span on:click={()=>editing=true} class={"marker"+note.marker}>{note.text}</span>
+<span on:click={()=>editing=true} class={"clickable marker"+note.marker}>{note.text}</span>
 {/if}
 {/if}
 {/if}
