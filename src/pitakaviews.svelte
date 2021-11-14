@@ -3,7 +3,7 @@ import {setContext} from 'svelte'
 import PitakaViewer from './pitakaviewer.svelte'
 import FrontPage from './frontpage.svelte';
 import Btn from './comps/button.svelte'
-export let addresses,ntab;
+export let addresses,ntab,side;
 export let hide=false;
 setContext('addresses',addresses);
 setContext('ntab',ntab);
@@ -15,7 +15,7 @@ setContext('ntab',ntab);
         {#if address==='/'}
         <FrontPage {tabid}/>
         {:else}
-        <PitakaViewer {tabid} {address} visible={$ntab==tabid} />
+        <PitakaViewer {side} {tabid} {address} visible={$ntab==tabid} />
         {/if}
     </div>
     {/each}

@@ -1,7 +1,9 @@
 <script>
 import { onMount } from 'svelte';
+import { get } from 'svelte/store';
 import Btn from './comps/button.svelte'
 import {cursorAddress,getCursorAddress} from './js/address.js'
+import {updateNote} from './js/usernotes.js';
 
 const onselectionchange=(evt)=>{
     selectedText='';
@@ -22,10 +24,18 @@ async function copyaddress (){
     await navigator.clipboard.writeText(getCursorAddress());
     selectedText='';
 }
-
+const newnote=()=>{
+    const {usernotes,delta,y,hook,loc,ptk} = get(cursorAddress);
+    let notes=get(usernotes);
+    let locnote=notes[delta]||[];
+    const note={hook,text:'',marker:1};
+    locnote.push(note);
+    usernotes.set( {...notes,[delta]:locnote})
+    updateNote({ptk,y,loc,note},'add');
+}
 </script>
 <div bind:this={menuEle} class="menu" class:visible={!!selectedText}>
-<Btn icon="usernote"/>    
+<Btn icon="usernote" onclick={newnote}/>
 <Btn icon="search"/>
 <Btn icon="copy" onclick={copyaddress}/>
 </div>

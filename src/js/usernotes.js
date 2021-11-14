@@ -35,13 +35,11 @@ export const updateNote=({ptk,y,loc,note},op='')=>{
     const locnote=notes[delta]||[];
 
     let updated=false;
+
     for (let i=0;i<locnote.length;i++) {
         if (locnote[i].hook==hook) {
-            if (op==='remove') {
-                locnote.splice(i,1);
-            } else if (op==='add'){
-
-                
+            if (op==='remove' || op==='add') {
+                locnote.splice(i,1); 
             } else {
                 locnote[i].text=text;
                 locnote[i].marker=marker;
@@ -50,6 +48,12 @@ export const updateNote=({ptk,y,loc,note},op='')=>{
             break;
         }
     }
+    if (op==='add') {
+        locnote.push({text,marker,hook});  
+        notes[delta]=locnote;
+        updated=true;
+    }
+
     if (updated) {
         if (!locnote.length) delete notes[delta];
         setUserNotes(ptk,loc,notes);

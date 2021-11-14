@@ -28,16 +28,15 @@ export const setLoc=async ({ptk,loc,y0,hook=''},store)=>{
         mulu=ptk.getMulu(y0,y0+items.length);
     }
 
-    const usernotes=getUserNotes(ptk,loc);
-    
+    const usernotes=writable(getUserNotes(ptk,loc));
     const backlinks=ptk.getBacklinks(loc);
 
     const keyeditem={};
     items.forEach(it=>keyeditem[it.key]=it);
 
-    for (let key in usernotes) {
-        keyeditem[parseInt(key)+y0].usernotes=writable(usernotes[key]);
-    }
+    // for (let key in usernotes) {
+    //     keyeditem[parseInt(key)+y0].usernotes=writable(usernotes[key]);
+    // }
     for (let ptkname in backlinks) {
         for (let key in backlinks[ptkname]) {
             if (keyeditem[key]) keyeditem[key].backlinks=backlinks[ptkname][key];
@@ -46,8 +45,8 @@ export const setLoc=async ({ptk,loc,y0,hook=''},store)=>{
 
     items.push({text:'　',key:'end'});//workaround
 
-    const userdata=getUserData(vstate.name,vstate.loc);
-    const out={items,userdata,backlinks,ptk,loc,mulu,y0,criteria};
+    const userdata=getUserData(vstate.name,vstate.loc)
+    const out={items,userdata,backlinks,ptk,loc,mulu,y0,criteria,usernotes};
     if (store) {
         store.set(out)
     } else {

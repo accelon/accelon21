@@ -5,11 +5,12 @@ export const copyAddress=(str)=>{
     copiedAddress.set(str);
 }
 
-export const cursorAddress = writable({ptk:null,loc:'',sel:'',y:0,x:0,hook:''});
+export const cursorAddress = writable({ptk:null,loc:'',sel:'',y:0,x:0,hook:'',side:0,tabid:0});
 
 export const getCursorAddress=()=>{
     const a=get(cursorAddress);
     if (!a.loc)return;
+    // console.log('side tab',a.side,a.tabid)
     return serializePointer(a.ptk,a.y,a.hook);
 }
 

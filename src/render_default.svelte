@@ -8,19 +8,20 @@ import {cursorAddress} from './js/address.js';
 import { createEventDispatcher } from 'svelte';
 import {updateNote} from './js/usernotes';
 const dispatch = createEventDispatcher();
-    // import LineMenu from './linemenu.svelte';
-
 export let key=0 //缺少 y 的話，以 key 作 y
+export let y0=0   //本章第一行
 export let y=0   //優先權較高
 export let nesting=0;
 export let keywords=[];
 export let text=''
 export let id=''
+export let tabid=0;
+export let side=0;
 export let loc='' ; //location of the page
 export let ptr=''   //  (for toc page)
 export let childcount=0;
 export let backlinks=[];
-export let usernotes=[];
+export let usernotes; // this is a store created by addresses.js
 export let q=''; //the quote text
 export let hook='';
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
@@ -45,13 +46,26 @@ if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
         extra.push( new OffTag('blnk',{'@':srcptrs,x,w}, y,x+w,0))
     }
 }
+
+const sortExtra=()=>{
+    extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
+    extra=extra;
+}
+
+const refreshnote=()=>{
+    extra=extra.filter(it=>it.name!=='unote');
+    $usernotes[delta].forEach(addNote);
+    sortExtra();
+}
+
+$: ptk && usernotes && $usernotes[delta]  && refreshnote($usernotes[delta]);
+
 const addNote=note=>{
     const {x,w}=parseHook(note.hook,lineText() )
         extra.push(new OffTag('unote',{note,marker:note.marker,x,y,ptk:ptk.name,loc,y:y||key}, 0,x,w))
 }
-if (ptk && usernotes && $usernotes.length) {
-    $usernotes.forEach(addNote);
-}
+const delta=(y||key)-y0;
+
 
 const update=({detail})=>{
     if (detail.note) {
@@ -88,7 +102,7 @@ extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
 
 const onSelection=evt=>{//user note and highlight etc
     const {hook,sel,x,y}=getTextHook(ptk,evt);
-    cursorAddress.set({ptk,sel,loc,x,y,hook});
+    cursorAddress.set({ptk,sel,loc,x,y,hook,usernotes,delta});
 }
 
 const click=evt=>{
@@ -113,9 +127,7 @@ const click=evt=>{
         extra=extra.filter(i=>i.name!=='embed').filter(i=>!!i);
         if (opened.length===0) {
             extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,x,w) );
-            // console.log()
-            extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
-            extra=extra;
+            sortExtra();
         }
     }
 }
