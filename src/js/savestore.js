@@ -1,4 +1,4 @@
-const AppPrefix='ACC21.'
+export const AppPrefix='ACC21.'
 const config=accelon21_configuration;
 export const loadSettings=()=>{
     const tosim=parseInt(localStorage.getItem(AppPrefix+'tosim')||'0');

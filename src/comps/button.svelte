@@ -11,7 +11,8 @@ const svg=Icons[icon]||'';
 const click=evt=>{
     if(disabled)return;
     if (store) $store=!$store;
-    return onclick&&onclick(evt)
+    evt.cancelBubble=true;
+    return onclick&&onclick(evt);
 }
 </script>
 <span class="button" class:disabled class:checked={store&&$store} class:unchecked={store && !$store} 

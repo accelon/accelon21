@@ -25,13 +25,8 @@ const scrollTo=({detail})=>{
 <div class="controlbar">
     <TabSelector {tabid}/>
     <TocBar/>
+    &nbsp;&nbsp;<Btn icon='close'/>
     {#if mulu.length}
-    <Btn icon="menu" onclick={togglesetting} />
-        {#if showsetting}
-            <Btn icon="bookmark"/>
-            <Btn icon="markerpen"/>
-            <Btn icon="usernote"/>
-        {/if}
         <Mulu {mulu} {scrollStart} {y0} on:scrollTo={scrollTo}/>
     {:else}
         <TocMenu {scrollStart} {ptk}/>
@@ -39,7 +34,6 @@ const scrollTo=({detail})=>{
 </div>
 
 <style>
-
     :global(.controlbar){
         font-size:1rem;-webkit-user-select: none; 
         width:100%; 

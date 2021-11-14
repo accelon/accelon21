@@ -270,6 +270,12 @@ t.ins{color:lime}
 span.entry-sk { display:inline-block;width:0px;padding-top:2.5em;vertical-align:top;font-size:1rem;color:goldenrod;white-space:nowrap}
 span.entry-pli {display:inline-block;width:0px;margin-top:-0.5em;vertical-align:top;font-size:1rem;color:gold;white-space:nowrap}
  
+t.unote[marker="3"] {background:darkmagenta;}
+t.unote[marker="2"] {background:rgb(145, 86, 15);}
+t.unote[marker="1"] {background:darkgreen;}
+span.marker3 {font-family:宋体,新細明體;border:darkmagenta 2px solid;}
+span.marker2 {font-family:宋体,新細明體;border:rgb(145, 86, 15)  2px solid;}
+span.marker1 {font-family:宋体,新細明體;border:darkgreen 2px solid;}
 /*
 .backlink[target] {
     cursor:pointer;

@@ -3,6 +3,7 @@ import {writable,get} from 'svelte/store'
 import { parsePointer ,serializePointer} from 'pitaka/offtext';
 import { copyAddress ,getCursorAddress} from './address.js';
 import {updateSettings,settings} from './savestore.js'
+import {getUserNotes} from './usernotes.js'
 import {getUserData,setUserData} from './userdata.js';
 export const addresses_a=writable(accelon21_configuration.addresses_a||['/']);
 export const addresses_b=writable(accelon21_configuration.addresses_b||['/']);
@@ -27,16 +28,22 @@ export const setLoc=async ({ptk,loc,y0,hook=''},store)=>{
         mulu=ptk.getMulu(y0,y0+items.length);
     }
 
-    //get foriegn links
+    const usernotes=getUserNotes(ptk,loc);
+    
     const backlinks=ptk.getBacklinks(loc);
 
-    items.forEach(item=>{
-        for (let ptkname in backlinks) {
-            if (backlinks[ptkname][item.key]) {
-                item.backlinks=backlinks[ptkname][item.key];
-            }
+    const keyeditem={};
+    items.forEach(it=>keyeditem[it.key]=it);
+
+    for (let key in usernotes) {
+        keyeditem[parseInt(key)+y0].usernotes=writable(usernotes[key]);
+    }
+    for (let ptkname in backlinks) {
+        for (let key in backlinks[ptkname]) {
+            if (keyeditem[key]) keyeditem[key].backlinks=backlinks[ptkname][key];
         }
-    })
+    }
+
     items.push({text:'　',key:'end'});//workaround
 
     const userdata=getUserData(vstate.name,vstate.loc);

@@ -29,7 +29,7 @@ const setkeyword=evt=>{
 {#key $tosim}
 <div>
     <span class="bookid">{id}</span>
-    <span class="tocitem" on:click={evt=>settab({loc:loc+'/:0'},{addresses,newtab:evt.ctrlKey})}>
+    <span class="tocitem" on:click={evt=>settab({loc:loc+'/1'},{addresses,newtab:evt.ctrlKey})}>
     {_(text)}</span>
 {#if childcount>1}
 <InputNumber on:change={setjuan} {value} max={childcount} min={1}/>

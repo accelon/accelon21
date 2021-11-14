@@ -6,7 +6,7 @@ import {diffCJK,trimPunc} from 'pitaka/utils';
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import { createEventDispatcher } from 'svelte';
-
+import {updateNote} from './js/usernotes';
 const dispatch = createEventDispatcher();
     // import LineMenu from './linemenu.svelte';
 
@@ -20,10 +20,12 @@ export let loc='' ; //location of the page
 export let ptr=''   //  (for toc page)
 export let childcount=0;
 export let backlinks=[];
+export let usernotes=[];
 export let q=''; //the quote text
 export let hook='';
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
 let extra=[];
+const lineText=()=>text||(ptk&&ptk.getLine(y||key));
 
 if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
     const linksAt={};
@@ -41,6 +43,27 @@ if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
         const [srcptr, y,x,w]=links[0];
         const srcptrs=links.map(i=>i[0]).join(';');
         extra.push( new OffTag('blnk',{'@':srcptrs,x,w}, y,x+w,0))
+    }
+}
+const addNote=note=>{
+    const {x,w}=parseHook(note.hook,lineText() )
+        extra.push(new OffTag('unote',{note,marker:note.marker,x,y,ptk:ptk.name,loc,y:y||key}, 0,x,w))
+}
+if (ptk && usernotes && $usernotes.length) {
+    $usernotes.forEach(addNote);
+}
+
+const update=({detail})=>{
+    if (detail.note) {
+        const i=extra.findIndex(it=>(it.name==='unote' && it.attrs.note===detail.note));
+        if (i>-1) {
+            updateNote(extra[i].attrs,detail.op);
+            extra.splice(i,1);
+            if (!detail.remove) {
+                addNote(detail.note);
+            }
+            extra=extra;
+        }
     }
 }
 
@@ -64,16 +87,17 @@ if (hook) {
 extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
 
 const onSelection=evt=>{//user note and highlight etc
-    const {hook,x,y}=getTextHook(ptk,evt);
-    cursorAddress.set({ptk,loc,x,y,hook});
+    const {hook,sel,x,y}=getTextHook(ptk,evt);
+    cursorAddress.set({ptk,sel,loc,x,y,hook});
 }
 
 const click=evt=>{
     if (evt.button!==0) return;
     if (evt.target.tagName=='T') {
         if (evt.target.classList.contains('e')) return;
-        
-        if (getSelection().toString().length) return onSelection(evt);
+        onSelection(evt);
+        if (getSelection().toString().length) return; 
+
         let {x,y,ori}=getTextHook(ptk,evt);
         if (evt.target.classList.contains('se')) {
             ori=evt.target.innerText;
@@ -108,23 +132,17 @@ const setkeyword=({detail})=>{
 <svelte:component this={$renderer._toc} on:setkeyword={setkeyword} {ptk} {text} {keywords} {childcount} {id} loc={ptr}/>
 {:else}
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
-{#each OfftextToSnippet(text||ptk&&ptk.getLine&&ptk.getLine(y||key), extra) as snpt}
-    {#if labelerOf(snpt.open.name)}
-    <!-- open.name 存在則是此標籤的起點 -->
-    <svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting}
-    on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
-    {/if}
-    
-    <!-- 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 -->
-    <span on:click={click}>{@html composeSnippet(snpt,y||key,$tosim)}</span>
-    {#if labelerOf(snpt.close.name)}
-
-    <!-- close.name 存在，則是該標籤的終點。屬性在 sntp.open-->
-    <svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
-    on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
-    {/if}
-{/each}
-{/if}
+{#each OfftextToSnippet(lineText(), extra) as snpt}
+{#if labelerOf(snpt.open.name)}<!-- 
+open.name 存在則是此標籤的起點 為避免多餘的空格，前後labeler 和 snippet 要連成一行。
+//--><svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting}
+    on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />{/if}<!-- 
+所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 
+//--><span on:click={click}>{@html composeSnippet(snpt,y||key,$tosim)}</span>{#if labelerOf(snpt.close.name)}<!-- 
+close.name 存在，則是該標籤的終點。屬性在 sntp.open
+//--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
+   on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
+{/if}{/each}{/if}
 </div>
 
 <style>

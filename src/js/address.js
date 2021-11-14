@@ -5,7 +5,7 @@ export const copyAddress=(str)=>{
     copiedAddress.set(str);
 }
 
-export const cursorAddress = writable({ptk:null,loc:'',y:0,x:0,hook:''});
+export const cursorAddress = writable({ptk:null,loc:'',sel:'',y:0,x:0,hook:''});
 
 export const getCursorAddress=()=>{
     const a=get(cursorAddress);

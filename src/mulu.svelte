@@ -24,7 +24,6 @@ const scrolltotocitem=evt=>{
     dispatch('scrollTo',{y});
 }
 </script>
-
 <span class="hamburger" class:showing on:click={()=>showing=!showing}>☰</span>
 {#if showing || scrollStart==0}
 <div  class="dropdownpanel">
@@ -58,5 +57,5 @@ const scrolltotocitem=evt=>{
         border-bottom-left-radius: 0.5em;
         right:0;max-width:15em;background:var(--panel-background)}
     :global(.hamburger) {float:right;padding-right:2em}
-    .mulubtn:hover {color:var(--highlight)}
+
 </style>

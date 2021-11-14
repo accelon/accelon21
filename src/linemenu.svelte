@@ -8,7 +8,7 @@ export let loc;
 <div>
 <Btn icon="bookmark" />
 {#if $vstate.len}
-<Btn icon="markerpen"/>
+<Btn icon="usernode"/>
 {:else}
 
 {/if}

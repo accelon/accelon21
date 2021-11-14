@@ -4,6 +4,7 @@ import R from './js/renderer.js'; //make sure renderer is loaded
 import L from './js/labeler.js'; //maker sure labeler is loaded
 import HotKey from './js/hotkey.js';
 import MainView from './mainview.svelte';
+import SelectionMenu from './selectionmenu.svelte';
 import { onMount } from 'svelte';
 let ready=false;
 onMount(()=>{
@@ -14,6 +15,7 @@ onMount(()=>{
 Loading Data...
 {:else}
 <div class="container">
+	<SelectionMenu/>
 	<MainView/>
 </div>
 {/if}
