@@ -6,7 +6,7 @@ import {diffCJK,trimPunc} from 'pitaka/utils';
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import { createEventDispatcher } from 'svelte';
-import {updateNote} from './js/usernotes';
+import {saveNote} from './js/usernotes';
 const dispatch = createEventDispatcher();
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
@@ -61,22 +61,27 @@ const refreshnote=()=>{
 $: ptk && usernotes && $usernotes[delta]  && refreshnote($usernotes[delta]);
 
 const addNote=note=>{
-    const {x,w}=parseHook(note.hook,lineText() )
-        extra.push(new OffTag('unote',{note,marker:note.marker,x,y,ptk:ptk.name,loc,y:y||key}, 0,x,w))
+    const {marker,text,hook}=note;
+    if (!hook) return;
+    const {x,w}=parseHook(hook,lineText() )
+    extra.push(new OffTag('unote',{
+       hook,text,marker,x,y,ptk:ptk.name,loc,y:y||key}, 0,x,w))
 }
 const delta=(y||key)-y0;
 
 
 const update=({detail})=>{
-    if (detail.note) {
-        const locnote=$usernotes[delta];
-        const i=locnote.findIndex(it=>it.hook===detail.note.hook);
-        const j=extra.findIndex(it=>it.name=='unote'&&it.attrs.note===detail.note);
+    if (detail.hook) {
+        const linenotes=$usernotes[delta];
+        const i=linenotes.findIndex(it=>it.hook===detail.hook);
+        const j=extra.findIndex(it=>it.name=='unote'&&it.attrs.hook===detail.hook);
         if (i>-1) {
-            updateNote(extra[j].attrs,detail.op);
-            if (detail.op=='remove') locnote.splice(i,1);
+            saveNote({...extra[j].attrs, ...detail },detail.marker==-1?'remove':'');
+            if (detail.marker===-1) linenotes.splice(i,1);
+            else linenotes[i]=detail
         }
-        refreshnote($usernotes[delta]);
+        $usernotes[delta]=linenotes;
+        refreshnote();
     }
 }
 

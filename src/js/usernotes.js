@@ -26,36 +26,35 @@ export const getUserNotes=(ptk,loc)=>{
 const setUserNotes=(ptk,loc,notes)=>{
     localStorage.setItem(AppPrefix+ptk.name+'/'+loc,JSON.stringify(notes));
 }
-export const updateNote=({ptk,y,loc,note},op='')=>{
+export const saveNote=({ptk,y,loc,hook,text,marker},op='')=>{
     if (typeof ptk==='string') ptk=useBasket(ptk);
-    const {hook,text,marker} = note;
     const [from]=ptk.getPageRange(loc);
     const delta=y-from;
     const notes=getUserNotes(ptk,loc);
-    const locnote=notes[delta]||[];
+    const linenotes=notes[delta]||[];
 
     let updated=false;
 
-    for (let i=0;i<locnote.length;i++) {
-        if (locnote[i].hook==hook) {
+    for (let i=0;i<linenotes.length;i++) {
+        if (linenotes[i].hook==hook) {
             if (op==='remove' || op==='add') {
-                locnote.splice(i,1); 
+                linenotes.splice(i,1); 
             } else {
-                locnote[i].text=text;
-                locnote[i].marker=marker;
+                linenotes[i].text=text;
+                linenotes[i].marker=marker;
             }
             updated=true;
             break;
         }
     }
     if (op==='add') {
-        locnote.push({text,marker,hook});  
-        notes[delta]=locnote;
+        linenotes.push({hook,text,marker});  
+        notes[delta]=linenotes;
         updated=true;
     }
 
     if (updated) {
-        if (!locnote.length) delete notes[delta];
+        if (!linenotes.length) delete notes[delta];
         setUserNotes(ptk,loc,notes);
     }
 }

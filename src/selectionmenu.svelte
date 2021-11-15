@@ -3,7 +3,7 @@ import { onMount } from 'svelte';
 import { get } from 'svelte/store';
 import Btn from './comps/button.svelte'
 import {cursorAddress,getCursorAddress} from './js/address.js'
-import {updateNote} from './js/usernotes.js';
+import {saveNote} from './js/usernotes.js';
 
 const onselectionchange=(evt)=>{
     selectedText='';
@@ -30,8 +30,9 @@ const newnote=()=>{
     let locnote=notes[delta]||[];
     const note={hook,text:'',marker:1};
     locnote.push(note);
-    usernotes.set( {...notes,[delta]:locnote})
-    updateNote({ptk,y,loc,note},'add');
+    const newobj={...notes,[delta]:locnote};
+    usernotes.set( newobj);
+    saveNote({ptk,y,loc,...note},'add');
 }
 </script>
 <div bind:this={menuEle} class="menu" class:visible={!!selectedText}>
