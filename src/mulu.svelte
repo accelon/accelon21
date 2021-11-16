@@ -1,8 +1,9 @@
 <script>
-import { getContext } from "svelte";
-import { settab } from "./js/addresses";
-import { createEventDispatcher } from 'svelte'
-import LineFilter from './linefilter.svelte'
+import { getContext,createEventDispatcher } from 'svelte';
+import { settab } from './js/addresses';
+import LineFilter from './linefilter.svelte';
+import {PATHSEP} from 'pitaka';
+
 const dispatch = createEventDispatcher()
 const addresses=getContext('addresses');
 export let mulu=[];

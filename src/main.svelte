@@ -1,5 +1,5 @@
 <script>
-import {loadaddress} from './js/loadaddress';
+import {loadaddress} from './js/addresshash.js';
 import R from './js/renderer.js'; //make sure renderer is loaded
 import L from './js/labeler.js'; //maker sure labeler is loaded
 import HotKey from './js/hotkey.js';

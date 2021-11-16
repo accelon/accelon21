@@ -2,6 +2,7 @@
 /public/build/
 public
 *.min.js
+*.map
 *.7z
 *.zip
 .DS_Store

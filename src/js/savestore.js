@@ -1,14 +1,10 @@
 export const AppPrefix='ACC21.'
-const config=accelon21_configuration;
 export const loadSettings=()=>{
     const tosim=parseInt(localStorage.getItem(AppPrefix+'tosim')||'0');
     const column=localStorage.getItem(AppPrefix+'column')||0;
     const tab=localStorage.getItem(AppPrefix+'tab')||'files';
     const toolbox_panepos=localStorage.getItem(AppPrefix+'toolbox_panepos')||30;
-    const panepos=localStorage.getItem(AppPrefix+'panepos')||70;
-
-    // const vstate=JSON.parse(localStorage.getItem(AppPrefix+'vstate'))||config.homepage;
-    
+    const panepos=localStorage.getItem(AppPrefix+'panepos')||70;    
     return {tosim,column,tab,toolbox_panepos,panepos};
 }
 

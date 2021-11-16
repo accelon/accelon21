@@ -28,7 +28,7 @@ $: usernotes=$viewstore.usernotes;
 $: y0=$viewstore.y0; 
 $: linetofind =$viewstore.linetofind;
 $: items=matchTofind(ptk,$viewstore.items,$viewstore.linetofind,$viewstore.filteron)||[];
-$: if (vs && activeline&&items.length&&!$viewstore.filteron) {
+$: if (vs && activeline&&items.length&&!$viewstore.filteron && $viewstore.linetofind) {
     vs.scrollToIndex(0,$viewstore.filteron);
     setTimeout(()=>{
         scrollToY(activeline); 
