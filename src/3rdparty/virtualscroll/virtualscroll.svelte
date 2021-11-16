@@ -140,7 +140,7 @@
             document.body[directionKey] = offset
             document.documentElement[directionKey] = offset
         } else if (root) {
-            root[directionKey] = offset
+            root[directionKey] = offset;
         }
     }
 
@@ -148,13 +148,32 @@
      *
      * @param index {number}
      */
-    export function scrollToIndex(index) {
+    export function scrollToIndex(index,smooth=false) {
         if (!data.length)return;
         if (index >= data.length - 1) {
-            scrollToBottom()
+            scrollToBottom();
         } else {
-            const offset = virtual.getOffset(index)
-            scrollToOffset(offset)
+            if (smooth) {
+                const clientSize = getClientSize();
+                let currentoffset = root[directionKey];
+                const targetoffset = virtual.getOffset(index);
+                const increment = targetoffset>currentoffset?clientSize:-clientSize;
+                let maxscroll= Math.floor(Math.abs(currentoffset-targetoffset) /clientSize);
+                const timer=setInterval(()=>{
+                    const i=getTopIndex(clientSize);
+                    if (maxscroll<1 || Math.abs(i-index)<2) {
+                        scrollToOffset(virtual.getOffset(index));//final adjustment
+                        clearInterval(timer);
+                        return;
+                    }
+                    maxscroll--;
+                    currentoffset+=increment;
+                    scrollToOffset(currentoffset);
+                },1);
+            } else {
+                const offset = virtual.getOffset(index);
+                scrollToOffset(offset)
+            }
         }
     }
 
@@ -225,7 +244,6 @@
         const offset = getOffset()
         const clientSize = getClientSize()
         const scrollSize = getScrollSize()
-
         // iOS scroll-spring-back behavior will make direction mistake
         if (offset < 0 || (offset + clientSize > scrollSize + 1) || !scrollSize) {
             return
@@ -235,8 +253,9 @@
         emitEvent(offset, clientSize, scrollSize, event)
     }
 
-    function emitEvent(offset, clientSize, scrollSize, event) {
-        const range = virtual.getRange();
+    function getTopIndex(clientSize,range){
+        if (!clientSize) clientSize = getClientSize();
+        if (!range) range = virtual.getRange();
         let index=range.end;
         let sz=virtual.getIndexOffset(range.start);
         for (let i=range.start;i<range.end;i++) {
@@ -246,6 +265,11 @@
                 break;
             }
         }
+        return index;
+    }
+    function emitEvent(offset, clientSize, scrollSize, event) {
+        const range = virtual.getRange();
+        const index = getTopIndex(clientSize,range);
         dispatch("scroll", {event, offset, index , range})
 
         if (virtual.isFront() && !!data.length && (offset - topThreshold <= 0)) {

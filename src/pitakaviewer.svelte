@@ -43,7 +43,7 @@ const scroll=(evt)=>{
 const scrollToY=y=>{
     for (let i=0;i<items.length;i++) {
         if (items[i].key>=y) {
-            vs.scrollToIndex(i);
+            vs.scrollToIndex(i,true);
             break;
         }
     }
@@ -51,7 +51,7 @@ const scrollToY=y=>{
 const scrollTo=({detail})=>{
     if (detail.y) {
         const y=parseInt(detail.y);
-        vs.scrollToIndex(y-$viewstore.y0);
+        vs.scrollToIndex(y-$viewstore.y0,true);
     }
 }
 let activeline=getActiveline(addresses);

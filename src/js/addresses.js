@@ -1,17 +1,14 @@
 import {getContext} from 'svelte'
 import {writable,get} from 'svelte/store'
-import { parsePointer ,serializePointer} from 'pitaka/offtext';
-import { copyAddress ,getCursorAddress} from './address.js';
-import {updateSettings,settings} from './savestore.js'
+import {parsePointer ,serializePointer} from 'pitaka/offtext';
 import {getUserNotes} from './usernotes.js'
 import {getUserData,setUserData} from './userdata.js';
-import { PATHSEP } from 'pitaka';
+import {PATHSEP } from 'pitaka';
 
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
 
 export const userdata=writable({});
-// export const vstate=writable(settings.vstate||{});
 export const selectorShown=writable(false);
 export const setLoc=async ({ptk,loc,y0,hook='',dy=0},store)=>{
     if (!ptk) ptk=get(store).ptk;
@@ -29,7 +26,6 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy=0},store)=>{
     y0=y0|| (items.length&&items[0].key)||0;
     
     await ptk.prefetchLines(y0,y0+items.length);
-    // vstate.set(Object.assign(get(vstate),{name:ptk.name,loc,hook,y0}))    
     
     let mulu=[];
     if (items.length && !items[0].ptr) { //no mulu for toc page
@@ -103,4 +99,3 @@ export const closetab=addresses=>{
     addresses.set(addrs);
 }
 export const getOppositeAddresses=addresses=>addresses_b==addresses?addresses_a:addresses_b;
-// vstate.subscribe(vstate=>updateSettings({vstate}));

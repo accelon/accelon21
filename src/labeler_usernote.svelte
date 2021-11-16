@@ -63,19 +63,18 @@ $: lines= attrs.text.split(/\r?\n/).map((text,key)=>{return {key,text}});
 <br/>
 
 {:else}
-{#if !attrs.text && !attrs.br}
-<Btn onclick={()=>editing=true} icon="usernote"/>
-{:else}
-{#if !!attrs.br}
-<Btn icon="usernote" onclick={()=>editing=true}/>
-<span class={"ruler marker"+attrs.marker}></span>
-<svelte:component this={$renderer._lines} {lines}/>
-<span class={"ruler marker"+attrs.marker}></span>
-{:else}
-<span on:click={()=>editing=true} class={"clickable marker"+attrs.marker}>{attrs.text}</span>
-{/if}
-
-{/if}
+    {#if !attrs.text && !attrs.br}
+        <Btn onclick={()=>editing=true} icon="usernote"/>
+    {:else}
+        {#if !!attrs.br}
+            <Btn onclick={()=>editing=true} icon="usernote"/>
+            <span class={"ruler marker"+attrs.marker}></span>
+            <svelte:component this={$renderer._lines} {lines}/>
+            <span class={"ruler marker"+attrs.marker}></span>
+        {:else}
+            <span on:click={()=>editing=true} class={"clickable marker"+attrs.marker}>{attrs.text}</span>
+        {/if}
+    {/if}
 {/if}
 {/if}
 <style>
