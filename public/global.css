@@ -13,6 +13,7 @@
 	--quotetext: limegreen;
 	--splitter: #131313;
 	--menubackground: rgba(86, 92, 2, 0.9);
+	--activeline: rgb(41, 37, 10);
 }
 
 html, body {

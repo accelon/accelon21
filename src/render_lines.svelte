@@ -6,5 +6,5 @@ export let lines=[];
 </script>
 
 {#each lines as data}
-<svelte:component  {nesting} this={$renderer.default} {...data}/>
+<svelte:component  {nesting} this={$renderer[data.renderer]||$renderer.default} {...data}/>
 {/each}

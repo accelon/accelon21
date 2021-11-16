@@ -1,6 +1,6 @@
 <script>
 import {tosim,cursor,renderer} from './js/store.js';
-import {vstate,setLoc} from './js/addresses.js'
+import {setLoc} from './js/addresses.js'
 import {getTextHook} from './js/selection.js';
 import { onMount } from 'svelte';
 export let loc=''
@@ -38,7 +38,7 @@ const mouseup=async evt=>{
         const {hook,y,sel,t,ori}=getTextHook(ptk,evt);
         if (!sel)return;
         cursor.set({sel,t,ori});
-        vstate.set(Object.assign($vstate,{hook,y,len:sel.length}))
+        // vstate.set(Object.assign($vstate,{hook,y,len:sel.length}))
     }
 }
 </script>

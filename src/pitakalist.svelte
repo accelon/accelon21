@@ -1,5 +1,5 @@
 <script>
-import { pool} from 'pitaka';
+import { PATHSEP, pool} from 'pitaka';
 import {_} from './js/store.js'
 import { getContext } from 'svelte';
 import { settab } from './js/addresses';
@@ -7,7 +7,7 @@ const addresses=getContext('addresses');
 $: pitakas=pool.getAll();
 </script>
 {#each pitakas as ptk}
-<div><span class="tocitem" on:click={evt=>settab('/'+ptk.name,{addresses,newtab:evt.ctrlKey})}>
+<div><span class="tocitem" on:click={evt=>settab(addresses,PATHSEP+ptk.name)}>
     {_(ptk.header.title)} ({ptk.contentCount()}) </span>
     {#if ptk.header.homepage}
     <a href={ptk.header.homepage} target=_new>www</a>

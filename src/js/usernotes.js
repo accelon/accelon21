@@ -1,7 +1,7 @@
-import {AppPrefix} from './savestore'
-import {useBasket} from 'pitaka'
+const NOTEPREFIX ='ANOTE.';
+import {PATHSEP, useBasket} from 'pitaka'
 export const getUserNotes=(ptk,loc)=>{
-    const notes=localStorage.getItem(AppPrefix+ptk.name+'/'+loc)||'{}';
+    const notes=localStorage.getItem(NOTEPREFIX+ptk.name+PATHSEP+loc)||'{}';
     try{
         const obj=JSON.parse(notes);
         for (let key in obj) {
@@ -24,9 +24,9 @@ export const getUserNotes=(ptk,loc)=>{
     return {};
 }
 const setUserNotes=(ptk,loc,notes)=>{
-    localStorage.setItem(AppPrefix+ptk.name+'/'+loc,JSON.stringify(notes));
+    localStorage.setItem(NOTEPREFIX+ptk.name+PATHSEP+loc,JSON.stringify(notes));
 }
-export const saveNote=({ptk,y,loc,hook,text,marker},op='')=>{
+export const saveNote=({ptk,y,loc,hook,text,marker,br},op='')=>{
     if (typeof ptk==='string') ptk=useBasket(ptk);
     const [from]=ptk.getPageRange(loc);
     const delta=y-from;
@@ -40,15 +40,16 @@ export const saveNote=({ptk,y,loc,hook,text,marker},op='')=>{
             if (op==='remove' || op==='add') {
                 linenotes.splice(i,1); 
             } else {
-                linenotes[i].text=text;
-                linenotes[i].marker=marker;
+                linenotes[i].text=text||'';
+                linenotes[i].marker=marker||1;
+                linenotes[i].br=br||false;
             }
             updated=true;
             break;
         }
     }
     if (op==='add') {
-        linenotes.push({hook,text,marker});  
+        linenotes.push({hook,text,marker,br});  
         notes[delta]=linenotes;
         updated=true;
     }

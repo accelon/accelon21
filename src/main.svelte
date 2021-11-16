@@ -1,5 +1,5 @@
 <script>
-import {loadconfig} from './js/loadconfig';
+import {loadaddress} from './js/loadaddress';
 import R from './js/renderer.js'; //make sure renderer is loaded
 import L from './js/labeler.js'; //maker sure labeler is loaded
 import HotKey from './js/hotkey.js';
@@ -8,7 +8,7 @@ import MainView from './mainview.svelte';
 import { onMount } from 'svelte';
 let ready=false;
 onMount(()=>{
-	loadconfig(()=>ready=true)
+	loadaddress(()=>ready=true)
 });
 </script>
 {#if !ready}

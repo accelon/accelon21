@@ -1,5 +1,34 @@
 import { fromSim } from 'lossless-simplified-chinese';
 
+export const matchTofind=(ptk,items,tf,filteron)=>{
+    if (!items||!ptk||!tf || !filteron)return items||[];
+    const out=[];
+    tf=tf.trim();
+    const regex=new RegExp(tf);
+    let ngap=0,prev=0;
+    const sim=new RegExp(fromSim(tf),'ig');
+    for (let i=0;i<items.length;i++){
+        let match=false;
+        const item=items[i];
+        const text=item.text|| ptk.getLine(item.key);
+        let m= text.match(regex) ;
+        if (!m) {
+            if (text.match(sim)) match=true;
+        } else match=true;
+
+        if (match) {
+            if (i-prev>1) {
+                out.push({text:'gap '+(i-prev), key:'g'+ngap})
+                ngap++;
+            }
+            out.push(item);
+            prev=i;
+        }
+    }
+    out.push({text:'gap '+(items.length-prev),key:'g'+ngap});
+    out.push({text:'==',key:'end'})
+    return out;
+}
 export const matchCriteria=(items,criteria,tf)=>{
     if (!items || ((!criteria || Object.keys(criteria).length==0) && !tf))  return items;
 

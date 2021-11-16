@@ -149,6 +149,7 @@
      * @param index {number}
      */
     export function scrollToIndex(index) {
+        if (!data.length)return;
         if (index >= data.length - 1) {
             scrollToBottom()
         } else {
@@ -203,7 +204,7 @@
     function onItemResized(event) {
         const {id, size, type} = event.detail
         if (type === "item")
-            virtual.saveSize(id, size)
+            virtual.saveSize(id, size);
         else if (type === "slot") {
             if (id === "header")
                 virtual.updateParam("slotHeaderSize", size)

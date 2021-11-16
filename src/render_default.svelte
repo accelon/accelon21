@@ -1,71 +1,56 @@
 <script>
-import {tosim,labelerOf, renderer} from './js/store.js';
-import {composeSnippet,OfftextToSnippet, parseHook,OffTag} from 'pitaka/offtext'
+import { getContext,createEventDispatcher } from 'svelte';
+import {tosim,labelerOf} from './js/store.js';
+import {decoratePage} from './js/decorate.js';
+import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
 import {bestEntries,PATHSEP} from 'pitaka';
-import {diffCJK,trimPunc} from 'pitaka/utils';
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
-import { createEventDispatcher } from 'svelte';
+
 import {saveNote} from './js/usernotes';
-const dispatch = createEventDispatcher();
+
+const dispatch = createEventDispatcher()
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
 export let y=0   //優先權較高
 export let nesting=0;
 export let keywords=[];
+export let active=false;
+export let linetofind='';
 export let text=''
 export let id=''
-export let tabid=0;
+
 export let side=0;
 export let loc='' ; //location of the page
-export let ptr=''   //  (for toc page)
 export let childcount=0;
 export let backlinks=[];
-export let usernotes; // this is a store created by addresses.js
+export let usernotes=null; // this is a store created by addresses.js
 export let q=''; //the quote text
 export let hook='';
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
 let extra=[];
+const addresses=getContext('addresses');
+
 const lineText=()=>text||(ptk&&ptk.getLine(y||key));
-
-if (ptk &&backlinks && backlinks.length) { //convert backlink hook to tag
-    const linksAt={};
-    backlinks.forEach(bl=>{
-        const [hstr,srcptr]=bl;
-        const linetext=text||(ptk&&ptk.getLine(y||key));
-        if (!linetext)return;
-        const H=parseHook(hstr, linetext);
-        const lkey=H.y+'_'+(H.x+H.w);
-        if (!linksAt[lkey]) linksAt[lkey]=[];
-        linksAt[lkey].push( [srcptr, H.y, H.x,H.w] );
-    })
-    for (let i in linksAt) {
-        const links=linksAt[i];
-        const [srcptr, y,x,w]=links[0];
-        const srcptrs=links.map(i=>i[0]).join(';');
-        extra.push( new OffTag('blnk',{'@':srcptrs,x,w}, y,x+w,0))
-    }
-}
-
+$: onlytext=parseOfftextLine(lineText())[0];
 const sortExtra=()=>{
     extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
     extra=extra;
 }
-
 const refreshnote=()=>{
     extra=extra.filter(it=>it.name!=='unote');
     $usernotes[delta].forEach(addNote);
     sortExtra();
 }
-
+$: extra=decoratePage(ptk,onlytext, {backlinks,hook,linetofind});
 $: ptk && usernotes && $usernotes[delta]  && refreshnote($usernotes[delta]);
 
 const addNote=note=>{
-    const {marker,text,hook}=note;
+    const {marker,text,hook,br}=note;
     if (!hook) return;
     const {x,w}=parseHook(hook,lineText() )
     extra.push(new OffTag('unote',{
-       hook,text,marker,x,y,ptk:ptk.name,loc,y:y||key}, 0,x,w))
+       hook,text,marker,br,x,y,ptk:ptk.name,loc,y:y||key}, 0,x,w))
 }
 const delta=(y||key)-y0;
 
@@ -86,31 +71,17 @@ const update=({detail})=>{
 }
 
 
-if (hook) {
-    extra.push( new OffTag('cite',{},hook.y-y,hook.x,hook.w) );
-    const linetext=text||(ptk&&ptk.getLine(y||key));
-    const D=diffCJK(trimPunc(q),linetext,hook.x,hook.w)
-    let x=hook.x;
-    D[0].forEach(d=>{
-        if (d.added) {
-            extra.push( new OffTag('ins',{}, 0,x, d.value.length)) ;
-            x+=d.count;
-        } else if (d.removed) {
-            extra.push( new OffTag('del',{'t': d.value}, 0, x,1)) ;
-            
-        } else x+=d.count;
-    })
-    extra=extra;
-}
-extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
-
 const onSelection=evt=>{//user note and highlight etc
     const {hook,sel,x,y}=getTextHook(ptk,evt);
     cursorAddress.set({ptk,sel,loc,x,y,hook,usernotes,delta});
 }
 
+const lineClick=dy=>{
+    dispatch('activeline',dy);
+}
 const click=evt=>{
     if (evt.button!==0) return;
+    lineClick((y||key)-y0);
     if (evt.target.tagName=='T') {
         if (evt.target.classList.contains('e')) return;
         onSelection(evt);
@@ -138,15 +109,8 @@ const click=evt=>{
 const closelabel=()=>{
     extra=extra.filter(i=>i.name!=='embed');
 }
-const setkeyword=({detail})=>{
-    dispatch('setkeyword',detail);
-}
-
 </script>
-<div class="linetext">
-{#if ptk && ptr} <!-- 目錄行 -->
-<svelte:component this={$renderer._toc} on:setkeyword={setkeyword} {ptk} {text} {keywords} {childcount} {id} loc={ptr}/>
-{:else}
+<div class="linetext" class:active on:click={click}>
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 
@@ -154,13 +118,14 @@ open.name 存在則是此標籤的起點 為避免多餘的空格，前後labele
 //--><svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting}
     on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />{/if}<!-- 
 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 
-//--><span on:click={click}>{@html composeSnippet(snpt,y||key,$tosim)}</span>{#if labelerOf(snpt.close.name)}<!-- 
+//--><span >{@html composeSnippet(snpt,y||key,$tosim)}</span>{#if labelerOf(snpt.close.name)}<!-- 
 close.name 存在，則是該標籤的終點。屬性在 sntp.open
 //--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
    on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
-{/if}{/each}{/if}
+{/if}{/each}
 </div>
 
 <style>
     .linetext {padding-top:0.5em;line-height:1.8}
+    .active {background:var(--activeline)}
 </style>

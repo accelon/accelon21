@@ -20,7 +20,7 @@ const toggle=async evt=>{
 class:disabled on:click={toggle}>{@html svg}{label}</span>
 
 <style>
-    .button{cursor: pointer;padding-right:5px}
+    .button{cursor: pointer;padding-right:5px;fill:var(--button-selected);}
     .button:before{content:'☐'}
     .button:hover{color:var(--button-highlight-color);stroke:var(--svg-highlight-stroke-color)}
     .yes:before {content:'☑';color:var(--checkbox-checked-color)}

@@ -2,6 +2,7 @@
 import { getContext } from "svelte";
 import { settab } from "./js/addresses";
 import { createEventDispatcher } from 'svelte'
+import LineFilter from './linefilter.svelte'
 const dispatch = createEventDispatcher()
 const addresses=getContext('addresses');
 export let mulu=[];
@@ -17,7 +18,7 @@ let caption=(lnk)=>{
 }
 const golink=evt=>{
     const lnk=evt.target.attributes.lnk.value;
-    settab( {loc:lnk}, {addresses,newtab:evt.ctrlKey});
+    settab( addresses,{loc:lnk}, {newtab:evt.ctrlKey});
 }
 const scrolltotocitem=evt=>{
     const y=evt.target.attributes.itemy.value;
@@ -25,13 +26,14 @@ const scrolltotocitem=evt=>{
 }
 </script>
 <span class="hamburger" class:showing on:click={()=>showing=!showing}>☰</span>
-{#if showing || scrollStart==0}
+{#if showing || scrollStart<10 }
 <div  class="dropdownpanel">
+    <LineFilter/>
     {#each mulu as [level,name,itemy,addr] }
         <div class:upper={y0+scrollStart>itemy} class="item" 
             style={"padding-left:"+((level-1)*3)+"px;color:"+color(level,addr)}>
         {#if addr}
-        <span class="external" lnk={addr.join('/')} on:click={golink}>{name}
+        <span class="external" lnk={addr.join(PATHSEP)} on:click={golink}>{name}
         →{caption(addr)}</span>
         {:else}
         <span 
@@ -42,10 +44,9 @@ const scrolltotocitem=evt=>{
 </div>
 {/if}
 
-
 <style>
     .upper {opacity:0.5}
-    .showing {color:var(--highlight)}
+    :global(.showing) {color:var(--highlight)}
     .external{font-size:80%}
     .external:hover{background:var(--button-unselected)}
     .item:hover{text-decoration: underline;cursor:pointer}

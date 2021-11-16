@@ -28,7 +28,7 @@ const newnote=()=>{
     const {usernotes,delta,y,hook,loc,ptk} = get(cursorAddress);
     let notes=get(usernotes);
     let locnote=notes[delta]||[];
-    const note={hook,text:'',marker:1};
+    const note={hook,text:'',marker:1,br:false};
     locnote.push(note);
     const newobj={...notes,[delta]:locnote};
     usernotes.set( newobj);
@@ -38,6 +38,7 @@ const newnote=()=>{
 <div bind:this={menuEle} class="menu" class:visible={!!selectedText}>
 <Btn icon="usernote" onclick={newnote}/>
 <Btn icon="search"/>
+<Btn icon="filter"/>
 <Btn icon="copy" onclick={copyaddress}/>
 </div>
 

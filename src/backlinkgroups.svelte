@@ -7,7 +7,7 @@ const gengroups=Counts=>{
     const out=[];
     for (let name in Counts) {
         const p=useBasket(name);
-        out.push({name,title:p.header.title,count:Counts[name]||0})
+        out.push({name,title:p.header.shorttitle,count:Counts[name]||0})
     }
     return out;
 }

@@ -8,38 +8,40 @@ import Btn from './comps/button.svelte';
 const dispatch=createEventDispatcher();
 export let text='';
 export let ptk='';
-
-export let loc='';
+export let key=0;
+export let ptr='';
 export let id='';
 export let keywords=[];
 export let childcount=0;
 let value=childcount;
-$: nchild=ptk.getNChild(loc,value-1) ;
+const viewstore=getContext('viewstore');
+
+$: nchild=ptk.getNChild(ptr,value-1) ;
 const addresses=getContext('addresses');
-$: backlinkCount=ptk.backlinkCount(loc);
+$: backlinkCount=ptk.backlinkCount(ptr);
 const setjuan=({detail})=>{
     value=detail;
 }
 const setkeyword=evt=>{
     const label=evt.target.attributes.label.value;
     const value=evt.target.innerText;
-    dispatch('setkeyword',{label,value});
+    $viewstore.criteria={[label]:value};
 }
 </script>
 {#key $tosim}
 <div>
     <span class="bookid">{id}</span>
-    <span class="tocitem" on:click={evt=>settab({loc:loc+'/1'},{addresses,newtab:evt.ctrlKey})}>
+    <span class="tocitem" on:click={evt=>settab(addresses,{loc:ptr+'/1'},{newtab:true})}>
     {_(text)}</span>
 {#if childcount>1}
 <InputNumber on:change={setjuan} {value} max={childcount} min={1}/>
-<span class="tocitem" on:click={evt=>settab({loc:nchild.ptr},{addresses,newtab:evt.ctrlKey})}>
+<span class="tocitem" on:click={evt=>settab(addresses,{loc:nchild.ptr},{newtab:true})}>
 {#if nchild.name}{nchild.name}
 {:else}<Btn icon="read"/> 
 {/if}
 </span>
 {/if}
-<BacklinkGroup counts={backlinkCount} {ptk} {loc}/>
+<BacklinkGroup counts={backlinkCount} {ptk} loc={ptr}/>
 {#each keywords as [label,caption]}
 <t on:click={setkeyword} {label} class={"clickable "+ label}>{caption}</t>
 {/each}

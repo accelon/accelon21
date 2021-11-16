@@ -7,9 +7,9 @@ export const loadSettings=()=>{
     const toolbox_panepos=localStorage.getItem(AppPrefix+'toolbox_panepos')||30;
     const panepos=localStorage.getItem(AppPrefix+'panepos')||70;
 
-    const vstate=JSON.parse(localStorage.getItem(AppPrefix+'vstate'))||config.homepage;
+    // const vstate=JSON.parse(localStorage.getItem(AppPrefix+'vstate'))||config.homepage;
     
-    return {tosim,column,tab,vstate,toolbox_panepos,panepos};
+    return {tosim,column,tab,toolbox_panepos,panepos};
 }
 
 export const saveSettings=()=>{ //immediate save

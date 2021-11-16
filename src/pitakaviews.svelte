@@ -2,20 +2,20 @@
 import {setContext} from 'svelte'
 import PitakaViewer from './pitakaviewer.svelte'
 import FrontPage from './frontpage.svelte';
-import Btn from './comps/button.svelte'
-export let addresses,ntab,side;
+import { PATHSEP } from 'pitaka';
+
+export let addresses,side;
 export let hide=false;
 setContext('addresses',addresses);
-setContext('ntab',ntab);
+
 </script>
 <div class="container">
-    
-    {#each $addresses as address,tabid (tabid+address)}
-    <div class="tab-content" class:visible={!hide&&$ntab==tabid}>
-        {#if address==='/'}
-        <FrontPage {tabid}/>
+    {#each $addresses as address,idx (idx+address)}
+    <div class="tab-content" class:visible={!hide&&idx==0}>
+        {#if address===PATHSEP}
+        <FrontPage />
         {:else}
-        <PitakaViewer {side} {tabid} {address} visible={$ntab==tabid} />
+        <PitakaViewer {side} {address} visible={idx==0} />
         {/if}
     </div>
     {/each}

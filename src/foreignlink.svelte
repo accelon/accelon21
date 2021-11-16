@@ -1,9 +1,8 @@
 <script>
-
 import {parsePointer} from 'pitaka/offtext'
 import {tosim,renderer} from './js/store.js';
 import {toSim} from 'lossless-simplified-chinese'
-import { fetchHooks } from 'pitaka';
+import { fetchHooks,PATHSEP } from 'pitaka';
 // export let count=0;
 // export let ptk=null;
 // export let link=null;
@@ -24,7 +23,7 @@ const toggle=async ()=>{
 </script>
 
 <span><span class="foreignlink" class:showing on:click={toggle}>
-{toSim(parsed.bk,$tosim)}{parsed.c?'/'+toSim(parsed.c,$tosim):''}
+{toSim(parsed.bk,$tosim)}{parsed.c?PATHSEP+toSim(parsed.c,$tosim):''}
 </span>
 {#if renderer_foreignlink && lines.length}<div class="hr"></div>{/if}
 <svelte:component this={renderer_foreignlink} {lines}/>

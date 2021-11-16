@@ -68,18 +68,14 @@ t.pg{
  }
     
 t.p:before { 
-    /* position: absolute; */
     display:inline-block;
     width:0px;height:0px;
     cursor: pointer;
-    padding-top:2.5em;
+    padding-top:1.2rem;
     vertical-align:top;
-    /* margin-left:-1em; */
     font-size:0.6rem;
-    font-weight: bold;
-    color:rgb(112, 203, 255);
-    font-family: monospace; 
-    /* padding:2px;  */
+    /* font-weight: bold; */
+    color:rgb(153, 151, 62);
     content: attr(n) 
 }
 
@@ -270,12 +266,18 @@ t.ins{color:lime}
 span.entry-sk { display:inline-block;width:0px;padding-top:2.5em;vertical-align:top;font-size:1rem;color:goldenrod;white-space:nowrap}
 span.entry-pli {display:inline-block;width:0px;margin-top:-0.5em;vertical-align:top;font-size:1rem;color:gold;white-space:nowrap}
  
-t.unote[marker="3"] {background:darkmagenta;}
-t.unote[marker="2"] {background:rgb(145, 86, 15);}
-t.unote[marker="1"] {background:darkgreen;}
-span.marker3 {font-family:宋体,新細明體;border:darkmagenta 2px solid;}
-span.marker2 {font-family:宋体,新細明體;border:rgb(145, 86, 15)  2px solid;}
-span.marker1 {font-family:宋体,新細明體;border:darkgreen 2px solid;}
+t.unote[marker="1"] {background:rgb(145, 86, 15);}
+t.unote[marker="2"] {background:darkgreen;}
+t.unote[marker="3"] {background:rgb(92, 99, 0) }
+t.unote[marker="4"] {background:rgb(0, 95, 139);}
+t.unote[marker="5"] {background:darkmagenta;}
+span.marker1 {font-family:宋体,新細明體;border-top:rgb(145, 86, 15)  2px solid;}
+span.marker2 {font-family:宋体,新細明體;border-top:darkgreen 2px solid;}
+span.marker3 {font-family:宋体,新細明體;border-top:rgb(92, 99, 0) 2px solid;}
+span.marker4 {font-family:宋体,新細明體;border-top:rgb(0, 95, 139) 2px solid;}
+span.marker5 {font-family:宋体,新細明體;border-top:darkmagenta 2px solid;}
+
+t.linetofind {color:orangered;}
 /*
 .backlink[target] {
     cursor:pointer;
