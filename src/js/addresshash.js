@@ -44,8 +44,10 @@ export const loadaddress=async cb=>{
 
     const addrs_a=(a||[config.init_a||PATHSEP]).filter(it=>!!it);
     const addrs_b=(b||[config.init_b||PATHSEP]).filter(it=>!!it);
-
-    const pitakaNeeded=enumBasketInAddress(addrs_a.concat(addrs_b));
+    const addrs=addrs_a.concat(addrs_b);
+    addrs.push(config.init_a);
+    addrs.push(config.init_b);
+    const pitakaNeeded=enumBasketInAddress(addrs);
     cb(pitakaNeeded,config);
     for (let i=0;i<pitakaNeeded.length;i++){
         const ptk=await openBasket(pitakaNeeded[i]);

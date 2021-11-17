@@ -1,4 +1,3 @@
-import {addresses_a,addresses_b, addtab} from './addresses.js'
 import {copyAddress,getCursorAddress} from './address.js'
 window.onkeydown=evt=>{
     if (!evt || !evt.key) return;

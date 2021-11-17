@@ -50,7 +50,7 @@ $: ptk && usernotes && $usernotes[delta]  && refreshnote($usernotes[delta]);
 const addNote=note=>{
     const {marker,text,hook,br}=note;
     if (!hook) return;
-    const {x,w}=parseHook(hook,lineText() )
+    const {x,w}=parseHook(hook,onlytext);
     extra.push(new OffTag('unote',{
        hook,text,marker,br,x,y,ptk:ptk.name,loc,y:y||key}, 0,x,w))
 }
@@ -80,7 +80,7 @@ const onSelection=evt=>{//user note and highlight etc
 
 const click=evt=>{
     if (evt.button!==0) return;
-    setActiveline(addresses,y||key ,y0);
+    !nesting && setActiveline(addresses,y||key ,y0);
     if (evt.target.tagName=='T') {
         if (evt.target.classList.contains('e')) return;
         onSelection(evt);

@@ -46,7 +46,7 @@ onMount(async ()=>{
 		<div class='pitaka'>
 		{#if ptk[1]}
 		<span class='title'>{ptk[1].header.title} </span>
-		<span class='loadtime'>{ptk[1].loadtime}ms</span>
+		<!-- <span class='loadtime'>{JSON.stringify(ptk[1].loadtime)}ms</span> -->
 		<span class='description'>{ptk[1].header.description||''}
 		:{ptk[1].header.lastTextLine} build:{ptk[1].header.buildtime}
 		</span>
