@@ -1,6 +1,7 @@
 <script>
 import { getContext,createEventDispatcher } from 'svelte';
 import { settab,setActiveline } from './js/addresses';
+import {_,tosim} from './js/store.js';
 import LineFilter from './linefilter.svelte';
 import {PATHSEP} from 'pitaka';
 
@@ -31,18 +32,22 @@ const scrolltotocitem=evt=>{
 {#if showing || scrollStart<10 }
 <div  class="dropdownpanel">
     <LineFilter/>
+    {#key $tosim}
     {#each mulu as [level,name,itemy,addr] }
         <div class:upper={y0+scrollStart>itemy} class="item" 
             style={"padding-left:"+((level-1)*3)+"px;color:"+color(level,addr)}>
+        
         {#if addr}
-        <span class="external" lnk={addr.join(PATHSEP)} on:click={golink}>{name}
+        <span class="external" lnk={addr.join(PATHSEP)} on:click={golink}>{_(name)}
         →{caption(addr)}</span>
         {:else}
         <span 
-        {itemy} on:click={scrolltotocitem}>{name}</span>
+        {itemy} on:click={scrolltotocitem}>{_(name)}</span>
         {/if}
+        
         </div>
     {/each}
+    {/key}
 </div>
 {/if}
 

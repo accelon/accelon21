@@ -6,16 +6,22 @@ import { writable } from 'svelte/store';
 import Btn from './comps/button.svelte'
  
 const viewstore=getContext('viewstore');
-const store=writable($viewstore.filteron);
-$: $viewstore.filteron=!!$store;
+const tofindfilter=writable($viewstore.filteron);
+const notefilter=writable(false);
+const bookmarkfilter=writable(false);
+const bookmarksolidfilter=writable(false);
+$: $viewstore.filteron=!!$tofindfilter;
 const filterinput=()=>{
     $viewstore.linetofind=filterword;
-    $store=true;
+    $tofindfilter=true;
 }
 let filterword=$viewstore.linetofind||'';
 </script>
-<Btn {store} icon="filter"/>
+<Btn  store={bookmarkfilter} icon="bookmark"/>
+<Btn store={bookmarksolidfilter} icon="bookmarksolid"/>
+<Btn store={notefilter} icon="usernote"/>
+<Btn store={tofindfilter} icon="filter"/>
 <input class="tofind" bind:value={filterword} on:input={debounce(filterinput,250)} />
 <style>
-    .tofind {width:7em;padding-left:5px}
+    .tofind {width:6em;padding-left:5px}
 </style>

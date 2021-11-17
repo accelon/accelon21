@@ -8,6 +8,7 @@ import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
 import {saveBookmarks} from './js/bookmarks';
+import Icons from './comps/icons.js';
 import {getActivelineStore,setActiveline} from './js/addresses.js';
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
@@ -119,6 +120,13 @@ const toggleBookmark=evt=>{
     $bookmarks[delta]=bm;
     saveBookmarks(ptk,loc,$bookmarks);
 }
+const bookmarkicon=()=>{
+    if (!bookmarks)return '　';
+    const bm=$bookmarks[delta];
+    if (bm===1) return Icons.bookmark;
+    else if (bm===2) return Icons.bookmarksolid;
+    return '　';
+}
 </script>
 <div class="linetext" class:activeline={$activeline===key} on:click={click}>
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
@@ -133,6 +141,11 @@ close.name 存在，則是該標籤的終點。屬性在 sntp.open
 //--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
    on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
 {/if}{/each}
-<span on:click={toggleBookmark} class={'bookmark bookmark'+($bookmarks&&$bookmarks[delta])}></span>
+<span class='bm' on:click={toggleBookmark} >{@html bookmarkicon($bookmarks)}</span>
 </div>
+
+<style>
+    .bm {float:right;fill:gray;cursor:pointer}
+    .bm:hover {fill:var(--highlight);background:gray;}
+</style>
 

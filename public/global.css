@@ -7,7 +7,8 @@
 	--highlight0:limegreen;
 	--highlight1:rgb(255, 146, 146);
 	--hover: rgb(167, 255, 167);
-	--button-unselected : #555; 
+	--button-disabled : #333; 
+	--button-unselected : #666; 
 	--button-selected: #FFFFFF ; 
 	--panel-background: rgba(22,22,22,0.9);
 	--quotetext: limegreen;

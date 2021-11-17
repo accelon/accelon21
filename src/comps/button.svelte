@@ -36,7 +36,7 @@ const click=evt=>{
 		stroke: var(--highlight) ;
     }
     
-    .button.disabled {display:none; cursor:auto;fill:none;stroke:var(--button-unselected) }
-    .button.disabled:hover {fill:none; stroke: var(--button-unselected)}
+    .button.disabled { cursor:auto;fill:var(--button-disabled);stroke:var(--button-disabled) }
+    .button.disabled:hover {fill:var(--button-disabled); stroke: var(--button-disabled)}
     .button:hover {color:var(--hover); fill:var(--hover);stroke:var(--hover);}
 </style>
