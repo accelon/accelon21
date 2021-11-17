@@ -1,15 +1,14 @@
 <script>
-import { getContext,createEventDispatcher } from 'svelte';
+import { getContext } from 'svelte';
 import {tosim,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
 import {bestEntries,PATHSEP} from 'pitaka';
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
-
 import {saveNote} from './js/usernotes';
-
-const dispatch = createEventDispatcher()
+import {saveBookmarks} from './js/bookmarks';
+import {getActivelineStore,setActiveline} from './js/addresses.js';
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
 export let y=0   //優先權較高
@@ -25,11 +24,13 @@ export let loc='' ; //location of the page
 export let childcount=0;
 export let backlinks=[];
 export let usernotes=null; // this is a store created by addresses.js
+export let bookmarks=null; // this is a store created by addresses.js
 export let q=''; //the quote text
 export let hook='';
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
-let extra=[];
+
 const addresses=getContext('addresses');
+let extra=[], activeline=getActivelineStore(addresses);
 
 const lineText=()=>text||(ptk&&ptk.getLine(y||key));
 $: onlytext=parseOfftextLine(lineText())[0];
@@ -42,8 +43,9 @@ const refreshnote=()=>{
     $usernotes[delta].forEach(addNote);
     sortExtra();
 }
-$: extra=decoratePage(ptk,onlytext, {backlinks,hook,linetofind});
+$: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind});
 $: ptk && usernotes && $usernotes[delta]  && refreshnote($usernotes[delta]);
+
 
 const addNote=note=>{
     const {marker,text,hook,br}=note;
@@ -73,15 +75,12 @@ const update=({detail})=>{
 
 const onSelection=evt=>{//user note and highlight etc
     const {hook,sel,x,y}=getTextHook(ptk,evt);
-    cursorAddress.set({ptk,sel,loc,x,y,hook,usernotes,delta});
+    cursorAddress.set({ptk,sel,loc,x,y,hook,usernotes,bookmarks,delta});
 }
 
-const lineClick=dy=>{
-    dispatch('activeline',dy);
-}
 const click=evt=>{
     if (evt.button!==0) return;
-    lineClick((y||key)-y0);
+    setActiveline(addresses,y||key);
     if (evt.target.tagName=='T') {
         if (evt.target.classList.contains('e')) return;
         onSelection(evt);
@@ -109,8 +108,19 @@ const click=evt=>{
 const closelabel=()=>{
     extra=extra.filter(i=>i.name!=='embed');
 }
+const toggleBookmark=evt=>{
+    let bm=$bookmarks[delta];
+    if (!bm) {
+        bm=1;
+    } else {
+        bm++;
+    }
+    if (bm>2) bm=0;
+    $bookmarks[delta]=bm;
+    saveBookmarks(ptk,loc,$bookmarks);
+}
 </script>
-<div class="linetext" class:active on:click={click}>
+<div class="linetext" class:activeline={$activeline===key} on:click={click}>
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 
@@ -123,9 +133,6 @@ close.name 存在，則是該標籤的終點。屬性在 sntp.open
 //--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
    on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
 {/if}{/each}
+<span on:click={toggleBookmark} class={'bookmark bookmark'+$bookmarks[delta]}></span>
 </div>
 
-<style>
-    .linetext {padding-top:0.5em;line-height:1.8}
-    .active {background:var(--activeline)}
-</style>

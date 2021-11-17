@@ -1,6 +1,6 @@
 <script>
 import { getContext,createEventDispatcher } from 'svelte';
-import { settab } from './js/addresses';
+import { settab,setActiveline } from './js/addresses';
 import LineFilter from './linefilter.svelte';
 import {PATHSEP} from 'pitaka';
 
@@ -22,7 +22,8 @@ const golink=evt=>{
     settab( addresses,{loc:lnk}, {newtab:evt.ctrlKey});
 }
 const scrolltotocitem=evt=>{
-    const y=evt.target.attributes.itemy.value;
+    const y=parseInt(evt.target.attributes.itemy.value);
+    setActiveline(addresses, y);
     dispatch('scrollTo',{y});
 }
 </script>

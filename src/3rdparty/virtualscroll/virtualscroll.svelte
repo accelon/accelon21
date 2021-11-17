@@ -147,32 +147,33 @@
     /**
      *
      * @param index {number}
+     * @param smooth {boolean}
      */
     export function scrollToIndex(index,smooth=false) {
         if (!data.length)return;
-        if (index >= data.length - 1) {
-            scrollToBottom();
-        } else {
-            if (smooth) {
-                const clientSize = getClientSize();
-                let currentoffset = root[directionKey];
-                const targetoffset = virtual.getOffset(index);
-                const increment = targetoffset>currentoffset?clientSize:-clientSize;
-                let maxscroll= Math.floor(Math.abs(currentoffset-targetoffset) /clientSize);
-                const timer=setInterval(()=>{
-                    const i=getTopIndex(clientSize);
-                    if (maxscroll<1 || Math.abs(i-index)<2) {
-                        scrollToOffset(virtual.getOffset(index));//final adjustment
-                        clearInterval(timer);
-                        return;
-                    }
-                    maxscroll--;
-                    currentoffset+=increment;
-                    scrollToOffset(currentoffset);
-                },1);
+        if (smooth) { // scrolling page-by-page and stop at percise position
+            const clientSize = getClientSize();
+            const timer=setInterval(()=>{
+                const range=virtual.getRange();
+                const target=virtual.getOffset(index);
+                const start=virtual.getOffset(range.start);
+                const end=virtual.getOffset(range.end);
+                if (target>end) {
+                    scrollToOffset(end+clientSize);
+                } else if (start>target){
+                    scrollToOffset(start-clientSize);
+                } else {
+                    scrollToOffset( target - 30);//final adjustment
+                    clearInterval(timer);
+                    return;
+                }
+            },5);
+        } else { //original scrolling
+            if (index >= data.length - 1) {
+                scrollToBottom();
             } else {
                 const offset = virtual.getOffset(index);
-                scrollToOffset(offset)
+                scrollToOffset(offset);
             }
         }
     }

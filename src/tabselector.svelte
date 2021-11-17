@@ -14,31 +14,24 @@ const moveTop=idx=>{
     addrs.unshift(top);
     addresses.set(addrs);
 }
-const moveOpposite=evt=>{
+const copyOpposite=evt=>{
     const opposite=getOppositeAddresses(addresses);
     const addrs=$addresses;
     if (addrs[0]===PATHSEP) return;
-    const top=addrs.splice(0,1)[0];
     const newopposite=get(opposite)
-    newopposite.unshift(top);
+    newopposite.unshift(addrs[0]);
     opposite.set(newopposite);
-    if (!addrs.length) addrs.push(PATHSEP)
-    addresses.set(addrs);
 }
 </script>
 <HumanAddr address={$addresses[0]} onclick={()=>$selectorShown=!$selectorShown}/>
 {#if $selectorShown}
-<div class="pulldown">
-    {#each $addresses as address,idx}
+<div class="tabselector">
+    {#each $addresses as address,idx (idx+address)}
     {#if idx===0 && address!==PATHSEP} 
-        <div><HumanAddr {address} onclick={moveOpposite} caption={getside()=='a'?'⭆':'⭅'}/></div>
+        <div><HumanAddr {address} onclick={copyOpposite} caption={getside()=='a'?'⭆':'⭅'}/></div>
     {:else}
     <div><HumanAddr {address}  onclick={()=>moveTop(idx)}/></div>
     {/if}
     {/each}
 </div>
 {/if}
-<style>
-    .pulldown {position:absolute;background:var(--menubackground);
-        box-shadow: 0 0 10px ;min-height:5em;min-width:10em;max-height: 15em;overflow-y:scroll}    
-</style>

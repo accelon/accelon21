@@ -2,11 +2,14 @@ import {getContext} from 'svelte'
 import {writable,get} from 'svelte/store'
 import {parsePointer ,serializePointer} from 'pitaka/offtext';
 import {getUserNotes} from './usernotes.js'
+import {getBookmarks} from './bookmarks.js'
 import {getUserData,setUserData} from './userdata.js';
 import {PATHSEP } from 'pitaka';
 
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
+export const activeline_a=writable(0);
+export const activeline_b=writable(1);
 
 export const userdata=writable({});
 export const selectorShown=writable(false);
@@ -33,6 +36,7 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy=0},store)=>{
     }
 
     const usernotes=writable(getUserNotes(ptk,loc));
+    const bookmarks=writable(getBookmarks(ptk,loc));
     const backlinks=ptk.getBacklinks(loc);
 
     const keyeditem={};
@@ -47,20 +51,19 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy=0},store)=>{
     items.push({text:'　',key:'end'});//workaround
 
     // const userdata=getUserData(vstate.name,vstate.loc)
-    const out={items,backlinks,ptk,loc,mulu,y0,criteria,usernotes,dy};
+    const out={items,backlinks,ptk,loc,mulu,y0,criteria,usernotes,bookmarks,dy};
     store.set(out)
 }
 
-export const setDy=(addresses=addresses_b,newdy=0)=>{
-    const oldaddr=get(addresses)[0];
-    let {basket,hook,loc,dy}=parsePointer(oldaddr);
-    const addr=serializePointer(basket, loc, hook, newdy);
-    if (newdy!==dy) {
-        const addrs=get(addresses);
-        addrs[0]=addr;
-        // addresses.set(addrs); will trigger pitakaviewer refresh
-    }
+export const setActiveline=(addresses=addresses_b,newy=0)=>{
+    if (addresses==addresses_a) {
+        activeline_a.set( newy);
+    } else {
+        activeline_b.set( newy);
+    } 
 }
+export const getActivelineStore=(addresses=addresses_b)=>addresses==addresses_a?activeline_a:activeline_b;
+
 export const settab=(addresses,addr,{newtab=false}={})=>{
     if (typeof addr!=='string' && addr.loc!==PATHSEP) {
         const oldaddr=get(addresses)[0];

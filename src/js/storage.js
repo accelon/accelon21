@@ -6,5 +6,5 @@ export const getItem=(key,cb)=>{
 
 export const setItem=(key,v,cb)=>{
     localStorage.setItem(APP_PREFIX+key,v);
-    cb&& cb();
+    cb&&cb(v);
 }

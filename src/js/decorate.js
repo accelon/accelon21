@@ -1,5 +1,6 @@
 import {OffTag,parseHook} from 'pitaka/offtext';
-export const decoratePage=(ptk,linetext,{backlinks,hook,linetofind})=>{
+import {diffCJK,trimPunc} from 'pitaka/utils';
+export const decoratePage=(ptk,linetext,{backlinks,y,q, hook,linetofind})=>{
     const extra=[];
     if (!ptk || !linetext) return extra;
     if (backlinks && backlinks.length) { //convert backlink hook to tag
@@ -19,7 +20,7 @@ export const decoratePage=(ptk,linetext,{backlinks,hook,linetofind})=>{
         }
     }
     if (hook) {
-        extra.push( new OffTag('cite',{},hook.y-y,hook.x,hook.w) );
+        extra.push( new OffTag('cite',{},0,hook.x,hook.w) );
         const D=diffCJK(trimPunc(q),linetext,hook.x,hook.w)
         let x=hook.x;
         D[0].forEach(d=>{

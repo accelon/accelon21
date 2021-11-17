@@ -12,8 +12,7 @@
 	--panel-background: rgba(22,22,22,0.9);
 	--quotetext: limegreen;
 	--splitter: #131313;
-	--menubackground: rgba(86, 92, 2, 0.9);
-	--activeline: rgb(41, 37, 10);
+	--menubackground: rgba(92, 76, 2, 0.9);
 }
 
 html, body {
@@ -134,3 +133,17 @@ button:focus {
 .bookid {font-size:80%;font-weight:bold;font-family: Courier;color:goldenrod}
 .clickable {cursor:pointer}
 .clickable:hover {text-decoration:underline}
+
+.bookmark {width:1rem;height:1rem;float:right;cursor:pointer;margin-top:0.5em;background:transparent}
+.bookmark.bookmark1 {width:0;height:0;border-left:1rem solid transparent;
+	border-bottom: 1rem solid var(--button-unselected)} 
+.bookmark.bookmark2 {width:0;height:0;border-left:1rem solid transparent;
+	border-bottom: 1rem solid goldenrod;}
+.bookmark:hover{background:var(--button-selected);border-top-left-radius: 1rem;}
+
+
+.tabselector {margin-left:1.5em;padding-left:4px;position:absolute;background:var(--menubackground);
+	box-shadow: 1 5 10px ;min-height:5em;min-width:10em;max-height: 15em;overflow-y:scroll}  
+
+.linetext {padding-left:6px;padding-top:0.5em;line-height:1.8}
+.activeline {padding-left:2px;border-left:4px dotted gray}

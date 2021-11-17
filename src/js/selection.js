@@ -2,6 +2,7 @@ const ENDINGCHARS= /[^\u3fff-\u9fff\dA-Za-z]/ ;
 import {parseOfftextLine, makeHook } from 'pitaka/offtext'
 
 export const getTextHook=(ptk,evt)=>{
+    if (!ptk)return{}
     const selection=getSelection();
     const an=selection.anchorNode;
     let ele;
@@ -21,7 +22,7 @@ export const getTextHook=(ptk,evt)=>{
 
     const x=parseInt(ele.attributes.x.value)+offset;
     const y=parseInt(ele.attributes.y.value);
-    const [linetext]=parseOfftextLine(ptk.getLine(y));
+    const [linetext]=parseOfftextLine(ptk.getLine(y)||'');
 
     if (w+x>linetext.length) {
         w=linetext.length-x;

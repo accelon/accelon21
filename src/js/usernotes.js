@@ -1,4 +1,4 @@
-const NOTEPREFIX ='ANOTE.';
+const NOTEPREFIX ='ACC21NOTE.';
 import {PATHSEP, useBasket} from 'pitaka'
 export const getUserNotes=(ptk,loc)=>{
     const notes=localStorage.getItem(NOTEPREFIX+ptk.name+PATHSEP+loc)||'{}';
@@ -11,17 +11,6 @@ export const getUserNotes=(ptk,loc)=>{
     } catch(e) {
         return {};
     }
-    /*
-    if (ptk.name==='cb-t' && '1509/43') {
-        return {
-            {
-            "6":[{"hook":"菩/蜜", "text":"個人筆記","marker":1}],
-            "7":[{"hook":"須/提", "text":"xyz","marker":2}],
-            "8":[{"hook":"羼/蜜", "text":"123","marker":3}]}
-        }
-    }
-    */
-    return {};
 }
 const setUserNotes=(ptk,loc,notes)=>{
     localStorage.setItem(NOTEPREFIX+ptk.name+PATHSEP+loc,JSON.stringify(notes));

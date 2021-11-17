@@ -2,13 +2,14 @@
 import { useBasket } from 'pitaka';
 import { getContext, setContext} from 'svelte';
 import { renderer } from './js/store.js';
-import {setLoc,setDy, getActiveline} from './js/addresses.js'
+import {setLoc,} from './js/addresses.js'
 import {scrollToHook} from './js/hook.js';
 import VirtualScroll from './3rdparty/virtualscroll'
 import ControlBar from './controlbar.svelte'
 import { writable } from 'svelte/store';
 import { parsePointer } from 'pitaka/offtext';
 import {matchTofind} from './js/criteria.js';
+import {getActivelineStore} from './js/addresses.js';
 export let address='',side=0;
 export let visible=false;
 
@@ -17,7 +18,7 @@ const viewstore=writable({renderer,criteria:{},linetofind:'',filteron:false});
 setContext('viewstore',viewstore);
 const addresses=getContext('addresses');
 let {basket,loc,dy,hook,y0} =parsePointer(address);
-
+const activeline=getActivelineStore(addresses);
 $: ptk = useBasket(basket);
 $: res = parsePointer(address) ; if (res) {basket=res.basket; loc=res.loc;}
 // $: vs&&dy&&vs.scrollToIndex(dy)
@@ -25,13 +26,14 @@ $: res = parsePointer(address) ; if (res) {basket=res.basket; loc=res.loc;}
 $: ptk&&visible?setLoc({ptk,loc,hook,y0,dy},viewstore):
     setTimeout(()=>setLoc({ptk,loc,hook,y0,dy},viewstore),1000);
 $: usernotes=$viewstore.usernotes;
+$: bookmarks=$viewstore.bookmarks;
 $: y0=$viewstore.y0; 
 $: linetofind =$viewstore.linetofind;
 $: items=matchTofind(ptk,$viewstore.items,$viewstore.linetofind,$viewstore.filteron)||[];
-$: if (vs && activeline&&items.length&&!$viewstore.filteron && $viewstore.linetofind) {
+$: if (vs && items.length&&!$viewstore.filteron && $viewstore.linetofind) {
     vs.scrollToIndex(0,$viewstore.filteron);
     setTimeout(()=>{
-        scrollToY(activeline); 
+        scrollToY( $activeline ); 
     },10);
 }
 
@@ -54,11 +56,7 @@ const scrollTo=({detail})=>{
         vs.scrollToIndex(y-$viewstore.y0,true);
     }
 }
-let activeline=getActiveline(addresses);
-const onactiveline=({detail})=>{
-    setDy(addresses,detail);
-    activeline=detail+y0;
-}
+
 </script>
 <div class="container">
     <div><ControlBar  {scrollStart} {ptk} on:scrollTo={scrollTo}/></div>
@@ -67,9 +65,7 @@ const onactiveline=({detail})=>{
         <svelte:component this={$renderer._toc} {ptk} {...data}/>
         {:else}
         <svelte:component this={$renderer[data.renderer]||$renderer[ptk.format]||$renderer.default}
-            on:activeline={onactiveline}
-            active={activeline==data.key}
-            {...data} {y0} {usernotes} {linetofind} {loc} {ptk} {side}
+            {...data} {y0} {usernotes} {bookmarks} {linetofind} {loc} {ptk} {side}
         />
         {/if}
     </VirtualScroll>
