@@ -32,7 +32,7 @@ export let ptk=null;  //if ptk is missing, text might come from various pitaka, 
 const addresses=getContext('addresses');
 let extra=[], activeline=getActivelineStore(addresses);
 
-const lineText=()=>text||(ptk&&ptk.getLine(y||key));
+const lineText=()=>text||(ptk&&ptk.getLine(y||key))||'';
 $: onlytext=parseOfftextLine(lineText())[0];
 const sortExtra=()=>{
     extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
@@ -80,7 +80,7 @@ const onSelection=evt=>{//user note and highlight etc
 
 const click=evt=>{
     if (evt.button!==0) return;
-    setActiveline(addresses,y||key);
+    setActiveline(addresses,y||key ,y0);
     if (evt.target.tagName=='T') {
         if (evt.target.classList.contains('e')) return;
         onSelection(evt);
@@ -133,6 +133,6 @@ close.name 存在，則是該標籤的終點。屬性在 sntp.open
 //--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
    on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
 {/if}{/each}
-<span on:click={toggleBookmark} class={'bookmark bookmark'+$bookmarks[delta]}></span>
+<span on:click={toggleBookmark} class={'bookmark bookmark'+($bookmarks&&$bookmarks[delta])}></span>
 </div>
 

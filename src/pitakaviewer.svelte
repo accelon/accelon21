@@ -2,8 +2,7 @@
 import { useBasket } from 'pitaka';
 import { getContext, setContext} from 'svelte';
 import { renderer } from './js/store.js';
-import {setLoc,} from './js/addresses.js'
-import {scrollToHook} from './js/hook.js';
+import {setLoc} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
 import ControlBar from './controlbar.svelte'
 import { writable } from 'svelte/store';
@@ -13,28 +12,40 @@ import {getActivelineStore} from './js/addresses.js';
 export let address='',side=0;
 export let visible=false;
 
-let vs,ptk='';
+let vs,ptk='',basket,loc,hook,dy,y0;
 const viewstore=writable({renderer,criteria:{},linetofind:'',filteron:false});
 setContext('viewstore',viewstore);
 const addresses=getContext('addresses');
-let {basket,loc,dy,hook,y0} =parsePointer(address);
+// let {basket,loc,dy,hook,y0} =parsePointer(address);
+
 const activeline=getActivelineStore(addresses);
-$: ptk = useBasket(basket);
-$: res = parsePointer(address) ; if (res) {basket=res.basket; loc=res.loc;}
-// $: vs&&dy&&vs.scrollToIndex(dy)
+$: {const res = parsePointer(address) ; if (res) {
+    basket=res.basket; 
+    ptk = useBasket(basket);
+    loc=res.loc; 
+    dy=res.dy;
+}}
 
 $: ptk&&visible?setLoc({ptk,loc,hook,y0,dy},viewstore):
     setTimeout(()=>setLoc({ptk,loc,hook,y0,dy},viewstore),1000);
 $: usernotes=$viewstore.usernotes;
 $: bookmarks=$viewstore.bookmarks;
-$: y0=$viewstore.y0; 
 $: linetofind =$viewstore.linetofind;
+$: if(ptk&&vs&&($viewstore.y0)) { //initial scroll
+    if ($viewstore.y0!==y0) {
+        y0=$viewstore.y0; 
+        activeline.set(y0+dy); //dy is taken from url, use setActiveline to update url
+        if (vs.getIndexOffset(dy) > vs.getOffset()+vs.getClientSize()) {
+            setTimeout(()=>scrollToY($activeline),0);
+            console.log('scrolltoY')
+        }
+    }
+}
 $: items=matchTofind(ptk,$viewstore.items,$viewstore.linetofind,$viewstore.filteron)||[];
-$: if (vs && items.length&&!$viewstore.filteron && $viewstore.linetofind) {
-    vs.scrollToIndex(0,$viewstore.filteron);
-    setTimeout(()=>{
+$: if (vs && items.length&&!$viewstore.filteron) {
+    if ($viewstore.linetofind){ //come back from filter mode
         scrollToY( $activeline ); 
-    },10);
+    }
 }
 
 

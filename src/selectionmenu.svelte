@@ -35,7 +35,7 @@ const newnote=()=>{
     saveNote({ptk,y,loc,...note},'add');
 }
 </script>
-<div bind:this={menuEle} class="menu" class:visible={!!selectedText}>
+<div bind:this={menuEle} class="selectionmenu" class:visible={!!selectedText}>
 <Btn icon="usernote" onclick={newnote}/>
 <Btn icon="search"/>
 <Btn icon="filter"/>
@@ -43,8 +43,6 @@ const newnote=()=>{
 </div>
 
 <style>
-    .menu {position:absolute;z-index: 999;
-        -webkit-user-select: none; border-radius: 5px;
-        background:var(--menubackground);visibility: hidden;}
+
     .visible {visibility: visible;}
 </style>

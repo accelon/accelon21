@@ -12,7 +12,7 @@
 	--panel-background: rgba(22,22,22,0.9);
 	--quotetext: limegreen;
 	--splitter: #131313;
-	--menubackground: rgba(92, 76, 2, 0.9);
+	--menubackground: rgba(92, 76, 2, 0.6);
 }
 
 html, body {
@@ -111,7 +111,9 @@ button:focus {
 
 
 
-
+.pitaka .title {font-family: 楷体,標楷體;}
+.pitaka .description {font-size:1rem;color:rgb(160, 144, 116)}
+.pitaka .loadtime {font-size:1rem;color:gold}
 .tabs {-webkit-user-select: none; background:var(--panel-background);overflow:hidden}
 .tab-content {
 		position: absolute;
@@ -128,6 +130,33 @@ button:focus {
   pointer-events: all;
 }
 
+  .lds-ring {	display: inline-block;	position: relative;	width: 1em; height: 1em;  }
+  .lds-ring div {
+	box-sizing: border-box;
+	display: block;
+	position: absolute;
+	width: 0.8em;
+	height: 0.8em;
+	margin: 4px;
+	border: 4px solid #cef;
+	border-radius: 50%;
+	animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	border-color: #cef transparent transparent transparent;
+  }
+  .lds-ring div:nth-child(1) {	animation-delay: -0.45s;  }
+  .lds-ring div:nth-child(2) {	animation-delay: -0.3s;  }
+  .lds-ring div:nth-child(3) {	animation-delay: -0.15s;  }
+  @keyframes lds-ring {
+	0% {	  transform: rotate(0deg);}
+	100% {	  transform: rotate(360deg);}
+  }
+.closetabbutton{padding-left:8px;padding-right:8px;cursor:pointer}
+/* /* .closetabbutton:after {content:'✕'} */
+.closetabbutton:hover:before {color:red;content:'✖';display:inline-block;width:0px} 
+
+.startbutton {margin-top:2em;font-size:150%;cursor:pointer;border-radius:
+	 1em;border:3px goldenrod solid;padding-left:10px;padding-right:10px}
+.startbutton:hover {background:gray}
 .hyperlink{cursor:pointer}
 .hyperlink:hover{ text-decoration:underline}
 .bookid {font-size:80%;font-weight:bold;font-family: Courier;color:goldenrod}
@@ -147,3 +176,7 @@ button:focus {
 
 .linetext {padding-left:6px;padding-top:0.5em;line-height:1.8}
 .activeline {padding-left:2px;border-left:4px dotted gray}
+
+.selectionmenu {position:absolute;z-index: 999;
+	-webkit-user-select: none; border-radius: 5px; padding-top:5px; padding-left:5px;
+	background:var(--menubackground);visibility: hidden;}

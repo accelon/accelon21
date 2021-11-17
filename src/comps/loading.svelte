@@ -1,1 +1,4 @@
-<div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+<script>
+import Icons from './icons.js'
+</script>
+<span>{@html Icons.rotatewheel}</span>

@@ -4,25 +4,25 @@ import {parsePointer ,serializePointer} from 'pitaka/offtext';
 import {getUserNotes} from './usernotes.js'
 import {getBookmarks} from './bookmarks.js'
 import {getUserData,setUserData} from './userdata.js';
-import {PATHSEP } from 'pitaka';
+import {PATHSEP,ADDRSEP } from 'pitaka';
 
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
 export const activeline_a=writable(0);
-export const activeline_b=writable(1);
+export const activeline_b=writable(0);
 
 export const userdata=writable({});
 export const selectorShown=writable(false);
-export const setLoc=async ({ptk,loc,y0,hook='',dy=0},store)=>{
+export const setLoc=async ({ptk,loc,y0,hook='',dy},store)=>{
     if (!ptk) ptk=get(store).ptk;
 
-    if (get(store).dy!==dy) {
-        const old=get(store);
-        // store.set({...old, dy});
-    }
     if (get(store).loc==loc && get(store).ptk===ptk) {
         return; //nothing to do
     }
+
+    const activelinestore=getActivelineStore(store);
+    activelinestore.set(dy||0);
+
     const items=ptk.fetchPage(loc);
     const criteria=get(store).criteria||{};
     
@@ -50,17 +50,43 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy=0},store)=>{
 
     items.push({text:'　',key:'end'});//workaround
 
-    // const userdata=getUserData(vstate.name,vstate.loc)
+
     const out={items,backlinks,ptk,loc,mulu,y0,criteria,usernotes,bookmarks,dy};
     store.set(out)
 }
-
-export const setActiveline=(addresses=addresses_b,newy=0)=>{
+const packAddresses=arr=>{
+    let prevbasket='';
+    const out=[];
+    for (let i=0;i<arr.length;i++) {
+        const {basket}=parsePointer(arr[i]);
+        if (prevbasket===basket) {
+            out.push(arr[i].substr(PATHSEP.length+basket.length+PATHSEP.length))
+        } else out.push(arr[i]); 
+        if (basket) prevbasket=basket;
+    }
+    if (out.length==1 && out[0]==PATHSEP) return '';
+    return out.join(ADDRSEP);
+}
+export const updateUrl=()=>{
+    const a=packAddresses(get(addresses_a));
+    const b=packAddresses(get(addresses_b));
+    window.location.hash=a?('a='+a):a + b?('&b='+b):'';
+}
+export const setActiveline=(addresses=addresses_b,newy=0,y0=0)=>{
+    const addrs=get(addresses);
+    const {basket,loc,dy}=parsePointer(addrs[0]);
+    const newdy=newy-y0;
+    if (newdy>=0&&newdy!==dy) {
+        const newptr=serializePointer(basket,loc,'',newdy);
+        addrs[0]=newptr;
+        // addresses.set(addrs); //this will trigger redraw
+        updateUrl();
+    }
     if (addresses==addresses_a) {
         activeline_a.set( newy);
     } else {
         activeline_b.set( newy);
-    } 
+    }
 }
 export const getActivelineStore=(addresses=addresses_b)=>addresses==addresses_a?activeline_a:activeline_b;
 

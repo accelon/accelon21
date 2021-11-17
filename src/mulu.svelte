@@ -23,7 +23,7 @@ const golink=evt=>{
 }
 const scrolltotocitem=evt=>{
     const y=parseInt(evt.target.attributes.itemy.value);
-    setActiveline(addresses, y);
+    setActiveline(addresses, y,y0);
     dispatch('scrollTo',{y});
 }
 </script>

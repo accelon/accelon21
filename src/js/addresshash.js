@@ -1,7 +1,7 @@
-import { openBasket, PATHSEP, ADDRSEP} from 'pitaka';
+import { openBasket, PATHSEP} from 'pitaka';
 import { parsePointer } from 'pitaka/offtext';
-import { addresses_a, addresses_b } from './addresses';
-import { get } from 'svelte/store';
+import { addresses_a, addresses_b ,updateUrl} from './addresses';
+
 const completeAddress=arr=>{
     let prevbasket='';
     for (let i=0;i<arr.length;i++) {
@@ -11,23 +11,16 @@ const completeAddress=arr=>{
         } else prevbasket=basket;
     }
 }
-const packAddresses=arr=>{
-    let prevbasket='';
-    const out=[];
-    for (let i=0;i<arr.length;i++) {
-        const {basket}=parsePointer(arr[i]);
-        if (prevbasket===basket) {
-            out.push(arr[i].substr(PATHSEP.length+basket.length+PATHSEP.length))
-        } else out.push(arr[i]); 
-        if (basket) prevbasket=basket;
-    }
-    if (out.length==1 && out[0]==PATHSEP) return '';
-    return out.join(ADDRSEP);
-}
-const updateUrl=()=>{
-    const a=packAddresses(get(addresses_a));
-    const b=packAddresses(get(addresses_b));
-    window.location.hash='a='+a+'&b='+b;
+
+const enumBasketInAddress=(arr)=>{
+    const pitakas={};
+    arr.forEach(ptr=>{
+        const {basket}=parsePointer(ptr);
+        if (!basket) return;
+        if (!pitakas[basket]) pitakas[basket]=0;
+        pitakas[basket]++;
+    });
+    return Object.keys(pitakas);
 }
 const addressesFromUrl=()=>{
     let hash=window.location.hash;
@@ -41,16 +34,8 @@ const addressesFromUrl=()=>{
     completeAddress(b);
     return {a,b}
 }
-const pitakaInAddress=(arr)=>{
-    const pitakas={};
-    arr.forEach(ptr=>{
-        const {basket}=parsePointer(ptr);
-        if (!basket) return;
-        if (!pitakas[basket]) pitakas[basket]=0;
-        pitakas[basket]++;
-    });
-    return Object.keys(pitakas);
-}
+
+
 export const loadaddress=async cb=>{
     const config=window.accelon21_configuration;
     if (!config)return;
@@ -60,7 +45,7 @@ export const loadaddress=async cb=>{
     const addrs_a=(a||[config.init_a||PATHSEP]).filter(it=>!!it);
     const addrs_b=(b||[config.init_b||PATHSEP]).filter(it=>!!it);
 
-    const pitakaNeeded=pitakaInAddress(addrs_a.concat(addrs_b));
+    const pitakaNeeded=enumBasketInAddress(addrs_a.concat(addrs_b));
     cb(pitakaNeeded,config);
     for (let i=0;i<pitakaNeeded.length;i++){
         const ptk=await openBasket(pitakaNeeded[i]);

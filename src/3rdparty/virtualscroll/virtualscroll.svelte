@@ -254,7 +254,10 @@
         emitEvent(offset, clientSize, scrollSize, event)
     }
 
-    function getTopIndex(clientSize,range){
+    export function getIndexOffset(idx){
+        return virtual.getIndexOffset(idx);
+    }
+    export function getTopIndex(clientSize,range){
         if (!clientSize) clientSize = getClientSize();
         if (!range) range = virtual.getRange();
         let index=range.end;
