@@ -4,7 +4,7 @@ import {parsePointer} from 'pitaka/offtext';
 import {_,tosim} from '../js/store.js';
 export let onclick=null;
 export let caption='';
-
+export let showjuan=false;
 export let address='';
 const click=(evt)=>{
     onclick(evt)
@@ -16,5 +16,5 @@ $: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc))||[];
 <span title={address}>
 {#key $tosim}
 <span class='clickable' on:click={click}>
-{#each toctree as tocnode,idx}<span>{idx?PATHSEP:''}{_(tocnode.name)}</span>{/each}<span>{c?PATHSEP+c:''}{caption}</span></span>
+{#each toctree as tocnode,idx}<span>{idx?PATHSEP:''}{_(tocnode.name)}</span>{/each}<span>{c&&showjuan?PATHSEP+c:''}{caption}</span></span>
 {/key}</span>

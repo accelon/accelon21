@@ -7,7 +7,7 @@ const completeAddress=arr=>{
     for (let i=0;i<arr.length;i++) {
         const {basket}=parsePointer(arr[i]);
         if (!basket) {
-            if (prevbasket) arr[i]=PATHSEP+prevbasket+PATHSEP+arr[i];
+            if (prevbasket&&arr[i]!==PATHSEP) arr[i]=PATHSEP+prevbasket+PATHSEP+arr[i];
         } else prevbasket=basket;
     }
 }
@@ -51,28 +51,25 @@ const pitakaInAddress=(arr)=>{
     });
     return Object.keys(pitakas);
 }
-export const loadaddress=cb=>{
+export const loadaddress=async cb=>{
     const config=window.accelon21_configuration;
     if (!config)return;
-    const jobs=[];
-
+ 
     const {a,b}=addressesFromUrl();
 
     const addrs_a=(a||[config.init_a||PATHSEP]).filter(it=>!!it);
     const addrs_b=(b||[config.init_b||PATHSEP]).filter(it=>!!it);
 
     const pitakaNeeded=pitakaInAddress(addrs_a.concat(addrs_b));
-
-    pitakaNeeded.forEach(ptk=>{
-        jobs.push(openBasket(ptk))
-    })
+    cb(pitakaNeeded,config);
+    for (let i=0;i<pitakaNeeded.length;i++){
+        const ptk=await openBasket(pitakaNeeded[i]);
+        if (ptk) cb(pitakaNeeded,config);
+    }
     if (!config.advance) config.advance={};
-    Promise.all(jobs).then(()=>{
-        if (!config.advance.keepLog) console.clear();
-        addresses_a.set(addrs_a);
-        addresses_b.set(addrs_b);
-        addresses_b.subscribe(updateUrl);
-        addresses_a.subscribe(updateUrl);
-        cb&&cb(config);
-    });
+    if (!config.advance.keepLog) console.clear();
+    addresses_a.set(addrs_a);
+    addresses_b.set(addrs_b);
+    addresses_b.subscribe(updateUrl);
+    addresses_a.subscribe(updateUrl);
 }

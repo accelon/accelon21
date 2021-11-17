@@ -24,7 +24,9 @@ const scrollTo=({detail})=>{
 
 </script>
 <div class="controlbar">
-    <Btn icon='close' disabled={$viewstore.loc==='/'} onclick={()=>closetab(addresses)}/>
+    <span class='closetabbutton' on:click={()=>$viewstore.loc!=='/'&&closetab(addresses)}>
+        {$addresses.length}
+    </span>
     <TabSelector/>
     <TocBar/>
     <SearchBar/>

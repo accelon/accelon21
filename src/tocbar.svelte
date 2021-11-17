@@ -19,18 +19,11 @@ const go=({ctrlKey,detail})=>{
     const newloc=PATHSEP+ptk.name+PATHSEP+loc.replace(/\d+$/,detail);
     settab(addresses,newloc,{newtab:ctrlKey});
 }
-const gotoc=evt=>{
-    const ptr=evt.target.attributes.ptr.value;
-    settab(addresses,{loc:ptr, referer:loc},{newtab:evt.ctrlKey});
-}
 </script>
-
 
 {#if childcount>1}
 <InputNumber on:change={go} autofocus={true} {value} max={childcount} min="1" />
 {/if}
-
-
 <style>
 
 </style>

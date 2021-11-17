@@ -19,8 +19,10 @@ const copyOpposite=evt=>{
     const addrs=$addresses;
     if (addrs[0]===PATHSEP) return;
     const newopposite=get(opposite)
-    newopposite.unshift(addrs[0]);
-    opposite.set(newopposite);
+    if (newopposite[0]!==addrs[0]) {
+        newopposite.unshift(addrs[0]);
+        opposite.set(newopposite);
+    }
 }
 </script>
 <HumanAddr address={$addresses[0]} onclick={()=>$selectorShown=!$selectorShown}/>
@@ -28,9 +30,9 @@ const copyOpposite=evt=>{
 <div class="tabselector">
     {#each $addresses as address,idx (idx+address)}
     {#if idx===0 && address!==PATHSEP} 
-        <div><HumanAddr {address} onclick={copyOpposite} caption={getside()=='a'?'⭆':'⭅'}/></div>
+        <div><HumanAddr {address} showjuan={true} onclick={copyOpposite} caption={getside()=='a'?'⭆':'⭅'}/></div>
     {:else}
-    <div><HumanAddr {address}  onclick={()=>moveTop(idx)}/></div>
+    <div><HumanAddr {address} showjuan={true} onclick={()=>moveTop(idx)}/></div>
     {/if}
     {/each}
 </div>
