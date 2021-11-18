@@ -13,6 +13,7 @@ export let address='',side=0;
 export let visible=false;
 
 let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs;
+
 const vstore=writable({renderer,criteria:{},filteron:false,linetofind:''});
 const viewitems=writable({});
 setContext('vstore',vstore);
@@ -43,15 +44,16 @@ $: if(vscroll&&ptk&&($vstore.y0)) { //initial scroll
     }
 }
 $: viewitems.set( matchTofind(ptk,$vstore.items,$vstore.linetofind,$vstore.filteron)||[] );
-$: scrollToY( $activeline ,$vstore.filteron); 
+$: if (!$vstore.filteron) scrollToY( $activeline);
+$: if (vscroll&&!$vstore.filteron) vscroll.scrollToOffset(0,true); 
 
 let scrollStart=0;
 const scroll=(evt)=>{
     scrollStart=evt.detail.index;
 }
-const scrollToY=y=>{
-    if (!vscroll) return;
-    if (!$viewitems.length || $vstore.filteron) {
+const scrollToY=(y,force=false)=>{
+    if (!vscroll || ($vstore.filteron && !force) ) return;
+    if (!$viewitems.length) {
         vscroll.scrollToOffset(0) ;
         return;
     }
@@ -67,16 +69,11 @@ const scrollToY=y=>{
         }
     }
 }
-const scrollTo=({detail})=>{
-    if (detail.y) {
-        const y=parseInt(detail.y);
-        vscroll.scrollToIndex(y-$vstore.y0,true);
-    }
-}
+$vstore.scrollToY=scrollToY;
 
 </script>
 <div class="container">
-    <div><ControlBar  {scrollStart} {ptk} on:scrollTo={scrollTo}/></div>
+    <div><ControlBar  {scrollStart} {ptk}/></div>
     <VirtualScroll start={-1} bind:this={vscroll} keeps={30} data={$viewitems} key="key" let:data on:scroll={scroll}>
         {#if data.ptr}
         <svelte:component this={$renderer._toc} {ptk} {...data}/>

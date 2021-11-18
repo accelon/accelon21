@@ -7,10 +7,7 @@ import Mulu from './mulu.svelte';
 import TocMenu from './tocmenu.svelte';
 import TabSelector from './tabselector.svelte';
 import {closetab} from './js/addresses';
-import { createEventDispatcher } from 'svelte'
-const dispatch = createEventDispatcher()
 export let ptk
-
 export let scrollStart=0;
 const vstore=getContext('vstore');
 const addresses=getContext('addresses');
@@ -18,9 +15,6 @@ const addresses=getContext('addresses');
 $: mulu = $vstore.mulu || [];
 $: y0= $vstore.y0;
 
-const scrollTo=({detail})=>{
-    dispatch('scrollTo',detail);
-}
 
 </script>
 <div class="controlbar">
@@ -31,7 +25,7 @@ const scrollTo=({detail})=>{
     <TocBar/>
     <SearchBar/>
     {#if mulu.length}
-        <Mulu {mulu} {scrollStart} {y0} on:scrollTo={scrollTo}/>
+        <Mulu {mulu} {scrollStart} {y0}/>
     {:else}
         <TocMenu {scrollStart} {ptk}/>
     {/if}

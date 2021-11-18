@@ -7,9 +7,11 @@ import {PATHSEP} from 'pitaka';
 
 const dispatch = createEventDispatcher()
 const addresses=getContext('addresses');
+const vstore=getContext('vstore');
 export let mulu=[];
 export let scrollStart=0;
 export let y0=0;
+
 
 let color=(level,external)=>'hsl('+((level)*40) +' ,80%,'+(external?'35%)':'50%)') ;
 let caption=(lnk)=>{
@@ -24,7 +26,7 @@ const golink=evt=>{
 const scrolltotocitem=evt=>{
     const y=parseInt(evt.target.attributes.itemy.value);
     setActiveline(addresses, y,y0);
-    dispatch('scrollTo',{y});
+    $vstore.scrollToY(y);
 }
 let showmode=1; //0 = always off , 1=auto on , 2=always on
 
@@ -39,7 +41,7 @@ const setshowmode=evt=>{
 $: showing = (scrollStart<10 && showmode==1) || showmode==2;
 </script>
 <span class="hamburger" class:showing on:click={setshowmode}>☰</span>
-<LineFilter/>
+<LineFilter on:scrollTo={scrollTo}/>
 {#if showing }
 <div  class="dropdownpanel">
     {#key $tosim}
