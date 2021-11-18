@@ -1,5 +1,6 @@
 <script>
 import { getContext } from 'svelte';
+
 import {tosim,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
@@ -16,6 +17,7 @@ export let y=0   //優先權較高
 export let nesting=0;
 export let keywords=[];
 export let active=false;
+export let transition=()=>{};
 export let linetofind='';
 export let text=''
 export let id=''
@@ -128,7 +130,7 @@ const bookmarkicon=()=>{
     return '　';
 }
 </script>
-<div class="linetext" class:activeline={$activeline===key} on:click={click}>
+<div in:transition class="linetext" class:activeline={$activeline===key} on:click={click}>
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 

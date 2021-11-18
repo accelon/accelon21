@@ -1,5 +1,6 @@
 import {OffTag,parseHook} from 'pitaka/offtext';
 import {diffCJK,trimPunc} from 'pitaka/utils';
+import {fromSim, toSim } from 'lossless-simplified-chinese';
 export const decoratePage=(ptk,linetext,{backlinks,y,q, hook,linetofind})=>{
     const extra=[];
     if (!ptk || !linetext) return extra;
@@ -35,8 +36,14 @@ export const decoratePage=(ptk,linetext,{backlinks,y,q, hook,linetofind})=>{
     }
     if (linetofind) {
         const regex=new RegExp(linetofind,'ig');
+        
         const iter=linetext.matchAll(regex);
         for (let i of iter) {
+            extra.push(new OffTag('linetofind', {},0,i.index, i[0].length));
+        }
+        const regexsim=new RegExp(fromSim(linetofind),'ig');
+        const itersim=linetext.matchAll(regexsim);
+        for (let i of itersim) {
             extra.push(new OffTag('linetofind', {},0,i.index, i[0].length));
         }
     }

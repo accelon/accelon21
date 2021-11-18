@@ -14,7 +14,7 @@ export let id='';
 export let keywords=[];
 export let childcount=0;
 let value=childcount;
-const viewstore=getContext('viewstore');
+const vstore=getContext('vstore');
 
 $: nchild=ptk.getNChild(ptr,value-1) ;
 const addresses=getContext('addresses');
@@ -25,7 +25,7 @@ const setjuan=({detail})=>{
 const setkeyword=evt=>{
     const label=evt.target.attributes.label.value;
     const value=evt.target.innerText;
-    $viewstore.criteria={[label]:value};
+    $vstore.criteria={[label]:value};
 }
 </script>
 {#key $tosim}

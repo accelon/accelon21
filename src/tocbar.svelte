@@ -5,10 +5,10 @@ import {settab} from './js/addresses.js';
 import InputNumber from './comps/inputnumber.svelte';
 import { PATHSEP } from 'pitaka';
 
-const viewstore=getContext('viewstore');
+const vstore=getContext('vstore');
 
-$: ptk=$viewstore.ptk;
-$: loc=$viewstore.loc;
+$: ptk=$vstore.ptk;
+$: loc=$vstore.loc;
 
 const addresses=getContext('addresses');
 
@@ -16,7 +16,7 @@ $: childcount=ptk&&ptk.childCount(loc) ;
 $: value=loc&&parseInt(loc.match(/(\d+)$/)[1]);
 
 const go=({ctrlKey,detail})=>{
-    const newloc=PATHSEP+ptk.name+PATHSEP+loc.replace(/\d+$/,detail);
+    const newloc=loc.replace(/\d+$/,detail);
     settab(addresses,newloc,{newtab:ctrlKey});
 }
 </script>

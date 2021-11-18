@@ -1,4 +1,4 @@
-import { openBasket, PATHSEP} from 'pitaka';
+import { openBasket, PATHSEP, ADDRSEP} from 'pitaka';
 import { parsePointer } from 'pitaka/offtext';
 import { addresses_a, addresses_b ,updateUrl} from './addresses';
 
@@ -25,9 +25,10 @@ const enumBasketInAddress=(arr)=>{
 const addressesFromUrl=()=>{
     let hash=window.location.hash;
     if (hash[0]=='#') hash=hash.substr(1);
-    const params=new URLSearchParams(hash);
-    const a=(params.get('a')||'').split(';');
-    const b=(params.get('b')||'').split(';');
+    hash=decodeURI(hash);
+    const [addrs_a,addrs_b]=hash.split('#');
+    const a=addrs_a.split(ADDRSEP);
+    const b=(addrs_b||'').split(ADDRSEP);
     if (!a.length) a.push(PATHSEP);
     if (!b.length) b.push(PATHSEP);
     completeAddress(a);
@@ -44,6 +45,8 @@ export const loadaddress=async cb=>{
 
     const addrs_a=(a||[config.init_a||PATHSEP]).filter(it=>!!it);
     const addrs_b=(b||[config.init_b||PATHSEP]).filter(it=>!!it);
+    if (!addrs_a.length) addrs_a.push(config.init_a);
+    if (!addrs_b.length) addrs_b.push(config.init_b);
     const addrs=addrs_a.concat(addrs_b);
     addrs.push(config.init_a);
     addrs.push(config.init_b);

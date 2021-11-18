@@ -12,11 +12,12 @@ import {getActivelineStore} from './js/addresses.js';
 export let address='',side=0;
 export let visible=false;
 
-let vs,ptk='',basket,loc,hook,dy,y0;
-const viewstore=writable({renderer,criteria:{},linetofind:'',filteron:false});
-setContext('viewstore',viewstore);
+let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs;
+const vstore=writable({renderer,criteria:{},filteron:false,linetofind:''});
+const viewitems=writable({});
+setContext('vstore',vstore);
+setContext('viewitems',viewitems);
 const addresses=getContext('addresses');
-// let {basket,loc,dy,hook,y0} =parsePointer(address);
 
 const activeline=getActivelineStore(addresses);
 $: {const res = parsePointer(address) ; if (res) {
@@ -24,39 +25,38 @@ $: {const res = parsePointer(address) ; if (res) {
     ptk = useBasket(basket);
     loc=res.loc; 
     dy=res.dy;
+    locattrs=res.attrs||{};
+    $vstore.linetofind=locattrs.ltf||'';
 }}
 
-$: ptk&&visible?setLoc({ptk,loc,hook,y0,dy},viewstore):
-    setTimeout(()=>setLoc({ptk,loc,hook,y0,dy},viewstore),1000);
-$: usernotes=$viewstore.usernotes;
-$: bookmarks=$viewstore.bookmarks;
-$: linetofind =$viewstore.linetofind;
-$: if(ptk&&vs&&($viewstore.y0)) { //initial scroll
-    if ($viewstore.y0!==y0) {
-        y0=$viewstore.y0; 
+$: ptk&&visible?setLoc({ptk,loc,hook,y0,dy},vstore):
+    setTimeout(()=>setLoc({ptk,loc,hook,y0,dy},vstore),1000);
+$: usernotes=$vstore.usernotes;
+$: bookmarks=$vstore.bookmarks;
+$: if(vscroll&&ptk&&($vstore.y0)) { //initial scroll
+    if ($vstore.y0!==y0) {
+        y0=$vstore.y0; 
         activeline.set(y0+dy); //dy is taken from url, use setActiveline to update url
-        if (vs.getIndexOffset(dy) > vs.getOffset()+vs.getClientSize()) {
+        if (vscroll.getIndexOffset(dy) > vscroll.getOffset()+vscroll.getClientSize()) {
             setTimeout(()=>scrollToY($activeline),0);
-            console.log('scrolltoY')
         }
     }
 }
-$: items=matchTofind(ptk,$viewstore.items,$viewstore.linetofind,$viewstore.filteron)||[];
-$: if (vs && items.length&&!$viewstore.filteron) {
-    if ($viewstore.linetofind){ //come back from filter mode
+$: viewitems.set( matchTofind(ptk,$vstore.items,$vstore.linetofind,$vstore.filteron)||[] );
+$: if (vscroll && $viewitems.length&&!$vstore.filteron) {
+    if ($vstore.linetofind){ //come back from filter mode
         scrollToY( $activeline ); 
     }
 }
-
 
 let scrollStart=0;
 const scroll=(evt)=>{
     scrollStart=evt.detail.index;
 }
 const scrollToY=y=>{
-    for (let i=0;i<items.length;i++) {
-        if (items[i].key>=y) {
-            vs.scrollToIndex(i,true);
+    for (let i=0;i<$viewitems.length;i++) {
+        if ($viewitems[i].key>=y) {
+            vscroll.scrollToIndex(i,true);
             break;
         }
     }
@@ -64,19 +64,19 @@ const scrollToY=y=>{
 const scrollTo=({detail})=>{
     if (detail.y) {
         const y=parseInt(detail.y);
-        vs.scrollToIndex(y-$viewstore.y0,true);
+        vscroll.scrollToIndex(y-$vstore.y0,true);
     }
 }
 
 </script>
 <div class="container">
     <div><ControlBar  {scrollStart} {ptk} on:scrollTo={scrollTo}/></div>
-    <VirtualScroll start={-1} bind:this={vs} keeps={30} data={items} key="key" let:data on:scroll={scroll}>
+    <VirtualScroll start={-1} bind:this={vscroll} keeps={30} data={$viewitems} key="key" let:data on:scroll={scroll}>
         {#if data.ptr}
         <svelte:component this={$renderer._toc} {ptk} {...data}/>
         {:else}
-        <svelte:component this={$renderer[data.renderer]||$renderer[ptk.format]||$renderer.default}
-            {...data} {y0} {usernotes} {bookmarks} {linetofind} {loc} {ptk} {side}
+        <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
+            {...data} {y0} {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
         />
         {/if}
     </VirtualScroll>

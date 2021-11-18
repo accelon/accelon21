@@ -10,7 +10,6 @@ const addresses=getContext('addresses');
 export let mulu=[];
 export let scrollStart=0;
 export let y0=0;
-let showing=false;
 
 let color=(level,external)=>'hsl('+((level)*40) +' ,80%,'+(external?'35%)':'50%)') ;
 let caption=(lnk)=>{
@@ -20,18 +19,29 @@ let caption=(lnk)=>{
 }
 const golink=evt=>{
     const lnk=evt.target.attributes.lnk.value;
-    settab( addresses,{loc:lnk}, {newtab:evt.ctrlKey});
+    settab( addresses,{loc:lnk}, {newtab:true});
 }
 const scrolltotocitem=evt=>{
     const y=parseInt(evt.target.attributes.itemy.value);
     setActiveline(addresses, y,y0);
     dispatch('scrollTo',{y});
 }
+let showmode=1; //0 = always off , 1=auto on , 2=always on
+
+const setshowmode=evt=>{
+    if (showing && showmode==1) {
+        showmode=0;//user want to turn off
+    } else if (!showing) {
+        if (scrollStart<10) showmode=1;
+        else showmode=2; 
+    } else showmode=1;
+}
+$: showing = (scrollStart<10 && showmode==1) || showmode==2;
 </script>
-<span class="hamburger" class:showing on:click={()=>showing=!showing}>☰</span>
-{#if showing || scrollStart<10 }
+<span class="hamburger" class:showing on:click={setshowmode}>☰</span>
+<LineFilter/>
+{#if showing }
 <div  class="dropdownpanel">
-    <LineFilter/>
     {#key $tosim}
     {#each mulu as [level,name,itemy,addr] }
         <div class:upper={y0+scrollStart>itemy} class="item" 

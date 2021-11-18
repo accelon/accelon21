@@ -1,27 +1,34 @@
 <script>
+import { parsePointer } from 'pitaka/offtext';
+
 import { debounce } from 'pitaka/utils';
 
 import {getContext} from 'svelte';
 import { writable } from 'svelte/store';
 import Btn from './comps/button.svelte'
- 
-const viewstore=getContext('viewstore');
-const tofindfilter=writable($viewstore.filteron);
+import {setActiveline, setLocAttrs} from './js/addresses.js'
+
+const vstore=getContext('vstore');
+const addresses=getContext('addresses');
+const tofindfilter=writable($vstore.filteron);
 const notefilter=writable(false);
 const bookmarkfilter=writable(false);
 const bookmarksolidfilter=writable(false);
-$: $viewstore.filteron=!!$tofindfilter;
+$: {$vstore.filteron=!!$tofindfilter ; setActiveline(addresses,0)};
+let input;
 const filterinput=()=>{
-    $viewstore.linetofind=filterword;
+    setLocAttrs(addresses,{ltf:linetofind});
     $tofindfilter=true;
+    $vstore.linetofind=linetofind;
 }
-let filterword=$viewstore.linetofind||'';
+
+let linetofind=parsePointer($addresses[0]).attrs.ltf;
 </script>
 <Btn  store={bookmarkfilter} icon="bookmark"/>
 <Btn store={bookmarksolidfilter} icon="bookmarksolid"/>
 <Btn store={notefilter} icon="usernote"/>
 <Btn store={tofindfilter} icon="filter"/>
-<input class="tofind" bind:value={filterword} on:input={debounce(filterinput,250)} />
+<input bind:this={input} class="tofind" bind:value={linetofind} on:input={debounce(filterinput,250)} />
 <style>
     .tofind {width:6em;padding-left:5px}
 </style>

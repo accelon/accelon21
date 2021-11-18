@@ -3,7 +3,7 @@ import {cursor} from './js/store.js'
 import StateBtn from './comps/statebutton.svelte';
 import {debounce} from 'pitaka/utils'
 import { getContext } from 'svelte';
-const viewstore=getContext('viewstore');
+const vstore=getContext('vstore');
 export let ptk;
 let history=[];
 let prevw='',prevcw='';
@@ -46,7 +46,7 @@ const inputSearch=(m)=>{
     items=res.map((item,idx)=>{
         return {idx,key:item.nth, ...item}
     });
-    viewstore.set({items});
+    vstore.set({items});
 }
 
 const input=debounce(()=>{

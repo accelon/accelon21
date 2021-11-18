@@ -12,11 +12,11 @@ const dispatch = createEventDispatcher()
 export let ptk
 
 export let scrollStart=0;
-const viewstore=getContext('viewstore');
+const vstore=getContext('vstore');
 const addresses=getContext('addresses');
 
-$: mulu = $viewstore.mulu || [];
-$: y0= $viewstore.y0;
+$: mulu = $vstore.mulu || [];
+$: y0= $vstore.y0;
 
 const scrollTo=({detail})=>{
     dispatch('scrollTo',detail);
@@ -24,7 +24,7 @@ const scrollTo=({detail})=>{
 
 </script>
 <div class="controlbar">
-    <span class='closetabbutton' on:click={()=>$viewstore.loc!=='/'&&closetab(addresses)}>
+    <span class='closetabbutton' on:click={()=>$vstore.loc!=='/'&&closetab(addresses)}>
         {$addresses.length}
     </span>
     <TabSelector/>

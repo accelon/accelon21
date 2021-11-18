@@ -1,12 +1,19 @@
 import { fromSim } from 'lossless-simplified-chinese';
-
+import renderer_collapse from  '../render_collapse.svelte'
 export const matchTofind=(ptk,items,tf,filteron)=>{
     if (!items||!ptk||!tf || !filteron)return items||[];
+
     const out=[];
     tf=tf.trim();
-    const regex=new RegExp(tf);
-    let ngap=0,prev=0;
-    const sim=new RegExp(fromSim(tf),'ig');
+    let regex,ngap=0,prev=0,sim;
+    try {
+        regex=new RegExp(tf);
+        sim=new RegExp(fromSim(tf),'ig');
+    } catch(e) {
+        console.error(e);
+        return [];
+    }
+    const y0=items[0].key;
     for (let i=0;i<items.length;i++){
         let match=false;
         const item=items[i];
@@ -18,15 +25,16 @@ export const matchTofind=(ptk,items,tf,filteron)=>{
 
         if (match) {
             if (i-prev>1) {
-                out.push({text:'gap '+(i-prev), key:'g'+ngap})
+                out.push({text:' ', key:'g'+prev+'-'+i,y0,from:prev,to:i,renderer:renderer_collapse})
                 ngap++;
             }
             out.push(item);
-            prev=i;
+            prev=i+1;
         }
     }
-    out.push({text:'gap '+(items.length-prev),key:'g'+ngap});
-    out.push({text:'==',key:'end'})
+    const lastkey=items[items.length-1].key - y0;
+    out.push({text:' ',key:'g'+prev+'-'+lastkey,y0,from:prev,to:lastkey,renderer:renderer_collapse});
+    out.push({text:'--',key:'end'})
     return out;
 }
 export const matchCriteria=(items,criteria,tf)=>{
