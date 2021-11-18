@@ -23,7 +23,7 @@ const click=evt=>{
 </span>
 
 <style>
-    .button{ cursor:pointer;fill:var(--button-selected);padding-right:0.3em}
+    .button{ cursor:pointer;fill:var(--button-selected);padding-right:0.1em}
     .button.unchecked {
         color:var(--button-unselected);
 		fill: var(--button-unselected) ;

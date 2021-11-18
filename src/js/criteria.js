@@ -1,34 +1,30 @@
 import { fromSim } from 'lossless-simplified-chinese';
 import renderer_collapse from  '../render_collapse.svelte'
-export const matchTofind=(ptk,items,tf,filteron)=>{
-    if (!items||!ptk||!tf || !filteron)return items||[];
+export const filterItems=(ptk,viewstore)=>{
+    const {items,usernotes,bookmarks,linetofind,filterfunc}  = viewstore;
+    if (!items||!ptk||!linetofind || !filterfunc)return items||[];
 
     const out=[];
-    tf=tf.trim();
-    let regex,ngap=0,prev=0,sim;
+    const tf=linetofind.trim();
+    let ngap=0,prev=0;
+    let tofind,tofindsim;
     try {
-        regex=new RegExp(tf);
-        sim=new RegExp(fromSim(tf),'ig');
+        tofind=new RegExp(tf);
+        tofindsim=new RegExp(fromSim(tf),'ig');
     } catch(e) {
         console.error(e);
         return [];
     }
     const y0=items[0].key;
     for (let i=0;i<items.length;i++){
-        let match=false;
-        const item=items[i];
-        const text=item.text|| ptk.getLine(item.key);
-        let m= text.match(regex) ;
-        if (!m) {
-            if (text.match(sim)) match=true;
-        } else match=true;
+        let match=filterfunc(ptk,items[i],i,{tofind,tofindsim,usernotes,bookmarks});
 
         if (match) {
             if (i-prev>1) {
                 out.push({text:' ', key:'g'+prev+'-'+i,y0,from:prev,to:i,renderer:renderer_collapse})
                 ngap++;
             }
-            out.push(item);
+            out.push(items[i]);
             prev=i+1;
         }
     }

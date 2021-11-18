@@ -7,14 +7,14 @@ import VirtualScroll from './3rdparty/virtualscroll'
 import ControlBar from './controlbar.svelte'
 import { writable } from 'svelte/store';
 import { parsePointer } from 'pitaka/offtext';
-import {matchTofind} from './js/criteria.js';
+import {filterItems} from './js/criteria.js';
 import {getActivelineStore} from './js/addresses.js';
 export let address='',side=0;
 export let visible=false;
 
 let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs;
 
-const vstore=writable({renderer,criteria:{},filteron:false,linetofind:''});
+const vstore=writable({renderer,criteria:{},filterfunc:null,linetofind:''});
 const viewitems=writable({});
 setContext('vstore',vstore);
 setContext('viewitems',viewitems);
@@ -43,16 +43,16 @@ $: if(vscroll&&ptk&&($vstore.y0)) { //initial scroll
         }
     }
 }
-$: viewitems.set( matchTofind(ptk,$vstore.items,$vstore.linetofind,$vstore.filteron)||[] );
-$: if (!$vstore.filteron) scrollToY( $activeline);
-$: if (vscroll&&!$vstore.filteron) vscroll.scrollToOffset(0,true); 
+$: viewitems.set( filterItems(ptk,$vstore,$vstore.filterfunc)||[] );
+$: if (!$vstore.filterfunc) scrollToY( $activeline);
+$: if (vscroll&&!$vstore.filterfunc) vscroll.scrollToOffset(0,true); 
 
 let scrollStart=0;
 const scroll=(evt)=>{
     scrollStart=evt.detail.index;
 }
 const scrollToY=(y,force=false)=>{
-    if (!vscroll || ($vstore.filteron && !force) ) return;
+    if (!vscroll || ($vstore.filterfunc && !force) ) return;
     if (!$viewitems.length) {
         vscroll.scrollToOffset(0) ;
         return;

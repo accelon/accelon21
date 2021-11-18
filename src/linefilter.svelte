@@ -1,33 +1,58 @@
 <script>
 import { parsePointer } from 'pitaka/offtext';
 import { debounce } from 'pitaka/utils';
-import {getContext,createEventDispatcher} from 'svelte';
+import {getContext} from 'svelte';
 import { writable } from 'svelte/store';
 import Btn from './comps/button.svelte'
 import {setActiveline, setLocAttrs} from './js/addresses.js'
 const vstore=getContext('vstore');
 const addresses=getContext('addresses');
-const tofindfilter=writable($vstore.filteron);
-const notefilter=writable(false);
-const bookmarkfilter=writable(false);
-const bookmarksolidfilter=writable(false);
-$: if ($tofindfilter) {setActiveline(addresses,0); $vstore.scrollToY(0,true);}
-$: {$vstore.filteron=!!$tofindfilter ; };
+const filtertofind=writable($vstore.filteron);
+const filterusernote=writable(false);
+const filterbookmark=writable(false);
+const filterbookmarksolid=writable(false);
+import filterfunc from './js/linefilters.js';
 
-let input;
+const filters=[filtertofind,filterusernote,filterbookmark,filterbookmarksolid];
+const uncheckall=(me,scroll=true)=>{
+    filters.forEach(filter=>(filter!==me)&&filter.set(false));
+    scroll&&setActiveline(addresses,0); 
+    scroll&&$vstore.scrollToY(0,true);
+}
+$: if ($filtertofind) {
+    $vstore.filterfunc=filterfunc.tofind;
+    uncheckall(filtertofind);
+} else if ($vstore.filterfunc==filterfunc.tofind) $vstore.filterfunc=null;
+
+$: if ($filterbookmark) {
+    $vstore.filterfunc=filterfunc.bookmark;
+    uncheckall(filterbookmark);
+} else if ($vstore.filterfunc==filterfunc.bookmark) $vstore.filterfunc=null;
+
+$: if ($filterbookmarksolid) {
+    uncheckall(filterbookmarksolid);
+    $vstore.filterfunc=filterfunc.bookmarksolid;
+} else if ($vstore.filterfunc==filterfunc.bookmarksolid) $vstore.filterfunc=null;
+
+$: if ($filterusernote) {
+    uncheckall(filterusernote);
+    $vstore.filterfunc=filterfunc.usernote;
+}  else if ($vstore.filterfunc==filterfunc.usernote) $vstore.filterfunc=null;
+
 const filterinput=()=>{
     setLocAttrs(addresses,{ltf:linetofind});
-    $tofindfilter=true;
+    filtertofind.set(true);
+    uncheckall(filtertofind,false);
     $vstore.linetofind=linetofind;
 }
 
 let linetofind=parsePointer($addresses[0]).attrs.ltf;
 </script>
-<Btn  store={bookmarkfilter} icon="bookmark"/>
-<Btn store={bookmarksolidfilter} icon="bookmarksolid"/>
-<Btn store={notefilter} icon="usernote"/>
-<Btn store={tofindfilter} icon="filter"/>
-<input bind:this={input} class="tofind" bind:value={linetofind} on:input={debounce(filterinput,250)} />
+<Btn store={filterbookmark} icon="bookmark"/>
+<Btn store={filterbookmarksolid} icon="bookmarksolid"/>
+<Btn store={filterusernote} icon="usernote"/>
+<Btn store={filtertofind} icon="filter"/>
+<input class="tofind" bind:value={linetofind} on:input={debounce(filterinput,250)} />
 <style>
     .tofind {width:6em;padding-left:5px}
 </style>
