@@ -43,17 +43,23 @@ $: if(vscroll&&ptk&&($vstore.y0)) { //initial scroll
     }
 }
 $: viewitems.set( matchTofind(ptk,$vstore.items,$vstore.linetofind,$vstore.filteron)||[] );
-$: if (vscroll && $viewitems.length&&!$vstore.filteron) {
-    if ($vstore.linetofind){ //come back from filter mode
-        scrollToY( $activeline ); 
-    }
-}
+$: scrollToY( $activeline ,$vstore.filteron); 
 
 let scrollStart=0;
 const scroll=(evt)=>{
     scrollStart=evt.detail.index;
 }
 const scrollToY=y=>{
+    if (!vscroll) return;
+    if (!$viewitems.length || $vstore.filteron) {
+        vscroll.scrollToOffset(0) ;
+        return;
+    }
+    const yoffset=vscroll.getIndexOffset(y-y0);
+    const startoffset=vscroll.getOffset();
+    const endoffset=startoffset+vscroll.getClientSize();
+    if (yoffset>startoffset && yoffset<endoffset) return;
+
     for (let i=0;i<$viewitems.length;i++) {
         if ($viewitems[i].key>=y) {
             vscroll.scrollToIndex(i,true);

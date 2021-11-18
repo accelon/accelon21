@@ -1,6 +1,6 @@
 <script>
 import { getContext} from 'svelte';
-import {slide,fade} from 'svelte/transition';
+import {slide} from 'svelte/transition';
 import { get} from 'svelte/store';
 export let text='';
 export let side=0;
@@ -45,7 +45,7 @@ const morelower=()=>{
 }
 </script>
 {#if _to>_from+1}
-<div out:fade class="collapse">
+<div class="collapse">
     {#if _from>1&&_to-2>_from}<span class="clickable moreline" on:click={moreupper}>:{_from}</span> ……{/if} 
     <span class="clickable moreline" on:click={morelower}>:{_to-1}</span>
 </div>

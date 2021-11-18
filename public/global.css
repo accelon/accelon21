@@ -14,6 +14,7 @@
 	--quotetext: limegreen;
 	--splitter: #131313;
 	--menubackground: rgba(92, 76, 2, 0.6);
+	--collapsebackground: rgba(92, 76, 2, 0.6);
 }
 
 html, body {

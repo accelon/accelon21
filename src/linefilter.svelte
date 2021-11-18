@@ -14,7 +14,8 @@ const tofindfilter=writable($vstore.filteron);
 const notefilter=writable(false);
 const bookmarkfilter=writable(false);
 const bookmarksolidfilter=writable(false);
-$: {$vstore.filteron=!!$tofindfilter ; setActiveline(addresses,0)};
+$: if ($tofindfilter) setActiveline(addresses,0);
+$: {$vstore.filteron=!!$tofindfilter ; };
 let input;
 const filterinput=()=>{
     setLocAttrs(addresses,{ltf:linetofind});
