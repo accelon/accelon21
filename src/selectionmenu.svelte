@@ -25,12 +25,12 @@ async function copyaddress (){
     selectedText='';
 }
 const newnote=()=>{
-    const {usernotes,delta,y,hook,loc,ptk} = get(cursorAddress);
+    const {usernotes,dy,y,hook,loc,ptk} = get(cursorAddress);
     let notes=get(usernotes);
-    let locnote=notes[delta]||[];
+    let locnote=notes[dy]||[];
     const note={hook,text:'',marker:1,br:false};
     locnote.push(note);
-    const newobj={...notes,[delta]:locnote};
+    const newobj={...notes,[dy]:locnote};
     usernotes.set( newobj);
     saveNote({ptk,y,loc,...note},'add');
 }

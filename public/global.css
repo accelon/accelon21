@@ -15,8 +15,21 @@
 	--splitter: #131313;
 	--menubackground: rgba(92, 76, 2, 0.6);
 	--collapsebackground: rgba(92, 76, 2, 0.6);
-}
+	--marker1 :rgb(92, 99, 0);
+	--marker2 :rgb(0, 95, 139);
+	--marker3 :darkgreen;
+	--marker4 :rgb(145, 86, 15);
+	--marker5 :darkmagenta;
 
+}
+@keyframes blink {
+0% { opacity: 1}
+25% {opacity: 0.7}
+50% {opacity: 0.5}
+75% {opacity: 0.7}
+100%{opacity: 1}
+}
+.blink {animation: blink 1.2s linear 0s infinite;}
 html, body {
 	position: relative;
 	overflow:hidden;
@@ -116,7 +129,7 @@ button:focus {
 .pitaka .title {font-family: 楷体,標楷體;}
 .pitaka .description {font-size:1rem;color:rgb(160, 144, 116)}
 .pitaka .loadtime {font-size:1rem;color:gold}
-.tabs {-webkit-user-select: none; background:var(--panel-background);overflow:hidden}
+.tabs {--webkit-user-select: none; background:var(--panel-background);overflow:hidden}
 .tab-content {
 		position: absolute;
     /* height:90vh; */

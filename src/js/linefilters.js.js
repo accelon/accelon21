@@ -12,7 +12,7 @@ export const bookmark=(ptk,item,idx,{bookmarks})=> {
     return get(bookmarks)[idx]==1;
 }
 export const bookmarksolid=(ptk,item,idx,{bookmarks})=> {
-    return get(bookmarks)[idx]==2;
+    return get(bookmarks)[idx]>1;
 }
 export const usernote=(ptk,item,idx,{usernotes})=> {
     return get(usernotes)[idx];

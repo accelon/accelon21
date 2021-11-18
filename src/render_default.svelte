@@ -1,6 +1,5 @@
 <script>
-import { getContext } from 'svelte';
-
+import {getContext } from 'svelte';
 import {tosim,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
@@ -8,29 +7,23 @@ import {bestEntries,PATHSEP} from 'pitaka';
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
-import {saveBookmarks} from './js/bookmarks';
-import Icons from './comps/icons.js';
+import Bookmark from './bookmark.svelte'
 import {getActivelineStore,setActiveline} from './js/addresses.js';
+export let q=''; //the quote text
+export let hook='';
+export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
 export let y=0   //優先權較高
-export let nesting=0;
 export let keywords=[];
 export let active=false;
 export let transition=()=>{};
 export let linetofind='';
-export let text=''
-export let id=''
-
-export let side=0;
-export let loc='' ; //location of the page
+export let nesting=0,text='',id='',side=0,loc;
 export let childcount=0;
 export let backlinks=[];
 export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
-export let q=''; //the quote text
-export let hook='';
-export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
 
 const addresses=getContext('addresses');
 let extra=[], activeline=getActivelineStore(addresses);
@@ -43,12 +36,11 @@ const sortExtra=()=>{
 }
 const refreshnote=()=>{
     extra=extra.filter(it=>it.name!=='unote');
-    $usernotes[delta].forEach(addNote);
+    $usernotes[dy].forEach(addNote);
     sortExtra();
 }
 $: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind});
-$: ptk && usernotes && $usernotes[delta]  && refreshnote($usernotes[delta]);
-
+$: ptk && usernotes && $usernotes[dy]  && refreshnote($usernotes[dy]);
 
 const addNote=note=>{
     const {marker,text,hook,br}=note;
@@ -57,12 +49,11 @@ const addNote=note=>{
     extra.push(new OffTag('unote',{
        hook,text,marker,br,x,y,ptk:ptk.name,loc,y:y||key}, 0,x,w))
 }
-const delta=(y||key)-y0;
-
+const dy=(y||key)-y0;
 
 const update=({detail})=>{
     if (detail.hook) {
-        const linenotes=$usernotes[delta];
+        const linenotes=$usernotes[dy];
         const i=linenotes.findIndex(it=>it.hook===detail.hook);
         const j=extra.findIndex(it=>it.name=='unote'&&it.attrs.hook===detail.hook);
         if (i>-1) {
@@ -70,15 +61,14 @@ const update=({detail})=>{
             if (detail.marker===-1) linenotes.splice(i,1);
             else linenotes[i]=detail
         }
-        $usernotes[delta]=linenotes;
+        $usernotes[dy]=linenotes;
         refreshnote();
     }
 }
 
-
 const onSelection=evt=>{//user note and highlight etc
     const {hook,sel,x,y}=getTextHook(ptk,evt);
-    cursorAddress.set({ptk,sel,loc,x,y,hook,usernotes,bookmarks,delta});
+    cursorAddress.set({ptk,sel,loc,x,y,hook,usernotes,bookmarks,dy});
 }
 
 const click=evt=>{
@@ -111,24 +101,7 @@ const click=evt=>{
 const closelabel=()=>{
     extra=extra.filter(i=>i.name!=='embed');
 }
-const toggleBookmark=evt=>{
-    let bm=$bookmarks[delta];
-    if (!bm) {
-        bm=1;
-    } else {
-        bm++;
-    }
-    if (bm>2) bm=0;
-    $bookmarks[delta]=bm;
-    saveBookmarks(ptk,loc,$bookmarks);
-}
-const bookmarkicon=()=>{
-    if (!bookmarks)return '　';
-    const bm=$bookmarks[delta];
-    if (bm===1) return Icons.bookmark;
-    else if (bm===2) return Icons.bookmarksolid;
-    return '　';
-}
+
 </script>
 <div in:transition class="linetext" class:activeline={$activeline===key} on:click={click}>
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
@@ -143,11 +116,5 @@ close.name 存在，則是該標籤的終點。屬性在 sntp.open
 //--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
    on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
 {/if}{/each}
-<span class='bm' on:click={toggleBookmark} >{@html bookmarkicon($bookmarks)}</span>
+<Bookmark {bookmarks} {dy} {ptk} {loc}/>
 </div>
-
-<style>
-    .bm {float:right;fill:gray;cursor:pointer}
-    .bm:hover {fill:var(--highlight);background:gray;}
-</style>
-

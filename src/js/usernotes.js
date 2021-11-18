@@ -18,9 +18,9 @@ const setUserNotes=(ptk,loc,notes)=>{
 export const saveNote=({ptk,y,loc,hook,text,marker,br},op='')=>{
     if (typeof ptk==='string') ptk=useBasket(ptk);
     const [from]=ptk.getPageRange(loc);
-    const delta=y-from;
+    const dy=y-from;
     const notes=getUserNotes(ptk,loc);
-    const linenotes=notes[delta]||[];
+    const linenotes=notes[dy]||[];
 
     let updated=false;
 
@@ -39,12 +39,12 @@ export const saveNote=({ptk,y,loc,hook,text,marker,br},op='')=>{
     }
     if (op==='add') {
         linenotes.push({hook,text,marker,br});  
-        notes[delta]=linenotes;
+        notes[dy]=linenotes;
         updated=true;
     }
 
     if (updated) {
-        if (!linenotes.length) delete notes[delta];
+        if (!linenotes.length) delete notes[dy];
         setUserNotes(ptk,loc,notes);
     }
 }

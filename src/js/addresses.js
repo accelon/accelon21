@@ -5,7 +5,7 @@ import {getUserNotes} from './usernotes.js'
 import {getBookmarks} from './bookmarks.js'
 import {getUserData,setUserData} from './userdata.js';
 import {PATHSEP,ADDRSEP } from 'pitaka';
-
+import {activeside} from './store.js'
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
 export const activeline_a=writable(0);
@@ -90,6 +90,7 @@ export const setActiveline=(addresses=addresses_b,newy=0,y0=0)=>{
     const addrs=get(addresses);
     const {basket,loc,dy,attrs}=parsePointer(addrs[0]);
 
+    activeside.set(addresses==addresses_b?1:0);
     const newdy=newy-y0;
     if (newdy>=0&&newdy!==dy) {
         const newptr=serializePointer(basket,loc,'',newdy,attrs);

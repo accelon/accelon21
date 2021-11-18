@@ -1,10 +1,18 @@
 import {copyAddress,getCursorAddress} from './address.js'
+import {activeside} from './store.js'
+
 window.onkeydown=evt=>{
     if (!evt || !evt.key) return;
+    let used=false;
     const code=evt.key.charCodeAt(0);
     if (evt.ctrlKey && code>=0x30&&code<=0x40) {
-        evt.preventDefault()
+        used=true;
     }
+    if (evt.key=='F10') {
+        // toggleSideMenu();
+        used=true;
+    }
+    if (used) evt.preventDefault();
 }
 
 window.onkeyup=evt=>{

@@ -6,8 +6,8 @@ import { renderer } from './js/store';
 import Btn from './comps/button.svelte'
 export let attrs={}
 export let text='';
-export let opening=false;
-export let name='',w=0,ptk=null,i=0,clss,x,y,starty=0,nesting=0; //just for hidding the warning
+export let opening=false,closing=false;
+export let name='',w=0,ptk=null,i=0,clss='',x=0,y=0,starty=0,nesting=0; //just for hidding the warning
 let color='hsl('+((nesting+3)*60) +' ,50%,30%)';
 let tptk,transclusion='';
 let showing=null;
