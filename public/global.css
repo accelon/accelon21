@@ -1,3 +1,10 @@
+body {
+	font-size:100%;
+	margin: 0;
+	font-family: -apple-system, "Helvetica Neue",BlinkMacSystemFont, "Segoe UI", 
+	"Microsoft Yahei UI Light",	Roboto, Oxygen-Sans, Ubuntu, Cantarell,  sans-serif;
+}
+
 :root{
 	--svg-highlight-stroke-color :limegreen;
 	--button-highlight-color :limegreen;
@@ -20,17 +27,9 @@
 	--marker3 :darkgreen;
 	--marker4 :rgb(145, 86, 15);
 	--marker5 :darkmagenta;
+}
 
-}
-@keyframes blink {
-0% { opacity: 1}
-25% {opacity: 0.7}
-50% {opacity: 0.5}
-75% {opacity: 0.7}
-100%{opacity: 1}
-}
-.blink {animation: blink 1.2s linear 0s infinite;}
-html, body {
+html {
 	position: relative;
 	overflow:hidden;
 	width: 100%;
@@ -39,33 +38,10 @@ html, body {
 	color:silver;
 	stroke: silver;
 }
-
-body {
-	/* font-size:100%; */
-	/* color: #333; */
-	margin: 0;
-	/* padding: 8px; */
-	box-sizing: border-box;
-	font-family: -apple-system, "Helvetica Neue",BlinkMacSystemFont, "Segoe UI", 
-	"Microsoft Yahei UI Light",	Roboto, Oxygen-Sans, Ubuntu, Cantarell,  sans-serif;
-}
-
-a {
-	color: rgb(0,100,200);
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-a:visited {
-	color: rgb(0,80,160);
-}
-
-label {
-	display: block;
-}
+a {	color: rgb(0,100,200);	text-decoration: none;}
+a:hover {	text-decoration: underline;}
+a:visited {	color: rgb(0,80,160);}
+label {	display: block;}
 
 input, button, select, textarea {
 	font-family: inherit;
@@ -78,51 +54,21 @@ input, button, select, textarea {
 	/* border: 1px solid #ccc; */
 	border-radius: 4px;
 }
-input {
-	background:#333333;color:gray;
-	border:0px;
-	/* border-bottom:1px solid black */
-}
-input:focus{
-	background:#aaa;color:black;
-	border-radius: 0px;
-}
-input:disabled {
-	color: silver;
-	background:#111;
-}
+input {	background:#333333;color:gray;	border:0px;}
+input:focus{	background:#aaa;color:black;	border-radius: 0px;}
+input:disabled {	color: silver;	background:#111;}
 
 button {
 	/* color: #333; */
 	/* background-color: #f4f4f4; */
 	outline: none;
 }
-
-button:disabled {
-	color: #999;
-}
-
-button:not(:disabled):active {
-	background-color: #ddd;
-}
-
-button:focus {
-	border-color: #666;
-}
-
-::-webkit-scrollbar {
-    width: 15px;
-}
-
-::-webkit-scrollbar-thumb {
-    border-radius: 20px;
-    background: rgba(116, 250, 39, 0.2);
-}
-
-::-webkit-scrollbar-track {
-    background: #85858534;
-    border-radius: 10px;
-}
+button:disabled {	color: #999;}
+button:not(:disabled):active {	background-color: #ddd;}
+button:focus {	border-color: #666;}
+::-webkit-scrollbar {    width: 15px;}
+::-webkit-scrollbar-thumb {    border-radius: 20px;    background: rgba(116, 250, 39, 0.2);}
+::-webkit-scrollbar-track {    background: #85858534;    border-radius: 10px;}
 
 
 
@@ -131,22 +77,31 @@ button:focus {
 .pitaka .loadtime {font-size:1rem;color:gold}
 .tabs {--webkit-user-select: none; background:var(--panel-background);overflow:hidden}
 .tab-content {
-		position: absolute;
+	position: absolute;
     /* height:90vh; */
 	width:100%;
     /* width:30vw; */
 		/* !important; */
-		opacity: 0;
-		pointer-events: none;
-		overflow:hidden;
-	}
+	opacity: 0;
+	pointer-events: none;
+	overflow:hidden;
+}
 .tab-content.visible {/* can't use visibility due to a weird painting bug in Chrome */
   opacity: 1;
   pointer-events: all;
 }
 
-  .lds-ring {	display: inline-block;	position: relative;	width: 1em; height: 1em;  }
-  .lds-ring div {
+.dropdownpanel{/*font-size:1rem;*/
+	position:absolute;
+	overflow-y:auto;
+	padding-left:2px;padding-bottom:0.5em;height:50%;
+	border-top-left-radius: 0.5em;
+	border-bottom-left-radius: 0.5em;
+	right:0;max-width:15em;background:var(--panel-background)}
+.hamburger {float:right;padding-right:2rem}
+
+.lds-ring {	display: inline-block;	position: relative;	width: 1em; height: 1em;  }
+.lds-ring div {
 	box-sizing: border-box;
 	display: block;
 	position: absolute;
@@ -157,14 +112,17 @@ button:focus {
 	border-radius: 50%;
 	animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 	border-color: #cef transparent transparent transparent;
-  }
-  .lds-ring div:nth-child(1) {	animation-delay: -0.45s;  }
-  .lds-ring div:nth-child(2) {	animation-delay: -0.3s;  }
-  .lds-ring div:nth-child(3) {	animation-delay: -0.15s;  }
-  @keyframes lds-ring {
-	0% {	  transform: rotate(0deg);}
-	100% {	  transform: rotate(360deg);}
-  }
+}
+.lds-ring div:nth-child(1) {	animation-delay: -0.45s;  }
+.lds-ring div:nth-child(2) {	animation-delay: -0.3s;  }
+.lds-ring div:nth-child(3) {	animation-delay: -0.15s;  }
+@keyframes lds-ring {
+0% {	  transform: rotate(0deg);}
+100% {	  transform: rotate(360deg);}
+}
+
+@keyframes blink {0% { opacity: 1}25% {opacity: 0.7}50% {opacity: 0.5}75% {opacity: 0.7}100%{opacity: 1}}
+.blink {animation: blink 1.2s linear 0s infinite;}
 .closetabbutton{padding-left:8px;padding-right:8px;cursor:pointer}
 /* /* .closetabbutton:after {content:'✕'} */
 .closetabbutton:hover:before {color:red;content:'✖';display:inline-block;width:0px} 

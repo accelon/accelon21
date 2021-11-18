@@ -69,13 +69,6 @@ $: showing = (scrollStart<AUTOMENULINE && showmode==1) || showmode==2;
     .external{font-size:80%}
     .external:hover{background:var(--button-unselected)}
     .item:hover{text-decoration: underline;cursor:pointer}
-    :global(.dropdownpanel) {font-size:1rem;
-        position:absolute;
-        overflow-y:auto;
-        padding-left:2px;padding-bottom:0.5em;height:50%;
-        border-top-left-radius: 0.5em;
-        border-bottom-left-radius: 0.5em;
-        right:0;max-width:15em;background:var(--panel-background)}
-    :global(.hamburger) {float:right;padding-right:2em}
+
 
 </style>

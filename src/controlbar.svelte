@@ -33,7 +33,7 @@ $: y0= $vstore.y0;
 
 <style>
     :global(.controlbar){
-        font-size:1rem;-webkit-user-select: none; 
+        -webkit-user-select: none; 
         width:100%; 
         height:1.5rem;
         background:var(--panel-background)

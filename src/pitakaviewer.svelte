@@ -12,7 +12,7 @@ import {getActivelineStore} from './js/addresses.js';
 export let address='',side=0;
 export let visible=false;
 
-let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs;
+let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs,topkey;
 
 const vstore=writable({renderer,criteria:{},filterfunc:null,linetofind:''});
 const viewitems=writable({});
@@ -46,9 +46,9 @@ $: if(vscroll&&ptk&&($vstore.y0)) { //initial scroll
     }
 }
 $: viewitems.set( filterItems(ptk,$vstore,$vstore.filterfunc)||[] );
-$: if (vscroll&&!$vstore.filterfunc) vscroll.scrollToOffset(0,true); 
-$: if ($viewitems[0] && $vstore.y0 !== $viewitems[0].key) {
+$: if ($viewitems[0] && topkey !== $viewitems[0].key) {
     vscroll.scrollToOffset(0) ;
+    topkey=$viewitems[0].key;
 }
 let scrollStart=0;
 const scroll=(evt)=>{
