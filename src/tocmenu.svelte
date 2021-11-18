@@ -3,7 +3,6 @@
 import sb from './js/searchbox.js';
 import {searchbox} from './js/store.js'
 import InputNumber from './comps/inputnumber.svelte';
-import {fade,fly,slide} from 'svelte/transition';
 
 export let ptk=null;
 let showing=true; 

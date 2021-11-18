@@ -30,10 +30,12 @@ $: {const res = parsePointer(address) ; if (res) {
     $vstore.linetofind=locattrs.ltf||'';
 }}
 
+
 $: ptk&&visible?setLoc({ptk,loc,hook,y0,dy},vstore):
     setTimeout(()=>setLoc({ptk,loc,hook,y0,dy},vstore),1000);
 $: usernotes=$vstore.usernotes;
 $: bookmarks=$vstore.bookmarks;
+
 $: if(vscroll&&ptk&&($vstore.y0)) { //initial scroll
     if ($vstore.y0!==y0) {
         y0=$vstore.y0; 
@@ -44,9 +46,10 @@ $: if(vscroll&&ptk&&($vstore.y0)) { //initial scroll
     }
 }
 $: viewitems.set( filterItems(ptk,$vstore,$vstore.filterfunc)||[] );
-$: if (!$vstore.filterfunc) scrollToY( $activeline);
 $: if (vscroll&&!$vstore.filterfunc) vscroll.scrollToOffset(0,true); 
-
+$: if ($viewitems[0] && $vstore.y0 !== $viewitems[0].key) {
+    vscroll.scrollToOffset(0) ;
+}
 let scrollStart=0;
 const scroll=(evt)=>{
     scrollStart=evt.detail.index;

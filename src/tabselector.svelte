@@ -22,7 +22,7 @@ const copyOpposite=evt=>{
     if (newopposite[0]!==addrs[0]) {
         newopposite.unshift(addrs[0]);
         opposite.set(newopposite);
-    }
+    } else selectorShown.set(false)
 }
 </script>
 <HumanAddr address={$addresses[0]} onclick={()=>$selectorShown=!$selectorShown}/>

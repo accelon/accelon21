@@ -26,7 +26,7 @@ $: y0= $vstore.y0;
     <SearchBar/>
     {#if mulu.length}
         <Mulu {mulu} {scrollStart} {y0}/>
-    {:else}
+    {:else if ptk}
         <TocMenu {scrollStart} {ptk}/>
     {/if}
 </div>

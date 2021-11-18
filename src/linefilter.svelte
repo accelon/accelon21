@@ -2,9 +2,9 @@
 import { parsePointer } from 'pitaka/offtext';
 import { debounce } from 'pitaka/utils';
 import {getContext} from 'svelte';
-import { writable } from 'svelte/store';
+import { writable,get } from 'svelte/store';
 import Btn from './comps/button.svelte'
-import {setActiveline, setLocAttrs} from './js/addresses.js'
+import {setActiveline, setLocAttrs,getActivelineStore} from './js/addresses.js'
 const vstore=getContext('vstore');
 const addresses=getContext('addresses');
 const filtertofind=writable($vstore.filteron);
@@ -16,28 +16,32 @@ import filterfunc from './js/linefilters.js';
 const filters=[filtertofind,filterusernote,filterbookmark,filterbookmarksolid];
 const uncheckall=(me,scroll=true)=>{
     filters.forEach(filter=>(filter!==me)&&filter.set(false));
-    scroll&&setActiveline(addresses,0); 
-    scroll&&$vstore.scrollToY(0,true);
+}
+const filteroff=()=>{
+    $vstore.filterfunc=null;
+    setTimeout(()=>{
+        $vstore.scrollToY(get(getActivelineStore(addresses)),true);
+    },10);
 }
 $: if ($filtertofind) {
     $vstore.filterfunc=filterfunc.tofind;
     uncheckall(filtertofind);
-} else if ($vstore.filterfunc==filterfunc.tofind) $vstore.filterfunc=null;
+} else if ($vstore.filterfunc==filterfunc.tofind) filteroff();
 
 $: if ($filterbookmark) {
     $vstore.filterfunc=filterfunc.bookmark;
     uncheckall(filterbookmark);
-} else if ($vstore.filterfunc==filterfunc.bookmark) $vstore.filterfunc=null;
+} else if ($vstore.filterfunc==filterfunc.bookmark) filteroff();
 
 $: if ($filterbookmarksolid) {
     uncheckall(filterbookmarksolid);
     $vstore.filterfunc=filterfunc.bookmarksolid;
-} else if ($vstore.filterfunc==filterfunc.bookmarksolid) $vstore.filterfunc=null;
+} else if ($vstore.filterfunc==filterfunc.bookmarksolid) filteroff();
 
 $: if ($filterusernote) {
     uncheckall(filterusernote);
     $vstore.filterfunc=filterfunc.usernote;
-}  else if ($vstore.filterfunc==filterfunc.usernote) $vstore.filterfunc=null;
+}  else if ($vstore.filterfunc==filterfunc.usernote) filteroff();
 
 const filterinput=()=>{
     setLocAttrs(addresses,{ltf:linetofind});

@@ -5,13 +5,12 @@ import {_,tosim} from './js/store.js';
 import LineFilter from './linefilter.svelte';
 import {PATHSEP} from 'pitaka';
 
-const dispatch = createEventDispatcher()
+
 const addresses=getContext('addresses');
 const vstore=getContext('vstore');
 export let mulu=[];
 export let scrollStart=0;
 export let y0=0;
-
 
 let color=(level,external)=>'hsl('+((level)*40) +' ,80%,'+(external?'35%)':'50%)') ;
 let caption=(lnk)=>{
@@ -26,22 +25,23 @@ const golink=evt=>{
 const scrolltotocitem=evt=>{
     const y=parseInt(evt.target.attributes.itemy.value);
     setActiveline(addresses, y,y0);
-    $vstore.scrollToY(y);
+    $vstore.scrollToY(y,true);
 }
 let showmode=1; //0 = always off , 1=auto on , 2=always on
 
+const AUTOMENULINE=5;
 const setshowmode=evt=>{
-    if (showing && showmode==1) {
-        showmode=0;//user want to turn off
-    } else if (!showing) {
-        if (scrollStart<10) showmode=1;
-        else showmode=2; 
-    } else showmode=1;
+    if (showing) {
+        if (scrollStart<AUTOMENULINE) showmode=0;//user want to turn off
+        else showmode=1;               //auto off
+    } else {
+        showmode=2; 
+    }
 }
-$: showing = (scrollStart<10 && showmode==1) || showmode==2;
+$: showing = (scrollStart<AUTOMENULINE && showmode==1) || showmode==2;
 </script>
 <span class="hamburger" class:showing on:click={setshowmode}>☰</span>
-<LineFilter on:scrollTo={scrollTo}/>
+<LineFilter/>
 {#if showing }
 <div  class="dropdownpanel">
     {#key $tosim}

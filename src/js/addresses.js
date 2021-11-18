@@ -89,6 +89,7 @@ export const setLocAttrs=(addresses=addresses_b,_attrs)=>{
 export const setActiveline=(addresses=addresses_b,newy=0,y0=0)=>{
     const addrs=get(addresses);
     const {basket,loc,dy,attrs}=parsePointer(addrs[0]);
+
     const newdy=newy-y0;
     if (newdy>=0&&newdy!==dy) {
         const newptr=serializePointer(basket,loc,'',newdy,attrs);
@@ -113,6 +114,14 @@ export const settab=(addresses,newloc,{newtab=false}={})=>{
         if (typeof newloc.basket=='string') newbasket=newloc.basket;
     } else {
         if (newloc.loc) newloc=newloc.loc;
+        if (newloc[0]===PATHSEP) {
+            newbasket=newloc.substr(1);
+            const at=newbasket.indexOf(PATHSEP);
+            if (at>0) {
+                newloc=newbasket.substr(at+1);
+                newbasket=newbasket.substr(0,at);
+            } else newloc='';
+        }
     }
     const addr=serializePointer(newbasket, newloc, hook,'',attrs);
 

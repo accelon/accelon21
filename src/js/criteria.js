@@ -2,7 +2,7 @@ import { fromSim } from 'lossless-simplified-chinese';
 import renderer_collapse from  '../render_collapse.svelte'
 export const filterItems=(ptk,viewstore)=>{
     const {items,usernotes,bookmarks,linetofind,filterfunc}  = viewstore;
-    if (!items||!ptk||!linetofind || !filterfunc)return items||[];
+    if (!items||!ptk|| !filterfunc)return items||[];
 
     const out=[];
     const tf=linetofind.trim();

@@ -257,14 +257,15 @@
     export function getIndexOffset(idx){
         return virtual.getIndexOffset(idx);
     }
-    export function getTopIndex(clientSize,range){
+    export function getTopIndex(offset,clientSize,range){
+        if (!offset) offset = getOffset();
         if (!clientSize) clientSize = getClientSize();
         if (!range) range = virtual.getRange();
-        let index=range.end;
+        let index=range.start;
         let sz=virtual.getIndexOffset(range.start);
         for (let i=range.start;i<range.end;i++) {
             sz+=getSize(virtual.param.uniqueIds[i]);
-            if (sz>=offset+clientSize) {
+            if (sz>=offset) {
                 index=i;
                 break;
             }
@@ -273,7 +274,7 @@
     }
     function emitEvent(offset, clientSize, scrollSize, event) {
         const range = virtual.getRange();
-        const index = getTopIndex(clientSize,range);
+        const index = getTopIndex(offset,clientSize,range);
         dispatch("scroll", {event, offset, index , range})
 
         if (virtual.isFront() && !!data.length && (offset - topThreshold <= 0)) {
