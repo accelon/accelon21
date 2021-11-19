@@ -27,10 +27,8 @@ const addressesFromUrl=()=>{
     if (hash[0]=='#') hash=hash.substr(1);
     hash=decodeURI(hash);
     const [addrs_a,addrs_b]=hash.split('#');
-    const a=addrs_a.split(ADDRSEP);
-    const b=(addrs_b||'').split(ADDRSEP);
-    if (!a.length) a.push(PATHSEP);
-    if (!b.length) b.push(PATHSEP);
+    const a=addrs_a.split(ADDRSEP).filter(it=>!!it);
+    const b=(addrs_b||'').split(ADDRSEP).filter(it=>!!it);
     completeAddress(a);
     completeAddress(b);
     return {a,b}

@@ -60,13 +60,11 @@ const packAddresses=arr=>{
     const out=[];
     for (let i=0;i<arr.length;i++) {
         const {basket}=parsePointer(arr[i]);
-        
         if (prevbasket===basket) {
             out.push(arr[i].substr(PATHSEP.length+basket.length+PATHSEP.length))
         } else out.push(arr[i]); 
         if (basket) prevbasket=basket;
     }
-    if (out.length==1 && out[0]==PATHSEP) return '';
     return out.join(ADDRSEP);
 }
 export const updateUrl=()=>{
@@ -148,7 +146,6 @@ export const closetab=addresses=>{
     if (addrs.length) addrs.shift();
     if (!addrs.length) {
         selectorShown.set(false); //frontpage cannot show tabselector
-        addrs.push(PATHSEP);
     }
     addresses.set(addrs);
 }

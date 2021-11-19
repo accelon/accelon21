@@ -226,7 +226,7 @@ t.red {color:red}
     margin-right:0.2em;
     padding:0.1em;border-radius: 3px; content: attr(o)}
 t.e {font-size:1.2em}
-t.eg:before {}
+
 t.q-:before {content:'引';
     border:1px solid salmon;
     margin-right:0.2em;

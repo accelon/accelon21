@@ -65,7 +65,7 @@ const scrollToY=(y,force=false)=>{
     const endoffset=startoffset+vscroll.getClientSize();
     if (yoffset>startoffset && yoffset<endoffset) return;
 
-    for (let i=0;i<$viewitems.length;i++) {
+    for (let i=0;i < $viewitems.length;i++) {
         if ($viewitems[i].key>=y) {
             vscroll.scrollToIndex(i,true);
             break;
