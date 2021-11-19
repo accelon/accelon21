@@ -10,5 +10,5 @@ import {selectorShown} from './js/addresses.js'
 <div class="controlbar">
     <span on:click={()=>$selectorShown=!$selectorShown}>Accelon 2021</span>
     <TabSelector/><SearchBar/></div>
-<div><PitakaList/></div>
+    <div><PitakaList/></div>
 </div>

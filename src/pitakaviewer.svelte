@@ -31,8 +31,8 @@ $: {const res = parsePointer(address) ; if (res) {
 }}
 
 
-$: ptk&&visible?setLoc({ptk,loc,hook,y0,dy},vstore):
-    setTimeout(()=>setLoc({ptk,loc,hook,y0,dy},vstore),1000);
+$: ptk&&visible&&setLoc({ptk,loc,hook,y0,dy},vstore);
+    //setTimeout(()=>setLoc({ptk,loc,hook,y0,dy},vstore),1000);
 $: usernotes=$vstore.usernotes;
 $: bookmarks=$vstore.bookmarks;
 
@@ -89,5 +89,5 @@ $vstore.scrollToY=scrollToY;
 </div>
 
 <style>
-    .container {overflow:hidden;height:100vh}
+    :global(.container) {overflow:hidden;height:100vh}
 </style>

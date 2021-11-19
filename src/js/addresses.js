@@ -59,10 +59,13 @@ const packAddresses=arr=>{
     let prevbasket='';
     const out=[];
     for (let i=0;i<arr.length;i++) {
+        if (arr[i][0]==='{') { //Excerpt page has only JSON obj
+            out.push(arr[i]);
+            continue;
+        }
         const {basket}=parsePointer(arr[i]);
-        if (prevbasket===basket) {
-            out.push(arr[i].substr(PATHSEP.length+basket.length+PATHSEP.length))
-        } else out.push(arr[i]); 
+        if (prevbasket!==basket) out.push(arr[i]); 
+        else out.push(arr[i].substr(basket.length+2));
         if (basket) prevbasket=basket;
     }
     return out.join(ADDRSEP);

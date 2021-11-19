@@ -6,11 +6,18 @@ export let onclick=null;
 export let caption='';
 export let showjuan=false;
 export let address='';
+export let loc=''
+export let c=''
+export let ptk=null;
 const click=(evt)=>{
     onclick(evt)
 }
-const {basket,loc,c}=parsePointer(address);
-const ptk=useBasket(basket);
+if (address) {
+    const ptr=parsePointer(address);
+    ptk=useBasket(ptr.basket);    
+    loc=ptr.loc;
+    c=ptr.c;
+}
 $: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc))||[];
 </script>
 <span title={address}>
