@@ -4,7 +4,7 @@ import { debounce } from 'pitaka/utils';
 import {getContext} from 'svelte';
 import { writable,get } from 'svelte/store';
 import Btn from './comps/button.svelte'
-import {setActiveline, setLocAttrs,getActivelineStore} from './js/addresses.js'
+import {setActiveline, setLocAttrs} from './js/addresses.js'
 const vstore=getContext('vstore');
 const addresses=getContext('addresses');
 const filtertofind=writable($vstore.filteron);
@@ -19,9 +19,6 @@ const uncheckall=(me,scroll=true)=>{
 }
 const filteroff=()=>{
     $vstore.filterfunc=null;
-    setTimeout(()=>{
-        $vstore.scrollToY(get(getActivelineStore(addresses)),true);
-    },10);
 }
 $: if ($filtertofind) {
     $vstore.filterfunc=filterfunc.tofind;
@@ -50,7 +47,7 @@ const filterinput=()=>{
     $vstore.linetofind=linetofind;
 }
 
-let linetofind=parsePointer($addresses[0]).attrs.ltf;
+let linetofind=parsePointer($addresses[0].addr).attrs.ltf;
 </script>
 <Btn store={filterbookmark} icon="bookmark"/>
 <Btn store={filterbookmarksolid} icon="bookmarksolid"/>

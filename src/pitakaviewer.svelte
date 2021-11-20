@@ -8,11 +8,10 @@ import ControlBar from './controlbar.svelte'
 import { writable } from 'svelte/store';
 import { parsePointer } from 'pitaka/offtext';
 import {filterItems} from './js/criteria.js';
-import {getActivelineStore} from './js/addresses.js';
+// import {getActivelineStore} from './js/addresses.js';
 export let address='',side=0;
-export let visible=false;
-
-let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs,topkey;
+export let active=false;
+let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs,topkey, loaded=false;
 
 const vstore=writable({renderer,criteria:{},filterfunc:null,linetofind:''});
 const viewitems=writable({});
@@ -20,36 +19,38 @@ setContext('vstore',vstore);
 setContext('viewitems',viewitems);
 const addresses=getContext('addresses');
 
-const activeline=getActivelineStore(addresses);
 $: {const res = parsePointer(address) ; if (res) {
     basket=res.basket; 
     ptk = useBasket(basket);
     loc=res.loc; 
     dy=res.dy;
+    
+    y0=ptk.getPageRange(loc)[0];
     locattrs=res.attrs||{};
     $vstore.linetofind=locattrs.ltf||'';
 }}
 
-
-$: ptk&&visible&&setLoc({ptk,loc,hook,y0,dy},vstore);
-    //setTimeout(()=>setLoc({ptk,loc,hook,y0,dy},vstore),1000);
 $: usernotes=$vstore.usernotes;
 $: bookmarks=$vstore.bookmarks;
 
-$: if(vscroll&&ptk&&($vstore.y0)) { //initial scroll
-    if ($vstore.y0!==y0) {
-        y0=$vstore.y0; 
-        activeline.set(y0+dy); //dy is taken from url, use setActiveline to update url
-        if (vscroll.getIndexOffset(dy) > vscroll.getOffset()+vscroll.getClientSize()) {
-            setTimeout(()=>scrollToY($activeline),0);
-        }
-    }
-}
 $: viewitems.set( filterItems(ptk,$vstore,$vstore.filterfunc)||[] );
-$: if ($viewitems[0] && topkey !== $viewitems[0].key) {
+$: if ($viewitems[0] && topkey !== $viewitems[0].key) { //initial scroll
     vscroll.scrollToOffset(0) ;
     topkey=$viewitems[0].key;
 }
+$: if(active&&$viewitems.length) {
+    setTimeout(()=>{
+        if (vscroll.getIndexOffset(dy) > vscroll.getOffset()+vscroll.getClientSize()){
+        scrollToY(y0+dy,true);
+        }
+    },10)
+}
+
+$: if (!loaded && ptk && vscroll) { 
+    setLoc({ptk,loc,hook,y0,dy},vstore);
+    loaded=true
+}
+
 let scrollStart=0;
 const scroll=(evt)=>{
     scrollStart=evt.detail.index;
@@ -77,12 +78,14 @@ $vstore.scrollToY=scrollToY;
 </script>
 <div class="container">
     <div><ControlBar  {scrollStart} {ptk}/></div>
-    <VirtualScroll start={-1} bind:this={vscroll} keeps={30} data={$viewitems} key="key" let:data on:scroll={scroll}>
+    <VirtualScroll start={-1} bind:this={vscroll} keeps={30} data={$viewitems} 
+        key="key" let:data on:scroll={scroll}>
         {#if data.ptr}
         <svelte:component this={$renderer._toc} {ptk} {...data}/>
         {:else}
         <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
-            {...data} {y0} {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
+            {...data} {y0} activeline={data.key==y0+dy} 
+            {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
         />
         {/if}
     </VirtualScroll>

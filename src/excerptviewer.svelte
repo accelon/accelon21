@@ -5,7 +5,7 @@ import {useBasket} from 'pitaka';
 import {unpackJSONString} from 'pitaka/utils';
 import VirtualScroll from './3rdparty/virtualscroll'
 import ExcerptLine from './render_excerpt.svelte';
-export let side=0,visible=false,address=0;
+export let side=0,visible=false,address=0,active=false;
 let vscroll;
 const scroll=evt=>{return true};
 const excerptitems=writable([]);
@@ -15,7 +15,6 @@ let pageattrs={};
 onMount(()=>{
     try {
         pageattrs=JSON.parse(unpackJSONString(address));
-        console.log(pageattrs);
     } catch(e){
         console.error(e);
     }

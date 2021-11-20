@@ -25,8 +25,9 @@ const togglesystemsetting=()=>{
             <Btn title="设置 setting" icon="setting" 
             onclick={togglesystemsetting} store={systemsetting}/>
         </div>
-        <PitakaViews addresses={addresses_b} side={1} hide={$systemsetting}/>
-
+        <div class:hide={$systemsetting}>
+        <PitakaViews addresses={addresses_b} side={1} />
+        </div>
         {#if $systemsetting}
         <Settings/>
         {/if}
@@ -34,7 +35,7 @@ const togglesystemsetting=()=>{
 </SplitPane>
 </div>
 <style>
-
+    .hide {display:none;}
     .container {height:100vh}
 	.systemsetting {position:absolute;right:0px;z-index:999}
 </style>

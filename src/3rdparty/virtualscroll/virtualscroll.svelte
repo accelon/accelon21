@@ -150,7 +150,7 @@
      * @param smooth {boolean}
      */
     export function scrollToIndex(index,smooth=false) {
-        if (!data.length)return;
+        if (!data.length||index<0)return;
         if (smooth) { // scrolling page-by-page and stop at percise position
             const clientSize = getClientSize();
             const timer=setInterval(()=>{

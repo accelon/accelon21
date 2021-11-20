@@ -11,12 +11,12 @@ setContext('addresses',addresses);
 </script>
 <div class="container">
     {#if $addresses.length}
-        {#each $addresses as address,idx (idx+address)}
-        <div class="tab-content" class:visible={!hide&&idx==0}>
-            {#if address[0]=='{'}
-            <ExcerptViewer {side} {address} visible={idx==0}/>
+        {#each $addresses as address,idx (address.key)}
+        <div class="tab-content" class:visible={!hide&&idx===0}>
+            {#if address.addr[0]=='{'}
+            <ExcerptViewer {side} address={address.addr} active={!hide&&idx===0}/>
             {:else}
-            <PitakaViewer {side} {address} visible={idx==0} />
+            <PitakaViewer {side} address={address.addr} active={!hide&&idx===0}/>
             {/if}
         </div>
         {/each}

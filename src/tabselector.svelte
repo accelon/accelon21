@@ -1,5 +1,5 @@
 <script>
-import {getside,selectorShown,getOppositeAddresses} from './js/addresses.js'
+import {getside,selectorShown,getOppositeAddresses, newaddrkey} from './js/addresses.js'
 import { getContext } from 'svelte';
 import { get } from 'svelte/store';
 
@@ -17,22 +17,21 @@ const moveTop=idx=>{
 const copyOpposite=evt=>{
     const opposite=getOppositeAddresses(addresses);
     const addrs=$addresses;
-    if (addrs[0]===PATHSEP) return;
     const newopposite=get(opposite)
-    if (newopposite[0]!==addrs[0]) {
-        newopposite.unshift(addrs[0]);
+    if (newopposite[0].addr!==addrs[0].addr) {
+        newopposite.unshift({key:newaddrkey(), addr:addrs[0].addr});
         opposite.set(newopposite);
     } else selectorShown.set(false)
 }
 </script>
-<HumanAddr address={$addresses[0]} onclick={()=>$selectorShown=!$selectorShown}/>
+<HumanAddr address={$addresses[0].addr} onclick={()=>$selectorShown=!$selectorShown}/>
 {#if $selectorShown}
 <div class="tabselector">
-    {#each $addresses as address,idx (idx+address)}
-    {#if idx===0 && address!==PATHSEP} 
-        <div><HumanAddr {address} showjuan={true} onclick={copyOpposite} caption={getside()=='a'?'⭆':'⭅'}/></div>
+    {#each $addresses as address,idx (address.key)}
+    {#if idx===0} 
+        <div><HumanAddr address={address.addr} showjuan={true} onclick={copyOpposite} caption={getside()=='a'?'⭆':'⭅'}/></div>
     {:else}
-    <div><HumanAddr {address} showjuan={true} onclick={()=>moveTop(idx)}/></div>
+    <div><HumanAddr address={address.addr} showjuan={true} onclick={()=>moveTop(idx)}/></div>
     {/if}
     {/each}
 </div>

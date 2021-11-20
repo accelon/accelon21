@@ -1,6 +1,6 @@
 import { openBasket, PATHSEP, ADDRSEP} from 'pitaka';
 import { parsePointer } from 'pitaka/offtext';
-import { addresses_a, addresses_b ,updateUrl} from './addresses';
+import { addresses_a, addresses_b ,updateUrl,newaddrkey} from './addresses';
 
 const completeAddress=arr=>{
     let prevbasket='';
@@ -22,6 +22,7 @@ const enumBasketInAddress=(arr)=>{
     });
     return Object.keys(pitakas);
 }
+
 const addressesFromUrl=()=>{
     let hash=window.location.hash;
     if (hash[0]=='#') hash=hash.substr(1);
@@ -34,7 +35,6 @@ const addressesFromUrl=()=>{
     return {a,b}
 }
 
-
 export const loadaddress=async cb=>{
     const config=window.accelon21_configuration;
     if (!config)return;
@@ -46,9 +46,10 @@ export const loadaddress=async cb=>{
     if (!addrs_a.length) addrs_a.push(config.init_a);
     if (!addrs_b.length) addrs_b.push(config.init_b);
     const addrs=addrs_a.concat(addrs_b);
-    addrs.push(config.init_a);
-    addrs.push(config.init_b);
+    
+    addrs.push(config.init_a); addrs.push(config.init_b);//load ptk in config
     const pitakaNeeded=enumBasketInAddress(addrs);
+
     cb(pitakaNeeded,config);
     for (let i=0;i<pitakaNeeded.length;i++){
         const ptk=await openBasket(pitakaNeeded[i]);
@@ -56,8 +57,9 @@ export const loadaddress=async cb=>{
     }
     if (!config.advance) config.advance={};
     if (!config.advance.keepLog) console.clear();
-    addresses_a.set(addrs_a);
-    addresses_b.set(addrs_b);
+    addresses_a.set(addrs_a.map(addr=>({key:newaddrkey(), addr})));
+    addresses_b.set(addrs_b.map(addr=>({key:newaddrkey(), addr})));
+
     addresses_b.subscribe(updateUrl);
     addresses_a.subscribe(updateUrl);
 }

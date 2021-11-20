@@ -8,8 +8,8 @@ import {PATHSEP,ADDRSEP } from 'pitaka';
 import {activeside} from './store.js'
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
-export const activeline_a=writable(0);
-export const activeline_b=writable(0);
+// export const activeline_a=writable(0);
+// export const activeline_b=writable(0);
 
 export const userdata=writable({});
 export const selectorShown=writable(false);
@@ -21,8 +21,8 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy},store)=>{
         return; //nothing to do
     }
 
-    const activelinestore=getActivelineStore(store);
-    activelinestore.set(dy||0);
+    // const activelinestore=getActivelineStore(store);
+    // activelinestore.set(dy||0);
 
     const items=ptk.fetchPage(loc);
     const criteria=get(store).criteria||{};
@@ -71,32 +71,34 @@ const packAddresses=arr=>{
     return out.join(ADDRSEP);
 }
 export const updateUrl=()=>{
-    const a=packAddresses(get(addresses_a));
-    const b=packAddresses(get(addresses_b));
+    const a=packAddresses(get(addresses_a).map(it=>it.addr));
+    const b=packAddresses(get(addresses_b).map(it=>it.addr));
     window.location.hash='#'+a + (b?('#'+b):'');
 }
 export const setLocAttrs=(addresses=addresses_b,_attrs)=>{
     const addrs=get(addresses);
-    const {basket,loc,dy,attrs}=parsePointer(addrs[0]);
+    const {basket,loc,dy,attrs}=parsePointer(addrs[0].addr);
     const newattrs= Object.assign(attrs,_attrs);
     for (let key in newattrs) {
         if (!newattrs[key]&&typeof newattrs[key]!=='number') delete newattrs[key];
     }
     const newptr=serializePointer(basket,loc,'',dy,newattrs);
-    addrs[0]=newptr;
+    addrs[0].addr=newptr;
     //addresses.set(addrs)
     updateUrl();
 }
 export const setActiveline=(addresses=addresses_b,newy=0,y0=0)=>{
+    if (typeof newy!=='number')return;
     const addrs=get(addresses);
-    const {basket,loc,dy,attrs}=parsePointer(addrs[0]);
+    const {basket,loc,dy,attrs}=parsePointer(addrs[0].addr);
+    // console.log('setactiveline',addrs[0].addr,newy,y0)
 
     activeside.set(addresses==addresses_b?1:0);
     const newdy=newy-y0;
     if (newdy>=0&&newdy!==dy) {
         const newptr=serializePointer(basket,loc,'',newdy,attrs);
-        addrs[0]=newptr;
-        // addresses.set(addrs); //this will trigger redraw
+        addrs[0].addr=newptr;
+        addresses.set(addrs);
         updateUrl();
     }
     if (addresses==addresses_a) {
@@ -105,7 +107,7 @@ export const setActiveline=(addresses=addresses_b,newy=0,y0=0)=>{
         activeline_b.set( newy);
     }
 }
-export const getActivelineStore=(addresses=addresses_b)=>addresses==addresses_a?activeline_a:activeline_b;
+// export const getActivelineStore=(addresses=addresses_b)=>addresses==addresses_a?activeline_a:activeline_b;
 
 export const settab=(addresses,newloc,{newtab=false}={})=>{
     const oldaddr=get(addresses)[0];
@@ -129,9 +131,9 @@ export const settab=(addresses,newloc,{newtab=false}={})=>{
 
     const addrs=get(addresses);
     if (newtab) {
-        addrs.unshift(addr);
+        addrs.unshift({key:newaddrkey(), addr});
     } else {
-        addrs[0]=addr;
+        addrs[0].addr=addr;
     }
     addresses.set(addrs);
 }
@@ -152,4 +154,6 @@ export const closetab=addresses=>{
     }
     addresses.set(addrs);
 }
+let addrkey=0;
+export const newaddrkey=()=>(++addrkey).toString(16).padStart(4,'0');
 export const getOppositeAddresses=addresses=>addresses_b==addresses?addresses_a:addresses_b;

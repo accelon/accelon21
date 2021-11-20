@@ -8,7 +8,7 @@ import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
 import Bookmark from './bookmark.svelte'
-import {getActivelineStore,setActiveline} from './js/addresses.js';
+import {setActiveline} from './js/addresses.js';
 export let q=''; //the quote text
 export let hook='';
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
@@ -16,7 +16,7 @@ export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
 export let y=0   //優先權較高
 export let keywords=[];
-export let active=false;
+export let activeline=false;
 export let transition=()=>{};
 export let linetofind='';
 export let nesting=0,text='',id='',side=0,loc;
@@ -26,7 +26,8 @@ export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
 
 const addresses=getContext('addresses');
-let extra=[], activeline=getActivelineStore(addresses);
+let extra=[];
+//  activeline=getActivelineStore(addresses);
 
 const lineText=()=>text||(ptk&&ptk.getLine(y||key))||'';
 $: onlytext=parseOfftextLine(lineText())[0];
@@ -103,7 +104,7 @@ const closelabel=()=>{
 }
 
 </script>
-<div in:transition class="linetext" class:activeline={$activeline===key} on:click={click}>
+<div in:transition class="linetext" class:activeline on:click={click}>
 <!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 
