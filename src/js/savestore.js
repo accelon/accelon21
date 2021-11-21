@@ -5,7 +5,8 @@ export const loadSettings=()=>{
     const tab=localStorage.getItem(AppPrefix+'tab')||'files';
     const toolbox_panepos=localStorage.getItem(AppPrefix+'toolbox_panepos')||30;
     const panepos=localStorage.getItem(AppPrefix+'panepos')||70;    
-    return {tosim,column,tab,toolbox_panepos,panepos};
+    const queryhistory=localStorage.getItem(AppPrefix+'queryhistory')||'';
+    return {tosim,column,tab,toolbox_panepos,panepos,queryhistory};
 }
 
 export const saveSettings=()=>{ //immediate save
@@ -26,7 +27,7 @@ export const updateSettings=_settings=>{
                 let val=_settings[key];
                 if (typeof val=='object') {
                     val=JSON.stringify(_settings[key]);
-                    oldval=JSON.stringify(settings[key]);
+                    oldval=JSON.stringify(settings[key]);    
                 }
                 if (val!==oldval) {
                     settingsToBeSave[AppPrefix+key]=val;

@@ -5,7 +5,7 @@ import L from './js/labeler.js'; //maker sure labeler is loaded
 import HotKey from './js/hotkey.js';
 import MainView from './mainview.svelte';
 import LoadingAnimation from './comps/loading.svelte'
-
+import {_,tosim} from './js/store.js'
 import { onMount } from 'svelte';
 import { useBasket } from 'pitaka';
 let started=false;
@@ -45,11 +45,8 @@ onMount(async ()=>{
 	{#each PitakaStatus as ptk,idx (idx)}
 		<div class='pitaka'>
 		{#if ptk[1]}
-		<span class='title'>{ptk[1].header.title} </span>
+		<span class='title'>{_(ptk[1].header.title,$tosim)}</span>
 		<!-- <span class='loadtime'>{JSON.stringify(ptk[1].loadtime)}ms</span> -->
-		<span class='description'>{ptk[1].header.description||''}
-		:{ptk[1].header.lastTextLine} build:{ptk[1].header.buildtime}
-		</span>
 		{:else}
 		<LoadingAnimation/>{ptk[0]}
 		{/if}
@@ -63,7 +60,7 @@ onMount(async ()=>{
 </div>
 
 <style>
-.loadingstatus {margin-top:1em;margin-left:1em;font-size:150%;}
+.loadingstatus {margin-top:1em;margin-left:1em}
 .container {
 	min-height: 100px;
 	height: 100vh;

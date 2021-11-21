@@ -1,6 +1,6 @@
 <script>
 import { useBasket } from 'pitaka';
-import { getContext, setContext} from 'svelte';
+import { setContext} from 'svelte';
 import { renderer } from './js/store.js';
 import {setLoc} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
@@ -8,7 +8,6 @@ import ControlBar from './controlbar.svelte'
 import { writable } from 'svelte/store';
 import { parsePointer } from 'pitaka/offtext';
 import {filterItems} from './js/criteria.js';
-// import {getActivelineStore} from './js/addresses.js';
 export let address='',side=0;
 export let active=false;
 let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs,topkey, loaded=false;
@@ -17,19 +16,19 @@ const vstore=writable({renderer,criteria:{},filterfunc:null,linetofind:''});
 const viewitems=writable({});
 setContext('vstore',vstore);
 setContext('viewitems',viewitems);
-const addresses=getContext('addresses');
 
 $: {const res = parsePointer(address) ; if (res) {
     basket=res.basket; 
     ptk = useBasket(basket);
-    loc=res.loc; 
-    dy=res.dy;
-    
-    y0=ptk.getPageRange(loc)[0];
-    locattrs=res.attrs||{};
-    $vstore.linetofind=locattrs.ltf||'';
+    if (ptk) {
+        loc=res.loc; 
+        dy=res.dy;
+        y0=ptk.getPageRange(loc)[0];
+        locattrs=res.attrs||{};
+        $vstore.linetofind=locattrs.ltf||'';
+        loaded=false
+    }
 }}
-
 $: usernotes=$vstore.usernotes;
 $: bookmarks=$vstore.bookmarks;
 
@@ -46,7 +45,7 @@ $: if(active&&$viewitems.length) {
     },10)
 }
 
-$: if (!loaded && ptk && vscroll) { 
+$: if ((!loaded && ptk && vscroll) ) { 
     setLoc({ptk,loc,hook,y0,dy},vstore);
     loaded=true
 }

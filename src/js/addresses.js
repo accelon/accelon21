@@ -8,8 +8,6 @@ import {PATHSEP,ADDRSEP } from 'pitaka';
 import {activeside} from './store.js'
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
-// export const activeline_a=writable(0);
-// export const activeline_b=writable(0);
 
 export const userdata=writable({});
 export const selectorShown=writable(false);
@@ -20,9 +18,6 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy},store)=>{
     if (get(store).loc==loc && get(store).ptk===ptk) {
         return; //nothing to do
     }
-
-    // const activelinestore=getActivelineStore(store);
-    // activelinestore.set(dy||0);
 
     const items=ptk.fetchPage(loc);
     const criteria=get(store).criteria||{};
@@ -101,36 +96,34 @@ export const setActiveline=(addresses=addresses_b,newy=0,y0=0)=>{
         addresses.set(addrs);
         updateUrl();
     }
-    if (addresses==addresses_a) {
-        activeline_a.set( newy);
-    } else {
-        activeline_b.set( newy);
-    }
 }
-// export const getActivelineStore=(addresses=addresses_b)=>addresses==addresses_a?activeline_a:activeline_b;
 
 export const settab=(addresses,newloc,{newtab=false}={})=>{
-    const oldaddr=get(addresses)[0];
-    let {basket,hook,attrs}=parsePointer(oldaddr);
-    let newbasket=basket;
-    if (typeof newloc!=='string' && newloc.loc!==PATHSEP) {
-        if (typeof newloc.loc=='string') newloc=newloc.loc;
-        if (typeof newloc.basket=='string') newbasket=newloc.basket;
-    } else {
-        if (newloc.loc) newloc=newloc.loc;
-        if (newloc[0]===PATHSEP) {
-            newbasket=newloc.substr(1);
-            const at=newbasket.indexOf(PATHSEP);
-            if (at>0) {
-                newloc=newbasket.substr(at+1);
-                newbasket=newbasket.substr(0,at);
-            } else newloc='';
-        }
-    }
-    const addr=serializePointer(newbasket, newloc, hook,'',attrs);
-
     const addrs=get(addresses);
-    if (newtab) {
+    let addr=newloc;
+    if (addrs.length) {
+        const oldaddr=addrs[0].addr;
+        let {basket,hook,attrs}=parsePointer(oldaddr);
+        let newbasket=basket;
+        if (typeof newloc!=='string' && newloc.loc!==PATHSEP) {
+            if (typeof newloc.loc=='string') newloc=newloc.loc;
+            if (typeof newloc.basket=='string') newbasket=newloc.basket;
+        } else {
+            if (newloc.loc) newloc=newloc.loc;
+            if (newloc[0]===PATHSEP) {
+                newbasket=newloc.substr(1);
+                const at=newbasket.indexOf(PATHSEP);
+                if (at>0) {
+                    newloc=newbasket.substr(at+1);
+                    newbasket=newbasket.substr(0,at);
+                } else newloc='';
+            }
+        }
+        addr=serializePointer(newbasket, newloc, hook,'',attrs); 
+    }
+
+
+    if (newtab || !addrs.length) {
         addrs.unshift({key:newaddrkey(), addr});
     } else {
         addrs[0].addr=addr;

@@ -23,7 +23,6 @@ $: y0= $vstore.y0;
     </span>
     <TabSelector/>
     <TocBar/>
-    <SearchBar/>
     {#if mulu.length}
         <Mulu {mulu} {scrollStart} {y0}/>
     {:else if ptk}

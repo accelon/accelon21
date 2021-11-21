@@ -21,8 +21,10 @@ const filteroff=()=>{
     $vstore.filterfunc=null;
 }
 $: if ($filtertofind) {
-    $vstore.filterfunc=filterfunc.tofind;
-    uncheckall(filtertofind);
+    if (linetofind.trim()) {
+        $vstore.filterfunc=filterfunc.tofind;   
+        uncheckall(filtertofind);
+    } else uncheckall();
 } else if ($vstore.filterfunc==filterfunc.tofind) filteroff();
 
 $: if ($filterbookmark) {

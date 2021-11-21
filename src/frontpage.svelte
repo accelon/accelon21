@@ -1,14 +1,18 @@
 <script>
-import TabSelector from './tabselector.svelte';
-import PitakaList from './pitakalist.svelte'
+import PitakaList from './pitakalist.svelte';
 import SearchBar from './searchbar.svelte';
-import {selectorShown} from './js/addresses.js'
-
+import SearchHelp from './searchhelp.svelte';
+import {searchhelp} from './js/store.js';
+import { pool } from 'pitaka/basket';
 </script>
 
 <div class="container">
 <div class="controlbar">
-    <span on:click={()=>$selectorShown=!$selectorShown}>Accelon 2021</span>
-    <TabSelector/><SearchBar/></div>
-    <div><PitakaList/></div>
+    <SearchBar pitakas={pool.getAll()}/></div>
+    {#if $searchhelp}
+    <SearchHelp/>
+    {:else}
+    <PitakaList/>
+    {/if}
 </div>
+

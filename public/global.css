@@ -1,6 +1,6 @@
 body {
 	font-size:100%;
-	margin: 0;
+	margin: 0px;
 	font-family: -apple-system, "Helvetica Neue",BlinkMacSystemFont, "Segoe UI", 
 	"Microsoft Yahei UI Light",	Roboto, Oxygen-Sans, Ubuntu, Cantarell,  sans-serif;
 }
@@ -27,6 +27,7 @@ body {
 	--marker3 :darkgreen;
 	--marker4 :rgb(145, 86, 15);
 	--marker5 :darkmagenta;
+	--href: rgb(28, 129, 2);
 }
 
 html {
@@ -38,9 +39,9 @@ html {
 	color:silver;
 	stroke: silver;
 }
-a {	color: rgb(0,100,200);	text-decoration: none;}
+a {	color: var(--href);	text-decoration: none;}
 a:hover {	text-decoration: underline;}
-a:visited {	color: rgb(0,80,160);}
+
 label {	display: block;}
 
 input, button, select, textarea {
@@ -71,10 +72,16 @@ button:focus {	border-color: #666;}
 ::-webkit-scrollbar-track {    background: #85858534;    border-radius: 10px;}
 
 
-
-.pitaka .title {font-family: 楷体,標楷體;}
-.pitaka .description {font-size:1rem;color:rgb(160, 144, 116)}
+.pitaka {padding-left:0.5em;padding-right:1em}
+.pitaka .title {font-family: 楷体,標楷體;line-height:180%;font-size:1.5rem;color:rgb(131, 145, 72)}
+.pitaka .name {font-family: Tahoma;color:var(--href)}
+.pitaka .details {font-size:1rem;color:rgb(27, 136, 5)}
 .pitaka .loadtime {font-size:1rem;color:gold}
+
+.separator {padding-top:6px;display:block;height:1px;border-bottom:2px dotted rgb(56, 90, 1)}
+.endofcontent{margin-top:1em;border-top:5px solid rgb(2, 56, 0);
+	display:block;height:1px;width:100%;text-align: center;}
+.endofcontent:after {content:"Accelon 2021\A https://accelon.github.io";white-space: pre-wrap;}
 .tabs {--webkit-user-select: none; background:var(--panel-background);overflow:hidden}
 .tab-content {
 	position: absolute;
@@ -151,5 +158,19 @@ button:focus {	border-color: #666;}
 .activeline {padding-left:2px;border-left:4px dotted gray}
 
 .selectionmenu {position:absolute;z-index: 999;
-	-webkit-user-select: none; border-radius: 5px; padding-top:5px; padding-left:5px;
+	-user-select: none; border-radius: 5px; padding-top:5px; padding-left:5px;
 	background:var(--menubackground);visibility: hidden;}
+
+.hidden {visibility: hidden;}
+
+.labeltext_query { background:rgb(59, 46, 0) ;font-size:85%;border:1px solid rgb(59, 46, 0) ; 
+	border-radius: 5px;margin-left:5px;color:rgb(201, 201, 0)}
+.labeltext_query:before {content :attr(label);color:rgb(141, 165, 3)}
+
+.labeltext {padding-left:3px;padding-right:3px; 
+	background:rgb(0, 32, 13) ;
+	font-size:80%;border:1px solid rgb(0, 44, 11) ; 
+	border-radius: 5px;margin-left:2px;color:green}
+.labeltext:before {content :attr(label);color:rgb(105, 168, 3)}
+
+.autocomplete_search {padding-inline-start: 2em;}

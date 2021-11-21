@@ -42,6 +42,7 @@
   export let onChange = function(newSelectedItem) {};
   export let onFocus = function() {};
   export let onBlur = function() {};
+  export let onInput = function(){};
   export let onCreate = function(text) {
     if (debug) {
       console.log("onCreate: " + text);
@@ -113,6 +114,7 @@
   export let selectedItem = undefined;
   export let value = undefined;
   export let highlightedItem = undefined;
+
   // --- Internal State ----
   const uniqueId = "sautocomplete-" + Math.floor(Math.random() * 1000);
   // HTML elements
@@ -583,7 +585,7 @@
   function onEnter() {
     selectItem();
   }
-  function onInput(e) {
+  function onInputInternal(e) {
     if (debug) {
       console.log("onInput");
     }
@@ -596,6 +598,7 @@
     } else {
       processInput();
     }
+    onInput && onInput(e);
   }
   function unselectItem(tag) {
     if (debug) {
@@ -742,7 +745,8 @@
     selectedItem = undefined;
     setTimeout(() => {
       input.focus();
-      close();
+      // close();
+      open();
     });
   }
   export function highlightFilter(keywords, field) {
@@ -880,7 +884,7 @@
     padding: 0;
   }
   .autocomplete-list-item {
-    padding: 5px 15px;
+    padding: 5px 5px;
     color: rgb(192,192,192);
     cursor: pointer;
     line-height: 1;
@@ -1009,7 +1013,7 @@
       readonly={readonly || (lock && selectedItem)}
       bind:this={input}
       bind:value={text}
-      on:input={onInput}
+      on:input={onInputInternal}
       on:focus={onFocusInternal}
       on:blur={onBlurInternal}
       on:keydown={onKeyDown}
@@ -1063,9 +1067,9 @@
         <slot name="create" {createText}>{createText}</slot>
       </div>
     {:else if noResultsText}
-      <div class="autocomplete-list-item-no-results">
+      <!-- <div class="autocomplete-list-item-no-results">
         <slot name="no-results" {noResultsText}>{noResultsText}</slot>
-      </div>
+      </div> -->
     {/if}
   </div>
 </div>

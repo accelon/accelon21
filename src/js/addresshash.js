@@ -43,12 +43,15 @@ export const loadaddress=async cb=>{
 
     const addrs_a=(a||[config.init_a||PATHSEP]).filter(it=>!!it);
     const addrs_b=(b||[config.init_b||PATHSEP]).filter(it=>!!it);
-    if (!addrs_a.length) addrs_a.push(config.init_a);
-    if (!addrs_b.length) addrs_b.push(config.init_b);
+
+
     const addrs=addrs_a.concat(addrs_b);
     
     addrs.push(config.init_a); addrs.push(config.init_b);//load ptk in config
+
+
     const pitakaNeeded=enumBasketInAddress(addrs);
+    if (config.preload) pitakaNeeded.push( ... config.preload.split(/[,;]/)); 
 
     cb(pitakaNeeded,config);
     for (let i=0;i<pitakaNeeded.length;i++){
