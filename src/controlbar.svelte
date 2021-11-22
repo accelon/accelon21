@@ -7,8 +7,9 @@ import Mulu from './mulu.svelte';
 import TocMenu from './tocmenu.svelte';
 import TabSelector from './tabselector.svelte';
 import {closetab} from './js/addresses';
+import {showFrontPage} from './js/store.js';
 export let ptk
-export let scrollStart=0;
+export let scrollStart=0,side=0;
 const vstore=getContext('vstore');
 const addresses=getContext('addresses');
 
@@ -18,6 +19,8 @@ $: y0= $vstore.y0;
 
 </script>
 <div class="controlbar">
+    {#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
+
     <span class='closetabbutton' on:click={()=>$vstore.loc!=='/'&&closetab(addresses)}>
         {$addresses.length}
     </span>
@@ -37,4 +40,5 @@ $: y0= $vstore.y0;
         height:1.5rem;
         background:var(--panel-background)
     }
+    .showing{fill:var(--highlight)}
 </style>

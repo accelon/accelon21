@@ -6,7 +6,7 @@ import { getContext } from 'svelte';
 import { get, writable } from 'svelte/store';
 import { settab } from './js/addresses';
 import QueryResult from './queryresult.svelte';
-
+import QuickPointer from './quickpointer.svelte'
 const addresses=getContext('addresses');
 $: pitakas=pool.getAll();
 
@@ -19,6 +19,7 @@ const getItems=(ptk,tofind,rc)=>{
 const visit=homepage=>{
     window.open(homepage||'https://accelon.github.io','_new');
 }
+let isvalid={};
 </script>
 {#each pitakas as ptk}
 <div class="pitaka">
@@ -28,12 +29,14 @@ const visit=homepage=>{
     {_(ptk.header.title,$tosim)}</span>
     <QueryResult items={getItems(ptk,$activetofind,$runquerycount)} />
     <div class="details">
+    <QuickPointer bind:isvalid {ptk}/>
+    {#if !isvalid[ptk.name]}
         <span class="labeltext" label={_(ptk.chapterCount()?'冊':'條',$tosim)}>{ptk.contentCount()}</span>
         {#if ptk.chapterCount()}<span class="labeltext" label='卷'>{ptk.chapterCount()}</span>{/if}
         <span class="labeltext" label='段'>{ptk.header.lastTextLine}</span>
         <span class="labeltext" label='建立'>{ptk.header.buildtime.replace(/T.+$/,'')}</span>
-        {#if ptk.header.description}<br/><span class="labeltext" label={_('說明',$tosim)}>{_(ptk.header.description,$tosim)}</span>{/if}
-
+        {#if ptk.header.description}<span class="labeltext" label={_('說明',$tosim)}>{_(ptk.header.description,$tosim)}</span>{/if}
+    {/if}
     </div>
 </div>
 {/each}

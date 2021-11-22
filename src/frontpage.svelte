@@ -4,9 +4,10 @@ import SearchBar from './searchbar.svelte';
 import SearchHelp from './searchhelp.svelte';
 import {searchhelp} from './js/store.js';
 import { pool } from 'pitaka/basket';
+export let hidden=false;
 </script>
 
-<div class="container">
+<div class="container"  class:hidden>
 <div class="controlbar">
     <SearchBar pitakas={pool.getAll()}/></div>
     {#if $searchhelp}

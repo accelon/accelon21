@@ -28,6 +28,7 @@ body {
 	--marker4 :rgb(145, 86, 15);
 	--marker5 :darkmagenta;
 	--href: rgb(28, 129, 2);
+	--booktitle: rgb(131, 145, 72);
 }
 
 html {
@@ -73,10 +74,11 @@ button:focus {	border-color: #666;}
 
 
 .pitaka {padding-left:0.5em;padding-right:1em}
-.pitaka .title {font-family: 楷体,標楷體;line-height:180%;font-size:1.5rem;color:rgb(131, 145, 72)}
+.pitaka .title {font-family: 楷体,標楷體;line-height:180%;font-size:1.5rem;color:var(--booktitle)}
 .pitaka .name {font-family: Tahoma;color:var(--href)}
 .pitaka .details {font-size:1rem;color:rgb(27, 136, 5)}
 .pitaka .loadtime {font-size:1rem;color:gold}
+.pitaka_tocbartitle{font-family: 楷体,標楷體;color:var(--booktitle)}
 
 .separator {padding-top:6px;display:block;height:1px;border-bottom:2px dotted rgb(56, 90, 1)}
 .endofcontent{margin-top:1em;border-top:5px solid rgb(2, 56, 0);
@@ -102,6 +104,7 @@ button:focus {	border-color: #666;}
 	position:absolute;
 	overflow-y:auto;
 	padding-left:2px;padding-bottom:0.5em;height:50%;
+	margin-right:2.4rem; /* allow user to add bookmark*/
 	border-top-left-radius: 0.5em;
 	border-bottom-left-radius: 0.5em;
 	right:0;max-width:15em;background:var(--panel-background)}
@@ -154,8 +157,9 @@ button:focus {	border-color: #666;}
 .tabselector {margin-left:1.5em;padding-left:4px;position:absolute;background:var(--menubackground);
 	box-shadow: 1 5 10px ;min-height:5em;min-width:10em;max-height: 15em;overflow-y:scroll}  
 
-.linetext {padding-left:6px;padding-top:0.5em;line-height:1.8}
-.activeline {padding-left:2px;border-left:4px dotted gray}
+.linetext {padding-left:4px;padding-top:0.5em;line-height:1.8;padding-right:4px}
+.activeline {padding-left:1px;border-left:3px dotted gray;
+	padding-right:1px;border-right:3px dotted gray}
 
 .selectionmenu {position:absolute;z-index: 999;
 	-user-select: none; border-radius: 5px; padding-top:5px; padding-left:5px;

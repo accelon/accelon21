@@ -1,0 +1,28 @@
+<script>
+import { debounce } from 'pitaka/utils';
+import { getContext } from 'svelte';
+import { settab } from './js/addresses.js';
+import {_,tosim} from './js/store.js'
+export let isvalid={};
+export let ptk=null;
+let value='';
+let closestLabels=[];
+const addresses=getContext('addresses');
+
+const oninput=()=>{
+   closestLabels=ptk.parseQuickPointer(value);
+   isvalid[ptk.name]=!!closestLabels.length || !!value.trim();
+}
+const read=y0=>{
+    const loc=ptk.locOf(y0,true);
+    settab(addresses,loc,{newtab:true});
+}
+</script>
+<input bind:value on:input={debounce(oninput,250)} size={5}/>
+{#if !closestLabels.length && value.trim()}
+{_(ptk.quickPointerSyntax(),$tosim)}
+{/if}
+{#each closestLabels as lbl}
+{#if lbl.id}<span class="labeltext" label={_(lbl.caption,$tosim)}>{lbl.id}</span>{/if}
+{#if lbl.lblname=='bk' && lbl.name }<span class='clickable' on:click={()=>read(lbl.y0)}>{lbl.name}</span>{/if}
+{/each}

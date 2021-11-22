@@ -9,7 +9,7 @@ export const panepos=writable(settings.panepos);
 export const _=str=>toSim( str,get(tosim));
 
 
-
+export const showFrontPage=writable(false);
 export const activeside=writable(0);
 export const searchbox=writable({});
 export const searchhelp=writable(false);

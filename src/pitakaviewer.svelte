@@ -76,7 +76,7 @@ $vstore.scrollToY=scrollToY;
 
 </script>
 <div class="container">
-    <div><ControlBar  {scrollStart} {ptk}/></div>
+    <div><ControlBar {side} {scrollStart} {ptk}/></div>
     <VirtualScroll start={-1} bind:this={vscroll} keeps={30} data={$viewitems} 
         key="key" let:data on:scroll={scroll}>
         {#if data.ptr}

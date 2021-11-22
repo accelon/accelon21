@@ -7,10 +7,18 @@ export let title='';
 export let caption='';
 export let leftcaption='';
 export let store=null;
+export let state=2;
 const svg=Icons[icon]||'';
 const click=evt=>{
     if(disabled)return;
-    if (store) $store=!$store;
+    if (store) {
+        if (state==2) {
+            $store=!$store;
+        } else if (state>2) {
+            $store++;
+            if ($store>state) $store=0;
+        }
+    }
     evt.cancelBubble=true;
     return onclick&&onclick(evt);
 }

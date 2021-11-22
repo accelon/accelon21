@@ -4,8 +4,8 @@ import {parsePointer ,serializePointer} from 'pitaka/offtext';
 import {getUserNotes} from './usernotes.js'
 import {getBookmarks} from './bookmarks.js'
 import {getUserData,setUserData} from './userdata.js';
-import {PATHSEP,ADDRSEP } from 'pitaka';
-import {activeside} from './store.js'
+import {PATHSEP,ADDRSEP, DELTASEP } from 'pitaka';
+import {activeside, showFrontPage} from './store.js'
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
 
@@ -19,6 +19,11 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy},store)=>{
         return; //nothing to do
     }
 
+    const atdelta=loc&&loc.indexOf(DELTASEP);
+    if (atdelta>0) {
+        dy=parseInt(loc.substr(atdelta+1));
+        loc=loc.substr(0,atdelta);
+    }
     const items=ptk.fetchPage(loc);
     const criteria=get(store).criteria||{};
     
@@ -129,6 +134,7 @@ export const settab=(addresses,newloc,{newtab=false}={})=>{
         addrs[0].addr=addr;
     }
     addresses.set(addrs);
+    showFrontPage.set(false)
 }
 
 export const getside=()=>{

@@ -1,14 +1,15 @@
 <script>
 import AutoComplete from './3rdparty/simpleautocomplete.svelte';
 import { debounce } from 'pitaka/utils';
-import { searchhelp } from './js/store.js';
+import { searchhelp,showFrontPage} from './js/store.js';
 import {validateTofind } from 'pitaka/fulltext';
 import {queryhistory,activetofind,runquerycount,QUERYSEP} from './js/query.js'
 import LoadingAnimation from './comps/loading.svelte'
 import { get } from 'svelte/store';
 import { tick } from 'svelte';
-import Icons from './comps/icons.js';
+import Btn from './comps/button.svelte';
 
+export let side=0;
 export let pitakas=[];
 let tasks=[];
 let searching=false;
@@ -39,8 +40,9 @@ $: qhis=$queryhistory.split(QUERYSEP);
 
 let cursorword='';
 </script>
-<span class={ $searchhelp?"showing":"notshowing"} 
-on:click={()=>$searchhelp=!$searchhelp}>{@html Icons.search}</span>
+<!-- <span class={ $searchhelp?"showing":"notshowing"} 
+on:click={()=>$searchhelp=!$searchhelp}>{@html Icons.search}</span> -->
+{#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
 <AutoComplete showClear={true} bind:text={cursorword}
 items={qhis}  onInput={debounce(searchall,250)} onChange={searchall}/>
 

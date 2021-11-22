@@ -2,7 +2,7 @@
 import {tosim,cursor,renderer} from './js/store.js';
 import {setLoc} from './js/addresses.js'
 import {getTextHook} from './js/selection.js';
-import { onMount } from 'svelte';
+import { getContext, onMount } from 'svelte';
 export let loc=''
 export let key=0
 export let nth=0;
@@ -13,7 +13,7 @@ export let entry='';
 export let attrs=[];
 export let text='';
 export let ptk=null;
-
+const viewstore=getContext('viewstore');
 export let show=false;
 let items=[];
 onMount(async ()=>{
@@ -33,7 +33,7 @@ const toggleShowEntry=async(evt)=>{
 const mouseup=async evt=>{
     if (evt.button!==0) return;
     if (loc) {
-        await setLoc(ptk,loc);
+        await setLoc({ptk,loc},viewstore);
     } else if (evt.target.tagName=='T') {
         const {hook,y,sel,t,ori}=getTextHook(ptk,evt);
         if (!sel)return;

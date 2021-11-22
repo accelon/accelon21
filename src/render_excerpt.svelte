@@ -8,7 +8,7 @@ export let loading=false;
 </script>
 <div class='linetext'>
 {#key $tosim}
-<span class='excerptheader'>{key} <HumanAddr {ptk} loc={ptk.pageAt(y,true)}/></span>
+<span class='excerptheader'>{key} <HumanAddr {ptk} loc={ptk.locOf(y)}/></span>
 {#if !loading}{_(ptk.getLine(y))}{/if}
 {/key}
 </div>

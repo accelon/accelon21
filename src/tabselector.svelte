@@ -24,7 +24,9 @@ const copyOpposite=evt=>{
     } else selectorShown.set(false)
 }
 </script>
+<span class="pitaka_tocbartitle">
 <HumanAddr address={$addresses[0].addr} onclick={()=>$selectorShown=!$selectorShown}/>
+</span>
 {#if $selectorShown}
 <div class="tabselector">
     {#each $addresses as address,idx (address.key)}
