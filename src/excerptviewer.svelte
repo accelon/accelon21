@@ -3,6 +3,7 @@ import {onMount} from 'svelte';
 import {writable} from 'svelte/store'
 import {useBasket} from 'pitaka';
 import {unpackJSONString} from 'pitaka/utils';
+import ExcerptBar from './excerptbar.svelte'
 import VirtualScroll from './3rdparty/virtualscroll'
 import ExcerptLine from './render_excerpt.svelte';
 export let side=0,visible=false,address=0,active=false;
@@ -28,7 +29,7 @@ onMount(async ()=>{
 </script>
 
 <div class="container">
-    EXCERPT
+<div><ExcerptBar {side}  {ptk}/></div>
 <VirtualScroll start={-1} bind:this={vscroll} keeps={25} data={$excerptitems} key="key" 
     let:data on:scroll={scroll}>
     <span class='excerptlinesep'></span>

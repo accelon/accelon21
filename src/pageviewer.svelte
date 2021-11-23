@@ -4,7 +4,7 @@ import { setContext} from 'svelte';
 import { renderer } from './js/store.js';
 import {setLoc} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
-import ControlBar from './controlbar.svelte'
+import PageBar from './pagebar.svelte'
 import { writable } from 'svelte/store';
 import { parsePointer } from 'pitaka/offtext';
 import {filterItems} from './js/criteria.js';
@@ -76,7 +76,7 @@ $vstore.scrollToY=scrollToY;
 
 </script>
 <div class="container">
-    <div><ControlBar {side} {scrollStart} {ptk}/></div>
+    <div><PageBar {side} {scrollStart} {ptk}/></div>
     <VirtualScroll start={-1} bind:this={vscroll} keeps={30} data={$viewitems} 
         key="key" let:data on:scroll={scroll}>
         {#if data.ptr}

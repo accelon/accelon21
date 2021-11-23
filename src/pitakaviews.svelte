@@ -1,6 +1,7 @@
 <script>
 import {setContext} from 'svelte'
-import PitakaViewer from './pitakaviewer.svelte'
+
+import PageViewer from './pageviewer.svelte'
 import ExcerptViewer from './excerptviewer.svelte'
 import FrontPage from './frontpage.svelte';
 import {showFrontPage} from './js/store.js'
@@ -16,7 +17,7 @@ setContext('addresses',addresses);
             {#if address.addr[0]=='{'}
             <ExcerptViewer {side} address={address.addr} active={!hide&&idx===0}/>
             {:else}
-            <PitakaViewer {side} address={address.addr} active={!hide&&idx===0}/>
+            <PageViewer {side} address={address.addr} active={!hide&&idx===0}/>
             {/if}
         </div>
     {/each}

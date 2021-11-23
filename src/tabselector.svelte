@@ -4,7 +4,6 @@ import { getContext } from 'svelte';
 import { get } from 'svelte/store';
 
 import HumanAddr from './comps/humanaddr.svelte'
-import { PATHSEP } from 'pitaka';
 const addresses=getContext('addresses');
 
 const moveTop=idx=>{

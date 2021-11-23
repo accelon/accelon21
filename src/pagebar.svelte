@@ -21,12 +21,12 @@ $: y0= $vstore.y0;
 <div class="controlbar">
     {#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
 
-    <span class='closetabbutton' on:click={()=>$vstore.loc!=='/'&&closetab(addresses)}>
+    <span class='closetabbutton' on:click={()=>closetab(addresses)}>
         {$addresses.length}
     </span>
     <TabSelector/>
     <TocBar/>
-    {#if mulu.length}
+    {#if mulu&&mulu.length}
         <Mulu {mulu} {scrollStart} {y0}/>
     {:else if ptk}
         <TocMenu {scrollStart} {ptk}/>
