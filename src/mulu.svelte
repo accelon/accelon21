@@ -50,7 +50,7 @@ $: showing = (scrollStart<AUTOMENULINE && showmode==1) || showmode==2;
             style={"padding-left:"+((level-1)*3)+"px;color:"+color(level,addr)}>
         
         {#if addr}
-        <span class="external" lnk={addr.join(PATHSEP)} on:click={golink}>{_(name)}
+        <span class="external" lnk={addr} on:click={golink}>{_(name,$tosim)}
         →{caption(addr)}</span>
         {:else}
         <span 

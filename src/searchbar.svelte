@@ -20,7 +20,7 @@ const searchpitaka=async ()=>{
     const queries=get(ptk.querystore);
     $activetofind=validateTofind(cursorword);
     if (!queries[cursorword]) {
-        queries[cursorword]=await ptk.tryAllQuery(cursorword);
+        queries[cursorword]=await ptk.runAllQuery(cursorword);
         ptk.querystore.set(queries);
         $runquerycount++;//force redraw of pitaka list
         await tick();
@@ -40,14 +40,9 @@ $: qhis=$queryhistory.split(QUERYSEP);
 
 let cursorword='';
 </script>
-<!-- <span class={ $searchhelp?"showing":"notshowing"} 
-on:click={()=>$searchhelp=!$searchhelp}>{@html Icons.search}</span> -->
+
 {#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
 <AutoComplete showClear={true} bind:text={cursorword}
 items={qhis}  onInput={debounce(searchall,250)} onChange={searchall}/>
 
 <span class="clickable" class:hidden={!searching} on:click={()=>searching=false}><LoadingAnimation/></span>
-<style>
-    .showing{fill:var(--highlight)}
-    .notshowing{fill:var(--button-unselected)}
-</style>

@@ -1,7 +1,7 @@
 <script>
 import { PATHSEP, pool} from 'pitaka';
 import {_,tosim} from './js/store.js'
-import {activetofind,runquerycount,} from './js/query.js'
+import {activetofind,runquerycount} from './js/query.js'
 import { getContext } from 'svelte';
 import { get, writable } from 'svelte/store';
 import { settab } from './js/addresses';

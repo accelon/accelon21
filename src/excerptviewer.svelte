@@ -9,18 +9,19 @@ export let side=0,visible=false,address=0,active=false;
 let vscroll;
 const scroll=evt=>{return true};
 const excerptitems=writable([]);
-const ptk=useBasket('cb-y');
+let ptk=null;
 const out=[];
-let pageattrs={};
-onMount(()=>{
+let attrs={};
+onMount(async ()=>{
     try {
-        pageattrs=JSON.parse(unpackJSONString(address));
+        attrs=JSON.parse(unpackJSONString(address));
+        ptk=useBasket(attrs.ptk);
     } catch(e){
         console.error(e);
     }
-    for (let i=0;i<100;i++) {
-            out.push({ptk,key:i,y:Math.floor(Math.random()*20000)})
-    }
+    const {scoredLine}=await ptk.runQuery(attrs.qm||'*',attrs.tf,{excerpt:true});
+    
+    const out=scoredLine.map(([y,score],key)=>{return {ptk,key, y,score}})
     excerptitems.set(out);
 });
 
@@ -28,7 +29,7 @@ onMount(()=>{
 
 <div class="container">
     EXCERPT
-<VirtualScroll start={-1} bind:this={vscroll} keeps={15} data={$excerptitems} key="key" 
+<VirtualScroll start={-1} bind:this={vscroll} keeps={25} data={$excerptitems} key="key" 
     let:data on:scroll={scroll}>
     <span class='excerptlinesep'></span>
     {#if typeof data.ptk.getLine(data.y)=='undefined'}
