@@ -5,6 +5,7 @@ import SearchHelp from './searchhelp.svelte';
 import {searchhelp} from './js/store.js';
 import { pool } from 'pitaka/basket';
 export let hidden=false;
+export let side=0;
 </script>
 
 <div class="container"  class:hidden>
@@ -13,7 +14,7 @@ export let hidden=false;
     {#if $searchhelp}
     <SearchHelp/>
     {:else}
-    <PitakaList/>
+    <PitakaList {side}/>
     {/if}
 </div>
 

@@ -8,10 +8,8 @@ export let ptk=null;
 export let loading=false;
 </script>
 <div class='linetext'>
-{#key $tosim}
 <span class='excerptheader'>{key} <HumanAddr {ptk} locOnly={true} loc={ptk.locOf(y)}/></span>
-{#if !loading}{_(ptk.getLine(y))}{/if}
-{/key}
+{#if !loading}{_(ptk.getLine(y),$tosim)}{/if}
 </div>
 <style>
 .excerptheader {border:1px dashed sienna} 

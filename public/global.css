@@ -166,6 +166,7 @@ button:focus {	border-color: #666;}
 	background:var(--menubackground);visibility: hidden;}
 
 .hidden {visibility: hidden;}
+.displaynone {display: none;}
 
 .labeltext_query { background:rgb(59, 46, 0) ;font-size:85%;border:1px solid rgb(59, 46, 0) ; 
 	border-radius: 5px;margin-left:5px;color:rgb(201, 201, 0)}

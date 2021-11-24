@@ -1,23 +1,16 @@
 <script>
-
-import {getContext} from 'svelte'
 import {settab} from './js/addresses.js';
 import InputNumber from './comps/inputnumber.svelte';
-import { PATHSEP } from 'pitaka';
-
-const vstore=getContext('vstore');
-
-$: ptk=$vstore.ptk;
-$: loc=$vstore.loc;
-
-const addresses=getContext('addresses');
+export let ptk;
+export let loc;
+export let side=0;
 
 $: childcount=ptk&&ptk.childCount(loc) ;
 $: value=loc&&parseInt(loc.match(/(\d+)$/)[1]);
 
 const go=({detail})=>{
     const newloc=loc.replace(/\d+$/,detail);
-    settab(addresses,newloc);
+    settab(side,newloc);
 }
 </script>
 

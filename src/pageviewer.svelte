@@ -6,9 +6,9 @@ import {setLoc} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
 import PageBar from './pagebar.svelte'
 import { writable } from 'svelte/store';
-import { parsePointer } from 'pitaka/offtext';
+import { parseAddress } from 'pitaka/offtext';
 import {filterItems} from './js/criteria.js';
-export let address='',side=0;
+export let addr='',side=0;
 export let active=false;
 let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs,topkey, loaded=false;
 
@@ -17,12 +17,11 @@ const viewitems=writable({});
 setContext('vstore',vstore);
 setContext('viewitems',viewitems);
 
-$: {const res = parsePointer(address) ; if (res) {
+$: {const res = parseAddress(addr) ; if (res) {
     basket=res.basket; 
     ptk = useBasket(basket);
     if (ptk) {
-        loc=res.loc; 
-        dy=res.dy;
+        loc=res.loc;
         y0=ptk.getPageRange(loc)[0];
         locattrs=res.attrs||{};
         $vstore.linetofind=locattrs.ltf||'';

@@ -6,11 +6,11 @@ import LineFilter from './linefilter.svelte';
 import {PATHSEP} from 'pitaka';
 
 
-const addresses=getContext('addresses');
 const vstore=getContext('vstore');
 export let mulu=[];
 export let scrollStart=0;
 export let y0=0;
+export let side=0;
 
 let color=(level,external)=>'hsl('+((level)*40) +' ,80%,'+(external?'35%)':'50%)') ;
 let caption=(lnk)=>{
@@ -20,11 +20,11 @@ let caption=(lnk)=>{
 }
 const golink=evt=>{
     const lnk=evt.target.attributes.lnk.value;
-    settab( addresses,{loc:lnk}, {newtab:true});
+    settab( side,{loc:lnk}, {newtab:true});
 }
 const scrolltotocitem=evt=>{
     const y=parseInt(evt.target.attributes.itemy.value);
-    setActiveline(addresses, y,y0);
+    setActiveline(side, y,y0);
     $vstore.scrollToY(y,true);
 }
 let showmode=1; //0 = always off , 1=auto on , 2=always on

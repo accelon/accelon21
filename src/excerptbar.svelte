@@ -4,9 +4,10 @@ import {showFrontPage} from './js/store.js';
 import Btn from './comps/button.svelte';
 import TabSelector from './tabselector.svelte';
 import {closetab} from './js/addresses';
-export let ptk
+export let ptk;
 export let side=0;
-
+export let bookcount=0;
+export let showbooklist;
 const addresses=getContext('addresses');
 </script>
 <div class="controlbar">
@@ -15,4 +16,8 @@ const addresses=getContext('addresses');
         {$addresses.length}
     </span>
     <TabSelector/>
+    <span class:showbooklist on:click={()=>showbooklist=!showbooklist}>{bookcount}</span>
 </div>
+<style>
+    .showbooklist {color:var(--highlight)}
+</style>

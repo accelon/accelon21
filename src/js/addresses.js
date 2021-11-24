@@ -1,6 +1,6 @@
 import {getContext} from 'svelte'
 import {writable,get} from 'svelte/store'
-import {parsePointer ,serializePointer} from 'pitaka/offtext';
+import {parseAddress ,serializePointer} from 'pitaka/offtext';
 import {getUserNotes} from './usernotes.js'
 import {getBookmarks} from './bookmarks.js'
 import {getUserData,setUserData} from './userdata.js';
@@ -59,13 +59,9 @@ const packAddresses=arr=>{
     let prevbasket='';
     const out=[];
     for (let i=0;i<arr.length;i++) {
-        if (arr[i][0]==='{') { //Excerpt page has only JSON obj
-            out.push(arr[i]);
-            continue;
-        }
-        const {basket}=parsePointer(arr[i]);
+        const {basket}=parseAddress(arr[i]);
         if (prevbasket!==basket) out.push(arr[i]); 
-        else out.push(arr[i].substr(basket.length+2));
+        else out.push(arr[i].substr(basket.length));
         if (basket) prevbasket=basket;
     }
     return out.join(ADDRSEP);
@@ -75,7 +71,11 @@ export const updateUrl=()=>{
     const b=packAddresses(get(addresses_b).map(it=>it.addr));
     window.location.hash='#'+a + (b?('#'+b):'');
 }
-export const setLocAttrs=(addresses=addresses_b,_attrs)=>{
+export const setLocAttrs=(addresses_side=addresses_b,_attrs)=>{
+    let addresses=addresses_side;
+    if (typeof addresses_side=='number') {
+        addresses=addresses_side==0?addresses_a:addresses_b;
+    }
     const addrs=get(addresses);
     const {basket,loc,dy,attrs}=parsePointer(addrs[0].addr);
     const newattrs= Object.assign(attrs,_attrs);
@@ -87,10 +87,14 @@ export const setLocAttrs=(addresses=addresses_b,_attrs)=>{
     //addresses.set(addrs)
     updateUrl();
 }
-export const setActiveline=(addresses=addresses_b,newy=0,y0=0)=>{
+export const setActiveline=(addresses_side=addresses_b,newy=0,y0=0)=>{
+    let addresses=addresses_side;
+    if (typeof addresses_side=='number') {
+        addresses=addresses_side==0?addresses_a:addresses_b;
+    }
     if (typeof newy!=='number')return;
     const addrs=get(addresses);
-    const {basket,loc,dy,attrs}=parsePointer(addrs[0].addr);
+    const {basket,loc,dy,attrs}=parseAddress(addrs[0].addr);
     // console.log('setactiveline',addrs[0].addr,newy,y0)
 
     activeside.set(addresses==addresses_b?1:0);
@@ -103,7 +107,11 @@ export const setActiveline=(addresses=addresses_b,newy=0,y0=0)=>{
     }
 }
 
-export const settab=(addresses,newloc,{newtab=false}={})=>{
+export const settab=(addresses_side,newloc,{newtab=false}={})=>{
+    let addresses=addresses_side;
+    if (typeof addresses_side=='number') {
+        addresses=addresses_side==0?addresses_a:addresses_b;
+    }
     const addrs=get(addresses);
     let addr=newloc;
     if (addrs.length) {

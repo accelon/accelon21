@@ -2,7 +2,7 @@
 import {getside,selectorShown,getOppositeAddresses, newaddrkey} from './js/addresses.js'
 import { getContext } from 'svelte';
 import { get } from 'svelte/store';
-
+export let side=0;
 import HumanAddr from './comps/humanaddr.svelte'
 const addresses=getContext('addresses');
 
@@ -30,7 +30,7 @@ const copyOpposite=evt=>{
 <div class="tabselector">
     {#each $addresses as address,idx (address.key)}
     {#if idx===0} 
-        <div><HumanAddr address={address.addr} showjuan={true} onclick={copyOpposite} caption={getside()=='a'?'⭆':'⭅'}/></div>
+        <div><HumanAddr address={address.addr} showjuan={true} onclick={copyOpposite} caption={side===0?'⭆':'⭅'}/></div>
     {:else}
     <div><HumanAddr address={address.addr} showjuan={true} onclick={()=>moveTop(idx)}/></div>
     {/if}

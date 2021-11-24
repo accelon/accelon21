@@ -5,9 +5,9 @@ import { settab } from './js/addresses.js';
 import {_,tosim} from './js/store.js'
 export let isvalid={};
 export let ptk=null;
+export let side=0;
 let value='';
 let closestLabels=[];
-const addresses=getContext('addresses');
 
 const oninput=()=>{
    closestLabels=ptk.parseQuickPointer(value);
@@ -15,7 +15,7 @@ const oninput=()=>{
 }
 const read=y0=>{
     const loc=ptk.locOf(y0,true);
-    settab(addresses,loc,{newtab:true});
+    settab(side,loc,{newtab:true});
 }
 </script>
 <input bind:value on:input={debounce(oninput,250)} size={5}/>

@@ -7,7 +7,8 @@ import { get, writable } from 'svelte/store';
 import { settab } from './js/addresses';
 import QueryResult from './queryresult.svelte';
 import QuickPointer from './quickpointer.svelte'
-const addresses=getContext('addresses');
+export let side=0;
+
 $: pitakas=pool.getAll();
 
 $: if (pitakas) for (let i=0;i<pitakas.length;i++) {
@@ -25,11 +26,11 @@ let isvalid={};
 <div class="pitaka">
     <span class='separator'></span>
     <span class="clickable name" on:click={()=>visit(ptk.header.homepage)}>{ptk.name}</span>
-    <span class="title" on:click={evt=>settab(addresses,PATHSEP+ptk.name)}>
+    <span class="title" on:click={evt=>settab(side,PATHSEP+ptk.name)}>
     {_(ptk.header.title,$tosim)}</span>
     <QueryResult items={getItems(ptk,$activetofind,$runquerycount)} />
     <div class="details">
-    <QuickPointer bind:isvalid {ptk}/>
+    <QuickPointer bind:isvalid {ptk} {side}/>
     {#if !isvalid[ptk.name]}
         <span class="labeltext" label={_(ptk.chapterCount()?'冊':'條',$tosim)}>{ptk.contentCount()}</span>
         {#if ptk.chapterCount()}<span class="labeltext" label='卷'>{ptk.chapterCount()}</span>{/if}

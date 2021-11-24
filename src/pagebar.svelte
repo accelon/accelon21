@@ -15,7 +15,7 @@ const addresses=getContext('addresses');
 
 $: mulu = $vstore.mulu || [];
 $: y0= $vstore.y0;
-
+$: loc= $vstore.loc;
 
 </script>
 <div class="controlbar">
@@ -24,8 +24,8 @@ $: y0= $vstore.y0;
     <span class='closetabbutton' on:click={()=>closetab(addresses)}>
         {$addresses.length}
     </span>
-    <TabSelector/>
-    <TocBar/>
+    <TabSelector {side}/>
+    <TocBar {ptk} {loc} {side}/>
     {#if mulu&&mulu.length}
         <Mulu {mulu} {scrollStart} {y0}/>
     {:else if ptk}

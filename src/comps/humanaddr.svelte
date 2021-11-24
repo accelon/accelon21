@@ -29,10 +29,9 @@ if (address) {
             loc=ptr.loc;
             c=ptr.c;
         }
-
     }
 }
-$: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc,locOnly))||[];
+$: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc,locOnly))||[]; 
 </script>
 <span title={address}>
 <span class='clickable' on:click={click}>

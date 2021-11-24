@@ -1,13 +1,13 @@
 import { openBasket, PATHSEP, ADDRSEP} from 'pitaka';
-import { parsePointer } from 'pitaka/offtext';
+import { parseAddress } from 'pitaka/offtext';
 import { addresses_a, addresses_b ,updateUrl,newaddrkey} from './addresses';
 
 const completeAddress=arr=>{
     let prevbasket='';
     for (let i=0;i<arr.length;i++) {
-        const {basket}=parsePointer(arr[i]);
+        const {basket}=parseAddress(arr[i]);
         if (!basket) {
-            if (prevbasket&&arr[i]!==PATHSEP) arr[i]=PATHSEP+prevbasket+PATHSEP+arr[i];
+            if (prevbasket&&arr[i]!==PATHSEP) arr[i]=prevbasket+arr[i];
         } else prevbasket=basket;
     }
 }
@@ -15,7 +15,7 @@ const completeAddress=arr=>{
 const enumBasketInAddress=(arr)=>{
     const pitakas={};
     arr.forEach(ptr=>{
-        const {basket}=parsePointer(ptr);
+        const {basket}=parseAddress(ptr);
         if (!basket) return;
         if (!pitakas[basket]) pitakas[basket]=0;
         pitakas[basket]++;

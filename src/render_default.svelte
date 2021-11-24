@@ -25,7 +25,6 @@ export let backlinks=[];
 export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
 
-const addresses=getContext('addresses');
 let extra=[];
 //  activeline=getActivelineStore(addresses);
 
@@ -74,7 +73,7 @@ const onSelection=evt=>{//user note and highlight etc
 
 const click=evt=>{
     if (evt.button!==0) return;
-    !nesting && setActiveline(addresses,y||key ,y0);
+    !nesting && setActiveline(side,y||key ,y0);
     if (evt.target.tagName=='T') {
         if (evt.target.classList.contains('e')) return;
         onSelection(evt);

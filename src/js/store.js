@@ -14,6 +14,7 @@ export const activeside=writable(0);
 export const searchbox=writable({});
 export const searchhelp=writable(false);
 
+export const viewers=writable({});   //
 export const renderer=writable({});   //custom renderer for different format
 export const labeler=writable({});   //custom components for labels
 
