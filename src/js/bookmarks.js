@@ -1,7 +1,7 @@
 const BOOKMARKPREFIX ='ACC21BM.';
 import {PATHSEP} from 'pitaka'
 export const getBookmarks=(ptk,loc)=>{
-    const bookmarks=localStorage.getItem(BOOKMARKPREFIX+ptk.name+PATHSEP+loc)||'{}';
+    const bookmarks=localStorage.getItem(BOOKMARKPREFIX+ptk.name+PATHSEP+ptk.pageLoc(loc))||'{}';
     try{
         return JSON.parse(bookmarks);
     } catch(e) {
@@ -10,7 +10,7 @@ export const getBookmarks=(ptk,loc)=>{
 }
 
 export const saveBookmarks=(ptk,loc,bookmarks)=>{
-    const key=BOOKMARKPREFIX+ptk.name+PATHSEP+loc;
+    const key=BOOKMARKPREFIX+ptk.name+PATHSEP+ptk.pageLoc(loc);
     for (let i in bookmarks) {
         if (!bookmarks[i]) delete bookmarks[i];
     }

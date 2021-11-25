@@ -15,12 +15,12 @@ export let ptk=null;  //if ptk is missing, text might come from various pitaka, 
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
 export let y=0   //優先權較高
-export let keywords=[];
+
 export let activeline=false;
 export let transition=()=>{};
 export let linetofind='';
 export let nesting=0,text='',id='',side=0,loc;
-export let childcount=0;
+
 export let backlinks=[];
 export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js

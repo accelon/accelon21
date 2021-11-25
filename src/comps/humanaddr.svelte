@@ -1,7 +1,6 @@
 <script>
 import {useBasket,PATHSEP} from 'pitaka'
-import {parsePointer} from 'pitaka/offtext';
-import {unpackJSONString} from 'pitaka/utils';
+import {parseAddress} from 'pitaka/offtext';
 import {_,tosim} from '../js/store.js';
 export let onclick=null;
 export let caption='';
@@ -16,17 +15,12 @@ const click=(evt)=>{
 }
 if (address) {
     let basket='',ptr;
-    if (address[0]=='{') {
-        const attrs=JSON.parse(unpackJSONString(address));
-        basket=attrs.ptk;
-    } else {
-        ptr=parsePointer(address);
-        basket=ptr.basket;
-    }
+    ptr=parseAddress(address);
+    basket=ptr.basket;
     if (basket) {
         ptk=useBasket(basket);
         if (ptr) {
-            loc=ptr.loc;
+            loc=ptk.pageLoc(ptr.loc);
             c=ptr.c;
         }
     }

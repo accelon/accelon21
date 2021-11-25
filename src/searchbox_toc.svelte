@@ -1,31 +1,44 @@
 <script>
 import {debounce} from 'pitaka/utils'
 import AutoComplete from './3rdparty/simpleautocomplete.svelte';
-import {_} from './js/store.js';
-import {getContext} from 'svelte'
-let value='';
+import {_,tosim} from './js/store.js';
+import {bookqueryhistory,QUERYSEP} from './js/query.js';
+import {validateTofind } from 'pitaka/fulltext';
+import {activebooktofind, addbookqueryhistory} from "./js/query.js";
+export let query='';
 export let ptk;
-const vstore=getContext('vstore');
-$: keywords=(ptk&&ptk.getLabel('bk')&&Object.keys(ptk.getLabel('bk').keywords))||[] ;
-let selectedKeyword={}
-const setKeyword= (label,keyword)=>{
-    $vstore.criteria={[label]:keyword};
+
+$: keywords=(ptk&&ptk.getLabel&&ptk.getLabel('bk')&&Object.keys(ptk.getLabel('bk').keywords))||[] ;
+export let setBookname=null;
+export let setKeyword=null;
+
+$: qhis=$bookqueryhistory.split(QUERYSEP);
+const onBookname=()=>{
+    $activebooktofind=validateTofind(query);
+    setBookname&&setBookname($activebooktofind);
 }
-const bkinput=()=>{
-    $vstore.partial=value;
+const onKeyword=(label,value)=>{
+    setKeyword&&setKeyword(label,value);
 }
+let sLabel,selected;
+$: if(ptk &&ptk.getLabel) sLabel= ptk.getLabel(selected) ||null;
+const getKeyItems=keys=>$tosim?keys.map(key=>_(key,$tosim)):keys;
 </script>
-<input class="namefilter" placeholder={_("書名 BookName")} size="12em" 
-bind:value on:input={debounce(bkinput,250)}/>
-
-
-{#each keywords as label }
-<AutoComplete 
-bind:selectedItem={$vstore.criteria[label]}
-inputId={"autocomplete_"+label} showClear={true} items={ptk.getLabel(label).keys} placeholder={ptk.getLabel(label).caption}
- onChange={value=>setKeyword(label,value)}/>
+{#key $tosim}
+<select bind:value={selected}>
+<option value="bk">{_("書名")}</option>
+{#each keywords as label}
+<option value={label}>{ptk.getLabel(label).caption}</option>
 {/each}
-
-<style>
-    .namefilter {font-size:1.1rem;padding-left:5px}
-</style>
+</select>
+{#if sLabel}
+{#if selected==='bk'}
+<AutoComplete placeholder={_(sLabel.caption)}
+ bind:text={query} items={qhis} onInput={debounce(onBookname,250)} />
+{:else}
+<AutoComplete inputId={"autocomplete_"+sLabel} items={getKeyItems(sLabel.keys)} 
+placeholder={selected!==sLabel.name?_(sLabel.caption):''} 
+onChange={value=>onKeyword(sLabel,value)}/>
+{/if}
+{/if}
+{/key}

@@ -60,8 +60,8 @@ export const loadaddress=async cb=>{
     }
     if (!config.advance) config.advance={};
     if (!config.advance.keepLog) console.clear();
-    addresses_a.set(addrs_a.map(addr=>({key:newaddrkey(), addr})));
-    addresses_b.set(addrs_b.map(addr=>({key:newaddrkey(), addr})));
+    addresses_a.set(addrs_a.map(address=>({key:newaddrkey(), address})));
+    addresses_b.set(addrs_b.map(address=>({key:newaddrkey(), address})));
 
     addresses_b.subscribe(updateUrl);
     addresses_a.subscribe(updateUrl);

@@ -6,7 +6,8 @@ export const loadSettings=()=>{
     const toolbox_panepos=localStorage.getItem(AppPrefix+'toolbox_panepos')||30;
     const panepos=localStorage.getItem(AppPrefix+'panepos')||70;    
     const queryhistory=localStorage.getItem(AppPrefix+'queryhistory')||'';
-    return {tosim,column,tab,toolbox_panepos,panepos,queryhistory};
+    const bookqueryhistory=localStorage.getItem(AppPrefix+'bookqueryhistory')||'';
+    return {tosim,column,tab,toolbox_panepos,panepos,queryhistory,bookqueryhistory};
 }
 
 export const saveSettings=()=>{ //immediate save

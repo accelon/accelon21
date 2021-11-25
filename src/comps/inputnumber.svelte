@@ -1,12 +1,12 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
+import { createEventDispatcher } from 'svelte'
 const dispatch = createEventDispatcher()
 export let stepper=true;
 export let value;
 export let style="width:2rem";
-export let min=0;
+export let min=1;
 export let autofocus=false;
-export let max=Number.MAX_SAFE_INTEGER;
+export let max=value>min?value:Number.MAX_SAFE_INTEGER;
 const clamp=(num, min, max)=> num < min ? min : num > max ? max : num;
 let val=parseInt(value);
 $: val=clamp(parseInt(val),parseInt(min),parseInt(max))||0;

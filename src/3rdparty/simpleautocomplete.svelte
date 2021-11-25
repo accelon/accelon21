@@ -819,11 +819,12 @@
 
 <style>
   .autocomplete {
-    min-width: 200px;
+    min-width: 6em;
     display: inline-block;
-    max-width: 100%;
+    max-width: 10em;
     position: relative;
     vertical-align: top;
+    width: 8em;
     /* height: 2.25em; */
   }
   .autocomplete:not(.hide-arrow):not(.is-loading)::after {
@@ -857,16 +858,16 @@
     font: inherit;
     width: 100%;
     height: 100%;
-    padding: 2px 5px;
+    padding: 2px 2px;
   }
   .autocomplete:not(.hide-arrow) .autocomplete-input {
-    padding-right: 2em;
+    padding-right: 0em; /*2em*/
   }
   .autocomplete.show-clear:not(.hide-arrow) .autocomplete-input {
     padding-right: 3.2em;
   }
   .autocomplete.hide-arrow.show-clear .autocomplete-input {
-    padding-right: 2em;
+    padding-right: 0em;/*2em*/
   }
   .autocomplete-list {
     background: var(--button-unselected);

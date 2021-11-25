@@ -67,8 +67,8 @@ const packAddresses=arr=>{
     return out.join(ADDRSEP);
 }
 export const updateUrl=()=>{
-    const a=packAddresses(get(addresses_a).map(it=>it.addr));
-    const b=packAddresses(get(addresses_b).map(it=>it.addr));
+    const a=packAddresses(get(addresses_a).map(it=>it.address));
+    const b=packAddresses(get(addresses_b).map(it=>it.address));
     window.location.hash='#'+a + (b?('#'+b):'');
 }
 export const setLocAttrs=(addresses_side=addresses_b,_attrs)=>{
@@ -77,13 +77,13 @@ export const setLocAttrs=(addresses_side=addresses_b,_attrs)=>{
         addresses=addresses_side==0?addresses_a:addresses_b;
     }
     const addrs=get(addresses);
-    const {basket,loc,dy,attrs}=parsePointer(addrs[0].addr);
+    const {basket,loc,dy,attrs}=parsePointer(addrs[0].address);
     const newattrs= Object.assign(attrs,_attrs);
     for (let key in newattrs) {
         if (!newattrs[key]&&typeof newattrs[key]!=='number') delete newattrs[key];
     }
     const newptr=serializePointer(basket,loc,'',dy,newattrs);
-    addrs[0].addr=newptr;
+    addrs[0].address=newptr;
     //addresses.set(addrs)
     updateUrl();
 }
@@ -94,14 +94,14 @@ export const setActiveline=(addresses_side=addresses_b,newy=0,y0=0)=>{
     }
     if (typeof newy!=='number')return;
     const addrs=get(addresses);
-    const {basket,loc,dy,attrs}=parseAddress(addrs[0].addr);
+    const {basket,loc,dy,attrs}=parseAddress(addrs[0].address);
     // console.log('setactiveline',addrs[0].addr,newy,y0)
 
     activeside.set(addresses==addresses_b?1:0);
     const newdy=newy-y0;
     if (newdy>=0&&newdy!==dy) {
         const newptr=serializePointer(basket,loc,'',newdy,attrs);
-        addrs[0].addr=newptr;
+        addrs[0].address=newptr;
         addresses.set(addrs);
         updateUrl();
     }
@@ -113,9 +113,9 @@ export const settab=(addresses_side,newloc,{newtab=false}={})=>{
         addresses=addresses_side==0?addresses_a:addresses_b;
     }
     const addrs=get(addresses);
-    let addr=newloc;
+    let address=newloc;
     if (addrs.length) {
-        const oldaddr=addrs[0].addr;
+        const oldaddr=addrs[0].address;
         let {basket,hook,attrs}=parsePointer(oldaddr);
         let newbasket=basket;
         if (typeof newloc!=='string' && newloc.loc!==PATHSEP) {
@@ -132,14 +132,14 @@ export const settab=(addresses_side,newloc,{newtab=false}={})=>{
                 } else newloc='';
             }
         }
-        addr=serializePointer(newbasket, newloc, hook,'',attrs); 
+        address=serializePointer(newbasket, newloc, hook,'',attrs); 
     }
 
 
     if (newtab || !addrs.length) {
-        addrs.unshift({key:newaddrkey(), addr});
+        addrs.unshift({key:newaddrkey(), address});
     } else {
-        addrs[0].addr=addr;
+        addrs[0].address=address;
     }
     addresses.set(addrs);
     showFrontPage.set(false)

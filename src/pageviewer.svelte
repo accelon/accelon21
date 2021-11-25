@@ -8,7 +8,7 @@ import PageBar from './pagebar.svelte'
 import { writable } from 'svelte/store';
 import { parseAddress } from 'pitaka/offtext';
 import {filterItems} from './js/criteria.js';
-export let addr='',side=0;
+export let address='',side=0;
 export let active=false;
 let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs,topkey, loaded=false;
 
@@ -17,7 +17,7 @@ const viewitems=writable({});
 setContext('vstore',vstore);
 setContext('viewitems',viewitems);
 
-$: {const res = parseAddress(addr) ; if (res) {
+$: {const res = parseAddress(address) ; if (res) {
     basket=res.basket; 
     ptk = useBasket(basket);
     if (ptk) {
