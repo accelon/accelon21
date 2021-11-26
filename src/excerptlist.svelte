@@ -4,7 +4,7 @@ import ExcerptLine from './render_excerpt.svelte';
 export let items=[];
 export let ptk;
 </script>
-<VirtualScroll start={-1}  keeps={5} data={$items} key="key" 
+<VirtualScroll start={-1}  keeps={40} data={$items} key="key" 
     let:data >
     <span class='excerptlinesep'></span>
     {#if typeof ptk.getLine(data.y)=='undefined'}

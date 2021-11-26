@@ -101,7 +101,7 @@
   // add the title to the HTML input
   export let title = undefined;
   // enable the html5 autocompletion to the HTML input
-  export let html5autocomplete = undefined;
+  // export let html5autocomplete = undefined;
   // make the input readonly
   export let readonly = undefined;
   // apply a className to the dropdown div
@@ -821,10 +821,10 @@
   .autocomplete {
     min-width: 6em;
     display: inline-block;
-    max-width: 10em;
+    /* max-width: 10em; */
     position: relative;
     vertical-align: top;
-    width: 8em;
+    /* width: 8em; */
     /* height: 2.25em; */
   }
   .autocomplete:not(.hide-arrow):not(.is-loading)::after {
@@ -969,9 +969,9 @@
 </style>
 
 <div
-  class="{className ? className : ''}
+  class="
   {hideArrow || !items.length ? 'hide-arrow' : ''}
-  {multiple ? 'is-multiple' : ''} autocomplete select is-fullwidth {uniqueId}"
+  {multiple ? 'is-multiple' : ''} autocomplete select is-fullwidth {uniqueId} {className ? className : ''}"
   class:show-clear={clearable}
   class:is-loading={showLoadingIndicator && loading}>
   <select name={selectName} id={selectId} {multiple}>

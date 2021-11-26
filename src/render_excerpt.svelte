@@ -7,7 +7,7 @@ export let score=0;
 export let ptk=null;
 export let loading=false;
 </script>
-<div class='linetext'>
+<div class='linetext' title={ptk.locOf(y)} >
 <span class='excerptheader'>{key} <HumanAddr {ptk} locOnly={true} loc={ptk.locOf(y)}/></span>
 {#if !loading}{_(ptk.getLine(y),$tosim)}{/if}
 </div>

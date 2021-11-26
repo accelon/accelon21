@@ -5,40 +5,39 @@ import {_,tosim} from './js/store.js';
 import {bookqueryhistory,QUERYSEP} from './js/query.js';
 import {validateTofind } from 'pitaka/fulltext';
 import {activebooktofind, addbookqueryhistory} from "./js/query.js";
-export let query='';
+export let keylabel='';
+export let keyvalue;
 export let ptk;
-
 $: keywords=(ptk&&ptk.getLabel&&ptk.getLabel('bk')&&Object.keys(ptk.getLabel('bk').keywords))||[] ;
-export let setBookname=null;
-export let setKeyword=null;
-
+export let onKeyword=null;
+let bkinput=keylabel==='bk'?keyvalue:'';
 $: qhis=$bookqueryhistory.split(QUERYSEP);
 const onBookname=()=>{
-    $activebooktofind=validateTofind(query);
-    setBookname&&setBookname($activebooktofind);
+    onKeyvalue('bk',bkinput);
 }
-const onKeyword=(label,value)=>{
-    setKeyword&&setKeyword(label,value);
+const onKeyvalue=(label,val)=>{
+    if (!val)return;
+    val=validateTofind(val.key?val.key:val);
+    onKeyword&&onKeyword(label,val);
 }
-let sLabel,selected;
-$: if(ptk &&ptk.getLabel) sLabel= ptk.getLabel(selected) ||null;
-const getKeyItems=keys=>$tosim?keys.map(key=>_(key,$tosim)):keys;
+const clearValue=()=>{
+    keyvalue='';
+    bkinput='';
+}
+$: items=(keylabel&&keylabel!=='bk')?ptk.getLabel(keylabel).keys.map( (key,id)=>{ return { id, key,name:tosim?_(key,tosim):key }} ):[];
 </script>
 {#key $tosim}
-<select bind:value={selected}>
+<select on:change={clearValue} bind:value={keylabel}>
 <option value="bk">{_("書名")}</option>
 {#each keywords as label}
 <option value={label}>{ptk.getLabel(label).caption}</option>
 {/each}
 </select>
-{#if sLabel}
-{#if selected==='bk'}
-<AutoComplete placeholder={_(sLabel.caption)}
- bind:text={query} items={qhis} onInput={debounce(onBookname,250)} />
-{:else}
-<AutoComplete inputId={"autocomplete_"+sLabel} items={getKeyItems(sLabel.keys)} 
-placeholder={selected!==sLabel.name?_(sLabel.caption):''} 
-onChange={value=>onKeyword(sLabel,value)}/>
-{/if}
+{#if keylabel==='bk'}
+<AutoComplete bind:text={bkinput} items={qhis} onChange={debounce(onBookname,200)} />
+{:else if (keylabel && ptk)}
+<AutoComplete inputId={"autocomplete_"+keylabel} {items}
+labelFieldName="name" text={keyvalue}
+onChange={ obj=>onKeyvalue(keylabel,obj)}/>
 {/if}
 {/key}

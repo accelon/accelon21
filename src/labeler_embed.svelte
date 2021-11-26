@@ -8,7 +8,7 @@ export let opening;
 export let text='';
 export let nesting=0;
 let R;
-export let ptk,i=0,clss,x,y,starty=0,w=0,name='',attrs={}; //just for hidding the warning
+export let ptk,i=0,clss,x,y,w=0,name='',attrs={}; //just for hidding the warning
 let lines=[];
 let color='hsl('+((nesting+3)*60) +' ,50%,30%)';
 async function update(attrs){

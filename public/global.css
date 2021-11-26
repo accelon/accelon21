@@ -56,8 +56,9 @@ input, button, select, textarea {
 	/* border: 1px solid #ccc; */
 	border-radius: 4px;
 }
-input {	background:#333333;color:gray;	border:0px;}
+input,select {	background:#333333;color:gray;	border:0px;}
 input:focus{	background:#aaa;color:black;	border-radius: 0px;}
+select:focus{	background:#aaa;color:black;	border-radius: 0px;}
 input:disabled {	color: silver;	background:#111;}
 
 button {
@@ -179,3 +180,8 @@ button:focus {	border-color: #666;}
 .labeltext:before {content :attr(label);color:rgb(105, 168, 3)}
 
 .autocomplete_search {padding-inline-start: 2em;}
+
+.userselectnone {--webkit-user-select: none}
+
+.bookcount {background:var(--button-unselected); border-radius: 5px;
+	color:black;display:inline-block;width:2.2em;align-items: center;text-align: center;}

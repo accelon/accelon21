@@ -87,6 +87,17 @@ export const setLocAttrs=(addresses_side=addresses_b,_attrs)=>{
     //addresses.set(addrs)
     updateUrl();
 }
+export const setAddress=(addresses_side=addresses_b,address)=>{
+    let addresses=addresses_side;
+    if (typeof addresses_side=='number') {
+        addresses=addresses_side==0?addresses_a:addresses_b;
+    }
+    const addrs=get(addresses);
+
+    addrs[0].address=address;
+    addresses.set(addrs);
+    updateUrl();
+}
 export const setActiveline=(addresses_side=addresses_b,newy=0,y0=0)=>{
     let addresses=addresses_side;
     if (typeof addresses_side=='number') {
@@ -95,15 +106,12 @@ export const setActiveline=(addresses_side=addresses_b,newy=0,y0=0)=>{
     if (typeof newy!=='number')return;
     const addrs=get(addresses);
     const {basket,loc,dy,attrs}=parseAddress(addrs[0].address);
-    // console.log('setactiveline',addrs[0].addr,newy,y0)
 
     activeside.set(addresses==addresses_b?1:0);
     const newdy=newy-y0;
     if (newdy>=0&&newdy!==dy) {
         const newptr=serializePointer(basket,loc,'',newdy,attrs);
-        addrs[0].address=newptr;
-        addresses.set(addrs);
-        updateUrl();
+        setAddress(addresses,newptr);
     }
 }
 
