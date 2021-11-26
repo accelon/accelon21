@@ -25,14 +25,14 @@ const bookitemsById=(bk,idarr)=>{
     if (!idarr) {
         for (let i=0;i<bk.idarr.length;i++) {
             const id=bk.idarr[i];
-            const keywords=keynames.map(k=> [k,bk.keywords[k][i]] );
+            const keywords=keynames.map(k=> [k,bk.keywords[k][i]||-1 ] ).filter(it=>it[1]> -1);
             idmap[id]=i;
             items.push({key:i, id,text:bk.names[i], keywords });
         }
     } else {
         items=idarr.map((nbk,key)=>{
             const id=bk.idarr[nbk];
-            const keywords=keynames.map(k=> [k,bk.keywords[k][nbk]] );
+            const keywords=keynames.map(k=> [k,bk.keywords[k][nbk]||-1] ).filter(it=>it[1]> -1);
             idmap[id]=key;
             return {key, id,text:bk.names[nbk], keywords }
         });

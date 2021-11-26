@@ -16,14 +16,18 @@ const onBookname=()=>{
     onKeyvalue('bk',bkinput);
 }
 const onKeyvalue=(label,val)=>{
-    if (!val)return;
+    if (typeof val=='undefined') return;
     val=validateTofind(val.key?val.key:val);
     onKeyword&&onKeyword(label,val);
 }
 const clearValue=()=>{
     keyvalue='';
-    bkinput='';
+    setTimeout(()=>{
+        document.getElementById("autoinput").focus();
+    },30);
 }
+
+
 $: items=(keylabel&&keylabel!=='bk')?ptk.getLabel(keylabel).keys.map( (key,id)=>{ return { id, key,name:tosim?_(key,tosim):key }} ):[];
 </script>
 {#key $tosim}
@@ -34,9 +38,9 @@ $: items=(keylabel&&keylabel!=='bk')?ptk.getLabel(keylabel).keys.map( (key,id)=>
 {/each}
 </select>
 {#if keylabel==='bk'}
-<AutoComplete bind:text={bkinput} items={qhis} onChange={debounce(onBookname,200)} />
+<AutoComplete inputId="autoinput" bind:text={bkinput} items={qhis} onChange={onBookname} onInput={debounce(onBookname,200)} />
 {:else if (keylabel && ptk)}
-<AutoComplete inputId={"autocomplete_"+keylabel} {items}
+<AutoComplete inputId="autoinput" {items}
 labelFieldName="name" text={keyvalue}
 onChange={ obj=>onKeyvalue(keylabel,obj)}/>
 {/if}
