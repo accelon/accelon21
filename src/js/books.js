@@ -25,14 +25,14 @@ const bookitemsById=(bk,idarr)=>{
     if (!idarr) {
         for (let i=0;i<bk.idarr.length;i++) {
             const id=bk.idarr[i];
-            const keywords=keynames.map(k=> [k,bk.keywords[k][i]||-1 ] ).filter(it=>it[1]> -1);
+            const keywords=keynames.map(k=> [k,bk.keywords[k][i]||0 ] ).filter(it=>it[1]> -1);
             idmap[id]=i;
             items.push({key:i, id,text:bk.names[i], keywords });
         }
     } else {
         items=idarr.map((nbk,key)=>{
             const id=bk.idarr[nbk];
-            const keywords=keynames.map(k=> [k,bk.keywords[k][nbk]||-1] ).filter(it=>it[1]> -1);
+            const keywords=keynames.map(k=> [k,bk.keywords[k][nbk]||0] ).filter(it=>it[1]> -1);
             idmap[id]=key;
             return {key, id,text:bk.names[nbk], keywords }
         });
@@ -75,7 +75,10 @@ export const buildBooklist=(addr,scoredLine, bookitems,excerptitems)=>{
             const nbk=bsearch(bk.linepos,y,true)-1;
             const bkname=bk.idarr[nbk];
             return idmap.hasOwnProperty(bkname);
-        }).map(([y,score],key)=>{return {ptk,key,nbk , y,score}});
+        }).map(([y,score],key)=>{
+            const nbk=bsearch(bk.linepos,y,true)-1;
+            return {ptk,key,nbk, y,score}
+        });
         excerptitems.set(out);  
     }
 }

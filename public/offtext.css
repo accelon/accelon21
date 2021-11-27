@@ -215,6 +215,10 @@ t.er { /*年代*/
     color:darkolivegreen;
     font-family:楷体,DFKai-SB;
 }
+t.bl { /*部類*/
+    color:rgb(145, 81, 3);
+    font-family:楷体,DFKai-SB;
+}
 
 t.b {font-weight: bold	}
 t.i {font-style: italic	}

@@ -1,4 +1,5 @@
 <script>
+import {_,tosim} from '../js/store.js';
 export let ptk
 export let label;
 export let onKeyword;
@@ -9,8 +10,8 @@ const setkeyword=(label,keyid)=>{
 }
 $: lbl=ptk.getLabel(label);
 </script>
-{#each keyid as id (id+lbl.name)}
-<span on:click={()=>setkeyword(label,lbl.keys[id])}>{lbl.keys[id]}</span>
+{#each keyid as id }
+<span on:click={()=>setkeyword(label,lbl.keys[id])}>{_(lbl.keys[id],$tosim)}</span>
 {/each}
 
 <style>
