@@ -27,8 +27,8 @@ const clearValue=()=>{
     },30);
 }
 
-
-$: items=(keylabel&&keylabel!=='bk')?ptk.getLabel(keylabel).keys.map( (key,id)=>{ return { id, key,name:tosim?_(key,tosim):key }} ):[];
+$: slabel=ptk.getLabel(keylabel);
+$: items=(keylabel&&keylabel!=='bk')?slabel.keys.map( (key,id)=>{ return { id, key,name:(tosim?_(key,tosim):key)+' '+slabel.positionOf(key).length }} ):[];
 </script>
 {#key $tosim}
 <select on:change={clearValue} bind:value={keylabel}>
@@ -41,7 +41,7 @@ $: items=(keylabel&&keylabel!=='bk')?ptk.getLabel(keylabel).keys.map( (key,id)=>
 <AutoComplete inputId="autoinput" bind:text={bkinput} items={qhis} onChange={onBookname} onInput={debounce(onBookname,200)} />
 {:else if (keylabel && ptk)}
 <AutoComplete inputId="autoinput" {items}
-labelFieldName="name" text={keyvalue}
+labelFieldName="name" text={_(keyvalue,$tosim)}
 onChange={ obj=>onKeyvalue(keylabel,obj)}/>
 {/if}
 {/key}

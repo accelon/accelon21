@@ -108,7 +108,7 @@ button:focus {	border-color: #666;}
 	margin-right:2.4rem; /* allow user to add bookmark*/
 	border-top-left-radius: 0.5em;
 	border-bottom-left-radius: 0.5em;
-	right:0;max-width:15em;background:var(--panel-background)}
+	top:2em;right:0;max-width:15em;background:var(--panel-background)}
 .hamburger {float:right;padding-right:2rem}
 
 .lds-ring {	display: inline-block;	position: relative;	width: 1em; height: 1em;  }

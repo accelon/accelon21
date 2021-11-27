@@ -9,6 +9,7 @@ export let ptk;
 export let side=0;
 export let excerpts=[];
 export let filterbooks={};
+export let showbooklist;
 
 const addresses=getContext('addresses');
 </script>
@@ -19,7 +20,7 @@ const addresses=getContext('addresses');
     </span>
     <TabSelector/>
     <slot></slot>
-    {#if ptk && excerpts.length}
+    {#if ptk && excerpts.length && !showbooklist}
     <ExcerptStat {ptk} {side} {excerpts} bind:filterbooks />
     {/if}
 </div>

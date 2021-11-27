@@ -67,7 +67,7 @@ $: filterExcerptitems = filterBy($excerptitems, filterbooks );
 
 <div class="container">
 {#if ptk}
-    <ExcerptBar {side} {ptk} excerpts={$excerptitems} bind:filterbooks>
+    <ExcerptBar {showbooklist} {side} {ptk} excerpts={$excerptitems} bind:filterbooks>
     <svelte:component this={BookCount} count={$bookitems.length} bind:showbooklist/>
     
     <span class:displaynone={!showbooklist}>
