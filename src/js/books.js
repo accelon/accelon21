@@ -63,15 +63,19 @@ export const buildBooklist=(addr,scoredLine, bookitems,excerptitems)=>{
     
     if (get(bookitems).length == 0) {
         excerptitems.set([]);    
-    } else if (get(bookitems).length===bk.names.length) {
-        const out=scoredLine.map(([y,score],key)=>{return {ptk,key, y,score}});
+    } else if (get(bookitems).length===bk.names.length) { //all books
+        const out=scoredLine.map(([y,score],key)=>{
+            const nbk=bsearch(bk.linepos,y,true)-1;
+            return {ptk,key,nbk, nbk, y,score}
+        });
         excerptitems.set(out);
     } else {
         const out=scoredLine.filter( ([y])=>{
             //check if y in book list
-            const at=bsearch(bk.linepos,y,true);
-            return idmap.hasOwnProperty(bk.idarr[at-1]);
-        }).map(([y,score],key)=>{return {ptk,key, y,score}});
+            const nbk=bsearch(bk.linepos,y,true)-1;
+            const bkname=bk.idarr[nbk];
+            return idmap.hasOwnProperty(bkname);
+        }).map(([y,score],key)=>{return {ptk,key,nbk , y,score}});
         excerptitems.set(out);  
     }
 }

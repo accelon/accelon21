@@ -1,17 +1,13 @@
 <script>
-import {_,tosim} from './js/store.js';
+import {_,tosim, renderer} from './js/store.js';
 import HumanAddr from './comps/humanaddr.svelte'
 export let key=0;
 export let y=0;
-export let score=0;
 export let ptk=null;
 export let loading=false;
+export let score=0,nbk=0;
 </script>
-<div class='linetext' title={ptk.locOf(y)} >
-<span class='excerptheader'>{key} <HumanAddr {ptk} locOnly={true} loc={ptk.locOf(y)}/></span>
-{#if !loading}{_(ptk.getLine(y),$tosim)}{/if}
+<div>
+<span class='excerptheader'>{key+1}.<span class='bookid'>{ptk.bkOf(y).id}</span> <HumanAddr {ptk} locOnly={true} address={ptk.locOf(y,true)}/></span>
+{#if !loading}<svelte:component this={$renderer.default} {y} {ptk} loc={ptk.locOf(y)} />{/if}
 </div>
-<style>
-.excerptheader {border:1px dashed sienna} 
-
-</style>

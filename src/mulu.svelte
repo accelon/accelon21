@@ -1,10 +1,8 @@
 <script>
-import { getContext,createEventDispatcher } from 'svelte';
+import { getContext } from 'svelte';
 import { settab,setActiveline } from './js/addresses';
 import {_,tosim} from './js/store.js';
 import LineFilter from './linefilter.svelte';
-import {PATHSEP} from 'pitaka';
-
 
 const vstore=getContext('vstore');
 export let mulu=[];

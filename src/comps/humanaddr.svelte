@@ -20,8 +20,7 @@ if (address) {
     if (basket) {
         ptk=useBasket(basket);
         if (ptr) {
-            loc=ptk.pageLoc(ptr.loc);
-            c=ptr.c;
+            loc=ptr.loc;
         }
     }
 }

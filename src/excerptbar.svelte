@@ -3,9 +3,13 @@ import {getContext} from 'svelte'
 import {showFrontPage} from './js/store.js';
 import Btn from './comps/button.svelte';
 import TabSelector from './tabselector.svelte';
+import ExcerptStat from './excerptstat.svelte';
 import {closetab} from './js/addresses';
 export let ptk;
 export let side=0;
+export let excerpts=[];
+export let filterbooks={};
+
 const addresses=getContext('addresses');
 </script>
 <div class="controlbar">
@@ -15,4 +19,7 @@ const addresses=getContext('addresses');
     </span>
     <TabSelector/>
     <slot></slot>
+    {#if ptk && excerpts.length}
+    <ExcerptStat {ptk} {side} {excerpts} bind:filterbooks />
+    {/if}
 </div>

@@ -33,7 +33,7 @@ const bookmarkicon=()=>{
     return '　';
 }
 </script>
-<span class={'bm bm'+$bookmarks[dy]} class:blink={editing} on:click={toggleBookmark} >{@html bookmarkicon($bookmarks)}</span>
+<span class={'bm bm'+(bookmarks&&$bookmarks[dy])} class:blink={editing} on:click={toggleBookmark} >{@html bookmarkicon($bookmarks)}</span>
 
 <style>
     .bm {float:right;fill:silver;cursor:pointer}

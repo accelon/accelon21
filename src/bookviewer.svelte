@@ -17,10 +17,13 @@ const bookitems=writable([]);
 const excerptitems=writable([]);
 let ptk;
 let showbooklist=true;
-let addr={};
+let addr={},refreshcount=0;
 let keyvalue='',keylabel='', tofind='',scoredLine=[];
 
 const refreshquery=async (_addr)=>{
+    if (!ptk) { //first refresh
+        showbooklist=!_addr.tf;
+    }
     ptk=useBasket(_addr.basket);
     let scored=false;
     if (addr.tf!==_addr.tf) {
@@ -28,6 +31,7 @@ const refreshquery=async (_addr)=>{
             const res=await ptk.fulltextSearch(_addr.tf,{excerpt:true,tosim:$tosim});
             scoredLine=res.scoredLine;
             scored=true;
+            tofind=_addr.tf;
         } else scoredLine=[];
     } 
     if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored) {
@@ -36,6 +40,7 @@ const refreshquery=async (_addr)=>{
         keyvalue=_addr.kv;
     }
     addr=_addr;
+    refreshcount++;
 }
 const onKeyword=(kl,kv)=>{
     const newaddr={...addr, kl,kv}
@@ -43,18 +48,26 @@ const onKeyword=(kl,kv)=>{
     setAddress(side,address);
 }
 const onTofind=()=>{
+    if (refreshcount<1) return;  //workaround for init update
     const newaddr={...addr, tf:tofind}
     const address=stringifyAddress(newaddr);
     setAddress(side,address);
 }
+const filterBy=(excerpts)=>{
+    if (Object.keys(filterbooks).length==0) return excerpts;
+
+    return excerpts.filter(it=> filterbooks[it.nbk]);
+}
+let filterbooks={};
+let filterExcerptitems=[];
 $: refreshquery(parseAddress(address));
 $: qhis=$queryhistory.split(QUERYSEP);
-
+$: filterExcerptitems = filterBy($excerptitems, filterbooks ); 
 </script>
 
 <div class="container">
 {#if ptk}
-    <ExcerptBar {side} {ptk}>
+    <ExcerptBar {side} {ptk} excerpts={$excerptitems} bind:filterbooks>
     <svelte:component this={BookCount} count={$bookitems.length} bind:showbooklist/>
     
     <span class:displaynone={!showbooklist}>
@@ -65,12 +78,11 @@ $: qhis=$queryhistory.split(QUERYSEP);
     <AutoComplete className="tofind" showClear={true} bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
     </span>
 
-
     </ExcerptBar>
     {#if showbooklist}
     <BookList {ptk} items={bookitems} {onKeyword}/>
     {:else}
-    <ExcerptList {ptk} items={excerptitems}/>
+    <ExcerptList {ptk} items={filterExcerptitems}/>
     {/if}
 {/if}
 </div>
