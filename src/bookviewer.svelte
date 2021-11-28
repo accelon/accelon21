@@ -4,25 +4,25 @@ import {useBasket} from 'pitaka';
 import { debounce } from 'pitaka/utils';
 import AutoComplete from './3rdparty/simpleautocomplete.svelte';
 import ExcerptBar from './excerptbar.svelte'
-import BookCount from './comps/bookcount.svelte'
-import BookList from './booklist.svelte'
+import ClusterCount from './comps/clustercount.svelte'
+import ClusterList from './clusterlist.svelte'
 import ExcerptList from './excerptlist.svelte'
 import { parseAddress,stringifyAddress } from 'pitaka/offtext';
-import {buildBooklist} from './js/books.js';
+import {buildClusterlist} from './js/cluster.js';
 import {searchbox,tosim} from './js/store.js';
 import {queryhistory,QUERYSEP} from './js/query.js'
 import {setAddress} from './js/addresses.js'
 export let side=0,visible=false,address='',active=false;
-const bookitems=writable([]);
+const clusteritems=writable([]);
 const excerptitems=writable([]);
 let ptk;
-let showbooklist=true;
+let showcluster=true;
 let addr={},refreshcount=0;
 let keyvalue='',keylabel='', tofind='',scoredLine=[];
 
 const refreshquery=async (_addr)=>{
     if (!ptk) { //first refresh
-        showbooklist=!_addr.tf;
+        showcluster=!_addr.tf;
     }
     ptk=useBasket(_addr.basket);
     let scored=false;
@@ -35,9 +35,10 @@ const refreshquery=async (_addr)=>{
         } else scoredLine=[];
     } 
     if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored) {
-        buildBooklist(_addr,scoredLine,bookitems,excerptitems);
+        buildClusterlist(_addr,scoredLine,clusteritems,excerptitems);
         keylabel=_addr.kl;
         keyvalue=_addr.kv;
+        filterclusters={};
     }
     addr=_addr;
     refreshcount++;
@@ -54,33 +55,33 @@ const onTofind=()=>{
     setAddress(side,address);
 }
 const filterBy=(excerpts)=>{
-    if (Object.keys(filterbooks).length==0) return excerpts;
+    if (Object.keys(filterclusters).length==0) return excerpts;
 
-    return excerpts.filter(it=> filterbooks[it.nbk]);
+    return excerpts.filter(it=> filterclusters[it.ncl]);
 }
-let filterbooks={};
+let filterclusters={};
 let filterExcerptitems=[];
 $: refreshquery(parseAddress(address));
 $: qhis=$queryhistory.split(QUERYSEP);
-$: filterExcerptitems = filterBy($excerptitems, filterbooks ); 
+$: filterExcerptitems = filterBy($excerptitems, filterclusters ); 
 </script>
 
 <div class="container">
 {#if ptk}
-    <ExcerptBar {showbooklist} {side} {ptk} excerpts={$excerptitems} bind:filterbooks>
-    <svelte:component this={BookCount} count={$bookitems.length} bind:showbooklist/>
+    <ExcerptBar {showcluster} {side} {ptk} excerpts={$excerptitems} bind:filterclusters>
+    <svelte:component this={ClusterCount} count={$clusteritems.length} bind:showcluster/>
     
-    <span class:displaynone={!showbooklist}>
+    <span class:displaynone={!showcluster}>
     <svelte:component {onKeyword} this={$searchbox[ptk.format]||$searchbox.toc} {ptk} bind:keyvalue bind:keylabel/>
     </span>
     
-    <span class:displaynone={showbooklist} >
+    <span class:displaynone={showcluster} >
     <AutoComplete className="tofind" showClear={true} bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
     </span>
 
     </ExcerptBar>
-    {#if showbooklist}
-    <BookList {ptk} items={bookitems} {onKeyword}/>
+    {#if showcluster}
+    <ClusterList {ptk} items={clusteritems} {onKeyword}/>
     {:else}
     <ExcerptList {ptk} items={filterExcerptitems}/>
     {/if}

@@ -8,8 +8,8 @@ import {closetab} from './js/addresses';
 export let ptk;
 export let side=0;
 export let excerpts=[];
-export let filterbooks={};
-export let showbooklist;
+export let filterclusters={};
+export let showcluster;
 
 const addresses=getContext('addresses');
 </script>
@@ -20,7 +20,7 @@ const addresses=getContext('addresses');
     </span>
     <TabSelector/>
     <slot></slot>
-    {#if ptk && excerpts.length && !showbooklist}
-    <ExcerptStat {ptk} {side} {excerpts} bind:filterbooks />
+    {#if ptk && excerpts.length && !showcluster}
+    <ExcerptStat {ptk} {side} {excerpts} bind:filterclusters />
     {/if}
 </div>
