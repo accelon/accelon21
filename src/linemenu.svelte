@@ -1,15 +1,14 @@
 <script>
 // import {vstate} from './js/addresses.js';
-import Btn from './comps/button.svelte'
+import Parallel from './renderer_parallel.svelte'
 export let y;
 export let ptk;
 export let loc;
+let links=[];
+$: links=ptk.getParallelLinks(y);
 </script>
-<div>
-<Btn icon="bookmark" />
-<!-- {#if $vstate.len} -->
-<Btn icon="usernode"/>
-<!-- {:else} -->
-
-<!-- {/if} -->
-</div>
+<span class='linemenu'>
+{#each links as [caption,basket,loc]}
+<Parallel {ptk} {caption} {loc}/>
+{/each}
+</span>

@@ -124,7 +124,7 @@ export const settab=(addresses_side,newloc,{newtab=false}={})=>{
     let address=newloc;
     if (addrs.length) {
         const oldaddr=addrs[0].address;
-        let {basket,hook,attrs}=parsePointer(oldaddr);
+        let {basket,hook,attrs}=parseAddress(oldaddr);
         let newbasket=basket;
         if (typeof newloc!=='string' && newloc.loc!==PATHSEP) {
             if (typeof newloc.loc=='string') newloc=newloc.loc;

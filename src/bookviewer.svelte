@@ -21,8 +21,10 @@ let addr={},refreshcount=0;
 let keyvalue='',keylabel='', tofind='',scoredLine=[];
 
 const refreshquery=async (_addr)=>{
+    let firsttime=false;
     if (!ptk) { //first refresh
         showcluster=!_addr.tf;
+        firsttime=true;
     }
     ptk=useBasket(_addr.basket);
     let scored=false;
@@ -34,7 +36,7 @@ const refreshquery=async (_addr)=>{
             tofind=_addr.tf;
         } else scoredLine=[];
     } 
-    if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored) {
+    if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime) {
         buildClusterlist(_addr,scoredLine,clusteritems,excerptitems);
         keylabel=_addr.kl;
         keyvalue=_addr.kv;

@@ -281,6 +281,7 @@ span.marker3 {font-family:宋体,新細明體;border-top:var(--marker3) 2px soli
 span.marker4 {font-family:宋体,新細明體;border-top:var(--marker4) 2px solid;}
 span.marker5 {font-family:宋体,新細明體;border-top:var(--marker5) 2px solid;}
 
+t.ad:after {color:orange;content:attr(n)}
 t.linetofind {color:orangered;}
 /*
 .backlink[target] {

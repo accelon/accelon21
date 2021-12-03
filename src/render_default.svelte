@@ -1,5 +1,4 @@
 <script>
-import {getContext } from 'svelte';
 import {tosim,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
@@ -8,6 +7,7 @@ import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
 import Bookmark from './bookmark.svelte'
+import LineMenu from './linemenu.svelte'
 import {setActiveline} from './js/addresses.js';
 export let q=''; //the quote text
 export let hook='';
@@ -26,7 +26,6 @@ export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
 
 let extra=[];
-//  activeline=getActivelineStore(addresses);
 
 const lineText=()=>text||(ptk&&ptk.getLine(y||key))||'';
 $: onlytext=parseOfftextLine(lineText())[0];
@@ -104,7 +103,7 @@ const closelabel=()=>{
 
 </script>
 <div in:transition class="linetext" class:activeline on:click={click}>
-<!-- {#if ptk && $vstate.y==key}<LineMenu {loc} {col} y={y||key} {ptk}/>{/if} -->
+
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 
 open.name 存在則是此標籤的起點 為避免多餘的空格，前後labeler 和 snippet 要連成一行。
@@ -117,4 +116,5 @@ close.name 存在，則是該標籤的終點。屬性在 sntp.open
    on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
 {/if}{/each}
 <Bookmark {bookmarks} {dy} {ptk} {loc}/>
+{#if activeline}<LineMenu {loc}  y={y||key} {ptk}/>{/if}
 </div>

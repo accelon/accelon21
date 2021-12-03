@@ -6,7 +6,7 @@ import {bookqueryhistory,QUERYSEP} from './js/query.js';
 import {validateTofind } from 'pitaka/fulltext';
 import {activebooktofind, addbookqueryhistory} from "./js/query.js";
 export let keylabel='';
-export let keyvalue;
+export let keyvalue='';
 export let ptk;
 let cluster=ptk.header.cluster;
 $: keywords=(ptk.getLabel&&ptk.getClusterLabel()&&Object.keys(ptk.getClusterLabel().keywords||{}))||[] ;

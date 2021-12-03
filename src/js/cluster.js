@@ -40,10 +40,10 @@ const clusteritemsById=(cl,idarr)=>{
     return {items,idmap}    
 }
 
-export const buildClusterlist=(addr,scoredLine, bookitems,excerptitems)=>{
+export const buildClusterlist=(addr,scoredLine, clusteritems,excerptitems)=>{
     const ptk=useBasket(addr.basket);
     const cl=ptk.getClusterLabel();
-    let nclusters=null; //all books
+    let nclusters=null; //all cluster
     const keylabel=addr.kl, keyvalue=addr.kv;
 
     if (keylabel===ptk.header.cluster){
@@ -59,11 +59,11 @@ export const buildClusterlist=(addr,scoredLine, bookitems,excerptitems)=>{
     }
     const {idmap,items}=clusteritemsById(cl,nclusters);
     nclusters=idmap;
-    bookitems.set(items);
+    clusteritems.set(items);
     
-    if (get(bookitems).length == 0) {
+    if (get(clusteritems).length == 0) {
         excerptitems.set([]);    
-    } else if (get(bookitems).length===cl.names.length) { //all books
+    } else if (get(clusteritems).length===cl.names.length) { //all books
         const out=scoredLine.map(([y,score],key)=>{
             const ncl=bsearch(cl.linepos,y,true)-1;
             return {ptk,key,ncl, y,score}

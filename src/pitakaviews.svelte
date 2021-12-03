@@ -10,7 +10,6 @@ import BookViewer from './bookviewer.svelte'
 import PageViewer from './pageviewer.svelte'
 
 setContext('addresses',addresses);
-
 const getViewer=address=>{
     const ptr=parseAddress(address);
     return ptr.loc?PageViewer:BookViewer;
