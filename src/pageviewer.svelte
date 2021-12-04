@@ -8,6 +8,7 @@ import PageBar from './pagebar.svelte'
 import { writable } from 'svelte/store';
 import { parseAddress } from 'pitaka/offtext';
 import {filterItems} from './js/criteria.js';
+import LineMenu from './linemenu.svelte'
 export let address='',side=0;
 export let active=false;
 let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs,topkey, loaded=false;
@@ -22,8 +23,9 @@ $: {const res = parseAddress(address) ; if (res) {
     ptk = useBasket(basket);
     if (ptk) {
         loc=ptk.pageLoc(res.loc);
+        dy=0;
         if (res.loc.length>loc.length) {
-            dy=parseInt(res.loc.substr(loc.length+1));
+            dy=parseInt(res.loc.substr(loc.length+1))||0;
         }
         y0=ptk.getPageRange(loc)[0];
         locattrs=res.attrs||{};
@@ -87,7 +89,9 @@ $vstore.scrollToY=scrollToY;
         <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
             {...data} {y0} activeline={data.key==y0+dy} 
             {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
-        />
+        >
+        {#if data.key==y0+dy}<LineMenu {side} {loc} y={data.y||data.key} {ptk}/>{/if}
+        </svelte:component>
         {/if}
     </VirtualScroll>
 </div>

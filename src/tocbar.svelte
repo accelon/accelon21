@@ -9,7 +9,7 @@ $: childcount=ptk&&ptk.childCount(loc) ;
 $: value=loc&&parseInt(loc.match(/(\d+)$/)[1]);
 
 const go=({detail})=>{
-    const newloc=loc.replace(/\d+$/,detail);
+    const newloc=ptk.name+'/'+loc.replace(/\d+$/,detail);
     settab(side,newloc);
 }
 </script>

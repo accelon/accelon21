@@ -4,7 +4,7 @@ import {parseAddress ,serializePointer} from 'pitaka/offtext';
 import {getUserNotes} from './usernotes.js'
 import {getBookmarks} from './bookmarks.js'
 import {getUserData,setUserData} from './userdata.js';
-import {PATHSEP,ADDRSEP, DELTASEP } from 'pitaka';
+import {PATHSEP,ADDRSEP, DELTASEP, useBasket } from 'pitaka';
 import {activeside, showFrontPage} from './store.js'
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
@@ -98,6 +98,14 @@ export const setAddress=(addresses_side=addresses_b,address)=>{
     addresses.set(addrs);
     updateUrl();
 }
+export const isParallel=(address1,address2)=>{
+    const addr1=parseAddress(address1);
+    const ptk=useBasket(addr1.basket);
+    const [y]=ptk.getPageRange(addr1.loc);
+    const parallels=ptk.getParallelLinks(y);
+    
+    return parallels.filter( it=>address2.startsWith(it.address) ).length>0;
+}
 export const setActiveline=(addresses_side=addresses_b,newy=0,y0=0)=>{
     let addresses=addresses_side;
     if (typeof addresses_side=='number') {
@@ -112,37 +120,26 @@ export const setActiveline=(addresses_side=addresses_b,newy=0,y0=0)=>{
     if (newdy>=0&&newdy!==dy) {
         const newptr=serializePointer(basket,loc,'',newdy,attrs);
         setAddress(addresses,newptr);
+    
+        const oaddrs=get(getOppositeAddresses(addresses));
+        if (get(activeside)==0 && oaddrs.length&& isParallel(addrs[0].address, oaddrs[0].address) ) {
+            
+            const {basket,loc,dy,attrs}=parseAddress(oaddrs[0].address);
+            const newptr=serializePointer(basket,loc,'',newdy,attrs);
+            setAddress(getOppositeAddresses(addresses),newptr);
+        }
     }
 }
-
-export const settab=(addresses_side,newloc,{newtab=false}={})=>{
+export const newopposite=(addresses_side,address)=>{
+    const opposite=getOppositeAddresses(addresses_side);
+    settab(opposite,address,{newtab:true});
+}
+export const settab=(addresses_side,address,{newtab=false}={})=>{
     let addresses=addresses_side;
     if (typeof addresses_side=='number') {
         addresses=addresses_side==0?addresses_a:addresses_b;
     }
     const addrs=get(addresses);
-    let address=newloc;
-    if (addrs.length) {
-        const oldaddr=addrs[0].address;
-        let {basket,hook,attrs}=parseAddress(oldaddr);
-        let newbasket=basket;
-        if (typeof newloc!=='string' && newloc.loc!==PATHSEP) {
-            if (typeof newloc.loc=='string') newloc=newloc.loc;
-            if (typeof newloc.basket=='string') newbasket=newloc.basket;
-        } else {
-            if (newloc.loc) newloc=newloc.loc;
-            if (newloc[0]===PATHSEP) {
-                newbasket=newloc.substr(1);
-                const at=newbasket.indexOf(PATHSEP);
-                if (at>0) {
-                    newloc=newbasket.substr(at+1);
-                    newbasket=newbasket.substr(0,at);
-                } else newloc='';
-            }
-        }
-        address=serializePointer(newbasket, newloc, hook,'',attrs); 
-    }
-
 
     if (newtab || !addrs.length) {
         addrs.unshift({key:newaddrkey(), address});
