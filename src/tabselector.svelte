@@ -1,5 +1,5 @@
 <script>
-import {getside,selectorShown,getOppositeAddresses, newaddrkey} from './js/addresses.js'
+import {selectorShown,getOppositeAddresses, newaddrkey} from './js/addresses.js'
 import { getContext } from 'svelte';
 import { get } from 'svelte/store';
 export let side=0;

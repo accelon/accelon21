@@ -1,6 +1,6 @@
 <script>
 import { getContext } from 'svelte';
-import { settab,setActiveline } from './js/addresses';
+import { settab,setActiveLine } from './js/addresses';
 import {_,tosim} from './js/store.js';
 import LineFilter from './linefilter.svelte';
 
@@ -22,7 +22,7 @@ const golink=evt=>{
 }
 const scrolltotocitem=evt=>{
     const y=parseInt(evt.target.attributes.itemy.value);
-    setActiveline(side, y,y0);
+    setActiveLine(side, y,y0);
     $vstore.scrollToY(y,true);
 }
 let showmode=1; //0 = always off , 1=auto on , 2=always on

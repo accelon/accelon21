@@ -2,7 +2,7 @@
 import { useBasket } from 'pitaka';
 import { setContext} from 'svelte';
 import { renderer } from './js/store.js';
-import {setLoc} from './js/addresses.js'
+import {setLoc,getOppositeActiveOffset} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
 import PageBar from './pagebar.svelte'
 import { writable } from 'svelte/store';
@@ -44,7 +44,15 @@ $: if ($viewitems[0] && topkey !== $viewitems[0].key) { //initial scroll
 $: if(active&&$viewitems.length) {
     setTimeout(()=>{
         if (vscroll.getIndexOffset(dy) > vscroll.getOffset()+vscroll.getClientSize()){
-        scrollToY(y0+dy,true);
+            scrollToY(y0+dy,true);
+        }
+        //line in view port adjust offset
+        if (side==1) { //only side from left to right
+            const layerY=getOppositeActiveOffset(side);
+            const yoffset=vscroll.getIndexOffset(dy) - vscroll.getOffset();
+            
+            const delta=yoffset - layerY;
+            vscroll.scrollToOffset( vscroll.getOffset() + delta );
         }
     },10)
 }

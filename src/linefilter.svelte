@@ -2,9 +2,9 @@
 import { parsePointer } from 'pitaka/offtext';
 import { debounce } from 'pitaka/utils';
 import {getContext} from 'svelte';
-import { writable,get } from 'svelte/store';
+import { writable } from 'svelte/store';
 import Btn from './comps/button.svelte'
-import {setActiveline, setLocAttrs} from './js/addresses.js'
+import {setLocAttrs} from './js/addresses.js'
 const vstore=getContext('vstore');
 const addresses=getContext('addresses');
 const filterusernote=writable(false);

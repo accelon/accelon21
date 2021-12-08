@@ -8,6 +8,7 @@ import {PATHSEP,ADDRSEP, DELTASEP, useBasket } from 'pitaka';
 import {activeside, showFrontPage} from './store.js'
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
+export const activeoffset=writable([0,0]);
 
 export const userdata=writable({});
 export const selectorShown=writable(false);
@@ -106,7 +107,25 @@ export const isParallel=(address1,address2)=>{
     
     return parallels.filter( it=>address2.startsWith(it.address) ).length>0;
 }
-export const setActiveline=(addresses_side=addresses_b,newy=0,y0=0)=>{
+export const setActiveOffset=(addresses_side=addresses_b,offset=0)=>{
+    let addresses=addresses_side;
+    if (typeof addresses_side=='number') {
+        addresses=addresses_side==0?addresses_a:addresses_b;
+    }
+    const side=getSide(addresses);
+    const ao=get(activeoffset);
+    ao[side]=offset;
+    activeoffset.set(ao);
+}
+export const getOppositeActiveOffset=(addresses_side=addresses_b,offset=0)=>{
+    let addresses=addresses_side;
+    if (typeof addresses_side=='number') {
+        addresses=addresses_side==0?addresses_a:addresses_b;
+    }
+    const side=getSide(getOppositeAddresses(addresses));
+    return get(activeoffset)[side];
+}
+export const setActiveLine=(addresses_side=addresses_b,newy=0,y0=0)=>{
     let addresses=addresses_side;
     if (typeof addresses_side=='number') {
         addresses=addresses_side==0?addresses_a:addresses_b;
@@ -150,8 +169,9 @@ export const settab=(addresses_side,address,{newtab=false}={})=>{
     showFrontPage.set(false)
 }
 
-export const getside=()=>{
-    return (getContext('addresses')==addresses_a)?'a':'b';
+export const getSide=address=>{
+    address=address||getContext('addresses');
+    return (address==addresses_a)?0:1;
 }
 
 export const getActiveline=(addresses=addresses_b)=>{

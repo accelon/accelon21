@@ -8,7 +8,7 @@ import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
 import Bookmark from './bookmark.svelte'
 
-import {setActiveline} from './js/addresses.js';
+import {setActiveLine,setActiveOffset} from './js/addresses.js';
 export let q=''; //the quote text
 export let hook='';
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
@@ -72,7 +72,11 @@ const onSelection=evt=>{//user note and highlight etc
 
 const click=evt=>{
     if (evt.button!==0) return;
-    !nesting && setActiveline(side,y||key ,y0);
+    !nesting && setActiveLine(side,y||key ,y0);
+    //scroll offset of the activeline
+    const toolbarheight=evt.pageY-evt.layerY + 5; // don't know why ?? cannot can precise offset
+    const activeoffset=evt.target.getBoundingClientRect().y-toolbarheight;
+    !nesting && setActiveOffset(side,activeoffset);
     if (evt.target.tagName=='T') {
         if (evt.target.classList.contains('e')) return;
         onSelection(evt);
