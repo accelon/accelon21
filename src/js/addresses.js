@@ -132,6 +132,7 @@ export const setActiveLine=(addresses_side=addresses_b,newy=0,y0=0)=>{
     }
     if (typeof newy!=='number')return;
     const addrs=get(addresses);
+    if (!addrs.length) return;
     const {basket,loc,dy,attrs}=parseAddress(addrs[0].address);
 
     activeside.set(addresses==addresses_b?1:0);
@@ -151,7 +152,8 @@ export const setActiveLine=(addresses_side=addresses_b,newy=0,y0=0)=>{
 }
 export const newopposite=(addresses_side,address)=>{
     const opposite=getOppositeAddresses(addresses_side);
-    settab(opposite,address,{newtab:true});
+    const oaddrs=get(opposite);
+    if (!oaddrs.length || address!==oaddrs[0].address) settab(opposite,address,{newtab:true});
 }
 export const settab=(addresses_side,address,{newtab=false}={})=>{
     let addresses=addresses_side;

@@ -3,6 +3,7 @@ import {derived, writable ,get} from "svelte/store";
 import { toSim } from 'lossless-simplified-chinese';
 
 export const tosim=writable(settings.tosim);
+export const palitrans=writable(settings.palitrans);
 export const systemsetting=writable(false);
 export const cursor=writable({});
 export const panepos=writable(settings.panepos);
@@ -24,6 +25,7 @@ export const labelerOf=cls=>{
 }
 
 tosim.subscribe(tosim=>updateSettings({tosim}));
+palitrans.subscribe(palitrans=>updateSettings({palitrans}));
 panepos.subscribe(panepos=>updateSettings({panepos}));
 
 

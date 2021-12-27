@@ -1,8 +1,9 @@
 <script>
-import {tosim,labelerOf} from './js/store.js';
+import {tosim,palitrans,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
-import {bestEntries,PATHSEP} from 'pitaka';
+import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
+import {providentToIndic} from 'provident-pali'
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
@@ -15,7 +16,8 @@ export let ptk=null;  //if ptk is missing, text might come from various pitaka, 
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
 export let y=0   //優先權較高
-
+export let lang=DEFAULT_LANGUAGE;
+const langstyle='lang-'+lang+(lang==='pl'&&$palitrans?'':'-provident')
 export let activeline=false;
 export let transition=()=>{};
 export let linetofind='';
@@ -27,8 +29,13 @@ export let bookmarks=null; // this is a store created by addresses.js
 
 let extra=[];
 
-const lineText=()=>text||(ptk&&ptk.getLine(y||key))||'';
+$: lineText=()=>{
+    const t=text||(ptk&&ptk.getLine(y||key))||''
+    if (lang!=='pl') return t;
+    return providentToIndic(t, $palitrans)
+};
 $: onlytext=parseOfftextLine(lineText())[0];
+
 const sortExtra=()=>{
     extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
     extra=extra;
@@ -106,7 +113,8 @@ const closelabel=()=>{
 }
 
 </script>
-<div in:transition class="linetext" class:activeline on:click={click}>
+<div class={'linetext '+langstyle} in:transition class:activeline on:click={click}>
+    <slot name="start"></slot>
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 
 open.name 存在則是此標籤的起點 為避免多餘的空格，前後labeler 和 snippet 要連成一行。

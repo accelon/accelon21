@@ -1,28 +1,44 @@
 <script>
-import { onMount } from "svelte";
+
 import {renderer} from './js/store';
-import {newopposite} from './js/addresses'
-import Btn from './comps/button.svelte';
+import {newopposite} from './js/addresses';
+import { getContext } from 'svelte';
+
+const vstore=getContext('vstore');
 export let loc;
 export let ptk;
 export let side=0;
+export let par;
 export let caption;
-let showing=false;
+let showing=!!$vstore.parallels[par];
 let [y0] = ptk.getPageRange( ptk.pageLoc(loc));
 const dy=ptk.dyOf(loc);
-let text='',y;
-onMount(async ()=>{
-    [y,text]=(await ptk.readLines(y0+dy,1))[0]
-});
+let text,y;
+async function fetchline(){
+    [y,text]=(await ptk.readLines(y0+dy,1))[0];
+};
+
 const openParallel=()=>{
     newopposite(side,ptk.name+'/'+loc);
 }
+const onoff=(bool)=>{
+    const {parallels}=$vstore;
+    parallels[par]=bool;
+    $vstore.parallels=parallels;
+    showing=bool;
+}
 </script>
 {#if showing}
-<svelte:component nesting={1} this={$renderer.default} {text} {loc}>
- <Btn icon='read' onclick={openParallel} />
+{#await fetchline()} {/await}
+<svelte:component nesting={1} this={$renderer.default} {ptk} {text} y={y0+dy} {y0} {loc} lang={ptk.langOf(y0+dy)}>
+ <span slot="start" class='btnparallel clickable showing' on:click={()=>onoff(false)} >{caption}</span>
+ <span class='clickable' on:click={openParallel}>⭆</span>
 </svelte:component>
-{:else}
-<span class='btnparallel clickable' on:click={()=>showing=true} >{caption}</span>
+
+{:else} 
+<span class='btnparallel clickable' on:click={()=>onoff(true)} >{caption}</span>
 {/if}
 
+<style>
+    .showing {background:gray;}
+</style>

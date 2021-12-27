@@ -16,8 +16,8 @@ const go=({detail})=>{
 
 {#if childcount>1}
 <InputNumber on:change={go} {value} max={childcount} min="1" />
-<input placeholder='pagenumber' value="30" maxlength={5}/>
+
 {/if}
 <style>
-input {width:2.5em}
+
 </style>

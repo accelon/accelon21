@@ -10,10 +10,11 @@ export let loc=''
 export let locOnly=false; //no pitaka name
 export let c=''
 export let ptk=null;
+let toctree='';
 const click=(evt)=>{
     onclick(evt)
 }
-if (address) {
+$: if (address) {
     let basket='',ptr;
     ptr=parseAddress(address);
     basket=ptr.basket;
@@ -23,8 +24,8 @@ if (address) {
             loc=ptr.loc;
         }
     }
+    toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc,locOnly))||[]; 
 }
-$: toctree = (ptk&&ptk.getTocTree&&ptk.getTocTree(loc,locOnly))||[]; 
 </script>
 <span title={address}>
 <span class='clickable' on:click={click}>

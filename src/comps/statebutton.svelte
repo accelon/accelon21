@@ -11,8 +11,14 @@ export let states={};
 export let storeid=null;
 export let styles=null;
 export let caption='';
+const statekeys=Object.keys(states);
+let keyindex=statekeys.indexOf($storeid);
+if (keyindex==-1) {
+    keyindex=0;
+    $storeid=statekeys[keyindex];
+}
 const setcaption=()=>{
-    if (storeid) caption=states[$storeid]
+    if (storeid) caption=states[ $storeid]
     caption=Icons[caption]||caption;
 }
 const highlight=str=>{
@@ -27,11 +33,13 @@ const highlight=str=>{
         }
     })
 }
+
 const click=evt=>{
     if(disabled)return;
     if (storeid) {
-        $storeid ++;
-        if ($storeid>= Object.keys(states).length) $storeid=0;
+        keyindex ++;
+        if (keyindex>= statekeys.length) keyindex=0;
+        $storeid=statekeys[keyindex];
     }
     onclick&&onclick(evt);
     setcaption();

@@ -13,7 +13,7 @@ export let address='',side=0;
 export let active=false;
 let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs,topkey, loaded=false;
 
-const vstore=writable({renderer,criteria:{},filterfunc:null,linetofind:''});
+const vstore=writable({renderer,criteria:{},filterfunc:null,linetofind:'',parallels:{}});
 const viewitems=writable({});
 setContext('vstore',vstore);
 setContext('viewitems',viewitems);
@@ -95,7 +95,7 @@ $vstore.scrollToY=scrollToY;
         <svelte:component this={$renderer._toc} {ptk} {...data}/>
         {:else}
         <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
-            {...data} {y0} activeline={data.key==y0+dy} 
+            {...data} {y0} activeline={data.key==y0+dy} lang={ptk.langOf(y0)}
             {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
         >
         {#if data.key==y0+dy}<LineMenu {side} {loc} y={data.y||data.key} {ptk}/>{/if}

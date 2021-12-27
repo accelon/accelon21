@@ -194,3 +194,8 @@ button:focus {	border-color: #666;}
 .btnparallel{
 	border-radius: 5px; border:1px solid peru;
 }
+@font-face {
+	font-family:"ProvidentPali";
+	src: local("ProvidentPali"), url("ProvidentPaliSegoe.otf") 
+	}
+.lang-pl-provident {font-family: "ProvidentPali" ;}
