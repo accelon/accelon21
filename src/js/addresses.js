@@ -133,20 +133,20 @@ export const setActiveLine=(addresses_side=addresses_b,newy=0,y0=0)=>{
     if (typeof newy!=='number')return;
     const addrs=get(addresses);
     if (!addrs.length) return;
-    const {basket,loc,dy,attrs}=parseAddress(addrs[0].address);
-
+    const optr=parseAddress(addrs[0].address);
+    optr.dy=optr.dy||0;
     activeside.set(addresses==addresses_b?1:0);
     const newdy=newy-y0;
-    if (newdy>=0&&newdy!==dy) {
-        const newptr=serializePointer(basket,loc,'',newdy,attrs);
+    if (newdy>=0&&newdy!==optr.dy) {
+        optr.dy=newdy;
+        const newptr=serializePointer(optr);
         setAddress(addresses,newptr);
     
         const oaddrs=get(getOppositeAddresses(addresses));
         if (get(activeside)==0 && oaddrs.length&& isParallel(addrs[0].address, oaddrs[0].address) ) {
-            
-            const {basket,loc,dy,attrs}=parseAddress(oaddrs[0].address);
-            const newptr=serializePointer(basket,loc,'',newdy,attrs);
-            setAddress(getOppositeAddresses(addresses),newptr);
+            const optr2=parseAddress(oaddrs[0].address);
+            optr2.dy=newdy;
+            setAddress(getOppositeAddresses(addresses),serializePointer(optr2));
         }
     }
 }

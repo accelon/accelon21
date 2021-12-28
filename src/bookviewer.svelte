@@ -82,10 +82,11 @@ $: filterExcerptitems = filterBy($excerptitems, filterclusters );
     </span>
 
     </ExcerptBar>
+
     {#if showcluster}
-    <ClusterList {ptk} items={clusteritems} {onKeyword}/>
+    <ClusterList {ptk} {side} items={clusteritems} {onKeyword}/>
     {:else}
-    <ExcerptList {ptk} items={filterExcerptitems}/>
+    <ExcerptList {ptk} {side} items={filterExcerptitems}/>
     {/if}
 {/if}
 </div>

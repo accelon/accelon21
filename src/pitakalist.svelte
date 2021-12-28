@@ -1,5 +1,5 @@
 <script>
-import { PATHSEP, pool} from 'pitaka';
+import {  pool} from 'pitaka';
 import {_,tosim} from './js/store.js'
 import {activetofind,runquerycount} from './js/query.js'
 import { getContext } from 'svelte';
@@ -26,7 +26,7 @@ let isvalid={};
 <div class="pitaka">
     <span class='separator'></span>
     <span class="clickable name" on:click={()=>visit(ptk.header.homepage)}>{ptk.name}</span>
-    <span class="title" on:click={evt=>settab(side,PATHSEP+ptk.name)}>
+    <span class="title" on:click={evt=>settab(side,ptk.name)}>
     {_(ptk.header.title,$tosim)}</span>
     <QueryResult items={getItems(ptk,$activetofind,$runquerycount)} />
     <div class="details">

@@ -3,7 +3,7 @@ import {tosim,palitrans,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
 import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
-import {providentToIndic} from 'provident-pali'
+import {provident2indic} from 'provident-pali'
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
@@ -17,7 +17,7 @@ export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
 export let y=0   //優先權較高
 export let lang=DEFAULT_LANGUAGE;
-const langstyle='lang-'+lang+(lang==='pl'&&$palitrans?'':'-provident')
+$: langstyle='lang-'+lang+(lang==='pl'?'-'+($palitrans||''):'')
 export let activeline=false;
 export let transition=()=>{};
 export let linetofind='';
@@ -28,11 +28,10 @@ export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
 
 let extra=[];
-
 $: lineText=()=>{
     const t=text||(ptk&&ptk.getLine(y||key))||''
     if (lang!=='pl') return t;
-    return providentToIndic(t, $palitrans)
+    return provident2indic(t, $palitrans)
 };
 $: onlytext=parseOfftextLine(lineText())[0];
 

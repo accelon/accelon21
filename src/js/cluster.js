@@ -27,14 +27,16 @@ const clusteritemsById=(cl,idarr)=>{
             const id=cl.idarr[i];
             const keywords=keynames.map(k=> [k,cl.keywords[k][i]||0 ] ).filter(it=>it[1]> -1);
             idmap[id]=i;
-            items.push({key:i, id,text:cl.names[i], keywords });
+            const y0=cl.linepos[i];
+            items.push({key:i, y0,id,text:cl.names[i], keywords });
         }
     } else {
         items=idarr.map((ncl,key)=>{
             const id=cl.idarr[ncl];
+            const y0=cl.linepos[ncl];
             const keywords=keynames.map(k=> [k,cl.keywords[k][ncl]||0] ).filter(it=>it[1]> -1);
             idmap[id]=key;
-            return {key, id,text:cl.names[ncl], keywords }
+            return {key, y0,id,text:cl.names[ncl], keywords }
         });
     }
     return {items,idmap}    

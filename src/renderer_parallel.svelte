@@ -38,7 +38,3 @@ const onoff=(bool)=>{
 {:else} 
 <span class='btnparallel clickable' on:click={()=>onoff(true)} >{caption}</span>
 {/if}
-
-<style>
-    .showing {background:gray;}
-</style>

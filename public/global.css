@@ -192,10 +192,12 @@ button:focus {	border-color: #666;}
     vertical-align:top;
 }
 .btnparallel{
-	border-radius: 5px; border:1px solid peru;
+	border-radius: 5px; border:1px solid darkgreen; 
 }
 @font-face {
 	font-family:"ProvidentPali";
 	src: local("ProvidentPali"), url("ProvidentPaliSegoe.otf") 
 	}
-.lang-pl-provident {font-family: "ProvidentPali" ;}
+.lang-pl- {font-family: "ProvidentPali" ;}
+.lang-pl-tb {font-size:120%}
+.lang-en {font-family: Georgia;}
