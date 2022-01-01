@@ -1,8 +1,10 @@
 <script>
 
 import {renderer} from './js/store';
-import {newopposite} from './js/addresses';
+import { parseAddress } from 'pitaka/offtext';
+import {newopposite,getOppositeAddresses} from './js/addresses';
 import { getContext } from 'svelte';
+import { get } from 'svelte/store';
 
 const vstore=getContext('vstore');
 export let loc;
@@ -19,7 +21,11 @@ async function fetchline(){
 };
 
 const openParallel=()=>{
-    newopposite(side,ptk.name+'/'+loc);
+    const opposite=get(getOppositeAddresses(side));
+    const opp=parseAddress(opposite[0]);
+    if (opp.loc!==loc) {
+        newopposite(side,ptk.name+'/'+loc);
+    }
 }
 const onoff=(bool)=>{
     const {parallels}=$vstore;

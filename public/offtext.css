@@ -284,6 +284,15 @@ span.marker5 {font-family:宋体,新細明體;border-top:var(--marker5) 2px soli
 
 t.ad:after {color:orange;content:attr(n)}
 t.linetofind {color:orangered;}
+
+.footnote {display:inline-block;
+	width:0px;
+	margin-top:-1em;
+	vertical-align:top;
+	font-size:50%;
+	font-family: "Tahoma"; color:greenyellow
+ }
+
 /*
 .backlink[target] {
     cursor:pointer;

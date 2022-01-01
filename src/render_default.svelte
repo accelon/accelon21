@@ -21,7 +21,7 @@ $: langstyle='lang-'+lang+(lang==='pl'?'-'+($palitrans||''):'')
 export let activeline=false;
 export let transition=()=>{};
 export let linetofind='';
-export let nesting=0,text='',id='',side=0,loc;
+export let nesting=0,text='',id='',side=0,loc='';
 
 export let backlinks=[];
 export let usernotes=null; // this is a store created by addresses.js
