@@ -52,7 +52,6 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy},store)=>{
 
     items.push({text:'　',key:'end'});//workaround
 
-
     const out=Object.assign(old,{items,backlinks,ptk,loc,mulu,y0,criteria,usernotes,bookmarks,dy});
     store.set(out)
 }

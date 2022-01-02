@@ -21,11 +21,15 @@ async function fetchline(){
 };
 
 const openParallel=()=>{
+    let createnew=false;
     const opposite=get(getOppositeAddresses(side));
-    const opp=parseAddress(opposite[0]);
-    if (opp.loc!==loc) {
-        newopposite(side,ptk.name+'/'+loc);
+    if (!opposite.length || typeof opposite[0]!=='string') {
+        createnew=true;
+    } else {
+        const opp=parseAddress(opposite[0]);
+        if (opp.loc!==loc) createnew=true;
     }
+    if (createnew) newopposite(side,ptk.name+'/'+loc);
 }
 const onoff=(bool)=>{
     const {parallels}=$vstore;

@@ -28,7 +28,7 @@ const clusteritemsById=(cl,idarr)=>{
             const keywords=keynames.map(k=> [k,cl.keywords[k][i]||0 ] ).filter(it=>it[1]> -1);
             idmap[id]=i;
             const y0=cl.linepos[i];
-            items.push({key:i, y0,id,text:cl.names[i], keywords });
+            if (cl.names[i].trim()) items.push({key:i, y0,id,text:cl.names[i], keywords });
         }
     } else {
         items=idarr.map((ncl,key)=>{
@@ -37,7 +37,7 @@ const clusteritemsById=(cl,idarr)=>{
             const keywords=keynames.map(k=> [k,cl.keywords[k][ncl]||0] ).filter(it=>it[1]> -1);
             idmap[id]=key;
             return {key, y0,id,text:cl.names[ncl], keywords }
-        });
+        }).filter(it=>!!it.text.trim());
     }
     return {items,idmap}    
 }
@@ -60,6 +60,7 @@ export const buildClusterlist=(addr,scoredLine, clusteritems,excerptitems)=>{
         }
     }
     const {idmap,items}=clusteritemsById(cl,nclusters);
+
     nclusters=idmap;
     clusteritems.set(items);
     
