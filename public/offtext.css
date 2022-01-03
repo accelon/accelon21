@@ -48,20 +48,24 @@ t.fn[i]:after{
     padding:2px; content:attr(n)
 }*/
 t.fn[n]:after{
-	content:attr(n);display:inline-block;
+	content:attr(n);
+    display:inline-block;
 	width:0px;
-	margin-top:-2em;
+	margin-top:-1em;
 	vertical-align:top;
-	font-size:40%;
+	font-size:30%;
 	font-family: "Tahoma"; 
 }
-
+/*
 t.fn[n]:hover {border-bottom:double}
 t.fn[n]:hover:after {
     color:brown;
     content: attr(n) "↓"; 
     transition: color 1s;
 }
+*/
+t.k{}
+t.k:hover {color:var(--highlight)}
 t.pg{
     display:inline-block;width:0px;padding-top:3em;height:0px;
     vertical-align:top;font-size:0.5rem;color:rgb(112, 203, 255);

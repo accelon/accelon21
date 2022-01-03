@@ -117,12 +117,12 @@ const closelabel=()=>{
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 
 open.name 存在則是此標籤的起點 為避免多餘的空格，前後labeler 和 snippet 要連成一行。
-//--><svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting}
+//--><svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting} {side}
     on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />{/if}<!-- 
 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 
 //--><span >{@html composeSnippet(snpt,y||key,$tosim)}</span>{#if labelerOf(snpt.close.name)}<!-- 
 close.name 存在，則是該標籤的終點。屬性在 sntp.open
-//--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}
+//--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}  {side}
    on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
 {/if}{/each}
 <Bookmark {bookmarks} {dy} {ptk} {loc}/>

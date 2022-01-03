@@ -4,22 +4,22 @@ import { useBasket } from 'pitaka/basket';
 import {dereferencing} from 'pitaka/offtext';
 import { renderer } from './js/store';
 import Btn from './comps/button.svelte'
+import Colorhr from './comps/colorhr.svelte'
 export let attrs={}
 export let text='';
-export let opening=false,closing=false;
+export let opening=0;
 export let name='',w=0,ptk=null,i=0,clss='',x=0,y=0,starty=0,nesting=0; //just for hidding the warning
-let color='hsl('+((nesting+3)*60) +' ,50%,30%)';
 let tptk,transclusion='';
 let showing=null;
 
 const toggle=async ()=>{
     if (!showing) {
         const hook=attrs['@'];
-        const ptr=await dereferencing(hook);
+        const ptr=await dereferencing(hook,ptk);
         if (ptr.length) {
             const {h,ptk}=ptr[0];
-            const lines=await readLines({basket:ptk,nline:h.y,count:1});
-            tptk=useBasket(ptk);
+            const lines=await readLines({basket:ptk.name,nline:h.y,count:1});
+            tptk=useBasket(ptk.name);
             transclusion={ text:lines[0][1] , hook:h, 
                 q:text, ptk:tptk, y:lines[0][0] , key:'tc'+Math.random() } ;       
                 showing=$renderer.default;     
@@ -32,14 +32,13 @@ const toggle=async ()=>{
 {#if !opening}
 <span {i} class={clss} {x} {y}><span class:showing class="transclusion" on:click={toggle}> </span>
 {#if showing}<Btn icon='read' title={JSON.stringify(transclusion.hook)}/>
-<div class="hr" style={"background:"+color }></div>
+<Colorhr {nesting}/>
 <svelte:component this={showing} {...transclusion}/>
-<div class="hr" style={"background:"+color }></div>
+<Colorhr {nesting}/>
 {/if}
 </span>
 {/if}
 <style>
-    div.hr {height:1px}
     .showing {padding-right:20px;border-radius:10px}
     .transclusion {cursor:pointer;border-bottom:0px;padding-left:5px;
         background:var(--button-unselected)}

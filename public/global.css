@@ -154,6 +154,7 @@ button:focus {	border-color: #666;}
 	border-bottom: 1rem solid goldenrod;}
 .bookmark:hover{background:var(--button-selected);border-top-left-radius: 1rem;}
 
+div.hr {height: 1px;}
 
 .tabselector {margin-left:1.5em;padding-left:4px;position:absolute;background:var(--menubackground);
 	box-shadow: 1 5 10px ;min-height:5em;min-width:10em;max-height: 15em;overflow-y:scroll}  

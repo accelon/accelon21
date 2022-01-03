@@ -3,8 +3,9 @@
 import {renderer } from './js/store.js';
 export let nesting=0;
 export let lines=[];
+export let ptk=null;
 </script>
 
 {#each lines as data}
-<svelte:component  {nesting} this={$renderer[data.renderer]||$renderer.default} {...data}/>
+<svelte:component {ptk} {nesting} this={$renderer[data.renderer]||$renderer.default} {...data}/>
 {/each}

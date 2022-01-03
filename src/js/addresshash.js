@@ -41,13 +41,12 @@ export const loadaddress=async cb=>{
  
     const {a,b}=addressesFromUrl();
 
-    const addrs_a=(a||[config.init_a||PATHSEP]).filter(it=>!!it);
-    const addrs_b=(b||[config.init_b||PATHSEP]).filter(it=>!!it);
-
+    const addrs_a=a.filter(it=>!!it);
+    const addrs_b=b.filter(it=>!!it);
 
     const addrs=addrs_a.concat(addrs_b);
     
-    addrs.push(config.init_a); addrs.push(config.init_b);//load ptk in config
+    // addrs.push(config.init_a); addrs.push(config.init_b);//load ptk in config
 
 
     const pitakaNeeded=enumBasketInAddress(addrs);

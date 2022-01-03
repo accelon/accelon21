@@ -92,10 +92,10 @@ $vstore.scrollToY=scrollToY;
         <svelte:component this={$renderer._toc} {ptk} {...data}/>
         {:else}
         <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
-            {...data} {y0} activeline={data.key==y0+dy} lang={ptk.langOf(y0)}
+            {...data} {y0}  activeline={data.key==y0+dy} lang={ptk.langOf(y0+dy)}
             {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
         >
-        {#if data.key==y0+dy}<LineMenu {side} {loc} y={data.y||data.key} {ptk}/>{/if}
+        {#if data.key==y0+dy}<LineMenu {y0} {side} {loc} y={data.y||data.key} {ptk}/>{/if}
         </svelte:component>
         {/if}
     </VirtualScroll>
