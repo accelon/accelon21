@@ -142,7 +142,7 @@ export const setActiveLine=(addresses_side=addresses_b,newy=0,y0=0)=>{
         setAddress(addresses,newptr);
     
         const oaddrs=get(getOppositeAddresses(addresses));
-        if (get(activeside)==0 && oaddrs.length&& isParallel(addrs[0].address, oaddrs[0].address) ) {
+        if ( oaddrs.length&& isParallel(addrs[0].address, oaddrs[0].address) ) {
             const optr2=parseAddress(oaddrs[0].address);
             optr2.dy=newdy;
             setAddress(getOppositeAddresses(addresses),serializePointer(optr2));

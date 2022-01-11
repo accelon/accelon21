@@ -20,8 +20,9 @@ const toggle=async ()=>{
             const {h,ptk}=ptr[0];
             const lines=await readLines({basket:ptk.name,nline:h.y,count:1});
             tptk=useBasket(ptk.name);
-            transclusion={ text:lines[0][1] , hook:h, 
-                q:text, ptk:tptk, y:lines[0][0] , key:'tc'+Math.random() } ;       
+            transclusion={ text:lines[0][1] , 
+                //q:text, hook:h, 
+                ptk:tptk, y:lines[0][0] , key:'tc'+Math.random() } ;       
                 showing=$renderer.default;     
         }
     } else {

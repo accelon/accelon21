@@ -12,7 +12,12 @@ let color='hsl('+((nesting+3)*60) +' ,50%,30%)';
 let lines=[];
 async function update(attrs){
     if (opening) return;
-    lines=await ptk.fetchFootnote(starty, attrs.n); 
+    let y=starty; //footnote in this chunk
+    const addr=attrs['@'];
+    if (addr) { //other chunk
+        [y]=ptk.getPageRange(addr);
+    }
+    if (y) lines=await ptk.fetchFootnote(y, attrs.n); 
 };
 
 $: if (!opening && showing) update(attrs);
