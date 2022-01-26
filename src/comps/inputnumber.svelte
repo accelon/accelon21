@@ -8,11 +8,18 @@ export let min=1;
 export let autofocus=false;
 export let max=value>min?value:Number.MAX_SAFE_INTEGER;
 const clamp=(num, min, max)=> num < min ? min : num > max ? max : num;
-let val=parseInt(value);
-$: val=clamp(parseInt(val),parseInt(min),parseInt(max))||0;
-$: if(val!==value) {  value=val; dispatch('change',val);} 
-const valinc=evt=>val=evt.ctrlKey?max:val+1;
-const valdec=evt=>val=evt.ctrlKey?min:val-1;
+const oninput=(evt)=>{
+    let val=parseInt(evt.target.value)||0;
+    val=clamp(val,min,max);
+    updateValue(val);
+}  
+const updateValue=val=>{
+    if(value!==val) {  
+        value=val; dispatch('change',val);
+    }
+}
+const valinc=evt=>value=updateValue(evt.ctrlKey?max:value+1);
+const valdec=evt=>value=updateValue(evt.ctrlKey?min:value-1);
 const onkeyup=evt=>{
     if (evt.key=="ArrowDown") valinc(evt);
     if (evt.key=="ArrowUp") valdec(evt);
@@ -22,7 +29,7 @@ function setfocus(node){
 }
 </script>
 <span class="numinput">
-    {#if stepper}<span title="Ctrl ← min" class="stepper" class:disabled={val==min} on:click={valdec}>⏴</span>{/if}<input title="↑ ↓ Ctrl-↑  Ctrl-↓"  use:setfocus {style} on:keyup={onkeyup} bind:value={val}/>{#if stepper}<span title="Ctrl → max" class="stepper"  class:disabled={val==max} on:click={valinc}>⏵</span> {/if}
+    {#if stepper}<span title="Ctrl ← min" class="stepper" class:disabled={value==min} on:click={valdec}>⏴</span>{/if}<input title="↑ ↓ Ctrl-↑  Ctrl-↓"  use:setfocus {style} on:keyup={onkeyup} on:input={oninput} {value}/>{#if stepper}<span title="Ctrl → max" class="stepper"  class:disabled={value==max} on:click={valinc}>⏵</span> {/if}
 </span>
 <style>
     .numinput{-webkit-user-select: none;}

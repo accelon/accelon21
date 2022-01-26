@@ -16,7 +16,6 @@ const go=({detail})=>{
 
 {#if childcount>1}
 <InputNumber on:change={go} {value} max={childcount} min="1" />
-
 {/if}
 <style>
 

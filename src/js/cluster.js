@@ -7,8 +7,12 @@ const findClusters=(ptk,str)=>{
     let nclusters=[];
     const m=str.match(/([\da-zA-Z ,;]+)/);
     if (m && m[1].length===str.length) { //by book id
-        nclusters=str.split(/[ ,;]/).map( id=>cl.idarr.indexOf(id)).filter(id=>id>-1);
-    } else {
+        nclusters=cl.idarr.map((id,idx)=>{
+            if (id.indexOf(str)>-1) return idx;
+            else return -1;
+        }).filter(id=>id>-1)
+    }
+    if (!nclusters.length) {//try name
         let res=cl.query(str);
         if (res.count==0 && fromSim(str)!==str) {
             res=cl.query( fromSim(str) )

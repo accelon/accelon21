@@ -2,7 +2,7 @@
 import { useBasket } from 'pitaka';
 import { setContext} from 'svelte';
 import { renderer } from './js/store.js';
-import {setLoc,getOppositeActiveOffset} from './js/addresses.js'
+import {setLoc,getOppositeActiveOffset, pageFromAddress} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
 import PageBar from './pagebar.svelte'
 import { writable } from 'svelte/store';
@@ -22,9 +22,11 @@ $: {const res = parseAddress(address) ; if (res) {
     basket=res.basket; 
     ptk = useBasket(basket);
     if (ptk) {
-        dy=parseInt(res.dy)||0;
         loc=res.loc;
-        y0=ptk.getPageRange(res.loc)[0];
+        dy=res.dy;
+        const page=pageFromAddress(ptk,{loc,dy});
+        dy=page.dy;
+        y0=page.y0;
         locattrs=res.attrs||{};
         $vstore.linetofind=locattrs.ltf||'';
         loaded=false

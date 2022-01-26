@@ -4,7 +4,7 @@ import Btn from './comps/button.svelte';
 import {files,tab,fileidx,errormsg,config, srcfilelines} from './js/store_toolbox.js';
 import Filelist from './filelist.svelte'
 import {validateConfig} from 'pitaka/basket';
-import {JSZip} from 'lazip';
+//import {JSZip} from 'lazip';
 let msg='',zipfilename='';
 
 const loadConfig=(json,inputFilenames)=>{

@@ -12,16 +12,14 @@ import SplitPane from './3rdparty/splitpane.svelte';
 const rightpanels = {
   'files' : PlainTextView,
 }
-let type='horizontal';
+let type=detectOrientation();
+
+import { debounce,detectOrientation } from 'pitaka/utils';
+
+window.onresize=debounce(()=>type=detectOrientation(),500);
 
 $: rightpanel = rightpanels[$tab] || LogView ; console.log(rightpanel)
 
-window.onresize=()=>{
-  setTimeout(()=>{
-    if (mm('(min-width: 769px)') || mm('(orientation:landscape)')) type='horizontal';
-    else type='vertical'
-  })
-}
 
 </script>
 

@@ -22,7 +22,8 @@ const golink=evt=>{
 }
 const scrolltotocitem=evt=>{
     const y=parseInt(evt.target.attributes.itemy.value);
-    setActiveLine(side, y,y0);
+    throw 'ptk not accessible yet'
+    setActiveLine(ptk,side, y,y0);
     $vstore.scrollToY(y,true);
 }
 let showmode=1; //0 = always off , 1=auto on , 2=always on

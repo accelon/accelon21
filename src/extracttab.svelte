@@ -1,5 +1,5 @@
 <script>
-    import CheckBox from './checkbox.svelte';
+    import CheckBox from './comps/checkbox.svelte';
     import Btn from './comps/button.svelte';
     import {extractregex} from './js/fileworkers.js'
     import {playing,files, summarize,logs, ignorecase} from  './js/store_toolbox.js'

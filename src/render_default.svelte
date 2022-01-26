@@ -3,7 +3,7 @@ import {tosim,palitrans,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
 import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
-import {provident2indic} from 'provident-pali'
+import {xml2indic} from 'provident-pali'
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
@@ -31,7 +31,7 @@ let extra=[];
 $: lineText=()=>{
     const t=text||(ptk&&ptk.getLine(y||key))||''
     if (lang!=='pl') return t;
-    return provident2indic(t, $palitrans)
+    return xml2indic(t, $palitrans)
 };
 $: onlytext=parseOfftextLine(lineText())[0];
 
@@ -78,7 +78,7 @@ const onSelection=evt=>{//user note and highlight etc
 
 const click=evt=>{
     if (evt.button!==0) return;
-    !nesting && setActiveLine(side,y||key ,y0);
+    !nesting && setActiveLine(ptk,side,y||key ,y0);
     //scroll offset of the activeline
     const toolbarheight=evt.pageY-evt.layerY + 5; // don't know why ?? cannot can precise offset
     const activeoffset=evt.target.getBoundingClientRect().y-toolbarheight;
