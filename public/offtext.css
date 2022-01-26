@@ -80,7 +80,7 @@ t.p:before {
     font-size:0.6rem;
     /* font-weight: bold; */
     color:rgb(153, 151, 62);
-    content: attr(n) 
+    content: attr(id) 
 }
 
 t.lg {

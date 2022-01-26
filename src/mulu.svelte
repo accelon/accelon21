@@ -9,7 +9,7 @@ export let mulu=[];
 export let scrollStart=0;
 export let y0=0;
 export let side=0;
-
+export let ptk;
 let color=(level,external)=>'hsl('+((level)*40) +' ,80%,'+(external?'35%)':'50%)') ;
 let caption=(lnk)=>{
     const chunk=lnk[1];
@@ -22,7 +22,7 @@ const golink=evt=>{
 }
 const scrolltotocitem=evt=>{
     const y=parseInt(evt.target.attributes.itemy.value);
-    throw 'ptk not accessible yet'
+    // throw 'ptk not accessible yet'
     setActiveLine(ptk,side, y,y0);
     $vstore.scrollToY(y,true);
 }

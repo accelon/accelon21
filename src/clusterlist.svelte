@@ -1,5 +1,5 @@
 <script>
-import { PATHSEP} from 'pitaka';
+import { DEFAULT_LANGUAGE, PATHSEP} from 'pitaka';
 import VirtualScroll from './3rdparty/virtualscroll'
 import InputNumber from './comps/inputnumber.svelte';
 import Keywords from './comps/keywords.svelte';
@@ -11,6 +11,7 @@ export let side=0;
 export let fullname=true;
 export let onKeyword;
 export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
+let vscroll;
 $: langstyle='lang-'+lang+(lang==='pl'?'-'+($palitrans||''):'')
 const getTitle=text=>{
     text=text||''
@@ -23,7 +24,7 @@ const getJuan=cl=>{
        return 0;
    }
 }
-
+$: if(vscroll&&$items.length) { vscroll.scrollToOffset(0) } //scrolltotop when data is updated
 const setJuan=(y0,juan)=>{
     const loc=ptk.locOf(y0,true);
     settab(side,loc+PATHSEP+juan,{newtab:true});
@@ -34,7 +35,7 @@ const goitem=(y0)=>{
 }
 </script>
 
-<VirtualScroll start={-1}  keeps={30} data={$items} key="key" let:data >
+<VirtualScroll bind:this={vscroll} start={-1}  keeps={30} data={$items} key="key" let:data >
 <div>
     <span class="bookid">{data.id}</span>
     <span class={"tocitem "+langstyle} on:click={()=>goitem(data.y0)}>{getTitle(data.text,$tosim,$palitrans)}</span>

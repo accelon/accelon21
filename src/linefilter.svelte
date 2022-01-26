@@ -42,7 +42,7 @@ const getbookmarkicon=()=>{
     return $filterbookmark==2?'bookmarksolid':'bookmark';
 }
 
-let linetofind=parsePointer($addresses[0].address).attrs.ltf;
+let linetofind='';//parsePointer($addresses[0].address).attrs.ltf;
 </script>
 <Btn store={filterbookmark} state={3} icon={getbookmarkicon()}/>
 <Btn store={filterusernote} icon="usernote"/>

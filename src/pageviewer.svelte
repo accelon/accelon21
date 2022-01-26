@@ -11,7 +11,7 @@ import {filterItems} from './js/criteria.js';
 import LineMenu from './linemenu.svelte'
 export let address='',side=0;
 export let active=false;
-let vscroll,ptk='',basket,loc,hook,dy,y0,locattrs,topkey, loaded=false;
+let vscroll,ptk='',basket,loc,hook,dy,y0,y,locattrs,topkey, loaded=false;
 
 const vstore=writable({renderer,criteria:{},filterfunc:null,linetofind:'',parallels:{}});
 const viewitems=writable({});
@@ -23,9 +23,9 @@ $: {const res = parseAddress(address) ; if (res) {
     ptk = useBasket(basket);
     if (ptk) {
         loc=res.loc;
-        dy=res.dy;
+        dy=parseInt(res.dy)||0;
+        y=ptk.getLocY(loc)+dy;
         const page=pageFromAddress(ptk,{loc,dy});
-        dy=page.dy;
         y0=page.y0;
         locattrs=res.attrs||{};
         $vstore.linetofind=locattrs.ltf||'';
@@ -94,10 +94,10 @@ $vstore.scrollToY=scrollToY;
         <svelte:component this={$renderer._toc} {ptk} {...data}/>
         {:else}
         <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
-            {...data} {y0}  activeline={data.key==y0+dy} lang={ptk.langOf(y0+dy)}
+            {...data} {y0}  activeline={data.key==y} lang={ptk.langOf(y)}
             {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
         >
-        {#if data.key==y0+dy}<LineMenu {y0} {side} {loc} y={data.y||data.key} {ptk}/>{/if}
+        {#if data.key==y}<LineMenu {y0} {side} {loc} y={data.y||data.key} {ptk}/>{/if}
         </svelte:component>
         {/if}
     </VirtualScroll>

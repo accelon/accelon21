@@ -6,7 +6,7 @@ export let loc;
 export let side=0;
 
 $: childcount=ptk&&ptk.childCount(loc) ;
-$: value=loc&&parseInt(loc.match(/(\d+)$/)[1]);
+$: value=loc&&loc.match(/(\d+)$/) && parseInt(loc.match(/(\d+)$/)[1]);
 
 const go=({detail})=>{
     const newloc=ptk.name+'/'+loc.replace(/\d+$/,detail);

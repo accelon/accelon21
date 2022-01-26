@@ -15,7 +15,7 @@ export const selectorShown=writable(false);
 export const pageFromAddress=(ptk,{loc,dy})=>{
     if (typeof dy!=='number') dy=parseInt(dy)||0;
     const range=ptk.getPageRange(loc);
-    const cluster=ptk.clusterOf(range[0]);
+    const cluster=ptk.clusterOf(range[0]+dy);
     const [y0,y1]=ptk.getPageRange(ptk.pageLoc(cluster.address));
     dy=range[0]+dy - y0;
 

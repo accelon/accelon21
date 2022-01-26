@@ -27,7 +27,7 @@ $: loc= $vstore.loc;
     <TabSelector {side}/>
     <TocBar {ptk} {loc} {side}/>
     {#if mulu&&mulu.length}
-        <Mulu {mulu} {scrollStart} {y0}/>
+        <Mulu {ptk} {mulu} {scrollStart} {y0}/>
     {:else if ptk}
         <TocMenu {scrollStart} {ptk}/>
     {/if}
