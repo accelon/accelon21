@@ -186,7 +186,7 @@ t.w[sk]:before {
 t.bk{
     font-size:1.5em;
     color:goldenrod;
-    font-family: Tahoma,楷体,標楷體;
+    /* font-family: Tahoma,楷体,標楷體; */
 }
 t.bk-:before {
     content:"《";
@@ -200,11 +200,10 @@ t.c:before{
     background:darkgoldenrod;
     border-radius: 5px;
     color:black;
-    font-family: Consolas;
+    font-family: "Consolas";
 }
 t.c{
     font-size:1.2em;
-    font-family: Tahoma,楷体,標楷體,DFKai-SB;
     color:orange;
     display:block;
 }

@@ -3,7 +3,7 @@ import {tosim,palitrans,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
 import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
-import {xml2indic} from 'provident-pali'
+import {offtext2indic} from 'provident-pali'
 import {getTextHook} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
@@ -16,7 +16,8 @@ export let ptk=null;  //if ptk is missing, text might come from various pitaka, 
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
 export let y=0   //優先權較高
-export let lang=DEFAULT_LANGUAGE;
+export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
+
 $: langstyle='lang-'+lang+(lang==='pl'?'-'+($palitrans||''):'')
 export let activeline=false;
 export let transition=()=>{};
@@ -29,11 +30,16 @@ export let bookmarks=null; // this is a store created by addresses.js
 
 let extra=[];
 $: lineText=()=>{
-    const t=text||(ptk&&ptk.getLine(y||key))||''
-    if (lang!=='pl') return t;
-    return xml2indic(t, $palitrans)
+    return text||(ptk&&ptk.getLine(y||key))||''
 };
-$: onlytext=parseOfftextLine(lineText())[0];
+
+const transcript=(str,script)=>{
+    if (lang!=='pl') return str;
+    return offtext2indic(str,script);
+}
+
+$: onlytext= parseOfftextLine(lineText())[0];
+
 
 const sortExtra=()=>{
     extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
@@ -118,12 +124,12 @@ const closelabel=()=>{
 {#if labelerOf(snpt.open.name)}<!-- 
 open.name 存在則是此標籤的起點 為避免多餘的空格，前後labeler 和 snippet 要連成一行。
 //--><svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting} {side}
-    on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />{/if}<!-- 
+    on:update={update} on:close={closelabel} {ptk} text={transcript(snpt.text,$palitrans)} starty={y||key} {...snpt.open} />{/if}<!-- 
 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 
-//--><span >{@html composeSnippet(snpt,y||key,$tosim)}</span>{#if labelerOf(snpt.close.name)}<!-- 
+//--><span >{@html composeSnippet(snpt,y||key,$tosim,lang==='pl'&&$palitrans)}</span>{#if labelerOf(snpt.close.name)}<!-- 
 close.name 存在，則是該標籤的終點。屬性在 sntp.open
 //--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}  {side}
-   on:update={update} on:close={closelabel} {ptk} text={snpt.text} starty={y||key} {...snpt.open} />
+   on:update={update} on:close={closelabel} {ptk} text={transcript(snpt.text,$palitrans)} starty={y||key} {...snpt.open} />
 {/if}{/each}
 <Bookmark {bookmarks} {dy} {ptk} {loc}/>
 <slot></slot>

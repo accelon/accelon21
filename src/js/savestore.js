@@ -1,7 +1,7 @@
 export const AppPrefix='ACC21.'
 export const loadSettings=()=>{
     const tosim=parseInt(localStorage.getItem(AppPrefix+'tosim')||'0');
-    const palitrans=parseInt(localStorage.getItem(AppPrefix+'palitrans')||'0');
+    const palitrans=localStorage.getItem(AppPrefix+'palitrans')||'';
     const column=localStorage.getItem(AppPrefix+'column')||0;
     const tab=localStorage.getItem(AppPrefix+'tab')||'files';
     const toolbox_panepos=localStorage.getItem(AppPrefix+'toolbox_panepos')||30;

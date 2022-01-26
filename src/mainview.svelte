@@ -15,19 +15,19 @@ const togglesystemsetting=()=>{
 }
 </script>
 <div class="container">
+<div class="systemsetting" ><Btn title="设置 setting" icon="setting" 
+    onclick={togglesystemsetting} store={systemsetting}/>
+</div>
 <SelectionMenu/>
 <SplitPane bind:type bind:pos={$panepos} min={15} max={85}>
     <div slot="a">
         <PitakaViews addresses={addresses_a} side={0}/>
     </div>
     <div  slot="b">
-        <div class="systemsetting">
-            <Btn title="设置 setting" icon="setting" 
-            onclick={togglesystemsetting} store={systemsetting}/>
-        </div>
         <div class:hide={$systemsetting}>
         <PitakaViews addresses={addresses_b} side={1} />
         </div>
+
         {#if $systemsetting}
         <Settings/>
         {/if}
@@ -37,5 +37,6 @@ const togglesystemsetting=()=>{
 <style>
     .hide {display:none;}
     .container {height:100vh}
-	.systemsetting {position:absolute;right:0px;z-index:999}
+    /* strange right:0px doesn't work*/
+	.systemsetting {position:absolute;z-index: 9999;top:0px;right:7%}
 </style>

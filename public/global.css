@@ -75,11 +75,11 @@ button:focus {	border-color: #666;}
 
 
 .pitaka {padding-left:0.5em;padding-right:1em}
-.pitaka .title {font-family: 楷体,標楷體;line-height:180%;font-size:1.5rem;color:var(--booktitle)}
+.pitaka .title {font-family: Tahoma,楷体,標楷體;line-height:180%;font-size:1.5rem;color:var(--booktitle)}
 .pitaka .name {font-family: Tahoma;color:var(--href)}
 .pitaka .details {font-size:1rem;color:rgb(27, 136, 5)}
 .pitaka .loadtime {font-size:1rem;color:gold}
-.pitaka_tocbartitle{font-family: 楷体,標楷體;color:var(--booktitle)}
+.pitaka_tocbartitle{font-family: Tahoma,楷体,標楷體;color:var(--booktitle)}
 
 .separator {padding-top:6px;display:block;height:1px;border-bottom:2px dotted rgb(56, 90, 1)}
 .endofcontent{margin-top:1em;border-top:5px solid rgb(2, 56, 0);

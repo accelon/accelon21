@@ -17,6 +17,8 @@ if (keyindex==-1) {
     keyindex=0;
     $storeid=statekeys[keyindex];
 }
+
+
 const setcaption=()=>{
     if (storeid) caption=states[ $storeid]
     caption=Icons[caption]||caption;

@@ -1,13 +1,19 @@
 import {updateSettings,settings} from './savestore.js'
 import {derived, writable ,get} from "svelte/store";
 import { toSim } from 'lossless-simplified-chinese';
-
+import { offtext2indic } from 'provident-pali';
 export const tosim=writable(settings.tosim);
 export const palitrans=writable(settings.palitrans);
 export const systemsetting=writable(false);
 export const cursor=writable({});
 export const panepos=writable(settings.panepos);
-export const _=str=>toSim( str,get(tosim));
+
+export const _=(text,sim,script)=>{
+    let t=text;
+    if (script) t=offtext2indic(text,script);
+    else if (parseInt(sim)) t=toSim(text,sim);
+    return t;
+};
 
 
 export const showFrontPage=writable(false);
