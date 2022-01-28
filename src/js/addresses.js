@@ -1,10 +1,10 @@
 import {getContext} from 'svelte'
 import {writable,get} from 'svelte/store'
-import {parseAddress ,serializePointer} from 'pitaka/offtext';
+import {parseAddress ,stringifyAddress} from 'pitaka/offtext';
 import {getUserNotes} from './usernotes.js'
 import {getBookmarks} from './bookmarks.js'
 import {getUserData,setUserData} from './userdata.js';
-import {PATHSEP,ADDRSEP, DELTASEP, useBasket } from 'pitaka';
+import {ADDRSEP, DELTASEP, useBasket } from 'pitaka';
 import {activeside, showFrontPage} from './store.js'
 export const addresses_a=writable([]);
 export const addresses_b=writable([]);
@@ -63,7 +63,7 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy},store)=>{
     items.push({text:'　',key:'end'});//workaround
     /* 
     y0 is the first line of cluster, dy is delta from y0
-    loc is the nearest addressing location
+    loc is the nearest locator
     */
     const out=Object.assign(old,{items,backlinks,ptk,loc,mulu,y0,criteria,usernotes,bookmarks,dy});
     store.set(out)
@@ -73,6 +73,7 @@ const packAddresses=arr=>{
     const out=[];
     for (let i=0;i<arr.length;i++) {
         const {basket}=parseAddress(arr[i]);
+        if (!basket) continue;
         if (prevbasket!==basket) out.push(arr[i]); 
         else out.push(arr[i].substr(basket.length));
         if (basket) prevbasket=basket;
@@ -90,13 +91,13 @@ export const setLocAttrs=(addresses_side=addresses_b,_attrs)=>{
         addresses=addresses_side==0?addresses_a:addresses_b;
     }
     const addrs=get(addresses);
-    const {basket,loc,dy,attrs}=parsePointer(addrs[0].address);
+    const {basket,loc,dy,attrs}=parseAddress(addrs[0].address);
     const newattrs= Object.assign(attrs,_attrs);
     for (let key in newattrs) {
         if (!newattrs[key]&&typeof newattrs[key]!=='number') delete newattrs[key];
     }
-    const newptr=serializePointer(basket,loc,'',dy,newattrs);
-    addrs[0].address=newptr;
+    const newaddr=stringifyAddress(basket,loc,'',dy,newattrs);
+    addrs[0].address=newaddr;
     //addresses.set(addrs)
     updateUrl();
 }
@@ -158,8 +159,8 @@ export const setActiveLine=(ptk,addresses_side=addresses_b,newy=0,y0=0)=>{
     if (optr.loc!==loc || optr.dy!==dy) {
         optr.loc=ptr.loc;
         optr.dy=dy;
-        const newptr=serializePointer(optr);
-        setAddress(addresses,newptr);
+        const newaddr=stringifyAddress(optr);
+        setAddress(addresses,newaddr);
     
         const oaddrs=get(getOppositeAddresses(addresses));
         if ( oaddrs.length&& isParallel(addrs[0].address, oaddrs[0].address) ) {
@@ -196,7 +197,7 @@ export const getSide=address=>{
 }
 
 export const getActiveline=(addresses=addresses_b)=>{
-    const ptr=parsePointer(get(addresses)[0]);
+    const ptr=parseAddress(get(addresses)[0]);
     return ptr.dy + ptr.y;
 }
 export const closetab=addresses=>{

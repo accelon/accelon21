@@ -23,9 +23,8 @@ $: {const res = parseAddress(address) ; if (res) {
     ptk = useBasket(basket);
     if (ptk) {
         loc=res.loc;
-        dy=parseInt(res.dy)||0;
-        y=ptk.getLocY(loc)+dy;
-        const page=pageFromAddress(ptk,{loc,dy});
+        y=ptk.getLocY(loc)+res.dy;
+        const page=pageFromAddress(ptk,{loc,dy:res.dy});
         y0=page.y0;
         locattrs=res.attrs||{};
         $vstore.linetofind=locattrs.ltf||'';

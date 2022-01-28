@@ -1,5 +1,5 @@
 <script>
-import {parsePointer} from 'pitaka/offtext'
+import {parseAddress} from 'pitaka/offtext'
 import {tosim,renderer} from './js/store.js';
 import {toSim} from 'lossless-simplified-chinese'
 import { fetchHooks,PATHSEP } from 'pitaka';
@@ -8,7 +8,7 @@ import { fetchHooks,PATHSEP } from 'pitaka';
 // export let link=null;
 // export let from=null;
 let renderer_foreignlink=null;
-const parsed=parsePointer(link);
+const parsed=parseAddress(link);
 let showing=false;
 let lines=[];
 const toggle=async ()=>{

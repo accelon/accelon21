@@ -1,5 +1,5 @@
 import {writable ,get} from "svelte/store";
-import {serializePointer} from 'pitaka/offtext'
+import {stringifyAddress} from 'pitaka/offtext'
 export const copiedAddress = writable('');
 export const copyAddress=(str)=>{
     copiedAddress.set(str);
@@ -12,6 +12,6 @@ export const getCursorAddress=()=>{
     if (!a.loc)return;
     // console.log('side tab',a.side,a.tabid)
     const loc=ptk.locOf(a.y);
-    return serializePointer({ptk:a.ptk,loc,hook:a.hook});
+    return stringifyAddress({ptk:a.ptk,loc,attrs:{hook:a.hook}});
 }
 

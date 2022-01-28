@@ -1,0 +1,52 @@
+﻿書名清單移到sidemenu
+
+
+todo   real-time display tranclusion
+
+
+mulu/search result/notes
+
+搜尋結果  
+	在書單
+	   每本書出現次數
+	   本書
+	在目錄頁
+	   每卷出現次數
+	   本卷頭十筆摘要
+	在閱讀頁
+	   本文塗紅
+	   本章十筆摘要
+
+檢查 overlapped note
+
+列出所有筆記
+	筆記內容，點一下跳到閱讀頁
+
+
+
+
+
+
+
+
+http://localhost, file://
+  zip 直接解開即可。
+  設置 localStorage 資料庫名
+
+http://localhost , https://
+  讀小檔，匯入到 browser cache，從 
+  
+chrome-extension:
+  讀 ptk 及小檔
+
+匯出:
+  ptk 不壓縮，可random seek
+  zip 壓縮小檔，交換用。
+
+zip 做為交換用
+
+四大名著 打包成 openlit.ptk
+教育部國語辭典 gycd.ptk
+
+breadcrumb 庫/書名/章回名
+檢索 ,  閱讀  (查字典內建)

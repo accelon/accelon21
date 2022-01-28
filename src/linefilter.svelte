@@ -1,5 +1,5 @@
 <script>
-import { parsePointer } from 'pitaka/offtext';
+import { parseAddress } from 'pitaka/offtext';
 import { debounce } from 'pitaka/utils';
 import {getContext} from 'svelte';
 import { writable } from 'svelte/store';

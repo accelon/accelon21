@@ -21,6 +21,10 @@ let addr={},refreshcount=0;
 let keyvalue='',keylabel='', tofind='',scoredLine=[];
 
 const refreshquery=async (_addr)=>{
+    if (!_addr.basket) {
+        _addr.basket=_addr.loc;
+        _addr.loc='';
+    }
     let firsttime=false;
     if (!ptk) { //first refresh
         showcluster=!_addr.tf;
@@ -38,6 +42,7 @@ const refreshquery=async (_addr)=>{
     } 
     if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime) {
         buildClusterlist(_addr,scoredLine,clusteritems,excerptitems);
+
         keylabel=_addr.kl;
         keyvalue=_addr.kv;
         filterclusters={};

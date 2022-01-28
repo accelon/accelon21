@@ -2,17 +2,17 @@
 import {setContext} from 'svelte'
 import FrontPage from './frontpage.svelte';
 import {showFrontPage} from './js/store.js'
-import { parseAddress } from 'pitaka/offtext';
 export let addresses,side;
 export let hide=false;
 
 import BookViewer from './bookviewer.svelte'
 import PageViewer from './pageviewer.svelte'
+import { parseAddress } from 'pitaka/offtext';
 
 setContext('addresses',addresses);
 const getViewer=address=>{
-    const ptr=parseAddress(address);
-    return ptr.loc?PageViewer:BookViewer;
+    const addr=parseAddress(address);
+    return addr.loc?PageViewer:BookViewer;
 }
 
 </script>
