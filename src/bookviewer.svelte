@@ -18,7 +18,7 @@ export let side=0,visible=false,address='',active=false;
 const headingitems=writable([]);
 const excerptitems=writable([]);
 
-const bkstore=writable({aligned:{}});
+const bkstore=writable({aligned:[]});
 setContext('bkstore',bkstore);
 
 let ptk;

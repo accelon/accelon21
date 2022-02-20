@@ -8,17 +8,22 @@ import {getContext} from 'svelte'
 const alignedPitaka=ptk.aligned.map(n=>useBasket(n));
 const bkstore=getContext('bkstore');
 
-for (let basket of ptk.aligned) {
-    if (!$bkstore.aligned.hasOwnProperty(basket)) {
-        $bkstore.aligned[basket]=false;
+const toggle=(name)=>{
+    const aligned=$bkstore.aligned;
+    if (aligned.includes(name)) {
+        aligned.splice(aligned.indexOf(name),1);
+    } else {
+        aligned.push(name);
     }
+    $bkstore.aligned[name]=aligned[name];
 }
-
 </script>
 <Hamburgermenu {scrollStart}>
     <div slot='aligned'>
         {#each alignedPitaka as ptk}
-        <Checkbox label={ptk.header.title} bind:value={$bkstore.aligned[ptk.name]}/><br/>
+        <Checkbox label={ptk.header.title} onClick={oldv=>toggle(ptk.name,oldv)}
+                value={$bkstore.aligned.includes(ptk.name)}/>
+        <br/>
         {/each}
     </div>
 </Hamburgermenu>

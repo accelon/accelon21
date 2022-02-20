@@ -21,7 +21,14 @@ export const pageFromAddress=(ptk,{loc,dy})=>{
 
     return {y0,dy,linecount:y1-y0};
 }
-export const setLoc=async ({ptk,loc,y0,hook='',dy},store)=>{
+export const loadAlignedLines=async (ptk,loc,dy)=>{
+    const page=pageFromAddress(ptk,{loc,dy})
+    const y0=page.y0;
+    if (!y0) return;
+    console.log('prefetch',ptk.name,y0,page.linecount)
+    await ptk.prefetchLines(y0,y0+page.linecount);
+}
+export const setLoc=async ({ptk,loc,y0,dy,aligned},store)=>{
     const old=get(store);
     if (!ptk) ptk=get(store).ptk;
 
@@ -37,11 +44,15 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy},store)=>{
     for (let i=y0;i<y0+page.linecount;i++) {
         items.push({key:i});
     }
-    // const items=ptk.fetchPage(chunk.address);
     const criteria=get(store).criteria||{};
 
     await ptk.prefetchLines(y0,y0+items.length);
+    const alignedPtk=aligned.split(',').map(n=>n&&useBasket(n)).filter(it=>!!it);
     
+    for (let i=0;i<alignedPtk.length;i++) {
+        await loadAlignedLines(alignedPtk[i],loc,dy);
+    }
+
     let mulu=[];
     if (items.length && !items[0].ptr) { //no mulu for toc page
         mulu=ptk.getMulu(y0,y0+items.length);

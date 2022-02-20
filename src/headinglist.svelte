@@ -4,7 +4,7 @@ import VirtualScroll from './3rdparty/virtualscroll'
 import Keywords from './comps/keywords.svelte';
 import {_,tosim, palitrans} from './js/store.js'
 import { settab } from './js/addresses';
-import { parseOfftextLine } from 'pitaka/offtext';
+import { parseOfftextLine,parseAddress ,stringifyAddress } from 'pitaka/offtext';
 import { getContext } from 'svelte';
 import Colorhr from './comps/colorhr.svelte';
 export let items;
@@ -36,9 +36,12 @@ const scroll=(evt)=>{
 }
 const goitem=(y0)=>{
     const loc=ptk.locOf(y0);
-    settab(side,loc,{newtab:true})
+    const ptr=parseAddress(loc);
+    if (alignedPitaka.length) ptr.attrs={al:alignedPitaka.map(p=>p.name).join(',')};
+    const addr=stringifyAddress(ptr);
+    settab(side,addr,{newtab:true})
 }
-$: alignedPitaka=Object.keys($stor.aligned).filter( n=>$stor.aligned[n]).map(n=>useBasket(n));
+$: alignedPitaka=$stor.aligned.map(n=>useBasket(n));
 
 </script>
 <VirtualScroll bind:this={vscroll} start={-1}   on:scroll={scroll}
