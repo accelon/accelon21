@@ -37,7 +37,7 @@ export default [
   {
     input: "src/js/toolbox.js",
     output: {
-      sourcemap: true,
+      sourcemap: !production,
       format: "iife",
       name: "app",
       file: "public/toolbox.js",

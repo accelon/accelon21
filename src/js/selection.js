@@ -1,5 +1,6 @@
 const ENDINGCHARS= /[^\u3fff-\u9fff\dA-Za-z]/ ;
-import {parseOfftextLine, makeHook } from 'pitaka/offtext'
+import {parseOfftextLine } from 'pitaka/offtext'
+import {makeHook } from 'pitaka/utils'
 
 export const getTextHook=(ptk,evt)=>{
     if (!ptk)return{}

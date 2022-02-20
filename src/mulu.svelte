@@ -3,7 +3,7 @@ import { getContext } from 'svelte';
 import { settab,setActiveLine } from './js/addresses';
 import {_,tosim} from './js/store.js';
 import LineFilter from './linefilter.svelte';
-
+/* todo , use comps/hamburgermenu  */
 const vstore=getContext('vstore');
 export let mulu=[];
 export let scrollStart=0;
@@ -64,7 +64,7 @@ $: showing = (scrollStart<AUTOMENULINE && showmode==1) || showmode==2;
 
 <style>
     .upper {opacity:0.5}
-    :global(.showing) {color:var(--highlight)}
+
     .external{font-size:80%}
     .external:hover{background:var(--button-unselected)}
     .item:hover{text-decoration: underline;cursor:pointer}

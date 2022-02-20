@@ -52,6 +52,7 @@
      */
     export let bottomThreshold = 0
 
+    export let height = 'inherit';
     let displayItems = []
     let paddingStyle
     let directionKey = isHorizontal ? "scrollLeft" : "scrollTop"
@@ -301,7 +302,7 @@
     }
 </script>
 
-<div bind:this={root} on:scroll={onScroll} style="overflow-y: auto; height: inherit">
+<div bind:this={root} on:scroll={onScroll} style={"overflow-y: auto; height: "+height}>
     {#if $$slots.header}
         <Item on:resize={onItemResized} type="slot" uniqueKey="header">
             <slot name="header"/>
@@ -324,5 +325,5 @@
         </Item>
     {/if}
     <div bind:this={shepherd} class="shepherd"
-         style="width: {isHorizontal ? '0px' : '100%'};height: {isHorizontal ? '100%' : '0px'}"></div>
+         style="width: {isHorizontal ? '1em' : '100%'};height: {isHorizontal ? '100%' : '1em'}"></div>
 </div>

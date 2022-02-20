@@ -26,7 +26,7 @@ const toggle=()=>{
 }
 </script>
 {#if !opening}
-<span class='clickable footnote'  on:click={ toggle}>{attrs.n}</span>
+<span class='clickable footnote'  on:click={ toggle}>{attrs.id}</span>
 {#if showing}
 <Colorhr {nesting}/>
 <svelte:component nesting={nesting+1} this={R} {lines} {ptk}/>

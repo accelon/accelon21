@@ -5,7 +5,7 @@ export let items=[];
 export let ptk;
 </script>
 
-<VirtualScroll start={-1}  keeps={40} data={items} key="key" 
+<VirtualScroll start={-1}  keeps={40} data={items} key="key"  height="calc(100% - 1.5em)"
     let:data >
     <span class='excerptlinesep'></span>
     {#if typeof ptk.getLine(data.y)=='undefined'}

@@ -7,16 +7,27 @@ export let store=null;
 export let beforeChecked=null;
 const svg=Icons[icon]||'';
 export let disabled=false;
+
+//use without store
+// export let onClick=null;
+// export let checked=false; //always false if store is given
+export let value=false;
+
 const toggle=async evt=>{
     if (disabled) return;
-    if (!$store && beforeChecked) {
-        if (await beforeChecked(evt)) $store = true;
-    } else{
-        $store = ! $store; //normal toggle
+    if (!store) {
+        value=!value;
+    } else {
+        value=false;
+        if (!$store && beforeChecked) {
+            if (await beforeChecked(evt)) $store = true;
+        } else{
+            $store = ! $store; //normal toggle
+        }
     }
 }
 </script>
-<span class="button" title={title} class:yes={$store} 
+<span class="button" title={title} class:yes={ (store&&$store) || value} 
 class:disabled on:click={toggle}>{@html svg}{label}</span>
 
 <style>

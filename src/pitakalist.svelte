@@ -2,7 +2,6 @@
 import {  NAMESPACESEP, pool} from 'pitaka';
 import {_,tosim} from './js/store.js'
 import {activetofind,runquerycount} from './js/query.js'
-import { getContext } from 'svelte';
 import { get, writable } from 'svelte/store';
 import { settab } from './js/addresses';
 import QueryResult from './queryresult.svelte';
@@ -32,9 +31,9 @@ let isvalid={};
     <div class="details">
     <QuickPointer bind:isvalid {ptk} {side}/>
     {#if !isvalid[ptk.name]}
-        <span class="labeltext" label={_(ptk.chapterCount()?'冊':'條',$tosim)}>{ptk.contentCount()}</span>
-        {#if ptk.chapterCount()}<span class="labeltext" label='卷'>{ptk.chapterCount()}</span>{/if}
-        <span class="labeltext" label='段'>{ptk.header.lastTextLine}</span>
+        <span class="labeltext" label={_(ptk.chunkCount()?'冊':'條',$tosim)}>{ptk.contentCount()}</span>
+        {#if ptk.chunkCount()}<span class="labeltext" label={_('標題',$tosim)}>{ptk.chunkCount()}</span>{/if}
+        <span class="labeltext" label='文段'>{ptk.header.lastTextLine}</span>
         <span class="labeltext" label='建立'>{ptk.header.buildtime.replace(/T.+$/,'')}</span>
         {#if ptk.header.description}<span class="labeltext" label={_('說明',$tosim)}>{_(ptk.header.description,$tosim)}</span>{/if}
     {/if}

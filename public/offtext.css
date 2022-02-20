@@ -77,10 +77,11 @@ t.p:before {
     cursor: pointer;
     padding-top:1.2rem;
     vertical-align:top;
-    font-size:0.6rem;
+    font-size:0.8rem;
     /* font-weight: bold; */
     color:rgb(153, 151, 62);
-    content: attr(id) 
+    content: attr(id) ;
+    /* padding-left:2px;padding-right:2px; */
 }
 
 t.lg {
@@ -208,8 +209,8 @@ t.c{
     display:block;
 }
 t.h {
-    /* font-weight: bold; */
-    font-family: Tahoma,楷体,標楷體,DFKai-SB;
+    font-weight: bold;
+    /* font-family: Tahoma,楷体,標楷體,DFKai-SB; */
     display:block;
 }
 t.mu:after {

@@ -20,15 +20,17 @@ setContext('viewitems',viewitems);
 
 $: {const res = parseAddress(address) ; if (res) {
     basket=res.basket; 
+
     ptk = useBasket(basket);
     if (ptk) {
         loc=res.loc;
-        y=ptk.getLocY(loc)+res.dy;
+        y=ptk.locY(loc)+res.dy;
         const page=pageFromAddress(ptk,{loc,dy:res.dy});
         y0=page.y0;
         locattrs=res.attrs||{};
         $vstore.linetofind=locattrs.ltf||'';
         loaded=false
+
     }
 }}
 $: usernotes=$vstore.usernotes;
@@ -83,11 +85,10 @@ const scrollToY=(y,force=false)=>{
     }
 }
 $vstore.scrollToY=scrollToY;
-
 </script>
 <div class="container">
     <div><PageBar {side} {scrollStart} {ptk}/></div>
-    <VirtualScroll start={-1} bind:this={vscroll} keeps={30} data={$viewitems} 
+    <VirtualScroll start={-1} bind:this={vscroll} keeps={30}  height="calc(100% - 1.5em)" data={$viewitems} 
         key="key" let:data on:scroll={scroll}>
         {#if data.ptr}
         <svelte:component this={$renderer._toc} {ptk} {...data}/>

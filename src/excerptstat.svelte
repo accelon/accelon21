@@ -5,12 +5,12 @@ import {_,tosim} from './js/store.js';
 export let excerpts=[];
 export let ptk;
 export let side=0;
-export let filterclusters={};
+export let filterheadings={};
 let showing=true;
 let stats=writable([]);
 
 const setshowmode=()=>showing=!showing;
-const statByCluster=()=>{
+const statByHeading=()=>{
     const byBook={};
     for (let i=0;i<excerpts.length;i++) {
         const ex=excerpts[i];
@@ -21,7 +21,7 @@ const statByCluster=()=>{
     for (let bk in byBook) out.push([bk,byBook[bk]]);
     out.sort((a,b)=>b[1]-a[1]);
     
-    const cl=ptk.getClusterLabel();
+    const cl=ptk.getChunkLabel();
     return out.map((it,idx)=> {return {idx,key:it[0],selected:true, name:cl.names[it[0]], count:it[1] }} )
 }
 const selectAll=(_stats,onoff)=>{
@@ -32,11 +32,11 @@ const selectAll=(_stats,onoff)=>{
 
 let selectedBookCount=0;
 const updateFilter=()=>{
-    filterclusters={};
+    filterheadings={};
     const books=$stats.filter(it=>it.selected).map(it=>it.key);
     selectedBookCount=0;
     for (let i=0;i<books.length;i++) {
-        filterclusters[books[i]]=true;
+        filterheadings[books[i]]=true;
         selectedBookCount++;
     }
 }
@@ -59,7 +59,7 @@ const toggleSelect=evt=>{
     stats.set(_stats);
     updateFilter();
 }
-$: stats.set(statByCluster(excerpts));
+$: stats.set(statByHeading(excerpts));
 </script>
 <span class="hamburger" class:showing on:click={setshowmode}>☰</span>
 {#if showing}

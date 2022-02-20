@@ -1,7 +1,8 @@
 <script>
 import {tosim,palitrans,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
-import {composeSnippet,OfftextToSnippet, parseHook,OffTag, parseOfftextLine} from 'pitaka/offtext'
+import {composeSnippet,OfftextToSnippet, OffTag, parseOfftextLine} from 'pitaka/offtext'
+import {parseHook} from 'pitaka/utils';
 import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
 import {offtext2indic} from 'provident-pali'
 import {getTextHook} from './js/selection.js';
@@ -60,7 +61,8 @@ const addNote=note=>{
     extra.push(new OffTag('unote',{
        hook,text,marker,br,x,y,ptk:ptk.name,loc,y:y||key}, 0,x,w))
 }
-const dy=(y||key)-y0;
+
+const dy=(y||key)-ptk.locY(loc);
 
 const update=({detail})=>{
     if (detail.hook) {
@@ -85,6 +87,7 @@ const onSelection=evt=>{//user note and highlight etc
 const click=evt=>{
     if (evt.button!==0) return;
     !nesting && setActiveLine(ptk,side,y||key ,y0);
+
     //scroll offset of the activeline
     const toolbarheight=evt.pageY-evt.layerY + 5; // don't know why ?? cannot can precise offset
     const activeoffset=evt.target.getBoundingClientRect().y-toolbarheight;

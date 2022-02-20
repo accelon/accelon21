@@ -160,8 +160,8 @@ div.hr {height: 1px;}
 	box-shadow: 1 5 10px ;min-height:5em;min-width:10em;max-height: 15em;overflow-y:scroll}  
 
 .linetext {padding-left:4px;padding-top:0.5em;line-height:1.8;padding-right:4px}
-.activeline {padding-left:1px;border-left:3px dotted gray;
-	padding-right:1px;border-right:3px dotted gray}
+.activeline {padding-left:1px;border-left:3px solid gray;
+	padding-right:1px;border-right:3px solid gray}
 .excerptheader {background:#333333;display:inline-block;
 	border-bottom-right-radius: 5px;padding-right:5px;padding-left:5px}
 .selectionmenu {position:absolute;z-index: 999;

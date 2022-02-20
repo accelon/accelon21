@@ -15,8 +15,8 @@ export const selectorShown=writable(false);
 export const pageFromAddress=(ptk,{loc,dy})=>{
     if (typeof dy!=='number') dy=parseInt(dy)||0;
     const range=ptk.getPageRange(loc);
-    const cluster=ptk.clusterOf(range[0]+dy);
-    const [y0,y1]=ptk.getPageRange(ptk.pageLoc(cluster.address));
+    const chunk=ptk.chunkOf(range[0]+dy);
+    const [y0,y1]=ptk.getPageRange(ptk.pageLoc(chunk.address));
     dy=range[0]+dy - y0;
 
     return {y0,dy,linecount:y1-y0};
@@ -37,7 +37,7 @@ export const setLoc=async ({ptk,loc,y0,hook='',dy},store)=>{
     for (let i=y0;i<y0+page.linecount;i++) {
         items.push({key:i});
     }
-    // const items=ptk.fetchPage(cluster.address);
+    // const items=ptk.fetchPage(chunk.address);
     const criteria=get(store).criteria||{};
 
     await ptk.prefetchLines(y0,y0+items.length);
@@ -98,7 +98,7 @@ export const setLocAttrs=(addresses_side=addresses_b,_attrs)=>{
     }
     const newaddr=stringifyAddress(basket,loc,'',dy,newattrs);
     addrs[0].address=newaddr;
-    //addresses.set(addrs)
+    addresses.set(addrs)
     updateUrl();
 }
 export const setAddress=(addresses_side=addresses_b,address)=>{
@@ -151,9 +151,9 @@ export const setActiveLine=(ptk,addresses_side=addresses_b,newy=0,y0=0)=>{
     if (!addrs.length) return;
     
     const optr=parseAddress(addrs[0].address);
-    const loc=ptk.locOf(newy,true);
+    const loc=ptk.locOf(newy);
     const ptr=parseAddress(loc);
-    const locY=ptk.getLocY(ptr.loc);
+    const locY=ptk.locY(ptr.loc);
     const dy= newy - locY;
     activeside.set(addresses==addresses_b?1:0);
     if (optr.loc!==loc || optr.dy!==dy) {

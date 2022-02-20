@@ -3,7 +3,7 @@
 import sb from './js/searchbox.js';
 import {searchbox} from './js/store.js'
 import InputNumber from './comps/inputnumber.svelte';
-
+/* todo , use comps/hamburgermenu  */
 export let ptk=null;
 let showing=true; 
 export let scrollStart=0;

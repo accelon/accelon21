@@ -12,15 +12,15 @@ export let storeid=null;
 export let styles=null;
 export let caption='';
 const statekeys=Object.keys(states);
-let keyindex=statekeys.indexOf($storeid);
-if (keyindex==-1) {
-    keyindex=0;
-    $storeid=statekeys[keyindex];
+let keyindex=statekeys.indexOf( get(storeid).toString() );
+if (keyindex==-1) {//invalid value
+    keyindex=0;    //force to first value
+    if (get(storeid).toString()!==statekeys[keyindex]) storeid.set(statekeys[keyindex]);
 }
 
 
 const setcaption=()=>{
-    if (storeid) caption=states[ $storeid]
+    if (storeid) caption=states[ get(storeid)]
     caption=Icons[caption]||caption;
 }
 const highlight=str=>{
@@ -41,7 +41,7 @@ const click=evt=>{
     if (storeid) {
         keyindex ++;
         if (keyindex>= statekeys.length) keyindex=0;
-        $storeid=statekeys[keyindex];
+        storeid.set(statekeys[keyindex]);
     }
     onclick&&onclick(evt);
     setcaption();

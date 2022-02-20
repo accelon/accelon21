@@ -1,7 +1,7 @@
 import { openBasket, PATHSEP, ADDRSEP} from 'pitaka';
 import { parseAddress } from 'pitaka/offtext';
 import { addresses_a, addresses_b ,updateUrl,newaddrkey} from './addresses';
-
+import {get } from 'svelte/store'
 const completeAddress=arr=>{
     let prevbasket='';
     for (let i=0;i<arr.length;i++) {
@@ -35,9 +35,9 @@ const addressesFromUrl=()=>{
     return {a,b}
 }
 
-export const loadaddress=async cb=>{
+export const loadaddress=()=>{
     const config=window.accelon21_configuration;
-    if (!config)return;
+    if (!config)return [];
  
     const {a,b}=addressesFromUrl();
 
@@ -48,20 +48,19 @@ export const loadaddress=async cb=>{
     
     // addrs.push(config.init_a); addrs.push(config.init_b);//load ptk in config
 
-
     const pitakaNeeded=enumBasketInAddress(addrs);
+    
     if (config.preload) pitakaNeeded.push( ... config.preload.split(/[,;]/)); 
-
-    cb(pitakaNeeded,config);
-    for (let i=0;i<pitakaNeeded.length;i++){
-        const ptk=await openBasket(pitakaNeeded[i]);
-        if (ptk) cb(pitakaNeeded,config);
-    }
+    
     if (!config.advance) config.advance={};
     if (!config.advance.keepLog) console.clear();
-    addresses_a.set(addrs_a.map(address=>({key:newaddrkey(), address})));
-    addresses_b.set(addrs_b.map(address=>({key:newaddrkey(), address})));
+    const A=addrs_a.map(a=>{ return {key:newaddrkey()+'A', address:a} } );
+    const B=addrs_b.map(a=>{ return {key:newaddrkey()+'B', address:a} } );
+    addresses_a.set(A);
+    addresses_b.set(B);
 
     addresses_b.subscribe(updateUrl);
     addresses_a.subscribe(updateUrl);
+
+    return pitakaNeeded;
 }

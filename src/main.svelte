@@ -7,35 +7,18 @@ import MainView from './mainview.svelte';
 import LoadingAnimation from './comps/loading.svelte'
 import {_,tosim} from './js/store.js'
 import { onMount } from 'svelte';
-import { useBasket } from 'pitaka';
+import { openBasket } from 'pitaka';
 let started=false;
-let loading=true;
-let countdown=0;
 let PitakaStatus=[];
+
 onMount(async ()=>{
-	await loadaddress( (loadingPitaka,config)=>{
-		PitakaStatus=[];
-		let loaded=0;
-		for (let basket of loadingPitaka) {
-			const ptk=useBasket(basket)
-			PitakaStatus.push( [basket, ptk]);
-			if (ptk) loaded++;
-		}
-		loading=(loadingPitaka.length>loaded)
-		if (!loading) {
-			countdown=parseInt(config.countdown)||9;
-			if (countdown<=0) started=true;
-			else {
-				let timer=setInterval(()=>{
-					countdown--;
-					if (countdown<1) {
-						started=true;
-						clearInterval(timer);
-					}
-				},1000)
-			}
-		}
-	});
+	PitakaStatus=loadaddress().map(basket=>[basket,null]);
+	for (let i=0;i<PitakaStatus.length;i++){
+        const ptk=await openBasket(PitakaStatus[i][0]);
+        PitakaStatus[i][1]=ptk;
+		PitakaStatus=PitakaStatus;//refresh
+    }
+	started=true;
 });
 </script>
 <div class="container">
@@ -52,7 +35,6 @@ onMount(async ()=>{
 		{/if}
 		</div>
 	{/each}
-	{#if !loading} <span class="startbutton" on:click={()=>countdown=0}>START {countdown}</span>{/if}
 	</div>
 {:else if started}
 	<MainView/>

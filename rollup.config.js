@@ -40,8 +40,7 @@ export default [
       sourcemap: !production,
       format: "iife",
       name: "app",
-      file: "public/main.js",
-      globals:{'lazip':'lazip'}
+      file: "public/main.js"
     },
     plugins: [
       svelte({

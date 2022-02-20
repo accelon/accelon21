@@ -8,6 +8,6 @@ export let loading=false;
 export let score=0,ncl=0;
 </script>
 <div>
-<span class='excerptheader'>{key+1}.<span class='bookid'>{ptk.clusterOf(y).id}</span> <HumanAddr {ptk} locOnly={true} address={ptk.locOf(y,true)}/></span>
+<span class='excerptheader'>{key+1}.<span class='bookid'>{ptk.chunkOf(y).id}</span> <HumanAddr {ptk} locOnly={true} address={ptk.locOf(y,true)}/></span>
 {#if !loading}<svelte:component this={$renderer.default} {y} {ptk} loc={ptk.locOf(y)} />{/if}
 </div>
