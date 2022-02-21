@@ -23,7 +23,6 @@ let isvalid={};
 </script>
 {#each pitakas as ptk}
 <div class="pitaka">
-    <span class='separator'></span>
     <span class="clickable name" on:click={()=>visit(ptk.header.homepage)}>{ptk.name}</span>
     <span class="title" on:click={evt=>settab(side,ptk.name+NAMESPACESEP)}>
     {_(ptk.header.title,$tosim)}</span>
@@ -37,9 +36,7 @@ let isvalid={};
         <span class="labeltext" label='建立'>{ptk.header.buildtime.replace(/T.+$/,'')}</span>
         {#if ptk.header.description}<span class="labeltext" label={_('說明',$tosim)}>{_(ptk.header.description,$tosim)}</span>{/if}
     {/if}
+    <span class='separator'></span>
     </div>
 </div>
 {/each}
-
-<a target="_new" href="https://accelon.github.io" class='endofcontent'>
-    <img alt='' src="favicon.svg" width="20px" height="20px" /></a>

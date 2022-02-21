@@ -36,9 +36,11 @@ const addressesFromUrl=()=>{
 }
 
 export const loadaddress=()=>{
-    const config=window.accelon21_configuration;
-    if (!config)return [];
- 
+    const config=window.accelon21_configuration||{keepLog:true};
+    if (!config.preload) { //get basket from pathname
+        config.preload=decodeURI(location.pathname).replace(/\..+/,'').replace(/[^\da-z\-]+/g,',');
+    }
+
     const {a,b}=addressesFromUrl();
 
     const addrs_a=a.filter(it=>!!it);
@@ -50,10 +52,11 @@ export const loadaddress=()=>{
 
     const pitakaNeeded=enumBasketInAddress(addrs);
     
-    if (config.preload) pitakaNeeded.push( ... config.preload.split(/[,;]/)); 
+    if (config.preload) {
+        pitakaNeeded.push( ... (config.preload.split(/[,;]/).filter(it=>!!it)) ); 
+    }
     
-    if (!config.advance) config.advance={};
-    if (!config.advance.keepLog) console.clear();
+    if (!config.keepLog) console.clear();
     const A=addrs_a.map(a=>{ return {key:newaddrkey()+'A', address:a} } );
     const B=addrs_b.map(a=>{ return {key:newaddrkey()+'B', address:a} } );
     addresses_a.set(A);

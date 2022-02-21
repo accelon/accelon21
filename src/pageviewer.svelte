@@ -100,18 +100,17 @@ $vstore.scrollToY=scrollToY;
                 {...data} {y0}  activeline={data.key==y} lang={ptk.langOf(y)}
                 {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
             >
+            {#if data.key==y}<LineMenu {y0} {side} {loc} y={data.y||data.key} {ptk}/>{/if}
             </svelte:component>
             
             {#each alignedPitaka as aptk}
             <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
-                {...data} {y0} lang={aptk.langOf(y)} ptk={aptk} {side}>
+                {...data} {y0} activeline={data.key==y} lang={aptk.langOf(y)} ptk={aptk} {side}>
             </svelte:component>
             {/each}
-            {#if alignedPitaka.length}
-            <Colorhr/>
-            {/if}
+            
         {/if}
-        {#if data.key==y}<LineMenu {y0} {side} {loc} y={data.y||data.key} {ptk}/>{/if}
+        
     </VirtualScroll>
 </div>
 

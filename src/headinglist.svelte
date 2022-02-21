@@ -37,7 +37,7 @@ const scroll=(evt)=>{
 const goitem=(y0)=>{
     const loc=ptk.locOf(y0);
     const ptr=parseAddress(loc);
-    if (alignedPitaka.length) ptr.attrs={al:alignedPitaka.map(p=>p.name).join(',')};
+    if (alignedPitaka.length) ptr.al=alignedPitaka.map(p=>p.name).join(',');
     const addr=stringifyAddress(ptr);
     settab(side,addr,{newtab:true})
 }

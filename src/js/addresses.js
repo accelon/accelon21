@@ -25,7 +25,6 @@ export const loadAlignedLines=async (ptk,loc,dy)=>{
     const page=pageFromAddress(ptk,{loc,dy})
     const y0=page.y0;
     if (!y0) return;
-    console.log('prefetch',ptk.name,y0,page.linecount)
     await ptk.prefetchLines(y0,y0+page.linecount);
 }
 export const setLoc=async ({ptk,loc,y0,dy,aligned},store)=>{

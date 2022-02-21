@@ -22,9 +22,11 @@ import {_,tosim,palitrans} from './js/store.js'
     <div>{_("製作資料籃 Build Pitaka")}</div>
 {/key}
 
+<a target="_new" href="https://accelon.github.io" class='endofcontent'>
+</a>
 </div>
 
 <style>
-    .header { background:var(--panel-background)}
+    .header { background:var(--panel-background); color:var(--booktitle);height:1.5em}
     .settings  { -webkit-user-select: none; }
 </style>

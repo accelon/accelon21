@@ -46,7 +46,6 @@ const onoff=(bool)=>{
  <span slot="start" class='btnparallel clickable showing' on:click={()=>onoff(false)} >{caption}</span>
  <Hyperlink {side} {href}/>
 </svelte:component>
-
 {:else} 
 <span class='btnparallel clickable' on:click={()=>onoff(true)} >{caption}</span>
 {/if}

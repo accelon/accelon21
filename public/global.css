@@ -84,7 +84,7 @@ button:focus {	border-color: #666;}
 .separator {padding-top:6px;display:block;height:1px;border-bottom:2px dotted rgb(56, 90, 1)}
 .endofcontent{margin-top:1em;border-top:5px solid rgb(2, 56, 0);
 	display:block;height:1px;width:100%;text-align: center;}
-.endofcontent:after {content:"Accelon 2021\A https://accelon.github.io";white-space: pre-wrap;}
+.endofcontent:after {content:"https://accelon.github.io";white-space: pre-wrap;}
 .tabs {--webkit-user-select: none; background:var(--panel-background);overflow:hidden}
 .tab-content {
 	position: absolute;
