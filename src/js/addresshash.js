@@ -38,7 +38,10 @@ const addressesFromUrl=()=>{
 export const loadaddress=()=>{
     const config=window.accelon21_configuration||{keepLog:true};
     if (!config.preload) { //get basket from pathname
-        config.preload=decodeURI(location.pathname).replace(/\..+/,'').replace(/[^\da-z\-]+/g,',');
+        let pathname=decodeURI(location.pathname).replace(/\.html?/,'');
+        const at=pathname.lastIndexOf('/');
+        pathname=pathname.substr(at+1);
+        config.preload=pathname.replace(/[^\da-z\-]+/g,',');
     }
 
     const {a,b}=addressesFromUrl();

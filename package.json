@@ -7,6 +7,7 @@
     "buildtoolbox": "rollup -c toolbox.config.js",
     "start": "sirv public --no-clear --host --port 5001",
     "dev": "rollup -c -w",
+    "aligner": "rollup -c aligner.config.js -w",
     "toolbox": "rollup -c toolbox.config.js -w",
     "htll": "rollup -c htll.config.js -w",
     "extension": "rollup -c -w --environment CHROME_EXTENSION"
