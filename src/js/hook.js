@@ -1,4 +1,4 @@
-import {parseHook} from 'pitaka/offtext'
+import {parseHook} from 'pitaka/align'
 import {setSelection} from './selection.js';
 
 export const scrollToHook=(ptk,y,hook)=>{

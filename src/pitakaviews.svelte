@@ -6,13 +6,13 @@ export let addresses,side;
 export let hide=false;
 
 import BookViewer from './bookviewer.svelte'
-import PageViewer from './pageviewer.svelte'
+import ChunkViewer from './chunkviewer.svelte'
 import { parseAddress } from 'pitaka/offtext';
 
 setContext('addresses',addresses);
 const getViewer=address=>{
     const addr=parseAddress(address);
-    return addr.loc?PageViewer:BookViewer;
+    return addr.loc?ChunkViewer:BookViewer;
 }
 
 </script>

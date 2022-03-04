@@ -1,5 +1,6 @@
 import {OffTag} from 'pitaka/offtext';
-import {diffCJK,trimPunc,parseHook} from 'pitaka/utils';
+import {diffCJK,trimPunc} from 'pitaka/utils';
+import {parseHook} from 'pitaka/align';
 import {fromSim, toSim } from 'lossless-simplified-chinese';
 export const decoratePage=(ptk,linetext,{backlinks,y,q, hook,linetofind})=>{
     const extra=[];

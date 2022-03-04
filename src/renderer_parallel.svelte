@@ -8,17 +8,17 @@ import { get } from 'svelte/store';
 import Hyperlink from './comps/hyperlink.svelte';
 const vstore=getContext('vstore');
 export let loc;
-export let dy=0;
+export let y=0;
 export let ptk;
 export let side=0;
-export let par;
-export let caption;
-let showing=!!$vstore.parallels[par];
+const paraname=ptk.header.name;
+
+let showing=!!$vstore.parallels[paraname];
 let [y0] = ptk.getPageRange(loc);
 
-let text,y,href='';
+let text,href='';
 async function fetchline(){
-    [y,text]=(await ptk.readLines(y0+dy,1))[0];
+    [y,text]=(await ptk.readLines(y,1))[0];
 };
 
 const getParallelHref=()=>{
@@ -35,7 +35,7 @@ const getParallelHref=()=>{
 getParallelHref();
 const onoff=(bool)=>{
     const {parallels}=$vstore;
-    parallels[par]=bool;
+    parallels[paraname]=bool;
     $vstore.parallels=parallels;
     showing=bool;
 }
@@ -43,9 +43,9 @@ const onoff=(bool)=>{
 {#if showing}
 {#await fetchline()} {/await}
 <svelte:component nesting={1} this={$renderer.default} {ptk} {text} {y} {y0} {loc} lang={ptk.langOf(y)}>
- <span slot="start" class='btnparallel clickable showing' on:click={()=>onoff(false)} >{caption}</span>
+ <span slot="start" class='btnparallel clickable showing' on:click={()=>onoff(false)} >{paraname}</span>
  <Hyperlink {side} {href}/>
 </svelte:component>
 {:else} 
-<span class='btnparallel clickable' on:click={()=>onoff(true)} >{caption}</span>
+<span class='btnparallel clickable' title={ptk.header.title} on:click={()=>onoff(true)} >{paraname}</span>
 {/if}

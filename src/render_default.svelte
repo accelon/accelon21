@@ -2,7 +2,7 @@
 import {tosim,palitrans,labelerOf} from './js/store.js';
 import {decoratePage} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, OffTag, parseOfftextLine} from 'pitaka/offtext'
-import {parseHook} from 'pitaka/utils';
+import {parseHook} from 'pitaka/align';
 import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
 import {offtext2indic} from 'provident-pali'
 import {getTextHook} from './js/selection.js';
@@ -21,7 +21,6 @@ export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
 
 $: langstyle='lang-'+lang+(lang==='pl'?'-'+($palitrans||''):'')
 export let activeline=false;
-export let transition=()=>{};
 export let linetofind='';
 export let nesting=0,text='',id='',side=0,loc='';
 
@@ -121,7 +120,7 @@ const closelabel=()=>{
 }
 
 </script>
-<div class={'linetext '+langstyle} in:transition class:activeline on:click={click}>
+<div class={'linetext '+langstyle}  class:activeline on:click={click}>
     <slot name="start"></slot>
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 

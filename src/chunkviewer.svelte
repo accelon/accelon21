@@ -2,17 +2,17 @@
 import { useBasket } from 'pitaka';
 import { setContext} from 'svelte';
 import { renderer } from './js/store.js';
-import {setLoc,getOppositeActiveOffset, pageFromAddress} from './js/addresses.js'
+import {setLoc,getOppositeActiveOffset, chunkFromAddress} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
-import PageBar from './pagebar.svelte'
+import ChunkBar from './chunkbar.svelte'
 import { writable } from 'svelte/store';
 import { parseAddress } from 'pitaka/offtext';
 import {filterItems} from './js/criteria.js';
 import LineMenu from './linemenu.svelte'
-import Colorhr from './comps/colorhr.svelte';
 export let address='',side=0;
 export let active=false;
-let vscroll,ptk='',basket,loc,hook,dy,y0,y,locattrs,topkey, loaded=false, aligned='', alignedPitaka=[];
+let vscroll,ptk='',basket,loc,hook,dy,y0,y,locattrs,topkey, loaded=false, 
+aligned='', alignedPitaka=[],optionalAlignedPitaka=[];
 
 const vstore=writable({renderer,criteria:{},filterfunc:null,linetofind:'',parallels:{}});
 const viewitems=writable({});
@@ -26,11 +26,12 @@ $: {const res = parseAddress(address) ; if (res) {
     if (ptk) {
         loc=res.loc;
         y=ptk.locY(loc)+res.dy;
-        const page=pageFromAddress(ptk,{loc,dy:res.dy});
+        const page=chunkFromAddress(ptk,{loc,dy:res.dy});
         y0=page.y0;
         locattrs=res.attrs||{};
-        aligned=res.al||'';
-        alignedPitaka=aligned.split(',').map(n=>useBasket(n)).filter(it=>!!it);
+        aligned=(res.al||'').split(',');
+        alignedPitaka=aligned.map(n=>useBasket(n)).filter(it=>!!it);
+        optionalAlignedPitaka= ptk.aligned.filter( it=>!aligned.includes(it));
         $vstore.linetofind=locattrs.ltf||'';
         loaded=false
 
@@ -90,7 +91,7 @@ const scrollToY=(y,force=false)=>{
 $vstore.scrollToY=scrollToY;
 </script>
 <div class="container">
-    <div><PageBar {side} {scrollStart} {ptk}/></div>
+    <div><ChunkBar {side} {scrollStart} {ptk}/></div>
     <VirtualScroll start={-1} bind:this={vscroll} keeps={30}  height="calc(100% - 1.5em)" data={$viewitems} 
         key="key" let:data on:scroll={scroll}>
         {#if data.ptr}
@@ -100,12 +101,12 @@ $vstore.scrollToY=scrollToY;
                 {...data} {y0}  activeline={data.key==y} lang={ptk.langOf(y)}
                 {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
             >
-            {#if data.key==y}<LineMenu {y0} {side} {loc} y={data.y||data.key} {ptk}/>{/if}
-            </svelte:component>
-            
+            {#if data.key==y}<LineMenu {y0} {side} {loc} y={data.y||data.key} {ptk} aligned={optionalAlignedPitaka}/>{/if}
+            </svelte:component>            
             {#each alignedPitaka as aptk}
             <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
-                {...data} {y0} activeline={data.key==y} lang={aptk.langOf(y)} ptk={aptk} {side}>
+                {...data} y0={aptk.alignedY(y0)} activeline={data.key==aptk.alignedY(y)} lang={aptk.langOf(aptk.alignedY(y))} ptk={aptk} {side}>
+                <span slot='start' class='clickable alignedName' title={aptk.header.title}>{aptk.name}</span>
             </svelte:component>
             {/each}
             

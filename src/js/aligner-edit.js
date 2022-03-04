@@ -3,38 +3,43 @@ import { linePN } from "pitaka/offtext";
 
 export const beforeChange=(cm,change)=>{
     let touched=false;
-    const line=cm.getLine(change.from.line);
-    if (change.origin=="setValue") touched=true;
-    else if (change.origin=="+input") {
-        if (change.from.line==change.to.line) {
-            if (change.text.length==2 && change.text[0]==""&&change.from.ch==change.to.ch) {
-                if (!change.from.ch || line[change.from.ch]!=='^') {
-                    const bl=paraBlankLine(cm,change.to.line);
-                    if (bl>change.to.line) {
-                        deleteLine(cm,bl, {line:change.to.line+1,ch:0});
-                        touched=true;                    
+    cm.operation(()=>{
+        const line=cm.getLine(change.from.line);
+        if (change.origin=="setValue") touched=true;
+        else if (change.origin=="+input") {
+            if (change.from.line==change.to.line) {
+                if (change.text.length==2 && change.text[0]==""&&change.from.ch==change.to.ch) {
+                    if (!change.from.ch || line[change.from.ch]!=='^') {
+                        const bl=paraBlankLine(cm,change.to.line);
+                        if (bl>change.to.line) {
+                            deleteLine(cm,bl-1, {line:change.to.line+1,ch:0});
+                            touched=true;                    
+                        }
                     }
+                } else if (change.text[0]=='\n') { //add blank line
+                    touched=true;
+                } else if (change.text[0]==' ') {
+                    goBreakable(cm,change.to);
                 }
-            } else if (change.text[0]=='\n') { //add blank line
+            } else if (change.text.length==1) {
+                if (change.text[0]=='' && change.to.line==change.from.line+1) { //delete a line
                 touched=true;
-            } else if (change.text[0]==' ') {
-                goBreakable(cm,change.to);
-            }
-        } else if (change.text.length==1) {
-          if (change.text[0]=='' && change.to.line==change.from.line+1) { //delete a line
-            touched=true;
-          }
-        } 
-    } else if (change.origin=="+delete"){
-        if (change.text.length==1 &&change.text[0]=="" &&change.from.line+1==change.to.line
-        &&cm.getLine(change.from.line).length==change.from.ch&&change.to.ch==0 ) {
-            const next=nextPN(cm,change.from.line);
-            touched=true; //join line
-            insertBlankLine(cm,next-1, change.from);
-        } 
-    }
+                }
+            } 
+        } else if (change.origin=="+delete"){
+            if (change.text.length==1 &&change.text[0]=="" &&change.from.line+1==change.to.line
+            &&cm.getLine(change.from.line).length==change.from.ch&&change.to.ch==0 ) {
+                const next=nextPN(cm,change.from.line);
+                touched=true; //join line
+                console.log('start')
+                // cm.startOperation();
+                insertBlankLine(cm,next, change.from);
+            } 
+        }
+        if(!touched && change.cancel) change.cancel();
+    })
 
-    if(!touched && change.cancel) change.cancel();
+
 }
 export const updateBlankLineCount=doc=>{
     let count=0;
@@ -66,22 +71,18 @@ export const goBreakable=(cm,cursor)=>{
     });
 }
 export const deleteLine=(cm,line,cursor)=>{
-    setTimeout(()=>{
-        cm.off("beforeChange",beforeChange );
-        cm.doc.setSelection({line:line+2,ch:0},{line:line+1,ch:0})
-        cm.doc.replaceSelection('');
-        cm.on("beforeChange",beforeChange);
-        cm.setCursor(cursor);
-    },1)
+    cm.off("beforeChange",beforeChange );
+    // cm.doc.setSelection({line:line+2,ch:0},{line:line+1,ch:0})
+    cm.doc.replaceReange('',{line:line+2,ch:0},{line:line+1,ch:0});// replaceSelection('');
+    cm.on("beforeChange",beforeChange);
+    cm.setCursor(cursor);
 }
 export const insertBlankLine=(cm,line,cursor)=>{
-    setTimeout(()=>{
-        cm.off("beforeChange",beforeChange);
-        cm.doc.setSelection({line,ch:0},{line,ch:0})
-        cm.doc.replaceSelection('\n');
-        cm.on("beforeChange",beforeChange);
-        cm.setCursor(cursor);
-    })
+    cm.off("beforeChange",beforeChange);
+    // cm.doc.setSelection({line,ch:0},{line,ch:0})
+    cm.doc.replaceSelection('\n',{line,ch:0},{line,ch:0});
+    cm.on("beforeChange",beforeChange);
+    cm.setCursor(cursor);
 }
 
 export const nextPN=(cm,line)=>{

@@ -12,7 +12,7 @@ export const activeoffset=writable([0,0]);
 
 export const userdata=writable({});
 export const selectorShown=writable(false);
-export const pageFromAddress=(ptk,{loc,dy})=>{
+export const chunkFromAddress=(ptk,{loc,dy})=>{
     if (typeof dy!=='number') dy=parseInt(dy)||0;
     const range=ptk.getPageRange(loc);
     const chunk=ptk.chunkOf(range[0]+dy);
@@ -22,7 +22,7 @@ export const pageFromAddress=(ptk,{loc,dy})=>{
     return {y0,dy,linecount:y1-y0};
 }
 export const loadAlignedLines=async (ptk,loc,dy)=>{
-    const page=pageFromAddress(ptk,{loc,dy})
+    const page=chunkFromAddress(ptk,{loc,dy})
     const y0=page.y0;
     if (!y0) return;
     await ptk.prefetchLines(y0,y0+page.linecount);
@@ -36,7 +36,7 @@ export const setLoc=async ({ptk,loc,y0,dy,aligned},store)=>{
     }
     const items=[];
 
-    const page=pageFromAddress(ptk,{loc,dy})
+    const page=chunkFromAddress(ptk,{loc,dy})
     y0=page.y0|| (items.length&&items[0].key)||0;
     dy=page.dy;
 
@@ -46,7 +46,7 @@ export const setLoc=async ({ptk,loc,y0,dy,aligned},store)=>{
     const criteria=get(store).criteria||{};
 
     await ptk.prefetchLines(y0,y0+items.length);
-    const alignedPtk=aligned.split(',').map(n=>n&&useBasket(n)).filter(it=>!!it);
+    const alignedPtk=aligned.map(n=>n&&useBasket(n)).filter(it=>!!it);
     
     for (let i=0;i<alignedPtk.length;i++) {
         await loadAlignedLines(alignedPtk[i],loc,dy);
