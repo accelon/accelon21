@@ -8,7 +8,7 @@ import QueryResult from './queryresult.svelte';
 import QuickPointer from './quickpointer.svelte'
 export let side=0;
 
-$: pitakas=pool.getAll();
+$: pitakas=pool.getAll().filter(it=>it.name!=='pitaka');
 
 $: if (pitakas) for (let i=0;i<pitakas.length;i++) {
     if (!pitakas[i].querystore) pitakas[i].querystore=writable({});

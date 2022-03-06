@@ -31,7 +31,7 @@ $: {const res = parseAddress(address) ; if (res) {
         locattrs=res.attrs||{};
         aligned=(res.al||'').split(',');
         alignedPitaka=aligned.map(n=>useBasket(n)).filter(it=>!!it);
-        optionalAlignedPitaka= ptk.aligned.filter( it=>!aligned.includes(it));
+        optionalAlignedPitaka= (ptk.aligned&&ptk.aligned.filter( it=>!aligned.includes(it)))||[];
         $vstore.linetofind=locattrs.ltf||'';
         if (res.loc!==loc) loaded=false
     }

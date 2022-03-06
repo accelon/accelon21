@@ -5,7 +5,7 @@ import Checkbox from './comps/checkbox.svelte';
 export let ptk;
 export let scrollStart=0;
 import {getContext} from 'svelte'
-const alignedPitaka=ptk.aligned.map(n=>useBasket(n));
+const alignedPitaka=(ptk.aligned && ptk.aligned.map(n=>useBasket(n)))||[];
 const bkstore=getContext('bkstore');
 
 const toggle=(name)=>{

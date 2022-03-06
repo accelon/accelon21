@@ -1,7 +1,6 @@
 import { openBasket, PATHSEP, ADDRSEP} from 'pitaka';
 import { parseAddress } from 'pitaka/offtext';
 import { addresses_a, addresses_b ,updateUrl,newaddrkey} from './addresses';
-import {get } from 'svelte/store'
 const completeAddress=arr=>{
     let prevbasket='';
     for (let i=0;i<arr.length;i++) {
@@ -54,6 +53,7 @@ export const loadaddress=()=>{
     // addrs.push(config.init_a); addrs.push(config.init_b);//load ptk in config
 
     const pitakaNeeded=enumBasketInAddress(addrs);
+    pitakaNeeded.push('pitaka');
     
     if (config.preload) {
         pitakaNeeded.push( ... (config.preload.split(/[,;]/).filter(it=>!!it)) ); 

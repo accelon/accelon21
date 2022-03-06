@@ -72,15 +72,13 @@ export const goBreakable=(cm,cursor)=>{
 }
 export const deleteLine=(cm,line,cursor)=>{
     cm.off("beforeChange",beforeChange );
-    // cm.doc.setSelection({line:line+2,ch:0},{line:line+1,ch:0})
-    cm.doc.replaceReange('',{line:line+2,ch:0},{line:line+1,ch:0});// replaceSelection('');
+    cm.doc.replaceRange('',{line:line+2,ch:0},{line:line+1,ch:0});// 
     cm.on("beforeChange",beforeChange);
     cm.setCursor(cursor);
 }
 export const insertBlankLine=(cm,line,cursor)=>{
     cm.off("beforeChange",beforeChange);
-    // cm.doc.setSelection({line,ch:0},{line,ch:0})
-    cm.doc.replaceSelection('\n',{line,ch:0},{line,ch:0});
+    cm.doc.replaceRange('\n',{line:line,ch:0},{line:line,ch:0});// 
     cm.on("beforeChange",beforeChange);
     cm.setCursor(cursor);
 }

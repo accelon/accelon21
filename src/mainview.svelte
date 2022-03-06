@@ -3,21 +3,30 @@ import SplitPane from './3rdparty/splitpane.svelte';
 import Btn from './comps/button.svelte';
 import Settings from './settings.svelte'
 import {addresses_a,addresses_b} from './js/addresses.js'
-import {panepos,systemsetting} from './js/store.js';
+import {panepos,systemsetting,aligning,tosim,_} from './js/store.js';
 import PitakaViews from './pitakaviews.svelte';
 import SelectionMenu from './selectionmenu.svelte';
 import { debounce,detectOrientation } from 'pitaka/utils';
 let type=detectOrientation();
 
 window.onresize=debounce(()=>type=detectOrientation(),500);
-const togglesystemsetting=()=>{
-	systemsetting.set($systemsetting);
+const togglesystemsetting=()=>systemsetting.set($systemsetting);
+const togglealigning=()=>{
+    aligning.set($aligning);
+    if (!$aligning) $systemsetting=false;
 }
+
 </script>
 <div class="container">
-<div class="systemsetting" ><Btn title="设置 setting" icon="setting" 
-    onclick={togglesystemsetting} store={systemsetting}/>
-</div>
+{#if $aligning}
+    <div class="systemsetting" ><Btn title={_("對齊 setting",$tosim)} icon="align" 
+        onclick={togglealigning} store={aligning}/>
+    </div>
+{:else}
+    <div class="systemsetting" ><Btn title="设置 setting" icon="setting" 
+        onclick={togglesystemsetting} store={systemsetting}/>
+    </div>
+{/if}
 <SelectionMenu/>
 <SplitPane bind:type bind:pos={$panepos} min={15} max={85}>
     <div slot="a">
