@@ -39,9 +39,9 @@ export const setLoc=async ({ptk,loc,y0,dy,aligned},store)=>{
     const page=chunkFromAddress(ptk,{loc,dy})
     y0=page.y0|| (items.length&&items[0].key)||0;
     dy=page.dy;
-
+    const notes=await ptk.getNotes(y0,page.linecount);
     for (let i=y0;i<y0+page.linecount;i++) {
-        items.push({key:i});
+        items.push({key:i,notes:notes[i]});
     }
     const criteria=get(store).criteria||{};
 
@@ -69,14 +69,13 @@ export const setLoc=async ({ptk,loc,y0,dy,aligned},store)=>{
             if (keyeditem[key]) keyeditem[key].backlinks=backlinks[ptkname][key];
         }
     }
-
     items.push({text:'　',key:'end'});//workaround
     /* 
     y0 is the first line of cluster, dy is delta from y0
     loc is the nearest locator
     */
     const out=Object.assign(old,{items,backlinks,ptk,loc,mulu,y0,criteria,usernotes,bookmarks,dy});
-    store.set(out)
+    store.set(out);
 }
 const packAddresses=arr=>{
     let prevbasket='';

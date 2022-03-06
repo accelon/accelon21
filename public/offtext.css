@@ -56,16 +56,24 @@ t.fn[n]:after{
 	margin-top:-1em;
 	vertical-align:top;
 	font-size:30%;
-	font-family: "Tahoma"; 
 }
-/*
-t.fn[n]:hover {border-bottom:double}
-t.fn[n]:hover:after {
-    color:brown;
-    content: attr(n) "↓"; 
-    transition: color 1s;
+t.note:after{
+	content:"⚉";
+    display:inline-block;
+	width:0px;
+	margin-top:-1em;
+	vertical-align:top;
+	font-size:75%;
 }
-*/
+t.note:hover {border-bottom:double}
+t.note:hover:after {
+    white-space:nowrap;
+    color:orange;
+    content: attr(val); 
+    transition: color 2s;
+    font-size:100%;
+}
+
 t.k{}
 t.k:hover {color:var(--highlight)}
 t.pg{

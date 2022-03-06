@@ -11,9 +11,8 @@ import {filterItems} from './js/criteria.js';
 import LineMenu from './linemenu.svelte'
 export let address='',side=0;
 export let active=false;
-let vscroll,ptk='',basket,loc,hook,dy,y0,y,locattrs,topkey, loaded=false, 
+let vscroll,ptk='',basket,loc,hook,dy,y0,y,locattrs,topkey, loaded=false, initial=true,
 aligned='', alignedPitaka=[],optionalAlignedPitaka=[];
-
 const vstore=writable({renderer,criteria:{},filterfunc:null,linetofind:'',parallels:{}});
 const viewitems=writable({});
 setContext('vstore',vstore);
@@ -24,6 +23,7 @@ $: {const res = parseAddress(address) ; if (res) {
 
     ptk = useBasket(basket);
     if (ptk) {
+        initial=loc!==res.loc;
         loc=res.loc;
         y=ptk.locY(loc)+res.dy;
         const page=chunkFromAddress(ptk,{loc,dy:res.dy});
@@ -33,8 +33,7 @@ $: {const res = parseAddress(address) ; if (res) {
         alignedPitaka=aligned.map(n=>useBasket(n)).filter(it=>!!it);
         optionalAlignedPitaka= ptk.aligned.filter( it=>!aligned.includes(it));
         $vstore.linetofind=locattrs.ltf||'';
-        loaded=false
-
+        if (res.loc!==loc) loaded=false
     }
 }}
 $: usernotes=$vstore.usernotes;
@@ -63,6 +62,11 @@ $: if(active&&$viewitems.length) {
 
 $: if ((!loaded && ptk && vscroll) ) { 
     setLoc({ptk,loc,hook,y0,dy,aligned},vstore);
+    if (initial) {
+        setTimeout(()=>{
+            scrollToY(y,true)
+        },250);
+    }
     loaded=true
 }
 

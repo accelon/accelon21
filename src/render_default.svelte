@@ -18,7 +18,7 @@ export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
 export let y=0   //優先權較高
 export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
-
+export let notes=null;
 $: langstyle='lang-'+lang+(lang==='pl'?'-'+($palitrans||''):'')
 export let activeline=false;
 export let linetofind='';
@@ -40,7 +40,6 @@ const transcript=(str,script)=>{
 
 $: onlytext= parseOfftextLine(lineText())[0];
 
-
 const sortExtra=()=>{
     extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
     extra=extra;
@@ -50,7 +49,7 @@ const refreshnote=()=>{
     $usernotes[dy].forEach(addNote);
     sortExtra();
 }
-$: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind});
+$: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind,notes});
 $: ptk && usernotes && $usernotes[dy]  && refreshnote($usernotes[dy]);
 
 const addNote=note=>{
