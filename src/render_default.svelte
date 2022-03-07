@@ -30,7 +30,8 @@ export let bookmarks=null; // this is a store created by addresses.js
 
 let extra=[];
 $: lineText=()=>{
-    return text||(ptk&&ptk.getLine(y||key))||''
+    const s=text||(ptk&&ptk.getLine(y||key))||''
+    return s;
 };
 
 const transcript=(str,script)=>{

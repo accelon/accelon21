@@ -1,6 +1,7 @@
 <script>
 import {get} from 'svelte/store'
 import {editor,editinghandle,blanklinecount} from './js/alignerstore.js'
+import Btn from './comps/button.svelte'
 let savetime='';
 const openfile=async ()=>{
     const [fileHandle]=await showOpenFilePicker();
@@ -31,8 +32,16 @@ const nextgap=()=>{
 }
 
 </script>
-<button on:click={openfile}>open</button>
+<span class='spacing'/>
+<Btn onclick={openfile} icon="openfile"/>
 {#if $editinghandle}
-<button on:click={savefile}>save{savetime}</button>
+<span class='spacing'/>
+<Btn onclick={savefile} icon="save"/>{savetime}
 {/if}
-<button on:click={nextgap}>Gap {$blanklinecount}</button>
+{#if $blanklinecount}
+<span class='spacing'/>
+<Btn onclick={nextgap} icon="crlf" caption={$blanklinecount} />
+{/if}
+<style>
+    .spacing{padding:0.5em}
+</style>

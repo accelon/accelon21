@@ -1,6 +1,7 @@
 <script>
 import Hamburgermenu from './comps/hamburgermenu.svelte';
 import {useBasket} from 'pitaka'
+import {_,tosim} from './js/store.js'
 import Checkbox from './comps/checkbox.svelte';
 export let ptk;
 export let scrollStart=0;
@@ -21,7 +22,7 @@ const toggle=(name)=>{
 <Hamburgermenu {scrollStart}>
     <div slot='aligned'>
         {#each alignedPitaka as ptk}
-        <Checkbox label={ptk.header.title} onClick={oldv=>toggle(ptk.name,oldv)}
+        <Checkbox label={_(ptk.header.title,$tosim)} onClick={oldv=>toggle(ptk.name,oldv)}
                 value={$bkstore.aligned.includes(ptk.name)}/>
         <br/>
         {/each}

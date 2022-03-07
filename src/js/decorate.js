@@ -50,9 +50,11 @@ export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes})=
     }
     if (notes) {
         notes.forEach(note=>{
-            const [pin,val]=note.split('\t');
+            let [pin,val,id]=note.split('\t');
+            id=id||'⚇'
             const x=posPin(linetext,pin);
-            extra.push(new OffTag('note',{val}, 0, x,0))
+            const notetag=ptk.header.notesjson||'f';
+            extra.push(new OffTag(notetag,{val,id}, 0, x,0))
         })
     }
     extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);

@@ -14,6 +14,10 @@ let lines=[];
 async function update(attrs){
     if (opening) return;
     let y=starty; //footnote in this chunk
+    if (attrs.val) {        
+        lines=attrs.val.split('\n').map( (text,key)=> {return {key,text }} ); //convert to scrollview format
+        return;
+    }
     const addr=attrs['@'];
     if (addr) { //other chunk
         [y]=ptk.getPageRange(addr);
@@ -27,7 +31,7 @@ const toggle=()=>{
 }
 </script>
 {#if !opening}
-<span class='clickable footnote'  on:click={ toggle}>{attrs.id}</span>
+<span class='clickable footnote' on:click={ toggle}>{attrs.id}</span>
 {#if showing}
 <Colorhr {nesting}/>
 <svelte:component nesting={nesting+1} this={R} {lines} {ptk}/>
