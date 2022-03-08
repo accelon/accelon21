@@ -1,6 +1,35 @@
-import { blanklinecount } from "./alignerstore";
-import { linePN } from "pitaka/offtext";
+import { alignbkid, alignloc,blanklinecount,aligntop } from "./alignerstore.js";
+import { linePN, makeLocalAddress } from "pitaka/offtext";
+import {get} from "svelte/store"
+import {addresses_a,settab} from "./addresses.js"
+import {parseAddress ,stringifyAddress} from 'pitaka/offtext';
 
+const locOfLine=(cm,line)=>{
+    let nline=line;
+    while (nline>0 && !linePN(cm.getLine(nline))) {
+        nline--;
+    }
+    const pn=linePN(cm.getLine(nline));
+    return makeLocalAddress(get(alignbkid),pn[1], line-nline);
+}
+const syncOpposite=(cm,loc)=>{
+    const addresses=get(addresses_a);
+    if (!addresses.length) return;
+    const addr=parseAddress(addresses[0].address);
+    const newaddr=parseAddress(addr.basket+':'+loc);
+    addr.loc=newaddr.loc;
+    addr.dy=newaddr.dy;
+    const newaddress=stringifyAddress(addr);
+    settab(0,newaddress);
+    const {top}=cm.cursorCoords(cm.getCursor(),'page');
+    aligntop.set(top);
+}
+export const cursorActivity=cm=>{
+    const {line,ch}=cm.getCursor();
+    const loc=locOfLine(cm,line);
+    alignloc.set(loc);
+    syncOpposite(cm,loc);
+}
 export const beforeChange=(cm,change)=>{
     let touched=false;
     cm.operation(()=>{

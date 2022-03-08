@@ -2,10 +2,10 @@
 import { onMount } from 'svelte';
 import AlignerBar from './alignerbar.svelte';
 import {editor} from './js/alignerstore'
-import {testdata,beforeChange,changed, updateBlankLineCount} from './js/aligner-edit.js'
+import {testdata,beforeChange,changed, updateBlankLineCount,cursorActivity} from './js/aligner-edit.js'
 import {decorateOfftag} from './js/aligner-decorate.js'
 import {loadScript} from 'pitaka/utils'
-let cursorword='',ready=false;
+let ready=false;
 
 onMount( async()=>{
     await loadScript("codemirror.js",()=>typeof CodeMirror!=='undefined');
@@ -19,9 +19,10 @@ const initCM=ele=>{
         theme:'ambiance'
     }
     );
-    cm.setSize('50vw','100vh');
+    cm.setSize('100%','95vh');
     cm.on("beforeChange",beforeChange);
     cm.on("change",changed);
+    cm.on("cursorActivity",cursorActivity);
     updateBlankLineCount(cm);
     decorateOfftag(cm);
     $editor=cm;

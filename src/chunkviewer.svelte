@@ -1,7 +1,8 @@
 <script>
 import { useBasket } from 'pitaka';
 import { setContext} from 'svelte';
-import { renderer ,_,tosim} from './js/store.js';
+import { renderer ,_,tosim,aligning} from './js/store.js';
+import { aligntop} from './js/alignerstore.js';
 import {setLoc,getOppositeActiveOffset, chunkFromAddress} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
 import ChunkBar from './chunkbar.svelte'
@@ -20,7 +21,6 @@ setContext('viewitems',viewitems);
 
 $: {const res = parseAddress(address) ; if (res) {
     basket=res.basket; 
-
     ptk = useBasket(basket);
     if (ptk) {
         initial=loc!==res.loc;
@@ -33,7 +33,7 @@ $: {const res = parseAddress(address) ; if (res) {
         alignedPitaka=aligned.map(n=>useBasket(n)).filter(it=>!!it);
         optionalAlignedPitaka= (ptk.aligned&&ptk.aligned.filter( it=>!aligned.includes(it)))||[];
         $vstore.linetofind=locattrs.ltf||'';
-        if (res.loc!==loc) loaded=false
+        if (initial) loaded=false
     }
 }}
 $: usernotes=$vstore.usernotes;
@@ -52,9 +52,13 @@ $: if(active&&$viewitems.length) {
         //line in view port adjust offset
         if (side==1) { //only side from left to right
             const layerY=getOppositeActiveOffset(side);
-            const yoffset=vscroll.getIndexOffset(dy) - vscroll.getOffset();
+            const yoffset=vscroll.getIndexOffset(y-y0) - vscroll.getOffset();
             
             const delta=yoffset - layerY;
+            vscroll.scrollToOffset( vscroll.getOffset() + delta );
+        } else if ($aligning) {
+            const yoffset=vscroll.getIndexOffset(y-y0) - vscroll.getOffset();
+            const delta=yoffset - $aligntop;
             vscroll.scrollToOffset( vscroll.getOffset() + delta );
         }
     },10)
