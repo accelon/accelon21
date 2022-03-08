@@ -14,10 +14,11 @@ import {searchbox,tosim} from './js/store.js';
 import {queryhistory,QUERYSEP} from './js/query.js'
 import {setAddress} from './js/addresses.js'
 import { setContext } from 'svelte';
-export let side=0,visible=false,address='',active=false;
+export let side=0,address='',active=false;
+export let visible=false;
 const headingitems=writable([]);
 const excerptitems=writable([]);
-
+$: visible;
 const bkstore=writable({aligned:[]});
 setContext('bkstore',bkstore);
 

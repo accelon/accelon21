@@ -5,10 +5,9 @@ import {dereferencing} from 'pitaka/offtext';
 import { renderer } from './js/store';
 import Btn from './comps/button.svelte'
 import Colorhr from './comps/colorhr.svelte'
-export let attrs={}
-export let text='';
-export let opening=0;
-export let name='',w=0,ptk=null,i=0,clss='',x=0,y=0,starty=0,nesting=0; //just for hidding the warning
+export let attrs={},text='',opening=0;
+export let name='',w=0,starty=0,ptk=null,i=0,clss='',x=0,y=0,nesting=0; //just for hidding the warning
+$: text,name,w,starty;
 let tptk,transclusion='';
 let showing=null;
 

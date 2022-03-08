@@ -4,10 +4,11 @@ import {fetchHooks} from 'pitaka';
 import {markSelection} from './js/selection.js';
 import { renderer } from './js/store';
 
-export let ptk,i=0,clss,x,y,starty=0,w=0,side=0,name='',attrs={},nesting=0; //just for hidding the warning
-
+export let starty=0,w=0,side=0,name='',nesting=0; //just for hidding the warning
+export let text='',clss='',ptk=null;
+export let attrs={},i=0,x,y;
 export let opening=false;
-export let text='';
+$: starty,w,side,name,text,clss,ptk,nesting;
 let renderer_backlink=null;
 let lines=[];
 const toggle=async ()=>{

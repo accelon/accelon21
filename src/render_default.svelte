@@ -13,6 +13,7 @@ import Bookmark from './bookmark.svelte'
 import {setActiveLine,setActiveOffset} from './js/addresses.js';
 export let q=''; //the quote text
 export let hook='';
+export let master=false;
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
 export let key=0 //缺少 y 的話，以 key 作 y
 export let y0=0   //本章第一行
@@ -22,7 +23,8 @@ export let notes=null;
 $: langstyle='lang-'+lang+(lang==='pl'?'-'+($palitrans||''):'')
 export let activeline=false;
 export let linetofind='';
-export let nesting=0,text='',id='',side=0,loc='';
+export let nesting=0,text='',loc='',side=0,id='';
+$: id;
 
 export let backlinks=[];
 export let usernotes=null; // this is a store created by addresses.js
@@ -133,6 +135,8 @@ close.name 存在，則是該標籤的終點。屬性在 sntp.open
 //--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}  {side}
    on:update={update} on:close={closelabel} {ptk} text={transcript(snpt.text,$palitrans)} starty={y||key} {...snpt.open} />
 {/if}{/each}
+{#if master}
 <Bookmark {bookmarks} {dy} {ptk} {loc}/>
+{/if}
 <slot></slot>
 </div>

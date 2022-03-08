@@ -1,16 +1,13 @@
 <script>
 import {fetchHooks} from 'pitaka';
 import {renderer} from './js/store.js';
-import { createEventDispatcher } from 'svelte'
 import Colorhr from './comps/colorhr.svelte'
-const dispatch = createEventDispatcher()
 
-export let opening;
-export let text='';
-export let nesting=0;
-let R;
-export let ptk,i=0,clss,x,y,w=0,name='',side=0,attrs={}; //just for hidding the warning
-let lines=[];
+export let opening,text='';
+export let nesting=0,attrs={};
+export let ptk=null,i=0,clss='',x=0,y=0,w=0,name='',side=0; //just for hidding the warning
+$: text,ptk,i,clss,x,y,w,name,side;
+let lines=[],R;
 async function update(attrs){
     if (opening) return;
     if (!attrs || !attrs['@']) {

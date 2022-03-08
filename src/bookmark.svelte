@@ -2,11 +2,11 @@
 import Icons from './comps/icons.js';
 import {saveBookmarks} from './js/bookmarks';
 export let bookmarks=null; // this is a store created by addresses.js
-export let dy=0;
-export let loc='';
+export let dy=0,loc='',ptk=null,y0=0;
 export let x=0,y=0,clss='';
-export let ptk=null;
+
 let editing=false,timer; 
+$: y0,x,y,clss;
 const toggleBookmark=evt=>{
     let bm=$bookmarks[dy];
 

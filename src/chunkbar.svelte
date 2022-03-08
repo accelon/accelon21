@@ -40,5 +40,4 @@ $: loc= $vstore.loc;
         height:1.5rem;
         background:var(--panel-background)
     }
-    .showing{fill:var(--highlight)}
 </style>

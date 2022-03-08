@@ -3,17 +3,11 @@ import {tosim,cursor,renderer} from './js/store.js';
 import {setLoc} from './js/addresses.js'
 import {getTextHook} from './js/selection.js';
 import { getContext, onMount } from 'svelte';
-export let loc=''
-export let key=0
-export let nth=0;
-export let idx='';
-export let from='';
-export let to='';
-export let entry='';
-export let attrs=[];
-export let text='';
-export let ptk=null;
+export let loc='', key=0, nth=0,idx=''
+export let from='',to=''
+export let attrs=[], text='' ,entry='',ptk=null;
 const viewstore=getContext('viewstore');
+$: nth,text;
 export let show=false;
 let items=[];
 onMount(async ()=>{

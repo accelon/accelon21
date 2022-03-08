@@ -1,11 +1,9 @@
 <script>
 import {_,tosim, renderer} from './js/store.js';
 import HumanAddr from './comps/humanaddr.svelte'
-export let key=0;
-export let y=0;
-export let ptk=null;
-export let loading=false;
-export let score=0,ncl=0;
+export let key=0,y=0,loading=false;
+export let score=0,ncl=0,ptk=null;
+$: score,ncl,ptk;
 </script>
 <div>
 <span class='excerptheader'>{key+1}.<span class='bookid'>{ptk.chunkOf(y).id}</span> <HumanAddr {ptk} locOnly={true} address={ptk.locOf(y,true)}/></span>

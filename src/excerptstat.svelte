@@ -3,9 +3,9 @@ import {writable } from "svelte/store";
 import VirtualScroll from './3rdparty/virtualscroll';
 import {_,tosim} from './js/store.js';
 export let excerpts=[];
-export let ptk;
-export let side=0;
+export let ptk, side=0;
 export let filterheadings={};
+$: side;
 let showing=true;
 let stats=writable([]);
 

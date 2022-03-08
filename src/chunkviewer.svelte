@@ -1,7 +1,7 @@
 <script>
 import { useBasket } from 'pitaka';
 import { setContext} from 'svelte';
-import { renderer } from './js/store.js';
+import { renderer ,_,tosim} from './js/store.js';
 import {setLoc,getOppositeActiveOffset, chunkFromAddress} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
 import ChunkBar from './chunkbar.svelte'
@@ -102,7 +102,7 @@ $vstore.scrollToY=scrollToY;
         <svelte:component this={$renderer._toc} {ptk} {...data}/>
         {:else}
             <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
-                {...data} {y0}  activeline={data.key==y} lang={ptk.langOf(y)}
+                master=true {...data} {y0}  activeline={data.key==y} lang={ptk.langOf(y)}
                 {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
             >
             {#if data.key==y}<LineMenu {y0} {side} {loc} y={data.y||data.key} {ptk} aligned={optionalAlignedPitaka}/>{/if}
@@ -110,7 +110,7 @@ $vstore.scrollToY=scrollToY;
             {#each alignedPitaka as aptk}
             <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
                 key={data.key}  y0={aptk.alignedY(y0)} activeline={data.key==aptk.alignedY(y)} lang={aptk.langOf(aptk.alignedY(y))} ptk={aptk} {side}>
-                <span slot='start' class='clickable alignedName' title={aptk.header.title}>{aptk.name}</span>
+                <span slot='start' class='clickable alignedName' title={_(aptk.header.title,$tosim)}>{aptk.name}</span>
             </svelte:component>
             {/each}            
         {/if}

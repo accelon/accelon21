@@ -1,14 +1,15 @@
 <script>
 import {renderer} from './js/store.js';
 export let opening;
-export let closing=false;
-export let text='';
+export let closing=false,text='';
 export let nesting=0;
 export let starty=0;
+$: closing,text;
 const R=$renderer._lines;
 let showing=false;
 import Colorhr from './comps/colorhr.svelte'
-export let ptk,i=0,clss='',x=0,y=0,w=0,name='',side=0,attrs={}; //just for hidding the warning
+export let ptk=null,i=0,clss='',x=0,y=0,w=0,name='',side=0,attrs={}; //just for hidding the warning
+$: i,clss,x,y,w,name,side;
 let color='hsl('+((nesting+3)*60) +' ,50%,30%)';
 let lines=[];
 async function update(attrs){

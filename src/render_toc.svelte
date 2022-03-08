@@ -15,6 +15,7 @@ export let side=0;
 export let keywords=[];
 export let childcount=0;
 let value=childcount;
+$:key;
 const vstore=getContext('vstore');
 
 $: nchild=ptk.getNChild(ptr,value-1) ;

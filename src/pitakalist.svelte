@@ -28,13 +28,12 @@ let isvalid={};
     {_(ptk.header.title,$tosim)}</span>
     <QueryResult items={getItems(ptk,$activetofind,$runquerycount)} />
     <div class="details">
-    <QuickPointer bind:isvalid {ptk} {side}/>
     {#if !isvalid[ptk.name]}
         <span class="labeltext" label={_(ptk.chunkCount()?'冊':'條',$tosim)}>{ptk.contentCount()}</span>
         {#if ptk.chunkCount()}<span class="labeltext" label={_('標題',$tosim)}>{ptk.chunkCount()}</span>{/if}
         <span class="labeltext" label='文段'>{ptk.header.lastTextLine}</span>
         <span class="labeltext" label='建立'>{ptk.header.buildtime.replace(/T.+$/,'')}</span>
-        {#if ptk.header.description}<span class="labeltext" label={_('說明',$tosim)}>{_(ptk.header.description,$tosim)}</span>{/if}
+        {#if ptk.header.description}<br/><span class="labeltext" label={_('說明',$tosim)}>{_(ptk.header.description,$tosim)}</span>{/if}
     {/if}
     <span class='separator'></span>
     </div>

@@ -2,14 +2,12 @@
 import { getContext} from 'svelte';
 import {slide} from 'svelte/transition';
 import { get} from 'svelte/store';
-export let text='';
-export let side=0;
-export let loc='';
-export let from=0,to=0;
-let _from=from,_to=to;
-export let key,renderer,y0=0,usernotes,linetofind,bookmarks;
-export let ptk=null;
+export let text='',side=0,loc='',ptk=null;
+export let from=0,to=0,y0=0;
+export let key=0,renderer=null,usernotes=null,linetofind='',bookmarks=null;
+$:text,side,loc,key,renderer,usernotes,linetofind,bookmarks;
 
+let _from=from,_to=to;
 const viewitems=getContext('viewitems');
 
 const moreupper=()=>{
