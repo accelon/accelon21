@@ -20,7 +20,6 @@ $: loc= $vstore.loc;
 </script>
 <div class="controlbar">
     {#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
-
     <span class='closetabbutton' on:click={()=>closetab(addresses)}>
         {$addresses.length}
     </span>

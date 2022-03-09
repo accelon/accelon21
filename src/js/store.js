@@ -4,8 +4,8 @@ import { toSim } from 'lossless-simplified-chinese';
 import { offtext2indic } from 'provident-pali';
 export const tosim=writable(settings.tosim);
 export const palitrans=writable(settings.palitrans);
-export const systemsetting=writable(true);
-export const aligning=writable(true);
+export const systemsetting=writable(false);
+export const aligning=writable(false);
 export const cursor=writable({});
 export const panepos=writable(settings.panepos);
 

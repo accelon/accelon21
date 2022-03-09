@@ -5,9 +5,9 @@ import {renderer} from './js/store.js'
 
 const dispatch=createEventDispatcher();
 
-export let attrs={};
-export let opening=false;
-export const text='',name='',w=0,ptk=null,i=0,clss='',x=0,y=0,starty=0,nesting=0; //just for hidding the warning
+export let attrs={}, opening=false;
+export let text='',name='',w=0,ptk=null,i=0,clss='',x=0,y=0,starty=0,nesting=0; //just for hidding the warning
+$:text,name,w,ptk,i,clss,x,y,starty,nesting;
 let editing=false;
 let deletable=false;
 let input;

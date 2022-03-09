@@ -123,11 +123,23 @@ export const setAddress=(addresses_side=addresses_b,address)=>{
 }
 export const isParallel=(address1,address2)=>{
     const addr1=parseAddress(address1);
+    const addr2=parseAddress(address2);
+    const ptk1=useBasket(addr1.basket);
+    const ptk2=useBasket(addr2.basket);
+    if (!ptk1 || !ptk2) return false;
+    if (!ptk1.aligned.includes(ptk2.header.name)) return;
+
+    const ck1=ptk1.chunkOf( ptk1.locY(addr1.loc) );
+    const ck2=ptk2.chunkOf( ptk2.locY(addr2.loc) );
+    return ck1.id==ck2.id;
+
+    /*
     const ptk=useBasket(addr1.basket);
     const [y]=ptk.getPageRange(addr1.loc);
     const parallels=ptk.getParallelLinks(y);
     
     return parallels.filter( it=>address2.startsWith(it.address) ).length>0;
+    */
 }
 export const setActiveOffset=(addresses_side=addresses_b,offset=0)=>{
     let addresses=addresses_side;
@@ -174,8 +186,9 @@ export const setActiveLine=(ptk,addresses_side=addresses_b,newy=0,y0=0)=>{
         const oaddrs=get(getOppositeAddresses(addresses));
         if ( oaddrs.length&& isParallel(addrs[0].address, oaddrs[0].address) ) {
             const optr2=parseAddress(oaddrs[0].address);
-            optr2.dy=newdy;
-            setAddress(getOppositeAddresses(addresses),serializePointer(optr2));
+            optr2.dy=dy;
+            optr2.loc=ptr.loc;
+            setAddress(getOppositeAddresses(addresses),stringifyAddress(optr2));
         }
     }
 }

@@ -2,7 +2,7 @@
 import { onMount } from 'svelte';
 import AlignerBar from './alignerbar.svelte';
 import {editor} from './js/alignerstore'
-import {testdata,beforeChange,changed, updateBlankLineCount,cursorActivity} from './js/aligner-edit.js'
+import {AlignInstruction,beforeChange,changed, updateBlankLineCount,cursorActivity} from './js/aligner-edit.js'
 import {decorateOfftag} from './js/aligner-decorate.js'
 import {loadScript} from 'pitaka/utils'
 let ready=false;
@@ -15,7 +15,7 @@ const initCM=ele=>{
     const cm = CodeMirror(ele, {
         lineNumbers:true,
         lineWrapping:true,
-        value:testdata,
+        value:AlignInstruction,
         theme:'ambiance'
     }
     );
