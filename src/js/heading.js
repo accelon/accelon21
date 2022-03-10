@@ -33,7 +33,7 @@ const chunkitemsById=(ptk,cl,idarr)=>{
             const keywords=keynames.map(k=> [k,cl.keywords[k][i]||0 ] ).filter(it=>it[1]> -1);
             idmap[id]=i;
             const y0=cl.linepos[i];
-            const text= (cl.names[i].trim()) ?cl.names[i]: ptk.headingOf(y0)[0];
+            const text= (cl.names[i].trim()) ?cl.names[i]: ptk.headingOf(y0).text;
             if (py==y0) items.pop();//use the later item with in same line
             items.push({key:i, y0,id,text, keywords });
             py=y0;
@@ -76,7 +76,7 @@ export const buildHeadingList=(addr,scoredLine, chunkitems,excerptitems)=>{
     const {idmap,items}=chunkitemsById(ptk,cl,nchunks);
     nchunks=idmap;
     chunkitems.set(items);
-    
+
     if (get(chunkitems).length == 0) {
         excerptitems.set([]);    
     } else if (get(chunkitems).length===cl.names.length) { //all books

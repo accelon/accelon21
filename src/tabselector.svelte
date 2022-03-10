@@ -1,39 +1,30 @@
 <script>
-import {selectorShown,getOppositeAddresses, newaddrkey} from './js/addresses.js'
-import { getContext } from 'svelte';
-import { get } from 'svelte/store';
+import {getContext} from 'svelte'
+import {closetab,selectorShown} from './js/addresses.js'
+import TabList from './tablist.svelte'
 export let side=0;
-import HumanAddr from './comps/humanaddr.svelte'
 const addresses=getContext('addresses');
+$: closetabbutton = $addresses.length<2;
+const onclick=()=>{
+    if (closetabbutton) {
+        closetab(addresses);
+    } else {
+        $selectorShown=!$selectorShown
+    }
+}
 
-const moveTop=idx=>{
-    if (idx<1)return;
-    const addrs=$addresses;
-    const top=addrs.splice(idx,1)[0];
-    addrs.unshift(top);
-    addresses.set(addrs);
-}
-const copyOpposite=evt=>{
-    const opposite=getOppositeAddresses(addresses);
-    const addrs=$addresses;
-    const newopposite=get(opposite)
-    if (newopposite[0].address!==addrs[0].address) {
-        newopposite.unshift({key:newaddrkey(), addr:addrs[0].address});
-        opposite.set(newopposite);
-    } else selectorShown.set(false)
-}
 </script>
-<span class="pitaka_tocbartitle">
-<HumanAddr address={$addresses[0].address} onclick={()=>$selectorShown=!$selectorShown}/>
-</span>
-{#if $selectorShown}
-<div class="tabselector">
-    {#each $addresses as {key,address},idx (key)}
-    {#if idx===0} 
-        <div><HumanAddr address={address} showjuan={true} onclick={copyOpposite} caption={side===0?'⭆':'⭅'}/></div>
-    {:else}
-    <div><HumanAddr address={address} showjuan={true} onclick={()=>moveTop(idx)}/></div>
+<span class="clickable tabcount" class:closetabbutton on:click={onclick}>
+    {$addresses.length}
+    {#if $selectorShown}
+    <TabList {side}/>
     {/if}
-    {/each}
-</div>
-{/if}
+</span>
+<style>
+    .tabcount {
+        padding-left:0.5em;
+        padding-right:0.5em;
+    }
+    .closetabbutton {padding-left:8px;padding-right:8px;cursor:pointer}
+    .closetabbutton:hover:before {color:red;content:'✖';display:inline-block;width:0px} 
+</style>

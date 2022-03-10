@@ -20,7 +20,7 @@ body {
 	--panel-background: rgba(22,22,22,0.9);
 	--quotetext: limegreen;
 	--splitter: #131313;
-	--menubackground: rgba(92, 76, 2, 0.6);
+	--menubackground: rgba(43, 40, 29, 0.9);
 	--collapsebackground: rgba(92, 76, 2, 0.6);
 	--marker1 :rgb(92, 99, 0);
 	--marker2 :rgb(0, 95, 139);
@@ -134,9 +134,7 @@ button:focus {	border-color: #666;}
 
 @keyframes blink {0% { opacity: 1}25% {opacity: 0.7}50% {opacity: 0.5}75% {opacity: 0.7}100%{opacity: 1}}
 .blink {animation: blink 1.2s linear 0s infinite;}
-.closetabbutton{padding-left:8px;padding-right:8px;cursor:pointer}
-/* /* .closetabbutton:after {content:'✕'} */
-.closetabbutton:hover:before {color:red;content:'✖';display:inline-block;width:0px} 
+
 
 .startbutton {margin-top:2em;font-size:150%;cursor:pointer;border-radius:
 	 1em;border:3px goldenrod solid;padding-left:10px;padding-right:10px}
@@ -156,7 +154,7 @@ button:focus {	border-color: #666;}
 
 div.hr {height: 1px;}
 
-.tabselector {margin-left:1.5em;padding-left:4px;position:absolute;background:var(--menubackground);
+.tabselector {margin-left:2em;padding-left:4px;position:absolute;background:var(--menubackground);
 	box-shadow: 1 5 10px ;min-height:5em;min-width:10em;max-height: 15em;overflow-y:scroll}  
 
 .linetext {padding-left:4px;padding-top:0.5em;line-height:1.8;padding-right:4px}
@@ -205,3 +203,5 @@ div.hr {height: 1px;}
 
 .cm-offtag {background:#3f3f3f;color:wheat}
 .alignedName {border-radius:0.25em; border:1px #aaa dotted;color:yellowgreen}
+
+div.inlineblock {display:inline-block}

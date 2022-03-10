@@ -3,7 +3,7 @@ import { useBasket } from 'pitaka';
 import { setContext} from 'svelte';
 import { renderer ,_,tosim,aligning} from './js/store.js';
 import { aligntop} from './js/alignerstore.js';
-import {setLoc,getOppositeActiveOffset, chunkFromAddress} from './js/addresses.js'
+import {setLoc,getOppositeActiveOffset, chunkFromAddress, isParallel, getOppositeAddresses} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
 import ChunkBar from './chunkbar.svelte'
 import { writable } from 'svelte/store';
@@ -44,6 +44,11 @@ $: if ($viewitems[0] && topkey !== $viewitems[0].key) { //initial scroll
     vscroll.scrollToOffset(0) ;
     topkey=$viewitems[0].key;
 }
+const vsSyncronize=(dis)=>{
+    const yoffset=vscroll.getIndexOffset(y-y0) - vscroll.getOffset();
+    const delta=yoffset - dis;
+    vscroll.scrollToOffset( vscroll.getOffset() + delta );
+}
 $: if(active&&$viewitems.length) {
     setTimeout(()=>{
         if (vscroll.getIndexOffset(dy) > vscroll.getOffset()+vscroll.getClientSize()){
@@ -51,15 +56,12 @@ $: if(active&&$viewitems.length) {
         }
         //line in view port adjust offset
         if (side==1) { //only side from left to right
-            const layerY=getOppositeActiveOffset(side);
-            const yoffset=vscroll.getIndexOffset(y-y0) - vscroll.getOffset();
-            
-            const delta=yoffset - layerY;
-            vscroll.scrollToOffset( vscroll.getOffset() + delta );
+            if (isParallel( getOppositeAddress(), address)) {
+                const layerY=getOppositeActiveOffset(side);
+                vsSyncronize(vscroll,layerY);
+            }
         } else if ($aligning) {
-            const yoffset=vscroll.getIndexOffset(y-y0) - vscroll.getOffset();
-            const delta=yoffset - $aligntop;
-            vscroll.scrollToOffset( vscroll.getOffset() + delta );
+            vsSyncronize(vscroll,$aligntop);
         }
     },10)
 }

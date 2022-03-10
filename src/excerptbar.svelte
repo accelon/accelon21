@@ -4,21 +4,17 @@ import {showFrontPage} from './js/store.js';
 import Btn from './comps/button.svelte';
 import TabSelector from './tabselector.svelte';
 import ExcerptStat from './excerptstat.svelte';
-import {closetab} from './js/addresses';
+import {selectorShown} from './js/addresses';
 export let ptk;
 export let side=0;
 export let excerpts=[];
 export let filterheadings={};
 export let showheading;
 
-const addresses=getContext('addresses');
 </script>
 <div class="controlbar">
     {#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
-    <span class='closetabbutton' on:click={()=>closetab(addresses)}>
-        {$addresses.length}
-    </span>
-    <TabSelector/>
+    <TabSelector {side}/>
     <slot></slot>
     {#if ptk && excerpts.length && !showheading}
     <ExcerptStat {ptk} {side} {excerpts} bind:filterheadings />

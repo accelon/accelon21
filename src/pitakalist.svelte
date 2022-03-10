@@ -19,13 +19,17 @@ const getItems=(ptk,tofind,rc)=>{
 const visit=homepage=>{
     window.open(homepage||'https://accelon.github.io','_new');
 }
+const getAlignment=ptk=>{
+    return (ptk.header.alignment.includes(ptk.header.name)?'':ptk.header.alignment)
+}
 let isvalid={};
 </script>
 {#each pitakas as ptk}
 <div class="pitaka">
     <span class="clickable name" on:click={()=>visit(ptk.header.homepage)}>{ptk.name}</span>
     <span class="title" on:click={evt=>settab(side,ptk.name+NAMESPACESEP)}>
-    {_(ptk.header.title,$tosim)}</span>
+        {_(ptk.header.title,$tosim)}</span>
+        {getAlignment(ptk)}
     <QueryResult items={getItems(ptk,$activetofind,$runquerycount)} />
     <div class="details">
     {#if !isvalid[ptk.name]}

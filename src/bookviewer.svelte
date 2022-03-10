@@ -88,7 +88,7 @@ $: filterExcerptitems = filterBy($excerptitems, filterheadings );
 <div class="container">
 {#if ptk}
     <ExcerptBar {showheading} {side} {ptk} excerpts={$excerptitems} bind:filterheadings>
-    <svelte:component this={HeadingCount} count={$headingitems.length} bind:showheading/>
+    <HeadingCount count={$headingitems.length} bind:showheading/>
     
     <span class:displaynone={!showheading}>
     <svelte:component {onKeyword} this={$searchbox[ptk.format]||$searchbox.toc} {ptk} bind:keyvalue bind:keylabel/>

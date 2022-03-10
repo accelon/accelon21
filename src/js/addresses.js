@@ -129,8 +129,8 @@ export const isParallel=(address1,address2)=>{
     if (!ptk1 || !ptk2) return false;
     if (!ptk1.aligned.includes(ptk2.header.name)) return;
 
-    const ck1=ptk1.chunkOf( ptk1.locY(addr1.loc) );
-    const ck2=ptk2.chunkOf( ptk2.locY(addr2.loc) );
+    const ck1=ptk1.chunkOf(addr1.loc );
+    const ck2=ptk2.chunkOf(addr2.loc );
     return ck1.id==ck2.id;
 
     /*
@@ -158,6 +158,14 @@ export const getOppositeActiveOffset=(addresses_side=addresses_b,offset=0)=>{
     }
     const side=getSide(getOppositeAddresses(addresses));
     return get(activeoffset)[side];
+}
+export const getOppositeAddress=(addresses_side=addresses_b)=>{
+    let addresses=addresses_side;
+    if (typeof addresses_side=='number') {
+        addresses=addresses_side==0?addresses_a:addresses_b;
+    }
+    const addrs=getOppositeAddresses(addresses)
+    if (addrs.length) return addrs[0];
 }
 export const setActiveLine=(ptk,addresses_side=addresses_b,newy=0,y0=0)=>{
     let addresses=addresses_side;
@@ -222,11 +230,39 @@ export const getActiveline=(addresses=addresses_b)=>{
     const ptr=parseAddress(get(addresses)[0]);
     return ptr.dy + ptr.y;
 }
-export const closetab=addresses=>{
+export const moveTop=(addresses,idx)=>{
+    if (idx<1)return;
     const addrs=get(addresses);
-    if (addrs.length) addrs.shift();
+    const top=addrs.splice(idx,1)[0];
+    addrs.unshift(top);
+    addresses.set(addrs);
+}
+const findBasketHomepage=(addresses,basket)=>{
+    const addrs=get(addresses);
+    for (let i=0;i<addrs.length;i++) {
+        const ptr=parseAddress(addrs[i].address);
+        if (ptr.basket==basket && !ptr.loc) {
+            return i;
+        }
+    }
+    return -1;
+}
+export const closetab=(addresses,gohome=false)=>{
+    const addrs=get(addresses);
+    let basket='';
     if (!addrs.length) {
         selectorShown.set(false); //frontpage cannot show tabselector
+    } else {
+        basket = parseAddress(addrs[0].address).basket;
+        addrs.shift();
+    }
+    if (gohome) {
+        const idx=findBasketHomepage(addresses,basket);
+        if (idx==-1) { //create a new basket homepage
+            addrs.unshift({key:newaddrkey(),address:stringifyAddress({basket,loc:''})})
+        } else {
+            moveTop(addresses,idx);
+        }
     }
     addresses.set(addrs);
 }
