@@ -202,6 +202,6 @@ div.hr {height: 1px;}
 .lang-en {font-family: Georgia;}
 
 .cm-offtag {background:#3f3f3f;color:wheat}
-.alignedName {border-radius:0.25em; border:1px #aaa dotted;color:yellowgreen}
+.alignedName {border-radius:0.25em; border:1px #aaa dotted;}
 
 div.inlineblock {display:inline-block}

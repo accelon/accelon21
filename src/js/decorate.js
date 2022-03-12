@@ -60,3 +60,5 @@ export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes})=
     extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);
     return extra;
 }
+
+export const getSeqColor=cnt=>'hsl('+((cnt+2)*60) +' ,50%,50%)'

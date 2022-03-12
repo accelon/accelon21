@@ -130,7 +130,7 @@ open.name 存在則是此標籤的起點 為避免多餘的空格，前後labele
 //--><svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting} {side}
     on:update={update} on:close={closelabel} {ptk} text={transcript(snpt.text,$palitrans)} starty={y||key} {...snpt.open} />{/if}<!-- 
 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 
-//--><span >{@html composeSnippet(snpt,y||key,$tosim,lang==='pl'&&$palitrans)}</span>{#if labelerOf(snpt.close.name)}<!-- 
+//--><span >{@html composeSnippet(snpt,y||key,$tosim,lang==='pl'&&$palitrans)}</span>{#if labelerOf(snpt.close&&snpt.close.name)}<!-- 
 close.name 存在，則是該標籤的終點。屬性在 sntp.open
 //--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}  {side}
    on:update={update} on:close={closelabel} {ptk} text={transcript(snpt.text,$palitrans)} starty={y||key} {...snpt.open} />

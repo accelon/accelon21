@@ -2,6 +2,7 @@
 import { DEFAULT_LANGUAGE, useBasket} from 'pitaka';
 import VirtualScroll from './3rdparty/virtualscroll'
 import Keywords from './comps/keywords.svelte';
+import {getSeqColor} from './js/decorate.js'
 import {_,tosim, palitrans} from './js/store.js'
 import { settab } from './js/addresses';
 import { parseOfftextLine,parseAddress ,stringifyAddress } from 'pitaka/offtext';
@@ -27,7 +28,7 @@ const getTitle=(heading,tosim,pltrans)=>{
     return _(fullname?text.replace(/\|.+/,''):text.replace(/.+\|/,''),tosim,pltrans);
 }
 
-const getColor=cnt=>'hsl('+((cnt+2)*60) +' ,50%,50%)'
+
 
 $: if(vscroll&&$items.length) { vscroll.scrollToOffset(0) } //scrolltotop when data is updated
 
@@ -57,7 +58,7 @@ keeps={50} data={$items} key="key" height="calc(100% - 1.5em)" let:data >
 
     <!-- 其他語言的標題 ，在 headingMenu 選擇 //-->
     {#each alignedPitaka as p,idx}
-    <div on:click={()=>goitem(data.y0)} style={"color:"+getColor(idx)} class={"tocitem "+getLangstyle(p.header.lang,$palitrans)}>
+    <div on:click={()=>goitem(data.y0)} style={"color:"+getSeqColor(idx)} class={"tocitem "+getLangstyle(p.header.lang,$palitrans)}>
     {getTitle(p.headingOf( ptk.locOf(data.y0,true)).text,$tosim,p.header.lang==='pl'&&$palitrans )}</div>
     {/each}
 

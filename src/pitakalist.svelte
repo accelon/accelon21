@@ -29,7 +29,6 @@ let isvalid={};
     <span class="clickable name" on:click={()=>visit(ptk.header.homepage)}>{ptk.name}</span>
     <span class="title" on:click={evt=>settab(side,ptk.name+NAMESPACESEP)}>
         {_(ptk.header.title,$tosim)}</span>
-        {getAlignment(ptk)}
     <QueryResult items={getItems(ptk,$activetofind,$runquerycount)} />
     <div class="details">
     {#if !isvalid[ptk.name]}
