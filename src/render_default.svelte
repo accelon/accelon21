@@ -1,6 +1,6 @@
 <script>
 import {tosim,palitrans,labelerOf} from './js/store.js';
-import {decoratePage} from './js/decorate.js';
+import {decoratePage,getSeqColor} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, OffTag, parseOfftextLine} from 'pitaka/offtext'
 import {parseHook} from 'pitaka/align';
 import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
@@ -25,7 +25,7 @@ export let activeline=false;
 export let linetofind='';
 export let nesting=0,text='',loc='',side=0,id='';
 $: id;
-
+export let activelinecolor=0;
 export let backlinks=[];
 export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
@@ -122,7 +122,7 @@ const closelabel=()=>{
 }
 
 </script>
-<div class={'linetext '+langstyle}  class:activeline on:click={click}>
+<div class={'linetext '+langstyle}  class:activeline style={"border-color:"+getSeqColor(activelinecolor)} on:click={click}>
     <slot name="start"></slot>
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 

@@ -4,7 +4,7 @@ import { setContext} from 'svelte';
 import { renderer ,_,tosim,aligning} from './js/store.js';
 import { aligntop} from './js/alignerstore.js';
 import {getSeqColor} from './js/decorate.js'
-import {setLoc,getOppositeActiveOffset, chunkFromAddress, isParallel, getOppositeAddresses} from './js/addresses.js'
+import {setLoc,getOppositeActiveOffset, getOppositeAddress,chunkFromAddress, isParallel} from './js/addresses.js'
 import VirtualScroll from './3rdparty/virtualscroll'
 import ChunkBar from './chunkbar.svelte'
 import { writable } from 'svelte/store';
@@ -115,8 +115,11 @@ $vstore.scrollToY=scrollToY;
             </svelte:component>            
             {#each alignedPitaka as aptk,idx}
             <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
-                key={data.key}  y0={aptk.alignedY(y0)} activeline={data.key==aptk.alignedY(y)} lang={aptk.langOf(aptk.alignedY(y))} ptk={aptk} {side}>
-                <span slot='start' class='clickable alignedName' style={"color:"+getSeqColor(idx)} title={_(aptk.header.title,$tosim)}>{aptk.name}</span>
+                key={data.key}  y0={aptk.alignedY(y0)} 
+                activeline={data.key==aptk.alignedY(y) } 
+                activelinecolor={data.key==aptk.alignedY(y) && idx+1}
+                lang={aptk.langOf(aptk.alignedY(y))} ptk={aptk} {side}>
+                <span slot='start' class='clickable alignedName' style={"color:"+getSeqColor(idx+1)} title={_(aptk.header.title,$tosim)}>{aptk.name}</span>
             </svelte:component>
             {/each}            
         {/if}

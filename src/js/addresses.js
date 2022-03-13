@@ -124,6 +124,7 @@ export const setAddress=(addresses_side=addresses_b,address)=>{
 export const isParallel=(address1,address2)=>{
     const addr1=parseAddress(address1);
     const addr2=parseAddress(address2);
+    if (!addr1||!addr2) return false;
     const ptk1=useBasket(addr1.basket);
     const ptk2=useBasket(addr2.basket);
     if (!ptk1 || !ptk2) return false;

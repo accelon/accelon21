@@ -61,4 +61,4 @@ export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes})=
     return extra;
 }
 
-export const getSeqColor=cnt=>'hsl('+((cnt+2)*60) +' ,50%,50%)'
+export const getSeqColor=cnt=>cnt?'hsl('+((cnt+1)*60) +' ,50%,50%)':'silver';

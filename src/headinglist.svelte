@@ -58,7 +58,7 @@ keeps={50} data={$items} key="key" height="calc(100% - 1.5em)" let:data >
 
     <!-- 其他語言的標題 ，在 headingMenu 選擇 //-->
     {#each alignedPitaka as p,idx}
-    <div on:click={()=>goitem(data.y0)} style={"color:"+getSeqColor(idx)} class={"tocitem "+getLangstyle(p.header.lang,$palitrans)}>
+    <div on:click={()=>goitem(data.y0)} style={"color:"+getSeqColor(idx+1)} class={"tocitem "+getLangstyle(p.header.lang,$palitrans)}>
     {getTitle(p.headingOf( ptk.locOf(data.y0,true)).text,$tosim,p.header.lang==='pl'&&$palitrans )}</div>
     {/each}
 
