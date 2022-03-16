@@ -23,7 +23,7 @@ const syncOpposite=(cm,loc)=>{
         const newaddress=stringifyAddress(addr);
         settab(0,newaddress);
         const {top}=cm.cursorCoords(cm.getCursor(),'page');
-        aligntop.set(top);    
+        aligntop.set(top);
     }
 }
 export const cursorActivity=cm=>{
@@ -45,6 +45,11 @@ export const beforeChange=(cm,change)=>{
                         if (bl>change.to.line) {
                             deleteLine(cm,bl-1, {line:change.to.line+1,ch:0});
                             touched=true;                    
+                        } else if (bl>0) {
+                            touched=true;
+                            setTimeout(()=>{
+                                deleteLine(cm,bl-1, {line:change.to.line,ch:0});
+                            })
                         }
                     }
                 } else if (change.text[0]=='\n') { //add blank line
@@ -79,6 +84,11 @@ export const updateBlankLineCount=doc=>{
 }
 export const paraBlankLine=(cm,line)=>{
     for (let i=line+1;i<cm.lineCount();i++) {
+        if (!cm.getLine(i)) return i;
+        if (linePN(cm.getLine(i))) break;
+    }
+    //try reverse
+    for (let i=line-1;i>0;i--) {
         if (!cm.getLine(i)) return i;
         if (linePN(cm.getLine(i))) break;
     }
@@ -121,15 +131,15 @@ export const nextPN=(cm,line)=>{
 export const changed=(doc,changeobj)=>{
     updateBlankLineCount(doc)
 }
-export const AlignInstruction=`
+// export const AlignInstruction=`
 
-`
-export const testdata=`^z1[一　梵網經]^z2[第一　誦品]^z3[稱讚如來]^bk#dn1[長部1]^ck#d1^n1如是我聞。一時，世尊^f2與五百大比丘僧伽，由王舍城往那爛陀村，同行於大道。
+// `
+export const AlignInstruction=`^z1[一　梵網經]^z2[第一　誦品]^z3[稱讚如來]^bk#dn1[長部1]^ck#d1^n1如是我聞。一時，世尊^f2與五百大比丘僧伽，由王舍城往那爛陀村，同行於大道。
 一遊行者須卑亦與其弟子梵施童子，由王舍城往那爛陀村，同行於大道。
 途中，遊行者須卑，以種種方法誹謗佛陀、誹謗佛法、誹謗僧伽。
+
+
 反之，其弟子梵施童子，以種種方法稱讚佛陀、稱讚佛法、稱讚僧伽。如是其所說正相反之師徒二人，緊隨世尊與比丘僧伽之後而行。
-
-
 ^n2時，世尊於菴婆羅樹園內國王〔所建〕之休息堂，與比丘僧伽同宿一夜；
 遊行者須卑，亦於菴婆羅樹園內國王之休息堂，與弟子梵施童子同宿一夜。
 於此，遊行者須卑，又以種種方法誹謗佛陀、誹謗佛法、誹謗僧伽；反之，其弟子梵施童子，又以種種方法稱讚佛陀、稱讚佛法、稱讚僧伽。

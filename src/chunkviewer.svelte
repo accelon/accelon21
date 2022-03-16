@@ -58,10 +58,10 @@ $: if(active&&$viewitems.length) {
         if (side==1) { //only side from left to right
             if (isParallel( getOppositeAddress(), address)) {
                 const layerY=getOppositeActiveOffset(side);
-                vsSyncronize(vscroll,layerY);
+                vsSyncronize(layerY);
             }
         } else if ($aligning) {
-            vsSyncronize(vscroll,$aligntop);
+            vsSyncronize($aligntop);
         }
     },10)
 }
