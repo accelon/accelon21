@@ -122,7 +122,7 @@ const closelabel=()=>{
 }
 
 </script>
-<div class={'linetext '+langstyle}  class:activeline style={"border-color:"+getSeqColor(activelinecolor)} on:click={click}>
+<div class={'linetext '+langstyle} class:activeline style={"border-color:"+getSeqColor(activelinecolor)} on:click={click}>
     <slot name="start"></slot>
 {#each OfftextToSnippet(lineText(), extra) as snpt}
 {#if labelerOf(snpt.open.name)}<!-- 

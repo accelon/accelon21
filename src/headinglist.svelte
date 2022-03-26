@@ -23,6 +23,7 @@ $: langstyle=getLangstyle(lang,$palitrans);
 const getLangstyle=(l,trans)=>'lang-'+l+(l==='pl'?'-'+(trans||''):'');
 
 const getTitle=(heading,tosim,pltrans)=>{
+    if (!heading) return '';
     heading=heading.replace(/\]\^/g,'] ^');
     const [text,tags]=parseOfftextLine(heading);
     return _(fullname?text.replace(/\|.+/,''):text.replace(/.+\|/,''),tosim,pltrans);

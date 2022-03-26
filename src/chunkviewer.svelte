@@ -115,10 +115,10 @@ $vstore.scrollToY=scrollToY;
             </svelte:component>            
             {#each alignedPitaka as aptk,idx}
             <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}
-                key={data.key}  y0={aptk.alignedY(y0)} 
-                activeline={data.key==aptk.alignedY(y) } 
-                activelinecolor={data.key==aptk.alignedY(y) && idx+1}
-                lang={aptk.langOf(aptk.alignedY(y))} ptk={aptk} {side}>
+                y={aptk.alignedY(data.key,ptk)}  y0={aptk.alignedY(y0,ptk)} 
+                activeline={data.key==y } 
+                activelinecolor={data.key==y && idx+1}
+                lang={aptk.langOf(aptk.alignedY(data.key,ptk))} ptk={aptk} {side}>
                 <span slot='start' class='clickable alignedName' style={"color:"+getSeqColor(idx+1)} title={_(aptk.header.title,$tosim)}>{aptk.name}</span>
             </svelte:component>
             {/each}            
