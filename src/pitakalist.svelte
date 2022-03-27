@@ -7,8 +7,9 @@ import { settab } from './js/addresses';
 import QueryResult from './queryresult.svelte';
 import QuickPointer from './quickpointer.svelte'
 export let side=0;
+import VirtualScroll from './3rdparty/virtualscroll'
 
-$: pitakas=pool.getAll().filter(it=>it.name!=='pitaka');
+$: pitakas=pool.getAll().filter(it=>it.name!=='pitaka').map((ptk,idx)=>{return {key:idx,ptk}});
 
 $: if (pitakas) for (let i=0;i<pitakas.length;i++) {
     if (!pitakas[i].querystore) pitakas[i].querystore=writable({});
@@ -24,21 +25,24 @@ const getAlignment=ptk=>{
 }
 let isvalid={};
 </script>
-{#each pitakas as ptk}
+
+<VirtualScroll  start={-1} 
+    keeps={20} data={pitakas} key="key" height="calc(100% - 1.5em)"  let:data >
 <div class="pitaka">
-    <span class="clickable name" on:click={()=>visit(ptk.header.homepage)}>{ptk.name}</span>
-    <span class="title" on:click={evt=>settab(side,ptk.name+NAMESPACESEP)}>
-        {_(ptk.header.title,$tosim)}</span>
-    <QueryResult items={getItems(ptk,$activetofind,$runquerycount)} />
+    <span class="clickable name" on:click={()=>visit(data.ptk.header.homepage)}>{data.ptk.name}</span>
+    <span class="title" on:click={evt=>settab(side,data.ptk.name+NAMESPACESEP)}>
+        {_(data.ptk.header.title,$tosim)}</span>
+    <QueryResult items={getItems(data.ptk,$activetofind,$runquerycount)} />
     <div class="details">
-    {#if !isvalid[ptk.name]}
-        <span class="labeltext" label={_(ptk.chunkCount()?'冊':'條',$tosim)}>{ptk.contentCount()}</span>
-        {#if ptk.chunkCount()}<span class="labeltext" label={_('標題',$tosim)}>{ptk.chunkCount()}</span>{/if}
-        <span class="labeltext" label='文段'>{ptk.header.lastTextLine}</span>
-        <span class="labeltext" label='建立'>{ptk.header.buildtime.replace(/T.+$/,'')}</span>
-        {#if ptk.header.description}<br/><span class="labeltext" label={_('說明',$tosim)}>{_(ptk.header.description,$tosim)}</span>{/if}
+    {#if !isvalid[data.ptk.name]}
+        <span class="labeltext" label={_(data.ptk.chunkCount()?'冊':'條',$tosim)}>{data.ptk.contentCount()}</span>
+        {#if data.ptk.chunkCount()}<span class="labeltext" label={_('標題',$tosim)}>{data.ptk.chunkCount()}</span>{/if}
+        <span class="labeltext" label='文段'>{data.ptk.header.lastTextLine}</span>
+        <span class="labeltext" label='建立'>{data.ptk.header.buildtime.replace(/T.+$/,'')}</span>
+        {#if data.ptk.header.description}<br/><span class="labeltext" label={_('說明',$tosim)}>{_(data.ptk.header.description,$tosim)}</span>{/if}
     {/if}
     <span class='separator'></span>
     </div>
 </div>
-{/each}
+</VirtualScroll>
+

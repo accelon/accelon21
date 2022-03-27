@@ -40,7 +40,7 @@ $: address=($addresses && $addresses[0].address)||'';
 
 <style>
     :global(.controlbar){
-        -webkit-user-select: none; 
+        user-select: none; 
         width:100%; 
         height:1.5rem;
         background:var(--panel-background)

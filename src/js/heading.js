@@ -53,7 +53,12 @@ const chunkitemsById=(ptk,cl,idarr)=>{
             py=y0;
         }
     }
-    return {items,idmap}    
+    const books={}
+    items.forEach(it=>{
+        const bk=ptk.bookOf(it.y0);
+        if (bk && !books[bk]) books[bk]=true;
+    });
+    return {items,idmap,books : Object.keys(books)}    
 }
 
 export const buildHeadingList=(addr,scoredLine, chunkitems,excerptitems)=>{
@@ -73,7 +78,7 @@ export const buildHeadingList=(addr,scoredLine, chunkitems,excerptitems)=>{
             nchunks=[]; //no book
         }
     }
-    const {idmap,items}=chunkitemsById(ptk,cl,nchunks);
+    const {idmap,items,books}=chunkitemsById(ptk,cl,nchunks);
     nchunks=idmap;
     chunkitems.set(items);
 
@@ -97,6 +102,7 @@ export const buildHeadingList=(addr,scoredLine, chunkitems,excerptitems)=>{
         });
         excerptitems.set(out);  
     }
+    return books;
 }
 
 export default {buildHeadingList}

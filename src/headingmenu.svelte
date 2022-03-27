@@ -5,6 +5,7 @@ import {_,tosim} from './js/store.js'
 import Checkbox from './comps/checkbox.svelte';
 export let ptk;
 export let scrollStart=0;
+export let booksOfItems=[];
 import {getContext} from 'svelte'
 const alignedPitaka=(ptk.aligned && ptk.aligned.map(n=>useBasket(n)))||[];
 const bkstore=getContext('bkstore');
@@ -22,9 +23,11 @@ const toggle=(name)=>{
 <Hamburgermenu {scrollStart}>
     <div slot='aligned'>
         {#each alignedPitaka as ptk}
+        {#if ptk.hasBook(booksOfItems) }
         <Checkbox label={_(ptk.header.title,$tosim)} onClick={oldv=>toggle(ptk.name,oldv)}
                 value={$bkstore.aligned.includes(ptk.name)}/>
         <br/>
+        {/if}
         {/each}
     </div>
 </Hamburgermenu>

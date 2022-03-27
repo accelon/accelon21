@@ -30,7 +30,6 @@ const getTitle=(heading,tosim,pltrans)=>{
 }
 
 
-
 $: if(vscroll&&$items.length) { vscroll.scrollToOffset(0) } //scrolltotop when data is updated
 
 const scroll=(evt)=>{

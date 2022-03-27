@@ -26,7 +26,7 @@ let ptk;
 let showheading=true;
 let addr={},refreshcount=0;
 let keyvalue='',keylabel='', tofind='',scoredLine=[];
-
+let booksOfItems=[];
 const refreshquery=async (_addr)=>{
     if (!_addr.basket) {
         _addr.basket=_addr.loc;
@@ -48,7 +48,7 @@ const refreshquery=async (_addr)=>{
         } else scoredLine=[];
     } 
     if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime) {
-        buildHeadingList(_addr,scoredLine,headingitems,excerptitems);
+        booksOfItems=buildHeadingList(_addr,scoredLine,headingitems,excerptitems);
 
         keylabel=_addr.kl;
         keyvalue=_addr.kv;
@@ -98,7 +98,7 @@ $: filterExcerptitems = filterBy($excerptitems, filterheadings );
     <AutoComplete className="tofind" showClear={true} bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
     </span>
     {#if showheading}
-    <HeadingMenu {scrollStart} {ptk}/>
+    <HeadingMenu {scrollStart} {ptk} {booksOfItems}/>
     {/if}
 
     </ExcerptBar>
