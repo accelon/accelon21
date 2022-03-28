@@ -8,17 +8,18 @@ import {get } from 'svelte/store';
 import Hyperlink from './comps/hyperlink.svelte';
 const vstore=getContext('vstore');
 export let loc;
-export let y=0;
 export let ptk;
 export let side=0;
+export let dy=0;
 const paraname=ptk.header.name;
 let fetched=0;
 let showing=!!$vstore.parallels[paraname];
-let [y0] = ptk.getPageRange(loc);
-
+let [y0] = ptk.getPageRange(loc); 
+let y=y0+dy;
 let text,href='';
 async function fetchline(){
-    [y,text]=(await ptk.readLines(y,1))[0];
+    let unusedy;
+    [unusedy,text]=(await ptk.readLines(y,1))[0];
 };
 
 const getParallelHref=()=>{

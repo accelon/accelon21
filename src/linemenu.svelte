@@ -7,6 +7,7 @@ export let aligned=[];
 
 $: alignedPtk=aligned.map(it=>useBasket(it)).filter(it=>!!it);
 $: y,side,ptk,y0;
+$: dy=y-ptk.locY(loc);
 </script>
 
-<span class='linemenu'>{#each alignedPtk as aptk} <Parallel ptk={aptk} {loc}{y}/> {/each}</span>
+<span class='linemenu'>{#each alignedPtk as aptk} <Parallel ptk={aptk} {loc} {dy} /> {/each}</span>

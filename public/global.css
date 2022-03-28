@@ -198,6 +198,7 @@ div.hr {height: 1px;}
 	src: local("ProvidentPali"), url("ProvidentPaliSegoe.otf") 
 	}
 .lang-pl- {font-family: "ProvidentPali" ; font-size:120%}
+.lang-pl-iast {font-family: "Segoe UI",Tahoma}
 .lang-pl-tb {font-size:120%}
 .lang-en {font-family: Georgia;}
 
