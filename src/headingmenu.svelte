@@ -1,33 +1,23 @@
 <script>
 import Hamburgermenu from './comps/hamburgermenu.svelte';
+import Buttons from './comps/buttons.svelte';
+import HeadingFilter from './headingfilter.svelte';
 import {useBasket} from 'pitaka'
 import {_,tosim} from './js/store.js'
-import Checkbox from './comps/checkbox.svelte';
+import {getContext} from 'svelte'
+
 export let ptk;
 export let scrollStart=0;
 export let booksOfItems=[];
-import {getContext} from 'svelte'
 const alignedPitaka=(ptk.aligned && ptk.aligned.map(n=>useBasket(n)))||[];
 const bkstore=getContext('bkstore');
-
-const toggle=(name)=>{
-    const aligned=$bkstore.aligned;
-    if (aligned.includes(name)) {
-        aligned.splice(aligned.indexOf(name),1);
-    } else {
-        aligned.push(name);
-    }
-    $bkstore.aligned[name]=aligned[name];
-}
+const alignablePitakas=alignedPitaka.filter(it=>it.hasBook(booksOfItems)).map(it=>{
+    return {name:it.name, label:_(it.header.title,$tosim)}
+}) ;
+let showmode=2;//display for whole page
 </script>
-<Hamburgermenu {scrollStart}>
-    <div slot='aligned'>
-        {#each alignedPitaka as ptk}
-        {#if ptk.hasBook(booksOfItems) }
-        <Checkbox label={_(ptk.header.title,$tosim)} onClick={oldv=>toggle(ptk.name,oldv)}
-                value={$bkstore.aligned.includes(ptk.name)}/>
-        <br/>
-        {/if}
-        {/each}
-    </div>
+<Hamburgermenu {scrollStart} {showmode}>
+    <Buttons values={$bkstore.aligned} items={alignablePitakas} />
+    {#if alignablePitakas.length}<hr/>{/if}
+    <HeadingFilter {ptk}/>
 </Hamburgermenu>

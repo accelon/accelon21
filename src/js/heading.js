@@ -46,10 +46,10 @@ const chunkitemsById=(ptk,cl,idarr)=>{
             const id=cl.idarr[ncl];
             const y0=cl.linepos[ncl];
             const keywords=keynames.map(k=> [k,cl.keywords[k][ncl]||0] ).filter(it=>it[1]> -1);
-            idmap[id]=key;
+            idmap[id]=i;
             if (py==y0) items.pop();//use the later item with in same line
             const text=cl.names[ncl];
-            if (text) items.push({key, y0,id,text, keywords })
+            if (text) items.push({key:i, y0,id,text, keywords })
             py=y0;
         }
     }

@@ -9,6 +9,7 @@ import { parseOfftextLine,parseAddress ,stringifyAddress } from 'pitaka/offtext'
 import { getContext } from 'svelte';
 import Colorhr from './comps/colorhr.svelte';
 export let items;
+
 export let ptk;
 export let side=0;
 export let fullname=true;
@@ -42,7 +43,7 @@ const goitem=(y0)=>{
     const addr=stringifyAddress(ptr);
     settab(side,addr,{newtab:true})
 }
-$: alignedPitaka=$stor.aligned.map(n=>useBasket(n));
+$: alignedPitaka=($stor.aligned||[]).map(n=>useBasket(n));
 
 </script>
 <VirtualScroll bind:this={vscroll} start={-1}   on:scroll={scroll}
@@ -50,12 +51,14 @@ keeps={50} data={$items} key="key" height="calc(100% - 1.5em)" let:data >
 <div>
     <span class="bookid">{data.id}</span>
     <span class={"tocitem "+langstyle} on:click={()=>goitem(data.y0)}>{getTitle(data.text,$tosim,lang==='pl'&&$palitrans)}</span>
+    {#if data.keywords}
     {#each data.keywords as [label,keyid]}
     <t {label} class={"clickable "+ label}>
         <Keywords {onKeyword} {ptk} {label} {keyid}/>
     </t>
     {/each}
-
+    {/if}
+    
     <!-- 其他語言的標題 ，在 headingMenu 選擇 //-->
     {#each alignedPitaka as p,idx}
     <div on:click={()=>goitem(data.y0)} style={"color:"+getSeqColor(idx+1)} class={"tocitem "+getLangstyle(p.header.lang,$palitrans)}>

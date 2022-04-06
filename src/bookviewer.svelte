@@ -18,10 +18,12 @@ export let side=0,address='',active=false;
 export let visible=false;
 const headingitems=writable([]);
 const excerptitems=writable([]);
-$: visible;
 const bkstore=writable({aligned:[]});
 setContext('bkstore',bkstore);
+setContext('headings',headingitems);
+setContext('excepts',excerptitems);
 
+$: visible;
 let ptk;
 let showheading=true;
 let addr={},refreshcount=0;

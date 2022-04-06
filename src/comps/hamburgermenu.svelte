@@ -14,8 +14,8 @@ $: showing = (scrollStart<AUTOMENULINE && showmode==1) || showmode==2;
 </script>
 <span class="hamburger" class:showing on:click={setshowmode}>☰</span>
 {#if showing}
-<div class="dropdownpanel" title={scrollStart}>
-   <slot name="aligned"></slot>
+<div class="dropdownpanel">
+   <slot></slot>
 </div>
 {/if}
 <style>

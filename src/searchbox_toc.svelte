@@ -3,7 +3,7 @@ import {debounce} from 'pitaka/utils'
 import AutoComplete from './3rdparty/simpleautocomplete.svelte';
 import {_,tosim} from './js/store.js';
 import {bookqueryhistory,QUERYSEP} from './js/query.js';
-import {validateTofind } from 'pitaka/fulltext';
+import {validateTofind } from 'pitaka/search';
 import {activebooktofind, addbookqueryhistory} from "./js/query.js";
 export let keylabel='';
 export let keyvalue='';

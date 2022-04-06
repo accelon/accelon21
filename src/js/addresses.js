@@ -201,10 +201,23 @@ export const setActiveLine=(ptk,addresses_side=addresses_b,newy=0,y0=0)=>{
         }
     }
 }
+export const sameChunk=(addr1,addr2)=>{
+    const ptr1=parseAddress(addr1);
+    const ptr2=parseAddress(addr2);
+    if (!ptr1 || !ptr1) return false;
+    if (ptr1.basket!==ptr2.basket) return false;
+    const ptk1=  useBasket(ptr1.basket);
+    const ptk2=  useBasket(ptr2.basket);
+    if (!ptk1|| !ptk2) return false;
+    const c1=ptk1.chunkOf(ptr1.loc);
+    const c2=ptk2.chunkOf(ptr2.loc);
+    return c1.address===c2.address;
+}
 export const newopposite=(addresses_side,address)=>{
     const opposite=getOppositeAddresses(addresses_side);
     const oaddrs=get(opposite);
-    if (!oaddrs.length || address!==oaddrs[0].address) settab(opposite,address,{newtab:true});
+    if (!oaddrs.length || !sameChunk(address,oaddrs[0].address)) settab(opposite,address,{newtab:true});
+    else if (oaddrs.length) settab(opposite,address);
 }
 export const settab=(addresses_side,address,{newtab=false}={})=>{
     let addresses=addresses_side;

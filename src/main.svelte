@@ -1,7 +1,8 @@
 <script>
 import {loadaddress} from './js/addresshash.js';
-import R from './js/renderer.js'; //make sure renderer is loaded
-import L from './js/labeler.js'; //maker sure labeler is loaded
+import _R from './js/renderer.js'; //make sure renderer is loaded
+import _F from './js/filterer.js';
+import _L from './js/labeler.js'; //maker sure labeler is loaded
 import HotKey from './js/hotkey.js';
 import MainView from './mainview.svelte';
 import LoadingAnimation from './comps/loading.svelte'

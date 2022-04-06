@@ -12,10 +12,10 @@ export let storeid=null;
 export let styles=null;
 export let caption='';
 const statekeys=Object.keys(states);
-let keyindex=statekeys.indexOf( get(storeid).toString() );
+let keyindex=(storeid && statekeys.indexOf( get(storeid).toString() ))||-1;
 if (keyindex==-1) {//invalid value
     keyindex=0;    //force to first value
-    if (get(storeid).toString()!==statekeys[keyindex]) storeid.set(statekeys[keyindex]);
+    if (storeid && get(storeid).toString()!==statekeys[keyindex]) storeid.set(statekeys[keyindex]);
 }
 
 

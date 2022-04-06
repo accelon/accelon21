@@ -24,7 +24,7 @@ const enumBasketInAddress=(arr)=>{
 
 const addressesFromUrl=()=>{
     let hash=window.location.hash;
-    if (hash[0]=='#') hash=hash.substr(1);
+    if (hash[0]=='#') hash=hash.slice(1);
     hash=decodeURI(hash);
     const [addrs_a,addrs_b]=hash.split('#');
     const a=addrs_a.split(ADDRSEP).filter(it=>!!it);
@@ -36,10 +36,12 @@ const addressesFromUrl=()=>{
 
 export const loadaddress=()=>{
     const config=window.accelon21_configuration||{keepLog:true};
+    config.preload||=window.preload;
+    
     if (!config.preload) { //get basket from pathname
         let pathname=decodeURI(location.pathname).replace(/\.html?/,'');
         const at=pathname.lastIndexOf('/');
-        pathname=pathname.substr(at+1);
+        pathname=pathname.slice(at+1);
         config.preload=pathname.replace(/[^\da-z\-]+/g,',');
     }
 

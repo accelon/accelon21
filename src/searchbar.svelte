@@ -2,7 +2,7 @@
 import AutoComplete from './3rdparty/simpleautocomplete.svelte';
 import { debounce } from 'pitaka/utils';
 import { searchhelp,showFrontPage} from './js/store.js';
-import {validateTofind } from 'pitaka/fulltext';
+import {validateTofind } from 'pitaka/search';
 import {queryhistory,activetofind,runquerycount,QUERYSEP} from './js/query.js'
 import LoadingAnimation from './comps/loading.svelte'
 import { get } from 'svelte/store';

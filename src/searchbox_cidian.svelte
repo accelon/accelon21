@@ -42,7 +42,7 @@ const inputSearch=(m)=>{
     if (!tofind)return;
     tofind=tofind.trim();
     if (!tofind) return matchCursorWord($cursor.ori)
-    const res=ptk.filterEntry(tofind, m);
+    const res=ptk.filterDictEntry(tofind, m);
     items=res.map((item,idx)=>{
         return {idx,key:item.nth, ...item}
     });

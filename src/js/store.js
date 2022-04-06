@@ -23,7 +23,8 @@ export const activeside=writable(0);
 export const searchbox=writable({});
 export const searchhelp=writable(false);
 
-export const renderer=writable({});   //custom renderer for different format
+export const renderer=writable({});   //renderer for different format
+export const filterer=writable({});   //filterer for filtering mode
 export const labeler=writable({});   //custom components for labels
 
 export const labelerOf=cls=>{
