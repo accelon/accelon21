@@ -13,6 +13,7 @@ import Bookmark from './bookmark.svelte'
 import {setActiveLine,setActiveOffset} from './js/addresses.js';
 export let q=''; //the quote text
 export let hook='';
+export let setactiveline=true;
 export let master=false;
 export let ptk=null;  //if ptk is missing, text might come from various pitaka, and need to be prefetch.
 export let key=0 //缺少 y 的話，以 key 作 y
@@ -23,12 +24,12 @@ export let notes=null;
 $: langstyle='lang-'+lang+(lang==='pl'?'-'+($palitrans||''):'')
 export let activeline=false;
 export let linetofind='';
-export let nesting=0,text='',loc='',side=0,id='';
-$: id;
+export let nesting=0,text='',loc='',side=0,id='',hits=[];
 export let activelinecolor=0;
 export let backlinks=[];
 export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
+$: id,hits;
 
 let extra=[];
 $: lineText=()=>{
@@ -52,7 +53,7 @@ const refreshnote=()=>{
     $usernotes[dy].forEach(addNote);
     sortExtra();
 }
-$: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind,notes});
+$: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind,notes,hits});
 $: ptk && usernotes && $usernotes[dy]  && refreshnote($usernotes[dy]);
 
 const addNote=note=>{
@@ -87,7 +88,7 @@ const onSelection=evt=>{//user note and highlight etc
 
 const click=evt=>{
     if (evt.button!==0) return;
-    !nesting && setActiveLine(ptk,side,y||key ,y0);
+    setactiveline && !nesting && setActiveLine(ptk,side,y||key ,y0);
 
     //scroll offset of the activeline
     const toolbarheight=evt.pageY-evt.layerY + 5; // don't know why ?? cannot can precise offset

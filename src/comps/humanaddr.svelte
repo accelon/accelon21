@@ -18,8 +18,8 @@ $: if (address) {
     ptr=parseAddress(address);
     basket=ptr.basket;
     ptk=useBasket(basket);
-    if (ptr) loc=ptr.loc;
-    
+
+    if (ptr) loc=ptr.loc;    
     lang=ptk.header.lang||DEFAULT_LANGUAGE;
     script=lang==='pl'&&$palitrans;
     

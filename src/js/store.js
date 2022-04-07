@@ -26,6 +26,7 @@ export const searchhelp=writable(false);
 export const renderer=writable({});   //renderer for different format
 export const filterer=writable({});   //filterer for filtering mode
 export const labeler=writable({});   //custom components for labels
+export const searchstore=writable({});   //search result cache 
 
 export const labelerOf=cls=>{
     if (!cls) return;

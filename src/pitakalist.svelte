@@ -1,6 +1,6 @@
 <script>
 import {  NAMESPACESEP, pool} from 'pitaka';
-import {_,tosim} from './js/store.js'
+import {_,tosim,searchstore} from './js/store.js'
 import {activetofind,runquerycount} from './js/query.js'
 import { get, writable } from 'svelte/store';
 import { settab } from './js/addresses';
@@ -11,11 +11,8 @@ import VirtualScroll from './3rdparty/virtualscroll'
 
 $: pitakas=pool.getAll().filter(it=>it.name!=='pitaka').map((ptk,idx)=>{return {key:idx,ptk}});
 
-$: if (pitakas) for (let i=0;i<pitakas.length;i++) {
-    if (!pitakas[i].querystore) pitakas[i].querystore=writable({});
-}
 const getItems=(ptk,tofind,rc)=>{
-    return rc?get(ptk.querystore)[tofind] ||[]:[] 
+    return rc?get(searchstore)[ptk.name+':'+tofind] ||[]:[] 
 };
 const visit=homepage=>{
     window.open(homepage||'https://accelon.github.io','_new');

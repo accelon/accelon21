@@ -2,7 +2,7 @@ import {OffTag} from 'pitaka/offtext';
 import {diffCJK,trimPunc} from 'pitaka/utils';
 import {parseHook, posPin} from 'pitaka/align';
 import {fromSim, toSim } from 'lossless-simplified-chinese';
-export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes})=>{
+export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes,hits})=>{
     const extra=[];
     if (!ptk || !linetext) return extra;
     if (backlinks && backlinks.length) { //convert backlink hook to tag
@@ -55,6 +55,11 @@ export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes})=
             const x=posPin(linetext,pin);
             const notetag=ptk.header.notesjson||'f';
             extra.push(new OffTag(notetag,{val,id}, 0, x,0))
+        })
+    }
+    if (hits && hits.length) {
+        hits.forEach(([x,w,nth=0])=>{
+            extra.push(new OffTag('hl',{nth}, 0, x,w))
         })
     }
     extra.sort((a,b)=>a.x==b.x?b.w-a.w:a.x-b.x);

@@ -1,11 +1,12 @@
 <script>
 export let count=0;
-export let showheading;
+export let showheading=true;
 const toggleshow=()=>{
     showheading=!showheading;
 }
+$: showexcerpt=!showheading;
 </script>
-<span class=bookcount class:showheading on:click={toggleshow}>{count}</span>
+<span class=bookcount class:showexcerpt on:click={toggleshow}>{count}</span>
 <style>
-    .showheading {background:var(--highlight)}
+    .showexcerpt {background:var(--highlight)}
 </style>

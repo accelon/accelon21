@@ -22,12 +22,16 @@ const allonoff=()=>{
 }
 if (allon) allonoff();
 </script>
-{#if onoff}
-<span class="clickable" on:click={allonoff}> {values.length?"☐":"☑"} </span>
-{/if}
 {#each items as item}
 <svelte:component this={buttontype} 
 label={item.label} onClick={oldv=>toggle(item.name,oldv)}
         value={values.includes(item.name)}/>
 {#if br}<br/>{/if}
 {/each}
+{#if onoff}
+<span class="onoff clickable" on:click={allonoff}> {values.length?"☐":"☑"} </span>
+{/if}
+
+<style>
+    .onoff {float:right}
+</style>

@@ -73,8 +73,17 @@ t.note:hover:after {
     transition: color 2s;
     font-size:100%;
 }
-
-t.k{}
+t.ck {font-size:120%;}
+t.z[id="0"] {border-radius: 5px;border:2px dashed hsl(0,80%,35%)}
+t.z[id="1"] {border-radius: 5px;border:2px dashed hsl(40,80%,35%)}
+t.z[id="2"] {border-radius: 5px;border:2px dashed hsl(80,80%,35%)}
+t.z[id="3"] {border-radius: 5px;border:2px dashed hsl(120,80%,35%)}
+t.z[id="4"] {border-radius: 5px;border:2px dashed hsl(160,80%,35%)}
+t.z[id="5"] {border-radius: 5px;border:2px dashed hsl(200,80%,35%)}
+t.z[id="6"] {border-radius: 5px;border:2px dashed hsl(240,80%,35%)}
+t.z[id="7"] {border-radius: 5px;border:2px dashed hsl(280,80%,35%)}
+t.z[id="8"] {border-radius: 5px;border:2px dashed hsl(320,80%,35%)}
+t.z[id="9"] {border-radius: 5px;border:2px dashed hsl(360,80%,35%)}
 t.k:hover {color:var(--highlight)}
 t.pg{
     display:inline-block;width:0px;padding-top:3em;height:0px;
@@ -97,7 +106,7 @@ t.p:before {
 t.lg {
     color:lightseagreen;font-family: 楷体,標楷體,DFKai-SB;
 }
-t.pdf:after {content: "pdf"attr(n)  ;
+t.pdf:after {content: "pdf" attr(n)  ;
    display:inline-block;width:0px;padding-top:2.5em;
    vertical-align:top;font-size:0.5rem;color:blue}
     
@@ -111,7 +120,7 @@ t.en::after {
     cursor:pointer;
     font-size:0.8rem;
 }
-t.pts:after {content: "pts"attr(n)  ;
+t.pts:after {content: "pts" attr(n)  ;
    display:inline-block;width:0px;padding-top:2.5em;
    vertical-align:top;font-size:0.5rem;color:brown
 }
@@ -222,7 +231,7 @@ t.mu:after {
     font-size:0.8em;
     content: attr(t)
 }
-t.h[o=author] {color:darkseagreen}
+t.h[o="author"] {color:darkseagreen}
 t.li-::before {  /* [i] means only put on real position */
     background:linear-gradient(red,blue);
     display:inline-block;
@@ -277,7 +286,7 @@ t.y-:before {content:'音';
     border: 2px solid rgb(0, 88, 100)
 }
 
-
+t.hl {color:lightcoral}
 t.embed {cursor:no-drop ;background:highlight;color:highlightText;
     padding-left:5px;padding-right:5px;border-radius: 5px;}
 t.se {border-bottom : solid 1px var(--highlight);cursor:pointer}

@@ -3,7 +3,8 @@ import {_,tosim} from "./js/store.js";
 import {addqueryhistory,activetofind} from "./js/query.js";
 export let items=[];
 const openexcerpt=()=>{
-    addqueryhistory($activetofind)
+    addqueryhistory($activetofind);
+    
 }
 </script>
 <span>

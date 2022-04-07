@@ -30,12 +30,13 @@ const chunkitemsById=(ptk,cl,idarr)=>{
         let py=0;
         for (let i=0;i<cl.idarr.length;i++) {
             const id=cl.idarr[i];
-            const keywords=keynames.map(k=> [k,cl.keywords[k][i]||0 ] ).filter(it=>it[1]> -1);
+            // const keywords=keynames.map(k=> [k,cl.keywords[k][i]||0 ] ).filter(it=>it[1]> -1);
             idmap[id]=i;
             const y0=cl.linepos[i];
             const text= (cl.names[i].trim()) ?cl.names[i]: ptk.headingOf(y0).text;
             if (py==y0) items.pop();//use the later item with in same line
-            items.push({key:i, y0,id,text, keywords });
+            items.push(i);
+            // items.push({key:i, y0,id,text, keywords });
             py=y0;
         }
     } else {
@@ -61,7 +62,7 @@ const chunkitemsById=(ptk,cl,idarr)=>{
     return {items,idmap,books : Object.keys(books)}    
 }
 
-export const buildHeadingList=(addr,scoredLine, chunkitems,excerptitems)=>{
+export const buildHeadingList=(addr,scoredLine, headings,excerptitems)=>{
     const ptk=useBasket(addr.basket);
     const cl=ptk.getChunkLabel();
     let nchunks=null; //all chunk
@@ -80,11 +81,11 @@ export const buildHeadingList=(addr,scoredLine, chunkitems,excerptitems)=>{
     }
     const {idmap,items,books}=chunkitemsById(ptk,cl,nchunks);
     nchunks=idmap;
-    chunkitems.set(items);
+    headings.set(items);
 
-    if (get(chunkitems).length == 0) {
+    if (get(headings).length == 0) {
         excerptitems.set([]);    
-    } else if (get(chunkitems).length===cl.names.length) { //all books
+    } else if (get(headings).length===cl.names.length) { //all books
         const out=scoredLine.map(([y,score],key)=>{
             const ncl=bsearch(cl.linepos,y,true)-1;
             return {ptk,key,ncl, y,score}

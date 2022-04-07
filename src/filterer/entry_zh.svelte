@@ -1,32 +1,33 @@
 <script>
 import StateBtn from '../comps/statebutton.svelte';
-import {filterEntry} from 'pitaka/search';
+import {filterEntry,allEntry} from 'pitaka/search';
 import {debounce} from 'pitaka/utils';
-import { getContext } from 'svelte';
-const headingitems=getContext('headings');
+import {headings} from '../js/filterstore.js';
+import heading from '../js/heading';
+export let filter;
 export let ptk;
 export let name;
+let tofind='';
+$: filter;
 let history=["三","如來"];
-const {names,linepos,idarr} =ptk.getLabel(name);
-let items=[],mode=0;
+const {names} =ptk.getLabel(name);
+let mode=0;
 const inputSearch=(m)=>{
-    if (!tofind)return;
+    if (!tofind) {
+        headings.set(allEntry(names))
+        return;
+    }
     tofind=tofind.trim();
     const res=filterEntry(tofind, names, m);
-    //{key:i, y0,id,text, keywords });
-    items=res.map((it,idx)=>{
-        const y0=linepos[it];
-        return {key:it,id:idarr[it], text:names[it], y0};
-    });
-    headingitems.set(items);
+    headings.set(res);
 }
-$: inputSearch(mode,tofind);
+$: inputSearch(mode);
 const input=debounce(()=>{
-    if (tofind.trim()){
+    // if (tofind.trim()){
         inputSearch(mode);
-    } else {
+    // } else {
         // matchCursorWord($cursor.ori)   
-    }
+    // }
 },500);
 let matchmodestyles={m0:'var(--highlight)'};
 const changemode=()=>{
@@ -38,9 +39,10 @@ const changemode=()=>{
 }
 const goback=idx=>{
     tofind=history[idx];
+    inputSearch(mode);
     // matchCursorWord(cw);
 }
-let tofind='';
+
 </script>
 <div class="searchbox">
     <div class="inputbox">

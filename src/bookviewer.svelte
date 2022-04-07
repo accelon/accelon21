@@ -1,7 +1,7 @@
 <script>
-import {writable} from 'svelte/store'
+import {writable,derived} from 'svelte/store'
 import {useBasket} from 'pitaka';
-import { debounce } from 'pitaka/utils';
+import {debounce,intersect} from 'pitaka/utils';
 import AutoComplete from './3rdparty/simpleautocomplete.svelte';
 import ExcerptBar from './excerptbar.svelte'
 import HeadingCount from './comps/headingcount.svelte'
@@ -11,23 +11,35 @@ import ExcerptList from './excerptlist.svelte'
 import {parseAddress,stringifyAddress } from 'pitaka/offtext';
 import {buildHeadingList} from './js/heading.js';
 import {searchbox,tosim} from './js/store.js';
+import {headings,filterings,excerptitems} from './js/filterstore.js';
 import {queryhistory,QUERYSEP} from './js/query.js'
 import {setAddress} from './js/addresses.js'
 import { setContext } from 'svelte';
 export let side=0,address='',active=false;
 export let visible=false;
-const headingitems=writable([]);
-const excerptitems=writable([]);
+let ptk;
+
+const headingitems=derived( [headings,filterings],([H,F], set)=>{
+    if (!ptk) return;
+    const {names,linepos,idarr} =ptk.getHeadingLabel();
+
+    const A=F.length? intersect(H,F) : H;
+    const items=A.map((it,idx)=>{
+        const y0=linepos[it];
+        return {key:it,id:idarr[it], text:names[it], y0};
+    });
+    set(items);
+},[]);
 const bkstore=writable({aligned:[]});
 setContext('bkstore',bkstore);
-setContext('headings',headingitems);
+setContext('headings',headings);
 setContext('excepts',excerptitems);
 
 $: visible;
-let ptk;
+
 let showheading=true;
 let addr={},refreshcount=0;
-let keyvalue='',keylabel='', tofind='',scoredLine=[];
+let tofind='',scoredLine=[], posting=[];
 let booksOfItems=[];
 const refreshquery=async (_addr)=>{
     if (!_addr.basket) {
@@ -45,15 +57,17 @@ const refreshquery=async (_addr)=>{
         if (_addr.tf) {
             const res=await ptk.fulltextSearch(_addr.tf,{excerpt:true,tosim:$tosim});
             scoredLine=res.scoredLine;
+            posting=res.posting;
+            console.log('posting',posting, ptk.lineOfPosting(posting))
             scored=true;
             tofind=_addr.tf;
         } else scoredLine=[];
     } 
     if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime) {
-        booksOfItems=buildHeadingList(_addr,scoredLine,headingitems,excerptitems);
+        booksOfItems=buildHeadingList(_addr,scoredLine,headings,excerptitems);
 
-        keylabel=_addr.kl;
-        keyvalue=_addr.kv;
+        // keylabel=_addr.kl;
+        // keyvalue=_addr.kv;
         filterheadings={};
     }
     addr=_addr;
@@ -73,6 +87,7 @@ const onTofind=()=>{
     const newaddr={...addr, tf:tofind}
     const address=stringifyAddress(newaddr);
     active&&setAddress(side,address);
+    if (tofind&&showheading)showheading=false;
 }
 const filterBy=(excerpts)=>{
     if (Object.keys(filterheadings).length==0) return excerpts;
@@ -92,13 +107,12 @@ $: filterExcerptitems = filterBy($excerptitems, filterheadings );
     <ExcerptBar {showheading} {side} {ptk} excerpts={$excerptitems} bind:filterheadings>
     <HeadingCount count={$headingitems.length} bind:showheading/>
     
-    <span class:displaynone={!showheading}>
+    <!-- <span class:displaynone={!showheading}>
     <svelte:component {onKeyword} this={$searchbox[ptk.format]||$searchbox.toc} {ptk} bind:keyvalue bind:keylabel/>
-    </span>
-    
-    <span class:displaynone={showheading} >
+    </span> -->
+
     <AutoComplete className="tofind" showClear={true} bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
-    </span>
+
     {#if showheading}
     <HeadingMenu {scrollStart} {ptk} {booksOfItems}/>
     {/if}
@@ -108,7 +122,7 @@ $: filterExcerptitems = filterBy($excerptitems, filterheadings );
     {#if showheading}
     <HeadingList {ptk} {side} items={headingitems} {onKeyword} {onScroll}/>
     {:else}
-    <ExcerptList {ptk} {side} items={filterExcerptitems} {onScroll}/>
+    <ExcerptList {ptk} {side} items={filterExcerptitems} {tofind} {posting} {onScroll}/>
     {/if}
 {/if}
 </div>

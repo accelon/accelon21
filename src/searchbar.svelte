@@ -1,7 +1,7 @@
 <script>
 import AutoComplete from './3rdparty/simpleautocomplete.svelte';
 import { debounce } from 'pitaka/utils';
-import { searchhelp,showFrontPage} from './js/store.js';
+import { searchhelp,showFrontPage,searchstore} from './js/store.js';
 import {validateTofind } from 'pitaka/search';
 import {queryhistory,activetofind,runquerycount,QUERYSEP} from './js/query.js'
 import LoadingAnimation from './comps/loading.svelte'
@@ -17,11 +17,12 @@ let searching=false;
 const searchpitaka=async ()=>{
     if (!tasks.length || !searching)return;
     const ptk=tasks[0];
-    const queries=get(ptk.querystore);
+    const queries=get(searchstore);
     $activetofind=validateTofind(cursorword);
-    if (!queries[cursorword]) {
-        queries[cursorword]=await ptk.runAllQuery(cursorword);
-        ptk.querystore.set(queries);
+    const qkey=ptk.name+':'+cursorword;
+    if (!queries[qkey]) {
+        queries[qkey]=await ptk.runAllQuery(cursorword);
+        searchstore.set(queries);
         $runquerycount++;//force redraw of pitaka list
         await tick();
     }

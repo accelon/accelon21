@@ -5,7 +5,7 @@
 </script>
 <div>
     {#each ptk.getHeadingFilters() as F}
-    <svelte:component {...F} {ptk} 
+    <svelte:component {...F} {ptk}
         this={$filterer[F.filter]||$filterer.default}></svelte:component>
     {/each}
 </div>
