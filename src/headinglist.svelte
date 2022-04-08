@@ -7,6 +7,7 @@ import {_,tosim, palitrans} from './js/store.js'
 import { settab } from './js/addresses';
 import { parseOfftextLine,parseAddress ,stringifyAddress } from 'pitaka/offtext';
 import { getContext } from 'svelte';
+import { derived } from 'svelte/store';
 import Colorhr from './comps/colorhr.svelte';
 export let items;
 
@@ -17,7 +18,13 @@ export let onKeyword;
 export let onScroll;
 export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
 let vscroll;
-
+const displayItems=derived(items,(I,set)=>{
+    const {names,linepos,idarr} =ptk.getHeadingLabel();
+    set(I.map((it,idx)=>{
+        const y0=linepos[it];
+        return {key:it,id:idarr[it], text:names[it], y0};
+    }));
+},[]);
 const stor=getContext('bkstore');
 $: langstyle=getLangstyle(lang,$palitrans);
 
@@ -47,7 +54,7 @@ $: alignedPitaka=($stor.aligned||[]).map(n=>useBasket(n));
 
 </script>
 <VirtualScroll bind:this={vscroll} start={-1}   on:scroll={scroll}
-keeps={50} data={$items} key="key" height="calc(100% - 1.5em)" let:data >
+keeps={50} data={$displayItems} key="key" height="calc(100% - 1.5em)" let:data >
 <div>
     <span class="bookid">{data.id}</span>
     <span class={"tocitem "+langstyle} on:click={()=>goitem(data.y0)}>{getTitle(data.text,$tosim,lang==='pl'&&$palitrans)}</span>

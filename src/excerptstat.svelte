@@ -4,7 +4,7 @@ import VirtualScroll from './3rdparty/virtualscroll';
 import {_,tosim} from './js/store.js';
 export let excerpts=[];
 export let ptk, side=0;
-export let filterheadings={};
+export let selectedheadings={};
 $: side;
 let showing=true;
 let stats=writable([]);
@@ -32,11 +32,11 @@ const selectAll=(_stats,onoff)=>{
 
 let selectedBookCount=0;
 const updateFilter=()=>{
-    filterheadings={};
+    selectedheadings={};
     const books=$stats.filter(it=>it.selected).map(it=>it.key);
     selectedBookCount=0;
     for (let i=0;i<books.length;i++) {
-        filterheadings[books[i]]=true;
+        selectedheadings[books[i]]=true;
         selectedBookCount++;
     }
 }
@@ -80,5 +80,5 @@ $: stats.set(statByHeading(excerpts));
 .stats {height:25em}
 .statitem{padding-left:5px}
 .selected {color:var(--highlight)}
-.count {padding-left:5px;padding-right:5px}
+.count {padding-left:5px;padding-right:5px;float:right}
 </style>

@@ -20,7 +20,7 @@ const allonoff=()=>{
     if (values.length) values=[]   
     else values=items.map(it=>it.name);
 }
-if (allon) allonoff();
+if (!values.length) allonoff(); //turn on all
 </script>
 {#each items as item}
 <svelte:component this={buttontype} 

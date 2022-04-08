@@ -1,7 +1,8 @@
 <script>
-import {writable,derived} from 'svelte/store'
+// a search viewer has a main pitaka, but a pitaka might have multiple session
+import {writable,derived,get} from 'svelte/store'
 import {useBasket} from 'pitaka';
-import {debounce,intersect} from 'pitaka/utils';
+import {debounce} from 'pitaka/utils';
 import AutoComplete from './3rdparty/simpleautocomplete.svelte';
 import ExcerptBar from './excerptbar.svelte'
 import HeadingCount from './comps/headingcount.svelte'
@@ -10,8 +11,7 @@ import HeadingList from './headinglist.svelte'
 import ExcerptList from './excerptlist.svelte'
 import {parseAddress,stringifyAddress } from 'pitaka/offtext';
 import {buildHeadingList} from './js/heading.js';
-import {searchbox,tosim} from './js/store.js';
-import {headings,filterings,excerptitems} from './js/filterstore.js';
+import {searchbox,tosim, _} from './js/store.js';
 import {queryhistory,QUERYSEP} from './js/query.js'
 import {setAddress} from './js/addresses.js'
 import { setContext } from 'svelte';
@@ -19,17 +19,18 @@ export let side=0,address='',active=false;
 export let visible=false;
 let ptk;
 
-const headingitems=derived( [headings,filterings],([H,F], set)=>{
-    if (!ptk) return;
-    const {names,linepos,idarr} =ptk.getHeadingLabel();
+export const headings=writable([]);  
+export const filterings=writable([]);
+export const excerptitems=writable([]);
+export const filtersOptions=writable({});
+export const filtersResult=writable([]);
 
-    const A=F.length? intersect(H,F) : H;
-    const items=A.map((it,idx)=>{
-        const y0=linepos[it];
-        return {key:it,id:idarr[it], text:names[it], y0};
-    });
-    set(items);
-},[]);
+setContext('headings',headings); 
+setContext('filtersOptions',filtersOptions);
+setContext('filtersResult',filtersResult);
+setContext('filterings',filterings);
+setContext('excerptitems',excerptitems);
+
 const bkstore=writable({aligned:[]});
 setContext('bkstore',bkstore);
 setContext('headings',headings);
@@ -53,22 +54,22 @@ const refreshquery=async (_addr)=>{
     }
     ptk=useBasket(_addr.basket);
     let scored=false;
-    if (addr.tf!==_addr.tf) {
+    if (addr.tf!==_addr.tf || $filtersResult.length) {
         if (_addr.tf) {
-            const res=await ptk.fulltextSearch(_addr.tf,{excerpt:true,tosim:$tosim});
+            const ranges=ptk.getHeadingRanges($filtersResult);
+            const res=await ptk.fulltextSearch(_addr.tf,{excerpt:true,tosim:$tosim,ranges});
             scoredLine=res.scoredLine;
             posting=res.posting;
-            console.log('posting',posting, ptk.lineOfPosting(posting))
             scored=true;
             tofind=_addr.tf;
         } else scoredLine=[];
     } 
     if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime) {
-        booksOfItems=buildHeadingList(_addr,scoredLine,headings,excerptitems);
+        booksOfItems=buildHeadingList(_addr,scoredLine,excerptitems);
 
         // keylabel=_addr.kl;
         // keyvalue=_addr.kv;
-        filterheadings={};
+        selectedheadings={};
     }
     addr=_addr;
     refreshcount++;
@@ -89,29 +90,31 @@ const onTofind=()=>{
     active&&setAddress(side,address);
     if (tofind&&showheading)showheading=false;
 }
-const filterBy=(excerpts)=>{
-    if (Object.keys(filterheadings).length==0) return excerpts;
-
-    return excerpts.filter(it=> filterheadings[it.ncl]);
+const filterExcerptByHeading=(excerpts,selectedheadings)=>{
+    if (Object.keys(selectedheadings).length==0) return excerpts;
+    return excerpts.filter(it=> selectedheadings[it.ncl]);
 }
-let filterheadings={};
-let filterExcerptitems=[];
-$: refreshquery(parseAddress(address));
+let selectedheadings={};     //搜尋後的選擇
+let selectedExcerptitems=[];
+
+$: refreshquery(parseAddress(address),$filtersResult);
 $: qhis=$queryhistory.split(QUERYSEP);
-$: filterExcerptitems = filterBy($excerptitems, filterheadings ); 
+$: selectedExcerptitems = filterExcerptByHeading($excerptitems, selectedheadings); 
 
 </script>
 
 <div class="container">
 {#if ptk}
-    <ExcerptBar {showheading} {side} {ptk} excerpts={$excerptitems} bind:filterheadings>
-    <HeadingCount count={$headingitems.length} bind:showheading/>
+    <ExcerptBar {showheading} {side} {ptk} excerpts={$excerptitems} bind:selectedheadings>
+    <HeadingCount count={$filtersResult.length} bind:showheading/>
     
     <!-- <span class:displaynone={!showheading}>
     <svelte:component {onKeyword} this={$searchbox[ptk.format]||$searchbox.toc} {ptk} bind:keyvalue bind:keylabel/>
     </span> -->
 
-    <AutoComplete className="tofind" showClear={true} bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
+    <AutoComplete className="tofind" showClear={true} 
+    placeholder={_("全文查找 fulltext search")}
+    bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
 
     {#if showheading}
     <HeadingMenu {scrollStart} {ptk} {booksOfItems}/>
@@ -120,9 +123,9 @@ $: filterExcerptitems = filterBy($excerptitems, filterheadings );
     </ExcerptBar>
 
     {#if showheading}
-    <HeadingList {ptk} {side} items={headingitems} {onKeyword} {onScroll}/>
+    <HeadingList {ptk} {side} items={filtersResult} {onKeyword} {onScroll}/>
     {:else}
-    <ExcerptList {ptk} {side} items={filterExcerptitems} {tofind} {posting} {onScroll}/>
+    <ExcerptList {ptk} {side} items={selectedExcerptitems} {tofind} {posting} {onScroll}/>
     {/if}
 {/if}
 </div>

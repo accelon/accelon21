@@ -62,7 +62,7 @@ const chunkitemsById=(ptk,cl,idarr)=>{
     return {items,idmap,books : Object.keys(books)}    
 }
 
-export const buildHeadingList=(addr,scoredLine, headings,excerptitems)=>{
+export const buildHeadingList=(addr,scoredLine, excerptitems)=>{
     const ptk=useBasket(addr.basket);
     const cl=ptk.getChunkLabel();
     let nchunks=null; //all chunk
@@ -81,11 +81,11 @@ export const buildHeadingList=(addr,scoredLine, headings,excerptitems)=>{
     }
     const {idmap,items,books}=chunkitemsById(ptk,cl,nchunks);
     nchunks=idmap;
-    headings.set(items);
+    // headings.set(items);
 
-    if (get(headings).length == 0) {
+    if (items.length == 0) {
         excerptitems.set([]);    
-    } else if (get(headings).length===cl.names.length) { //all books
+    } else if (items.length===cl.names.length) { //all books
         const out=scoredLine.map(([y,score],key)=>{
             const ncl=bsearch(cl.linepos,y,true)-1;
             return {ptk,key,ncl, y,score}

@@ -19,5 +19,5 @@ let showmode=2;//display for whole page
 <Hamburgermenu {scrollStart} {showmode}>
     <Buttons values={$bkstore.aligned} items={alignablePitakas} />
     {#if alignablePitakas.length}<hr/>{/if}
-    <HeadingFilter {ptk}/>
+    <HeadingFilter {ptk} />
 </Hamburgermenu>

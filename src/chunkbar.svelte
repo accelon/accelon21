@@ -6,13 +6,13 @@ import Mulu from './mulu.svelte';
 import TocMenu from './tocmenu.svelte';
 import TabSelector from './tabselector.svelte';
 import {closetab} from './js/addresses';
-import {showFrontPage} from './js/store.js';
+import {showFrontPage,_,tosim,palitrans} from './js/store.js';
 import { parseAddress } from 'pitaka/offtext';
 export let ptk
 export let scrollStart=0,side=0;
 const vstore=getContext('vstore');
 const addresses=getContext('addresses');
-
+let lang=ptk.header.lang||DEFAULT_LANGUAGE;
 $: mulu = $vstore.mulu || [];
 $: y0= $vstore.y0;
 $: loc= $vstore.loc;
@@ -22,12 +22,12 @@ $: address=($addresses && $addresses[0].address)||'';
     {#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
     <TabSelector {side}/>
     <span class="pitaka_tocbartitle">
-        <span class="closetab" title="close tab  and open pitaka home" on:click={()=>closetab(addresses,true)}>
-            <div class="inlineblock closetabhome">{ptk&&parseAddress(address).basket }</div>
-            <span title="close tab" on:click={()=>closetab(addresses)}>{ptk&&parseAddress(address).loc }</span> 
+        <span class="closetab" title="close tab  and open pitaka home" on:click={()=>closetab(addresses)}>
+            <div class="inlineblock">{ptk&&parseAddress(address).basket }</div>
+            <span title="close tab" >{ptk&&parseAddress(address).loc }</span> 
         </span>
-
     </span>
+    <span class="closetab" on:click={()=>closetab(addresses,true)}>{_(ptk.headingOf(y0).text,$tosim,lang==='pl'&&$palitrans) }</span>
 
 
     <TocBar {ptk} {loc} {side}/>
@@ -47,8 +47,5 @@ $: address=($addresses && $addresses[0].address)||'';
     }
 
     .closetab:hover {   text-decoration:line-through; }
-    .closetabhome{    text-decoration: inherit;   }
-    .closetabhome:hover {/* need div to overwrite line-through setting*/
-        text-decoration:none;
-    }
+
 </style>

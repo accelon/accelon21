@@ -8,7 +8,7 @@ import {closetab} from './js/addresses';
 export let ptk;
 export let side=0;
 export let excerpts=[];
-export let filterheadings={};
+export let selectedheadings={};
 export let showheading;
 const addresses=getContext('addresses');
 const onclick=()=>{
@@ -22,7 +22,7 @@ const onclick=()=>{
         on:click={onclick}>{ptk.header.name}</span>
     <slot></slot>
     {#if ptk && excerpts.length && !showheading}
-    <ExcerptStat {ptk} {side} {excerpts} bind:filterheadings />
+    <ExcerptStat {ptk} {side} {excerpts} bind:selectedheadings />
     {/if}
 </div>
 <style>

@@ -5,14 +5,14 @@ import {showFrontPage} from './js/store.js'
 export let addresses,side;
 export let hide=false;
 
-import BookViewer from './bookviewer.svelte'
+import SearchViewer from './searchviewer.svelte'
 import ChunkViewer from './chunkviewer.svelte'
 import { parseAddress } from 'pitaka/offtext';
 
 setContext('addresses',addresses);
 const getViewer=address=>{
     const addr=parseAddress(address);
-    return addr.loc?ChunkViewer:BookViewer;
+    return addr.loc?ChunkViewer:SearchViewer;
 }
 
 </script>

@@ -1,25 +1,28 @@
 <script>
+import {getContext} from 'svelte'
 import StateBtn from '../comps/statebutton.svelte';
 import {filterEntry,allEntry} from 'pitaka/search';
 import {debounce} from 'pitaka/utils';
-import {headings} from '../js/filterstore.js';
-import heading from '../js/heading';
+import {_} from '../js/store.js';
+export let store;
 export let filter;
 export let ptk;
 export let name;
-let tofind='';
+let tofind=$store.opts.tofind||'';
+let mode=$store.opts.mode||0;
+
 $: filter;
 let history=["三","如來"];
-const {names} =ptk.getLabel(name);
-let mode=0;
+const {names,caption} =ptk.getLabel(name);
+
 const inputSearch=(m)=>{
     if (!tofind) {
-        headings.set(allEntry(names))
+        store.set(Object.assign($store,{ opts:{mode,tofind:''},res:allEntry(names)}))
         return;
     }
     tofind=tofind.trim();
     const res=filterEntry(tofind, names, m);
-    headings.set(res);
+    store.set(Object.assign($store,{opts:{mode,tofind},res}));
 }
 $: inputSearch(mode);
 const input=debounce(()=>{
@@ -29,26 +32,26 @@ const input=debounce(()=>{
         // matchCursorWord($cursor.ori)   
     // }
 },500);
-let matchmodestyles={m0:'var(--highlight)'};
-const changemode=()=>{
-    mode++;
-    if (mode>2) mode=0;
+
+const matchmodestyles=()=>{
+    const styles={m0:'var(--highlight)'};
     for (let i=0;i<3;i++) {
-        matchmodestyles['m'+i]= (mode==i)?'var(--highlight)':'auto';
+        styles['m'+i]= (mode==i)?'var(--highlight)':'auto';
     }
+    return styles;
 }
 const goback=idx=>{
     tofind=history[idx];
     inputSearch(mode);
     // matchCursorWord(cw);
 }
-
+const states={0:'begin',1:'middle','2':'end'};
 </script>
 <div class="searchbox">
     <div class="inputbox">
-        <StateBtn onclick={changemode} styles={matchmodestyles} 
-        forceupdate={mode} caption="matchmode"/>
-        <input class="tofind" bind:value={tofind} on:input={input}/>
+        <StateBtn bind:selectedIndex={mode}  styles={matchmodestyles(mode)} 
+         caption="matchmode" {states} />
+        <input class="tofind" bind:value={tofind} on:input={input} placeholder={_(caption)}/>
         <div class="history">
             {#each history.slice(0,3) as hitem,idx (idx)}
             <span class="historyitem" on:click={()=>goback(idx)}>{hitem} </span>

@@ -6,24 +6,23 @@ import Icons from './icons.js';
 export let onclick=null;
 export let disabled=false;
 export let title='';
-export let forceupdate='';
 export let states={};
+
 export let storeid=null;
 export let styles=null;
 export let caption='';
 const statekeys=Object.keys(states);
-let keyindex=(storeid && statekeys.indexOf( get(storeid).toString() ))||-1;
-if (keyindex==-1) {//invalid value
-    keyindex=0;    //force to first value
-    if (storeid && get(storeid).toString()!==statekeys[keyindex]) storeid.set(statekeys[keyindex]);
+export let selectedIndex=(storeid && statekeys.indexOf( get(storeid).toString() ))||-1;
+if (selectedIndex==-1) {//invalid value
+    selectedIndex=0;    //force to first value
+    if (storeid && get(storeid).toString()!==statekeys[selectedIndex]) storeid.set(statekeys[selectedIndex]);
 }
-
 
 const setcaption=()=>{
     if (storeid) caption=states[ get(storeid)]
     caption=Icons[caption]||caption;
 }
-const highlight=str=>{
+const highlight=(str,selectedIndex)=>{
     if (!styles) return str;
     return str.replace(/\$(\w+)/g,(m,m1)=>{
         if (typeof styles[m1]=='string') {
@@ -38,18 +37,17 @@ const highlight=str=>{
 
 const click=evt=>{
     if(disabled)return;
-    if (storeid) {
-        keyindex ++;
-        if (keyindex>= statekeys.length) keyindex=0;
-        storeid.set(statekeys[keyindex]);
-    }
+    selectedIndex ++;
+    if (selectedIndex>= statekeys.length) selectedIndex=0;
+    if (storeid) storeid.set(statekeys[selectedIndex]);
+
     onclick&&onclick(evt);
-    setcaption();
 }
+$: setcaption(selectedIndex);
 onMount(()=>setcaption());
 </script>
-<span class="button" class:disabled title={title} on:click={click} >
-    <span>{@html highlight(caption,forceupdate)}</span>
+<span class="button" class:disabled {title} on:click={click} >
+    <span>{@html highlight(caption,selectedIndex)}</span>
 </span>
 
 <style>
