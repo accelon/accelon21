@@ -66,7 +66,6 @@ const refreshquery=async (_addr)=>{
     } 
     if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime) {
         booksOfItems=buildHeadingList(_addr,scoredLine,excerptitems);
-
         // keylabel=_addr.kl;
         // keyvalue=_addr.kv;
         selectedheadings={};
