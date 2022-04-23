@@ -1,7 +1,14 @@
 const ENDINGCHARS= /[^\u3fff-\u9fff\dA-Za-z]/ ;
-import {parseOfftextLine } from 'pitaka/offtext'
 import {makeHook } from 'pitaka/align'
+import {calOriginalOffset} from 'pitaka/pali'
 
+const getWordAt=(linetext,x)=>{
+    let start=x,end=x;
+    while (start>0 && !isSpace(linetext.charAt(start))) start--;
+    if (linetext.charAt(start)==' ') start++;
+    while (end<linetext.length-1 && !isSpace(linetext.charAt(end))) end++;
+    return {start,end,text:linetext.substring(start,end)}
+}
 export const getTextHook=(ptk,evt)=>{
     if (!ptk)return{}
     const selection=getSelection();
@@ -19,29 +26,36 @@ export const getTextHook=(ptk,evt)=>{
     } else ele=an.parentElement;
     if (ele.tagName!=='T') return {};
 
+    const oritext=ele.attributes.ori&&ele.attributes.ori.value;
+    const linetext=oritext || ele.innerText;
+
     let w=sel.length;
 
-    const x=parseInt(ele.attributes.x.value)+offset;
+    const x=parseInt(ele.attributes.x.value)||0;
+    const xoffset=x+offset;
     const y=parseInt(ele.attributes.y.value);
-    const [linetext]=parseOfftextLine(ptk.getLine(y)||'');
+
 
     if (w+x>linetext.length) {
-        w=linetext.length-x;
-        sel=sel.substr(0,w);
+        w=linetext.length-xoffset;
+        sel=sel.substring(0,w);
     }
 
-    let punc=linetext.substr(x).match(ENDINGCHARS);
-    let end=x+w;
-    if (punc) end=punc.index;
-    let t=linetext.substr(x,w);
+    let punc=linetext.substr(xoffset).match(ENDINGCHARS);
+    let t=linetext.substr(xoffset,w);
     
     let ori=linetext.substr(x);
     punc=ori.match(ENDINGCHARS);
     if (punc) ori=ori.substr(0,punc.index); //original text
 
     const hook=makeHook(linetext, x, w);
+    const word=getWordAt(ele.innerText,offset).text;
 
-    return {hook,x,y,sel , t, ori}
+    const orioffset=calOriginalOffset(offset,ele.innerText, oritext);
+
+    const {start,text}=getWordAt(linetext,orioffset);
+
+    return {hook,x,y,sel , t, ori, word, orix:start+x, oriword:text}
 }
 export const markSelection=(ele,x,w)=>{
     while (ele&& (ele.tagName!=='T' && ele.tagName!=='DIV')) {
@@ -81,14 +95,17 @@ export const setSelection=(startnode,x,endnode,x2)=>{
     document.getSelection().removeAllRanges();
     document.getSelection().addRange(range);
 }
-
+const isSpace=c=>{
+    const code=c.charCodeAt(0);
+    return code<=0x20 || code === 0x3000;
+}
 export const getCursorWord=()=>{
     const sel=getSelection();
-    let tofind=sel.toString();
+    let cursorword=sel.toString();
     let offset=sel.anchorOffset;
     
-    if (tofind.trim()) {
-        return {tofind,offset,anchor:sel.anchorNode}
+    if (cursorword.trim()) {
+        return {cursorword,offset,anchor:sel.anchorNode}
     }
 
     const psib=sel.anchorNode.previousSibling ;
@@ -99,8 +116,11 @@ export const getCursorWord=()=>{
     if (!ori && !sel.anchorNode.data)return;
     let str=(ori||sel.anchorNode.data).replace(/<.+?>/g,'');;
     let dictch=str.substr(offset,50);
+    cursorword=dictch;
+    let start=offset,end=offset;
+    while (start>0 && !isSpace(str.charAt(start))) start--;
+    while (end<str.length-1 && !isSpace(str.charAt(end))) end++;
+    const word=str.substring(start,end);
 
-    tofind=dictch;
-
-    return {tofind,offset,anchor:sel.anchorNode}
+    return {cursorword,word,offset,anchor:sel.anchorNode}
 }

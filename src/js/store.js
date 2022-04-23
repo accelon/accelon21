@@ -27,7 +27,7 @@ export const renderer=writable({});   //renderer for different format
 export const filterer=writable({});   //filterer for filtering mode
 export const labeler=writable({});   //custom components for labels
 export const searchstore=writable({});   //search result cache 
-
+export const picked=writable({text:''});    //picked Word and it context
 export const labelerOf=cls=>{
     if (!cls) return;
     const L=get(labeler);

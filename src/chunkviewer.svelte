@@ -111,7 +111,7 @@ $vstore.scrollToY=scrollToY;
                 master=true {...data} {y0}  activeline={data.key==y} lang={ptk.langOf(y)}
                 {usernotes} linetofind={$vstore.linetofind} {bookmarks}  {loc} {ptk} {side}
             >
-            {#if data.key==y}<LineMenu {y0} {side} {loc} y={data.y||data.key} {ptk} aligned={optionalAlignedPitaka}/>{/if}
+            {#if data.key===y}<LineMenu {y0} {side} {loc} lang={ptk.langOf(y)} y={data.y||data.key} {ptk} aligned={optionalAlignedPitaka}/>{/if}
             </svelte:component>            
             {#each alignedPitaka as aptk,idx}
             <svelte:component this={data.renderer||$renderer[ptk.format]||$renderer.default}

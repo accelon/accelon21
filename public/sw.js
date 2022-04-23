@@ -26,7 +26,7 @@ self.addEventListener('fetch', (e) => {
           const cachemodified=Date.parse(r.headers.get('last-modified'));
           if (lastmodified>cachemodified) updatecache=true;
         } else updatecache=true;
-        if (e.request.url.indexOf('livereload.js')>0
+        if (e.request.url.indexOf('livereload')>0
          || e.request.url.indexOf('.ptk')>0) updatecache=false;
 
         if (updatecache) {

@@ -9,7 +9,7 @@ const svg=Icons[icon]||'';
 export let disabled=false;
 
 //use without store
-export let value;
+export let value='';
 export let onClick=null;
 const toggle=async evt=>{
     if (disabled) return;

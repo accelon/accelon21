@@ -1,11 +1,11 @@
 <script>
-import {tosim,palitrans,labelerOf} from './js/store.js';
+import {tosim,palitrans,labelerOf,picked} from './js/store.js';
 import {decoratePage,getSeqColor} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, OffTag, parseOfftextLine} from 'pitaka/offtext'
 import {parseHook} from 'pitaka/align';
 import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
 import {offtext2indic} from 'provident-pali'
-import {getTextHook} from './js/selection.js';
+import {getTextHook,getCursorWord} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
 import Bookmark from './bookmark.svelte'
@@ -31,7 +31,7 @@ export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
 $: id,hits;
 
-let extra=[];
+let extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind,notes,hits});
 $: lineText=()=>{
     const s=text||(ptk&&ptk.getLine(y||key))||''
     return s;
@@ -53,7 +53,6 @@ const refreshnote=()=>{
     $usernotes[dy].forEach(addNote);
     sortExtra();
 }
-$: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind,notes,hits});
 $: ptk && usernotes && $usernotes[dy]  && refreshnote($usernotes[dy]);
 
 const addNote=note=>{
@@ -99,22 +98,38 @@ const click=evt=>{
         onSelection(evt);
         if (getSelection().toString().length) return; 
 
-        let {x,y,ori}=getTextHook(ptk,evt);
+        let {x,y,ori, t , word, oriword, orix}=getTextHook(ptk,evt);
         if (evt.target.classList.contains('se')) {
             ori=evt.target.innerText;
             x=parseInt(evt.target.attributes.x.value);
         }
-        const entries = bestEntries(ori)||[];
-        if (!entries.length) return;
-        const E=entries[0];
-        const ptr=entries.map(entry=>PATHSEP+entry.ptk+PATHSEP+entry.e).join(';');
-        const w=E.e.length;
-        //single click to close the embed
+        picked.set({word:oriword});
+    
+        extra=extra.filter(i=>!!i);
         const opened=extra.filter(i=>i.name=='embed'&&(x>=i.x&&(i.x+i.w>x)));
-        extra=extra.filter(i=>i.name!=='embed').filter(i=>!!i);
-        if (opened.length===0) {
-            extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,x,w) );
+
+        extra=extra.filter(i=>i.name!=='embed');
+
+        if (evt.target.classList.contains('embed')) { //close if click on embeded span
             sortExtra();
+            return;
+        }
+        if (word && lang=='pl') {
+            const w=oriword.length+1;
+            extra.push( new OffTag('embed',{word:oriword,x:orix,w,y},0,orix,w));
+            sortExtra();
+        } else {
+            const entries = bestEntries(ori)||[];
+            if (!entries.length) return;
+            const E=entries[0];
+            const ptr=entries.map(entry=>PATHSEP+entry.ptk+PATHSEP+entry.e).join(';');
+            const w=E.e.length;
+            //single click to close the embed
+
+            if (opened.length===0) {
+                extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,x,w) );
+                sortExtra();
+            }            
         }
     }
 }
