@@ -29,6 +29,9 @@ const openAligner=evt=>{
     'my':_("緬文 ဗမာစာ"),'th':"泰文 ไทย",'lo':_("老撾文 ລາວ"),'km':"柬埔寨文 ភាសាខ្មែរ",
     'hi':_("天城體 हिन्दी"),'si':_("僧伽羅文 සිංහල"),'tb':"藏文 བོད་སྐད།"}} storeid={palitrans}/>
     </div>
+    <div>{_("化整為零 Factorization")}
+    <StateBtn states={{'':_("當行 Active Line"),'1':_("總是 Always"),'2':_("總不 Never") }} storeid={factorization}/>
+    </div>
     <div class='clickable' on:click={openManual} >{_("操作說明 Instruction")}</div>
     <div class='clickable' on:click={openAligner} >{_("對齊編輯器 Aligner")}</div>
     {/if}
