@@ -1,6 +1,6 @@
 <script>
 import StateBtn from './comps/statebutton.svelte';
-import {_,tosim,palitrans,systemsetting,aligning} from './js/store.js'
+import {_,tosim,palitrans,systemsetting,aligning,factorization} from './js/store.js'
 import { newopposite } from './js/addresses';
 import {NAMESPACESEP} from 'pitaka';
 import Alignerbar from './alignerbar.svelte';
@@ -30,7 +30,7 @@ const openAligner=evt=>{
     'hi':_("天城體 हिन्दी"),'si':_("僧伽羅文 සිංහල"),'tb':"藏文 བོད་སྐད།"}} storeid={palitrans}/>
     </div>
     <div>{_("化整為零 Factorization")}
-    <StateBtn states={{'':_("當行 Active Line"),'1':_("總是 Always"),'2':_("總不 Never") }} storeid={factorization}/>
+    <StateBtn states={{'0':_("永不 Never"),'1':_("當行 Active Line"),'2':_("總是 Always") }} storeid={factorization}/>
     </div>
     <div class='clickable' on:click={openManual} >{_("操作說明 Instruction")}</div>
     <div class='clickable' on:click={openAligner} >{_("對齊編輯器 Aligner")}</div>

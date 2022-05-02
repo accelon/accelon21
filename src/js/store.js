@@ -2,8 +2,9 @@ import {updateSettings,settings} from './savestore.js'
 import { writable ,get} from "svelte/store";
 import { toSim } from 'lossless-simplified-chinese';
 import { offtext2indic } from 'provident-pali';
-export const tosim=writable(settings.tosim);
+export const tosim=writable(settings.tosim||0);
 export const palitrans=writable(settings.palitrans);
+export const factorization=writable(settings.factorization||1);
 export const systemsetting=writable(false);
 export const aligning=writable(false);
 export const cursor=writable({});
@@ -36,6 +37,7 @@ export const labelerOf=cls=>{
 
 tosim.subscribe(tosim=>updateSettings({tosim}));
 palitrans.subscribe(palitrans=>updateSettings({palitrans}));
+factorization.subscribe(factorization=>updateSettings({factorization}));
 panepos.subscribe(panepos=>updateSettings({panepos}));
 
 

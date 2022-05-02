@@ -287,10 +287,8 @@ t.y-:before {content:'音';
 }
 
 t.hl {color:lightcoral}
-t.embed {cursor:no-drop ;background:highlight;color:highlightText;
-    padding-left:5px;padding-right:5px;border-radius: 5px;}
+t.embed {cursor:no-drop ;background:highlight;color:highlightText; padding-left:3px;border-radius: 0.25em;}
 t.se {border-bottom : solid 1px var(--highlight);cursor:pointer}
-
 t.pr[d]::before {
     color:blue;
     content: attr(b) "-" attr(d)
@@ -329,6 +327,34 @@ t.linetofind {color:orangered;}
 	font-size:50%;
 	font-family: "Tahoma"; color:greenyellow
  }
+
+t.sandhi {border-bottom: brown 1px  solid }
+t.sandhi:hover {cursor: pointer;color:rgba(0,0,0,0)}
+t.sandhi:hover:before {
+    display:inline-block;
+    width:0px;
+    /*margin-left: -0.3em;
+    margin-right: 0.3em;*/
+    margin-top:-0.5em;
+    vertical-align:top;
+    content:attr(repl) ;
+    color: brown;
+    font-size: 0.7em
+}
+
+t.psandhi {}
+t.psandhi:hover {cursor: pointer;color:rgba(0,0,0,0)}
+t.psandhi:hover:before {
+    display:inline-block;
+    width:0px;
+    /*margin-left: -0.5em;*/
+    /*margin-right: 0.5em;*/
+    /*margin-top:-1em;*/
+    /*vertical-align:top;*/
+    content:attr(repl)  ;
+    color: lightblue;
+    /*font-size: 1em;*/
+}
 
 /*
 .backlink[target] {

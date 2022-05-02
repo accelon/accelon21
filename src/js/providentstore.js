@@ -50,8 +50,9 @@ BAvIttVt,BAvIttVtA,BAvIttVtO,BAvIttVtEn,BAvIttVtsVs
 BAvn,BAvnM,BAvnA,BAvnAsUtVtM`);
 
 export const tofind=writable("");
+export const cursorword=writable("");
 export const activeline=writable(1)
-export const toiast=writable(false)
+export const toiast=writable(true);
 const filterlines=([items,_tofind])=>{
 	const out=[];
     if (_tofind.trim()) {

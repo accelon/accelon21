@@ -97,7 +97,7 @@ export const setSelection=(startnode,x,endnode,x2)=>{
 }
 const isSpace=c=>{
     const code=c.charCodeAt(0);
-    return code<=0x20 || code === 0x3000;
+    return code<=0x30 || code === 0x3000 || (code>=0x3A&& code<=0x41)|| (code>=0x5B&& code<=0x60)|| (code>=0x7b&& code<=0xC0);
 }
 export const getCursorWord=()=>{
     const sel=getSelection();
@@ -119,7 +119,9 @@ export const getCursorWord=()=>{
     cursorword=dictch;
     let start=offset,end=offset;
     while (start>0 && !isSpace(str.charAt(start))) start--;
-    while (end<str.length-1 && !isSpace(str.charAt(end))) end++;
+    if (isSpace(str.charAt(start))) start++;
+    while (end<str.length && !isSpace(str.charAt(end))) end++;
+
     const word=str.substring(start,end);
 
     return {cursorword,word,offset,anchor:sel.anchorNode}

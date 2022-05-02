@@ -1,8 +1,9 @@
 <script>
-import {tosim,palitrans,labelerOf,picked} from './js/store.js';
+import {tosim,palitrans,labelerOf,picked,factorization} from './js/store.js';
 import {decoratePage,getSeqColor} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, OffTag, parseOfftextLine} from 'pitaka/offtext'
 import {parseHook} from 'pitaka/align';
+import {factorizeText} from 'pitaka/pali'
 import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
 import {offtext2indic} from 'provident-pali'
 import {getTextHook,getCursorWord} from './js/selection.js';
@@ -33,13 +34,23 @@ $: id,hits;
 
 let extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind,notes,hits});
 $: lineText=()=>{
-    const s=text||(ptk&&ptk.getLine(y||key))||''
+    let s=text||(ptk&&ptk.getLine(y||key))||''
+    if (lang==='pl') {
+        const f=$factorization;
+        //factorization , 0:never, 1:activeline   2 :always
+        if (!$palitrans) { //only support in provident
+            s=factorizeText(s, (activeline && f==1) || f>1 );
+        } else {
+            s=factorizeText(s);
+        }
+        
+    }
     return s;
 };
 
-const transcript=(str,script)=>{
+const transcript=(str,palitrans)=>{
     if (lang!=='pl') return str;
-    return offtext2indic(str,script);
+    return offtext2indic(str,palitrans);
 }
 
 $: onlytext= parseOfftextLine(lineText())[0];
@@ -88,7 +99,7 @@ const onSelection=evt=>{//user note and highlight etc
 const click=evt=>{
     if (evt.button!==0) return;
     setactiveline && !nesting && setActiveLine(ptk,side,y||key ,y0);
-
+    if (!activeline) return;
     //scroll offset of the activeline
     const toolbarheight=evt.pageY-evt.layerY + 5; // don't know why ?? cannot can precise offset
     const activeoffset=evt.target.getBoundingClientRect().y-toolbarheight;
@@ -146,7 +157,7 @@ open.name 存在則是此標籤的起點 為避免多餘的空格，前後labele
 //--><svelte:component this={labelerOf(snpt.open.name)} opening={1} {nesting} {side}
     on:update={update} on:close={closelabel} {ptk} text={transcript(snpt.text,$palitrans)} starty={y||key} {...snpt.open} />{/if}<!-- 
 所有加諸在此段文字的樣式，一個標籤可能會被拆成多段 
-//--><span >{@html composeSnippet(snpt,y||key,$tosim,lang==='pl'&&$palitrans)}</span>{#if labelerOf(snpt.close&&snpt.close.name)}<!-- 
+//--><span >{@html composeSnippet(snpt,y||key,$tosim,lang==='pl',$palitrans)}</span>{#if labelerOf(snpt.close&&snpt.close.name)}<!-- 
 close.name 存在，則是該標籤的終點。屬性在 sntp.open
 //--><svelte:component this={labelerOf(snpt.close.name)} opening={0} {nesting}  {side}
    on:update={update} on:close={closelabel} {ptk} text={transcript(snpt.text,$palitrans)} starty={y||key} {...snpt.open} />
