@@ -5,14 +5,17 @@ import TocBar from './tocbar.svelte';
 import Mulu from './mulu.svelte';
 import TocMenu from './tocmenu.svelte';
 import TabSelector from './tabselector.svelte';
+import {getLangstyle} from './js/decorate.js'
 import {closetab} from './js/addresses';
-import {showFrontPage,_,tosim,palitrans} from './js/store.js';
+import {showFrontPage,_,tosim,palitrans,factorization} from './js/store.js';
 import { parseAddress } from 'pitaka/offtext';
 export let ptk
 export let scrollStart=0,side=0;
 const vstore=getContext('vstore');
 const addresses=getContext('addresses');
 let lang=ptk.header.lang||DEFAULT_LANGUAGE;
+$: langstyle=getLangstyle(lang,$palitrans);
+
 $: mulu = $vstore.mulu || [];
 $: y0= $vstore.y0;
 $: loc= $vstore.loc;
@@ -27,7 +30,7 @@ $: address=($addresses && $addresses[0].address)||'';
             <span title="close tab" >{ptk&&parseAddress(address).loc }</span> 
         </span>
     </span>
-    <span class="closetab" on:click={()=>closetab(addresses,true)}>{_(ptk.headingOf(y0).text,$tosim,lang==='pl'&&$palitrans) }</span>
+    <span class={"closetab "+langstyle} on:click={()=>closetab(addresses,true)}>{_(ptk.headingOf(y0).text,$tosim,lang==='pl'&&$palitrans) }</span>
 
 
     <TocBar {ptk} {loc} {side}/>

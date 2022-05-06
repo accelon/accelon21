@@ -3,7 +3,6 @@ import Checkbox from './checkbox.svelte';
 export let type='';
 export let br=false;
 export let onoff=false;
-export let allon=false;
 export let items=[];
 export let values=[];
 const buttontype={'checkbox':Checkbox}[type];

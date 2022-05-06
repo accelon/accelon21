@@ -2,6 +2,7 @@ import {OffTag} from 'pitaka/offtext';
 import {diffCJK,trimPunc} from 'pitaka/utils';
 import {parseHook, posPin} from 'pitaka/align';
 import {fromSim, toSim } from 'lossless-simplified-chinese';
+export const getLangstyle=(l,trans)=>'lang-'+l+(l==='pl'?'-'+(trans||''):'');
 export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes,hits})=>{
     const extra=[];
     if (!ptk || !linetext) return extra;

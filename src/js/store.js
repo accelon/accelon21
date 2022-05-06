@@ -1,10 +1,11 @@
 import {updateSettings,settings} from './savestore.js'
 import { writable ,get} from "svelte/store";
 import { toSim } from 'lossless-simplified-chinese';
-import { offtext2indic } from 'provident-pali';
+import {factorizeText} from 'pitaka/pali';
+import { offtext2indic} from 'provident-pali';
 export const tosim=writable(settings.tosim||0);
 export const palitrans=writable(settings.palitrans);
-export const factorization=writable(settings.factorization||1);
+export const factorization=writable(settings.factorization);
 export const systemsetting=writable(false);
 export const aligning=writable(false);
 export const cursor=writable({});
@@ -13,8 +14,12 @@ export const panepos=writable(settings.panepos);
 export const _=(text,sim,script)=>{
     if (typeof sim=='undefined') sim=get(tosim);
     let t=text;
-    if (script) t=offtext2indic(text,script);
-    else if (parseInt(sim)) t=toSim(text,sim);
+    if (typeof script!=='undefined') {
+        if (parseInt(get(factorization))>0) t=factorizeText(t, true ,script);
+        t=offtext2indic(t,script);
+    }
+    else if (parseInt(sim)) t=toSim(t,sim);
+
     return t;
 };
 

@@ -38,12 +38,7 @@ $: lineText=()=>{
     if (lang==='pl') {
         const f=$factorization;
         //factorization , 0:never, 1:activeline   2 :always
-        if (!$palitrans) { //only support in provident
-            s=factorizeText(s, (activeline && f==1) || f>1 );
-        } else {
-            s=factorizeText(s);
-        }
-        
+        s=factorizeText(s, (activeline && f==1) || f>1 , $palitrans);
     }
     return s;
 };
