@@ -1,5 +1,5 @@
 <script>
-import {tosim,palitrans,labelerOf,picked,factorization} from './js/store.js';
+import {tosim,edict,palitrans,labelerOf,picked,factorization} from './js/store.js';
 import {decoratePage,getSeqColor} from './js/decorate.js';
 import {composeSnippet,OfftextToSnippet, OffTag, parseOfftextLine} from 'pitaka/offtext'
 import {parseHook} from 'pitaka/align';
@@ -87,14 +87,14 @@ const update=({detail})=>{
 }
 
 const onSelection=evt=>{//user note and highlight etc
-    const {hook,sel,x,y}=getTextHook(ptk,evt);
+    const {hook,sel,x,y}=getTextHook(ptk,evt,lang,$palitrans);
     cursorAddress.set({ptk,sel,loc,x,y,hook,usernotes,bookmarks,dy});
 }
 
 const click=evt=>{
     if (evt.button!==0) return;
     setactiveline && !nesting && setActiveLine(ptk,side,y||key ,y0);
-    if (!activeline) return;
+    // if (!activeline) return;
     //scroll offset of the activeline
     const toolbarheight=evt.pageY-evt.layerY + 5; // don't know why ?? cannot can precise offset
     const activeoffset=evt.target.getBoundingClientRect().y-toolbarheight;
@@ -104,12 +104,13 @@ const click=evt=>{
         onSelection(evt);
         if (getSelection().toString().length) return; 
 
-        let {x,y,ori, t , word, oriword, orix}=getTextHook(ptk,evt);
+        let {x,y,ori, t ,  word, lexeme, orix}=getTextHook(ptk,evt,lang,$palitrans);
         if (evt.target.classList.contains('se')) {
             ori=evt.target.innerText;
             x=parseInt(evt.target.attributes.x.value);
         }
-        picked.set({word:oriword});
+
+        picked.set({word,lexeme});
     
         extra=extra.filter(i=>!!i);
         const opened=extra.filter(i=>i.name=='embed'&&(x>=i.x&&(i.x+i.w>x)));
@@ -120,22 +121,26 @@ const click=evt=>{
             sortExtra();
             return;
         }
-        if (word && lang=='pl') {
-            const w=oriword.length+1;
-            extra.push( new OffTag('embed',{word:oriword,x:orix,w,y},0,orix,w));
-            sortExtra();
-        } else {
-            const entries = bestEntries(ori)||[];
-            if (!entries.length) return;
-            const E=entries[0];
-            const ptr=entries.map(entry=>PATHSEP+entry.ptk+PATHSEP+entry.e).join(';');
-            const w=E.e.length;
-            //single click to close the embed
 
-            if (opened.length===0) {
-                extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,x,w) );
+        if ($edict==1) {
+            if (word && lang=='pl') {
+                const w=oriword.length+1;
+                extra.push( new OffTag('embed',{word:oriword,x:orix,w,y},0,orix,w));
                 sortExtra();
-            }            
+            } else {
+                const entries = bestEntries(ori)||[];
+                if (!entries.length) return;
+                const E=entries[0];
+                const ptr=entries.map(entry=>PATHSEP+entry.ptk+PATHSEP+entry.e).join(';');
+                const w=E.e.length;
+                //single click to close the embed
+
+                if (opened.length===0) {
+                    extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,x,w) );
+                    sortExtra();
+                }            
+            }
+
         }
     }
 }

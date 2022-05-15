@@ -4,6 +4,7 @@ import { toSim } from 'lossless-simplified-chinese';
 import {factorizeText} from 'pitaka/pali';
 import { offtext2indic} from 'provident-pali';
 export const tosim=writable(settings.tosim||0);
+export const edict=writable(settings.edict||0);
 export const palitrans=writable(settings.palitrans);
 export const factorization=writable(settings.factorization);
 export const systemsetting=writable(false);
@@ -14,7 +15,7 @@ export const panepos=writable(settings.panepos);
 export const _=(text,sim,script)=>{
     if (typeof sim=='undefined') sim=get(tosim);
     let t=text;
-    if (typeof script!=='undefined') {
+    if (script!==false && typeof script!=='undefined') {
         if (parseInt(get(factorization))>0) t=factorizeText(t, true ,script);
         t=offtext2indic(t,script);
     }
@@ -33,7 +34,7 @@ export const renderer=writable({});   //renderer for different format
 export const filterer=writable({});   //filterer for filtering mode
 export const labeler=writable({});   //custom components for labels
 export const searchstore=writable({});   //search result cache 
-export const picked=writable({text:''});    //picked Word and it context
+export const picked=writable({word:'',lexeme:''});    //picked Word and it context
 export const labelerOf=cls=>{
     if (!cls) return;
     const L=get(labeler);
@@ -41,6 +42,7 @@ export const labelerOf=cls=>{
 }
 
 tosim.subscribe(tosim=>updateSettings({tosim}));
+edict.subscribe(edict=>updateSettings({edict}));
 palitrans.subscribe(palitrans=>updateSettings({palitrans}));
 factorization.subscribe(factorization=>updateSettings({factorization}));
 panepos.subscribe(panepos=>updateSettings({panepos}));

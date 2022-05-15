@@ -1,15 +1,25 @@
 const ENDINGCHARS= /[^\u3fff-\u9fff\dA-Za-z]/ ;
 import {makeHook } from 'pitaka/align'
-import {calOriginalOffset} from 'pitaka/pali'
+import {calOriginalOffset,langSplitChar} from 'pitaka/pali'
 
-const getWordAt=(linetext,x)=>{
+const isSpace=(c,extrachars)=>{
+    const code=c.charCodeAt(0);
+    const isspace= code<=0x30 || (code >= 0x3000 && code<=0x3020)|| (code>=0x3A&& code<=0x40)||
+     (code>=0x5B&& code<=0x60)|| (code>=0x7b&& code<=0xC0) || (code>=0x2000&&code<=0x2bff) || code>=0xfE10;
+
+    if (extrachars) return isspace && c!==extrachars;
+    else return isspace;
+}
+const getWordAt=(linetext,x, extrachars)=>{
     let start=x,end=x;
-    while (start>0 && !isSpace(linetext.charAt(start))) start--;
-    if (linetext.charAt(start)==' ') start++;
-    while (end<linetext.length-1 && !isSpace(linetext.charAt(end))) end++;
+
+    while (start>0 && !isSpace(linetext.charAt(start),extrachars)) start--;
+    if (isSpace(linetext.charAt(start),extrachars)) start++;
+    while (end<linetext.length-1 && !isSpace(linetext.charAt(end),extrachars)) end++;
     return {start,end,text:linetext.substring(start,end)}
 }
-export const getTextHook=(ptk,evt)=>{
+
+export const getTextHook=(ptk,evt,lang,palitrans)=>{
     if (!ptk)return{}
     const selection=getSelection();
     const an=selection.anchorNode;
@@ -49,13 +59,18 @@ export const getTextHook=(ptk,evt)=>{
     if (punc) ori=ori.substr(0,punc.index); //original text
 
     const hook=makeHook(linetext, x, w);
-    const word=getWordAt(ele.innerText,offset).text;
+    const extrachars=langSplitChar(palitrans);
+    const displayword=getWordAt(ele.innerText,offset,extrachars);
+    const displaylexeme=getWordAt(ele.innerText,offset);
 
-    const orioffset=calOriginalOffset(offset,ele.innerText, oritext);
+    const wordoffset=lang=='pl'?calOriginalOffset(displayword.start,ele.innerText, oritext):offset;
 
-    const {start,text}=getWordAt(linetext,orioffset);
+    const lexemeoffset=lang=='pl'?calOriginalOffset(displaylexeme.start,ele.innerText, oritext):offset;
 
-    return {hook,x,y,sel , t, ori, word, orix:start+x, oriword:text}
+    const word=getWordAt(linetext,wordoffset,extrachars).text;
+    const lexeme=getWordAt(linetext,lexemeoffset).text;
+
+    return {hook,x,y,sel , t, ori, word, lexeme, displayword:displayword.text,displaylexeme:displaylexeme.text}
 }
 export const markSelection=(ele,x,w)=>{
     while (ele&& (ele.tagName!=='T' && ele.tagName!=='DIV')) {
@@ -95,11 +110,7 @@ export const setSelection=(startnode,x,endnode,x2)=>{
     document.getSelection().removeAllRanges();
     document.getSelection().addRange(range);
 }
-const isSpace=c=>{
-    const code=c.charCodeAt(0);
-    return code<=0x30 || code === 0x3000 || (code>=0x3A&& code<=0x40)||
-     (code>=0x5B&& code<=0x60)|| (code>=0x7b&& code<=0xC0) || (code>=0x2000&&code<=0x2bff);
-}
+
 export const getCursorWord=()=>{
     const sel=getSelection();
     let cursorword=sel.toString();

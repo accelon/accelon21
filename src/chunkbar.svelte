@@ -13,7 +13,7 @@ export let ptk
 export let scrollStart=0,side=0;
 const vstore=getContext('vstore');
 const addresses=getContext('addresses');
-let lang=ptk.header.lang||DEFAULT_LANGUAGE;
+let lang=ptk.header.lang;
 $: langstyle=getLangstyle(lang,$palitrans);
 
 $: mulu = $vstore.mulu || [];
