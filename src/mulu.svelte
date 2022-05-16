@@ -1,7 +1,7 @@
 <script>
 import { getContext } from 'svelte';
 import { settab,setActiveLine } from './js/addresses';
-import {_,tosim} from './js/store.js';
+import {_,tosim,picked} from './js/store.js';
 import LineFilter from './linefilter.svelte';
 /* todo , use comps/hamburgermenu  */
 const vstore=getContext('vstore');
@@ -42,8 +42,10 @@ $: showing = (scrollStart<AUTOMENULINE && showmode==1) || showmode==2;
 <span class="hamburger" class:showing on:click={setshowmode}>☰</span>
 <LineFilter/>
 {#if showing }
+selected:{$picked.lexeme}
 <div  class="dropdownpanel">
     {#key $tosim}
+	
     {#each mulu as [level,name,itemy,addr] }
         <div class:upper={y0+scrollStart>itemy} class="item" 
             style={"padding-left:"+((level-1)*3)+"px;color:"+color(level,addr)}>

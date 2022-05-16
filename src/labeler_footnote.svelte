@@ -23,7 +23,7 @@ async function update(attrs){
     if (addr) { //other chunk
         [y]=ptk.getPageRange(addr);
     }
-    if (y) lines=await ptk.fetchFootnote(y, attrs.n); 
+    if (y) lines=await ptk.fetchFootnote(y, attrs.id); 
 };
 
 $: if (!opening && showing) update(attrs);

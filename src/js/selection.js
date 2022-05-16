@@ -13,7 +13,7 @@ const isSpace=(c,extrachars)=>{
 const getWordAt=(linetext,x, extrachars)=>{
     let start=x,end=x;
 
-    while (start>0 && !isSpace(linetext.charAt(start),extrachars)) start--;
+    while (start>0 && linetext.charCodeAt(start)<0x3400 && !isSpace(linetext.charAt(start),extrachars)) start--;
     if (isSpace(linetext.charAt(start),extrachars)) start++;
     while (end<linetext.length-1 && !isSpace(linetext.charAt(end),extrachars)) end++;
     return {start,end,text:linetext.substring(start,end)}
@@ -68,7 +68,14 @@ export const getTextHook=(ptk,evt,lang,palitrans)=>{
     const lexemeoffset=lang=='pl'?calOriginalOffset(displaylexeme.start,ele.innerText, oritext):offset;
 
     const word=getWordAt(linetext,wordoffset,extrachars).text;
-    const lexeme=getWordAt(linetext,lexemeoffset).text;
+    let lexeme=getWordAt(linetext,lexemeoffset).text;
+
+    if (ptk.lemma) {
+        const lemmas=ptk.enumLemma(word);
+        if (lemmas.length) {
+            lexeme=lemmas[0];
+        }
+    }
 
     return {hook,x,y,sel , t, ori, word, lexeme, displayword:displayword.text,displaylexeme:displaylexeme.text}
 }

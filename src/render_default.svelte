@@ -129,16 +129,18 @@ const click=evt=>{
                 sortExtra();
             } else {
                 const entries = bestEntries(ori)||[];
-                if (!entries.length) return;
-                const E=entries[0];
-                const ptr=entries.map(entry=>PATHSEP+entry.ptk+PATHSEP+entry.e).join(';');
-                const w=E.e.length;
-                //single click to close the embed
+                if (entries.length) {
+                    const E=entries[0];
+                    const ptr=entries.map(entry=>PATHSEP+entry.ptk+PATHSEP+entry.e).join(';');
+                    const w=E.e.length;                    
+                    //single click to close the embed
 
-                if (opened.length===0) {
-                    extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,x,w) );
-                    sortExtra();
-                }            
+                    if (opened.length===0) {
+                        extra.push( new OffTag('embed',{'@':ptr,x,w,y},0,x,w) );
+                        sortExtra();
+                    }            
+
+                }
             }
 
         }
