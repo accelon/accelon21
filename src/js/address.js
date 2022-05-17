@@ -11,7 +11,7 @@ export const getCursorAddress=()=>{
     const a=get(cursorAddress);
     if (!a.loc)return;
     // console.log('side tab',a.side,a.tabid)
-    const loc=ptk.locOf(a.y);
+    const loc=a.ptk.locOf(a.y);
     return stringifyAddress({ptk:a.ptk,loc,hook:a.hook});
 }
 

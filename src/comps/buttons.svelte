@@ -3,9 +3,10 @@ import Checkbox from './checkbox.svelte';
 export let type='';
 export let br=false;
 export let onoff=false;
+export let allon=false;
 export let items=[];
 export let values=[];
-const buttontype={'checkbox':Checkbox}[type];
+const buttontype={'checkbox':Checkbox}[type] || Checkbox;
 
 const toggle=name=>{
     if (values.includes(name)) {
@@ -19,7 +20,8 @@ const allonoff=()=>{
     if (values.length) values=[]   
     else values=items.map(it=>it.name);
 }
-if (!values.length) allonoff(); //turn on all
+if (!values.length && allon) allonoff(); //turn on all
+
 </script>
 {#each items as item}
 <svelte:component this={buttontype} 

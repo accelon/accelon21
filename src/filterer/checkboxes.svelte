@@ -21,4 +21,4 @@ const update=vals=>{
 $: update(values);
 const items=options.map(it=>{return {name:it[0],label:it[1]} });
 </script>
-<Buttons onoff={true} type="checkbox" bind:values {items}/>
+<Buttons allon={true} onoff={true} type="checkbox" bind:values {items}/>

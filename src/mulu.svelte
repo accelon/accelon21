@@ -42,14 +42,11 @@ $: showing = (scrollStart<AUTOMENULINE && showmode==1) || showmode==2;
 <span class="hamburger" class:showing on:click={setshowmode}>☰</span>
 <LineFilter/>
 {#if showing }
-selected:{$picked.lexeme}
 <div  class="dropdownpanel">
     {#key $tosim}
-	
     {#each mulu as [level,name,itemy,addr] }
         <div class:upper={y0+scrollStart>itemy} class="item" 
             style={"padding-left:"+((level-1)*3)+"px;color:"+color(level,addr)}>
-        
         {#if addr}
         <span class="external" lnk={addr} on:click={golink}>{_(name,$tosim)}
         →{caption(addr)}</span>
@@ -57,7 +54,6 @@ selected:{$picked.lexeme}
         <span 
         {itemy} on:click={scrolltotocitem}>{_(name)}</span>
         {/if}
-        
         </div>
     {/each}
     {/key}

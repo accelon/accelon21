@@ -26,7 +26,7 @@ const displayItems=derived(items,(I,set)=>{
     })
     set(displayitems);
 },[]);
-const stor=getContext('bkstore');
+const bkstore=getContext('bkstore');
 
 $: langstyle=getLangstyle(lang,$palitrans);
 
@@ -51,7 +51,7 @@ const goitem=(y0)=>{
     const addr=stringifyAddress(ptr);
     settab(side,addr,{newtab:true})
 }
-$: alignedPitaka=($stor.aligned||[]).map(n=>useBasket(n));
+$: alignedPitaka=($bkstore.aligned||[]).map(n=>useBasket(n));
 
 </script>
 <VirtualScroll bind:this={vscroll} start={-1}   on:scroll={scroll}
@@ -69,7 +69,7 @@ keeps={50} data={$displayItems} key="key" height="calc(100% - 1.5em)" let:data >
     
     <!-- 其他語言的標題 ，在 headingMenu 選擇 //-->
     {#each alignedPitaka as p,idx}
-    <div on:click={()=>goitem(data.y0)} style={"color:"+getSeqColor(idx+1)} class={"tocitem "+getLangstyle(p.header.lang,$palitrans)}>
+    <div on:click={()=>goitem(data.y0)} style={"color:"+getSeqColor(idx+1)} class={"tocitem "+getLangstyle(p.header.lang,$palitrans)}>{p.headingOf(ptk.locOf(data.y0,true)).rawtext}
     {getTitle(p.headingOf( ptk.locOf(data.y0,true)).text,$tosim,p.header.lang==='pl'&&$palitrans ,$factorization)}</div>
     {/each}
 

@@ -30,8 +30,8 @@ onMount(()=>{
     document.addEventListener('click', onselectionchange, false);
     document.addEventListener('touchend', onselectionchange, false);
 })
-async function copyaddress (){
-    await navigator.clipboard.writeText(getCursorAddress());
+async function copy (){
+    await navigator.clipboard.writeText(selectedText);
     selectedText='';
 }
 const newnote=()=>{
@@ -51,7 +51,7 @@ const gourl=(url)=>{
 </script>
 <div bind:this={menuEle} class="selectionmenu" class:visible={!!selectedText}>
 <Btn icon="search"/>
-<Btn icon="copy" onclick={copyaddress}/>
+<Btn icon="copy" onclick={copy}/>
 {#each enumSearchSite(selectedText,lang) as site}
 <Btn icon={site.icon} onclick={()=>gourl(site.url)}/>
 {/each}

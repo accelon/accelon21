@@ -10,4 +10,4 @@ $: y,side,ptk,y0;
 $: dy=y-ptk.locY(loc);
 </script>
 
-<span class='linemenu'>{#each alignedPtk as aptk} <Parallel ptk={aptk} {loc} {dy} /> {/each}{#if lang=='pl'}<PaliMenu/>{/if}</span>
+<span class='linemenu'>{#each alignedPtk as aptk} <Parallel ptk={aptk} alignptk={ptk} {loc} {dy} /> {/each}{#if lang=='pl'}<PaliMenu/>{/if}</span>

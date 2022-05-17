@@ -143,7 +143,8 @@ const click=evt=>{
                 }
             }
         } else {
-            markSelection(evt.target,elex,lexeme.length);
+            const elestart=evt.target.attributes.x?parseInt(evt.target.attributes.x.value):0;
+            markSelection(evt.target,elestart+elex,lexeme.length);
         }
     }
 }

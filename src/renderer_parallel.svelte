@@ -9,9 +9,21 @@ import Hyperlink from './comps/hyperlink.svelte';
 const vstore=getContext('vstore');
 export let loc;
 export let ptk;
+export let alignptk;
 export let side=0;
 export let dy=0;
 const paraname=ptk.header.name;
+const getCaption=()=>{
+    const at=paraname.indexOf(alignptk.name+'-');
+    let s=paraname;
+    if (at==0 && paraname.length>alignptk.name.length) {
+        let idx=alignptk.name.length;
+        if (paraname[idx]=='-') idx++;
+        s=paraname.slice(idx);
+    }
+    return s;
+}
+
 let fetched=0;
 let showing=!!$vstore.parallels[paraname];
 let [y0] = ptk.getPageRange(loc); 
@@ -47,10 +59,10 @@ const onoff=(bool)=>{
 {ptk} {text} {y} {y0} {loc} lang={ptk.langOf(y)}>
  <span slot="start" class='btnparallel clickable showing'
  title={_(ptk.header.title,$tosim)}
-  on:click={()=>onoff(false)} >{paraname}</span>
+  on:click={()=>onoff(false)} >{getCaption()}</span>
  <Hyperlink {side} {href}/>
 </svelte:component>
 {:else} 
 <span class='btnparallel clickable' 
-title={_(ptk.header.title,$tosim)} on:click={()=>onoff(true)} >{paraname}</span>
+title={_(ptk.header.title,$tosim)} on:click={()=>onoff(true)} >{getCaption()}</span>
 {/if}

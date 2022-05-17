@@ -56,7 +56,7 @@ const chunkitemsById=(ptk,cl,idarr)=>{
     }
     const books={}
     items.forEach(it=>{
-        const bk=ptk.bookOf(it.y0);
+        const bk=ptk.bookOf(it);
         if (bk && !books[bk]) books[bk]=true;
     });
     return {items,idmap,books : Object.keys(books)}    

@@ -187,6 +187,7 @@ div.hr {height: 1px;}
 	color:black;display:inline-block;width:2.2em;align-items: center;text-align: center;}
 
 .linemenu {
+	float: right;
 	display:inline-block;
     vertical-align:top;
 }

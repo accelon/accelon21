@@ -7,9 +7,12 @@ export let ptk;
 const optionsStore=getContext('filtersOptions');
 const filtersResult=getContext('filtersResult');
 const filters=ptk.getHeadingFilters();
+
 const O=$optionsStore;
 for (let i=0;i<filters.length;i++) {
     const F=filters[i];
+    F.filter;
+    if (!F.filter) F.filter=(ptk.isDictionary()?'entry_':'heading_')+ptk.langOf();
     if (! O[F.filter] ) {
         O[F.filter] = writable({name:F.filter,opts:[] , res:[] }); 
     }
