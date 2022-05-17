@@ -6,7 +6,7 @@ import {parseHook} from 'pitaka/align';
 import {factorizeText} from 'pitaka/pali'
 import {bestEntries,DEFAULT_LANGUAGE,PATHSEP} from 'pitaka';
 import {offtext2indic} from 'provident-pali'
-import {getTextHook,getCursorWord} from './js/selection.js';
+import {getTextHook,getCursorWord,markSelection} from './js/selection.js';
 import {cursorAddress} from './js/address.js';
 import {saveNote} from './js/usernotes';
 import Bookmark from './bookmark.svelte'
@@ -104,7 +104,7 @@ const click=evt=>{
         onSelection(evt);
         if (getSelection().toString().length) return; 
 
-        let {x,y,ori, t ,  word, lexeme, orix}=getTextHook(ptk,evt,lang,$palitrans);
+        let {x,y,elex,ori, t ,  word, lexeme, orix}=getTextHook(ptk,evt,lang,$palitrans);
         if (evt.target.classList.contains('se')) {
             ori=evt.target.innerText;
             x=parseInt(evt.target.attributes.x.value);
@@ -142,7 +142,8 @@ const click=evt=>{
 
                 }
             }
-
+        } else {
+            markSelection(evt.target,elex,lexeme.length);
         }
     }
 }

@@ -20,10 +20,11 @@ export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
 let vscroll;
 const displayItems=derived(items,(I,set)=>{
     const {names,linepos,idarr} =ptk.getHeadingLabel();
-    set(I.map((it,idx)=>{
+    let displayitems=I.filter(it=>names[it].trim()).map((it,idx)=>{
         const y0=linepos[it];
         return {key:it,id:idarr[it], text:names[it], y0};
-    }));
+    })
+    set(displayitems);
 },[]);
 const stor=getContext('bkstore');
 

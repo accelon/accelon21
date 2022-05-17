@@ -1,5 +1,6 @@
 const ENDINGCHARS= /[^\u3fff-\u9fff\dA-Za-z]/ ;
-import {makeHook } from 'pitaka/align'
+import {makeHook} from 'pitaka/align'
+import {CJKRange,isSurrogate} from 'pitaka/utils'
 import {calOriginalOffset,langSplitChar} from 'pitaka/pali'
 
 const isSpace=(c,extrachars)=>{
@@ -15,7 +16,7 @@ const getWordAt=(linetext,x, extrachars)=>{
 
     while (start>0 && linetext.charCodeAt(start)<0x3400 && !isSpace(linetext.charAt(start),extrachars)) start--;
     if (isSpace(linetext.charAt(start),extrachars)) start++;
-    while (end<linetext.length-1 && !isSpace(linetext.charAt(end),extrachars)) end++;
+    while (end<linetext.length && !isSpace(linetext.charAt(end),extrachars)) end++;
     return {start,end,text:linetext.substring(start,end)}
 }
 
@@ -36,8 +37,9 @@ export const getTextHook=(ptk,evt,lang,palitrans)=>{
     } else ele=an.parentElement;
     if (ele.tagName!=='T') return {};
 
-    const oritext=ele.attributes.ori&&ele.attributes.ori.value;
+    let oritext=ele.attributes.ori&&ele.attributes.ori.value;
     const linetext=oritext || ele.innerText;
+    if (oritext.charAt(0)==' '&& ele.innerText.charAt(0)!==' ') oritext=oritext.slice(1); //workaround for leading space
 
     let w=sel.length;
 
@@ -70,14 +72,22 @@ export const getTextHook=(ptk,evt,lang,palitrans)=>{
     const word=getWordAt(linetext,wordoffset,extrachars).text;
     let lexeme=getWordAt(linetext,lexemeoffset).text;
 
+    let foundlemma=false;
     if (ptk.lemma) {
         const lemmas=ptk.enumLemma(word);
         if (lemmas.length) {
             lexeme=lemmas[0];
+            foundlemma=true;
         }
+    } 
+    if (!foundlemma&&CJKRange(lexeme)){
+        const sur=isSurrogate(lexeme);
+        lexeme=sur?lexeme.slice(0,2):lexeme.slice(0,1);
     }
 
-    return {hook,x,y,sel , t, ori, word, lexeme, displayword:displayword.text,displaylexeme:displaylexeme.text}
+    return {hook,x,y,sel , t, ori, word, lexeme, 
+        elex:offset,
+        displayword:displayword.text,displaylexeme:displaylexeme.text}
 }
 export const markSelection=(ele,x,w)=>{
     while (ele&& (ele.tagName!=='T' && ele.tagName!=='DIV')) {
