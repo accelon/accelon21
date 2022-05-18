@@ -47,7 +47,7 @@ $: if ($viewitems[0] && topkey !== $viewitems[0].key) { //initial scroll
 const vsSyncronize=(dis)=>{
     const yoffset=vscroll.getIndexOffset(y-y0) - vscroll.getOffset();
     const delta=yoffset - dis;
-    vscroll.scrollToOffset( vscroll.getOffset() + delta );
+    if (Math.abs(delta)>500) vscroll.scrollToOffset( vscroll.getOffset() + delta );
 }
 $: if(active&&$viewitems.length) {
     setTimeout(()=>{

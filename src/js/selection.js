@@ -37,7 +37,7 @@ export const getTextHook=(ptk,evt,lang,palitrans)=>{
     } else ele=an.parentElement;
     if (ele.tagName!=='T') return {};
 
-    let oritext=ele.attributes.ori&&ele.attributes.ori.value;
+    let oritext=ele.attributes.ori&&ele.attributes.ori.value||'';
     const linetext=oritext || ele.innerText;
     if (oritext.charAt(0)==' '&& ele.innerText.charAt(0)!==' ') oritext=oritext.slice(1); //workaround for leading space
 

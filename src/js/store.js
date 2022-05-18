@@ -8,7 +8,7 @@ export const edict=writable(settings.edict||0);
 export const palitrans=writable(settings.palitrans);
 export const factorization=writable(settings.factorization);
 export const systemsetting=writable(false);
-export const aligning=writable(false);
+export const aligning=writable(true);
 export const cursor=writable({});
 export const panepos=writable(settings.panepos);
 

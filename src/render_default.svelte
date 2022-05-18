@@ -94,7 +94,7 @@ const onSelection=evt=>{//user note and highlight etc
 const click=evt=>{
     if (evt.button!==0) return;
     setactiveline && !nesting && setActiveLine(ptk,side,y||key ,y0);
-    // if (!activeline) return;
+
     //scroll offset of the activeline
     const toolbarheight=evt.pageY-evt.layerY + 5; // don't know why ?? cannot can precise offset
     const activeoffset=evt.target.getBoundingClientRect().y-toolbarheight;

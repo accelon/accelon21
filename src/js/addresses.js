@@ -122,6 +122,7 @@ export const setAddress=(addresses_side=addresses_b,address)=>{
     updateUrl();
 }
 export const isParallel=(address1,address2)=>{
+    if (!address1||!address2) return false;
     const addr1=parseAddress(address1);
     const addr2=parseAddress(address2);
     if (!addr1||!addr2) return false;
@@ -165,8 +166,8 @@ export const getOppositeAddress=(addresses_side=addresses_b)=>{
     if (typeof addresses_side=='number') {
         addresses=addresses_side==0?addresses_a:addresses_b;
     }
-    const addrs=getOppositeAddresses(addresses)
-    if (addrs.length) return addrs[0];
+    const addrs=get(getOppositeAddresses(addresses));
+    if (addrs.length) return addrs[0].address;
 }
 export const setActiveLine=(ptk,addresses_side=addresses_b,newy=0,y0=0)=>{
     let addresses=addresses_side;
