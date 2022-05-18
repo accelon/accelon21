@@ -1,12 +1,17 @@
 <script>
+import {useBasket} from 'pitaka'
 import {parseAddress,stringifyAddress } from 'pitaka/offtext';
 import {_,tosim, renderer,palitrans} from './js/store.js';
 import { settab ,getOppositeAddresses} from './js/addresses';
+import Parallel from './renderer_parallel.svelte'
+
 export let key=0,y=0,loading=false;
 export let score=0,ncl=0,ptk,side=0,hits=[];
 export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
 $: score,ncl,ptk;
-
+$: alignedPtk=ptk.aligned.map(it=>useBasket(it)).filter(it=>!!it);
+$: dy = ptk.dyOf(y);
+$: loc = ptk.locOf(y,true,true); //no pitaka name, no dy
 const newtab=e=>{
     const loc=ptk.locOf(y);
     const ptr=parseAddress(loc);
@@ -25,5 +30,9 @@ const newtab=e=>{
 </span>
 {#if !loading}<svelte:component this={$renderer.default} 
 setactiveline={false} {y} {ptk} {hits} loc={ptk.locOf(y)}
- />{/if}
+ >
+{#each alignedPtk as aptk} <Parallel ptk={aptk} alignptk={ptk} {loc} {dy}/> {/each}
+</svelte:component>
+
+ {/if}
 </div>

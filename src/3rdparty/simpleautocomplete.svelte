@@ -844,7 +844,7 @@
     -webkit-transform-origin: center;
     transform-origin: center;
     width: 0.625em;
-    border-color: #3273dc;
+     border-color: #3273dc; 
     right: 1.125em;
     z-index: 4;
   }
@@ -870,7 +870,7 @@
     padding-right: 0em;/*2em*/
   }
   .autocomplete-list {
-    background: var(--button-unselected);
+    background: var(--autocomplete-bacgkround );
     position: relative;
     width: 100%;
     overflow-y: auto;

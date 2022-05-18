@@ -9,8 +9,13 @@ export const loadSettings=()=>{
     const toolbox_panepos=localStorage.getItem(AppPrefix+'toolbox_panepos')||30;
     const panepos=localStorage.getItem(AppPrefix+'panepos')||70;    
     const queryhistory=localStorage.getItem(AppPrefix+'queryhistory')||'';
+    const queryhistory_zh=localStorage.getItem(AppPrefix+'queryhistory_zh')||'';
+    const queryhistory_en=localStorage.getItem(AppPrefix+'queryhistory_en')||'';
+    const queryhistory_pl=localStorage.getItem(AppPrefix+'queryhistory_pl')||'';
     const bookqueryhistory=localStorage.getItem(AppPrefix+'bookqueryhistory')||'';
-    return {tosim,edict,palitrans,column,tab,toolbox_panepos,panepos,queryhistory,bookqueryhistory,factorization};
+    return {tosim,edict,palitrans,column,tab,toolbox_panepos,panepos,
+        queryhistory,queryhistory_zh,queryhistory_en,queryhistory_pl,
+        bookqueryhistory,factorization};
 }
 
 export const saveSettings=()=>{ //immediate save

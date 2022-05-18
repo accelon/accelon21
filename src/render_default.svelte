@@ -32,7 +32,8 @@ export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
 $: id,hits;
 
-let extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind,notes,hits});
+$: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind,notes,hits});
+
 $: lineText=()=>{
     let s=text||(ptk&&ptk.getLine(y||key))||''
     if (lang==='pl') {

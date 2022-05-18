@@ -12,9 +12,10 @@ import ExcerptList from './excerptlist.svelte'
 import {parseAddress,stringifyAddress } from 'pitaka/offtext';
 import {buildHeadingList} from './js/heading.js';
 import {searchbox,tosim, _} from './js/store.js';
-import {queryhistory,QUERYSEP} from './js/query.js'
+import {queryhistory,QUERYSEP,addqueryhistory} from './js/query.js'
 import {setAddress} from './js/addresses.js'
 import { setContext } from 'svelte';
+import {toSim} from 'lossless-simplified-chinese'
 export let side=0,address='',active=false;
 export let visible=false;
 let ptk;
@@ -93,12 +94,22 @@ const filterExcerptByHeading=(excerpts,selectedheadings)=>{
     if (Object.keys(selectedheadings).length==0) return excerpts;
     return excerpts.filter(it=> selectedheadings[it.ncl]);
 }
+
+const itemFilterFunction=(item,searchwords)=>{
+    item=toSim(item,2);
+    const sw=searchwords.map(s=>toSim(s,2));
+    for (let i=0;i<sw.length;i++) {
+        if (item.slice(0,sw[i].length)===sw[i]) return true;
+    }
+}
 let selectedheadings={};     //搜尋後的選擇
 let selectedExcerptitems=[];
 
 $: refreshquery(parseAddress(address),$filtersResult);
-$: qhis=$queryhistory.split(QUERYSEP);
+$: qhis=tofind.length?ptk.prefixLemma(tofind) : queryhistory(lang);
+$: lang=ptk.header.lang;
 $: selectedExcerptitems = filterExcerptByHeading($excerptitems, selectedheadings); 
+$: addable = tofind.length>1 && queryhistory(lang).indexOf(tofind.trim())==-1 && $excerptitems.length;
 
 </script>
 
@@ -111,9 +122,11 @@ $: selectedExcerptitems = filterExcerptByHeading($excerptitems, selectedheadings
     <svelte:component {onKeyword} this={$searchbox[ptk.format]||$searchbox.toc} {ptk} bind:keyvalue bind:keylabel/>
     </span> -->
 
+
     <AutoComplete className="tofind" showClear={true} 
-    placeholder={_("全文查找 fulltext search")}
+    placeholder={_("檢索 Search")} {itemFilterFunction}
     bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
+    {#if addable}<span title={_("加到搜尋記錄 add to history")} on:click={()=>addqueryhistory(tofind,lang)}>☆</span>{/if}
 
     {#if showheading}
     <HeadingMenu {scrollStart} {ptk} {booksOfItems}/>

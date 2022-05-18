@@ -37,7 +37,7 @@ const searchall=()=>{
     searching=true;
     searchpitaka();
 }
-$: qhis=$queryhistory.split(QUERYSEP);
+$: qhis=queryhistory();
 
 let cursorword='';
 </script>

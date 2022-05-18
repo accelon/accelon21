@@ -12,6 +12,7 @@ export let ptk;
 export let alignptk;
 export let side=0;
 export let dy=0;
+
 const paraname=ptk.header.name;
 const getCaption=()=>{
     const at=paraname.indexOf(alignptk.name+'-');
@@ -25,9 +26,9 @@ const getCaption=()=>{
 }
 
 let fetched=0;
-let showing=!!$vstore.parallels[paraname];
-let [y0] = ptk.getPageRange(loc); 
-let y=y0+dy;
+let showing=vstore && !!$vstore.parallels[paraname];
+$: [y0] = ptk.getPageRange(loc); 
+$: y=y0+dy;
 let text,href='';
 async function fetchline(){
     let unusedy;
@@ -43,24 +44,26 @@ const getParallelHref=()=>{
         opp=parseAddress(opposite[0]);
         if (opp.loc!==loc) createnew=true;
     }
-    href=createnew?stringifyAddress({basket:ptk.name,loc,dy:opp.dy||0}):'';
+    href=createnew?stringifyAddress({basket:ptk.name,loc,dy:opp.dy||dy}):'';
 }
-getParallelHref();
+$: getParallelHref(side,dy,loc);
 const onoff=(bool)=>{
-    const {parallels}=$vstore;
-    parallels[paraname]=bool;
-    $vstore.parallels=parallels;
+    if (vstore) {
+        const {parallels}=$vstore;
+        parallels[paraname]=bool;
+        $vstore.parallels=parallels;
+    }
     showing=bool;
 }
 </script>
 {#if showing}
-{#await fetchline()}{fetched++}{/await}
+{#key y}{#await fetchline()}{fetched++}{/await}{/key}
 <svelte:component nesting={1} this={$renderer.default} 
 {ptk} {text} {y} {y0} {loc} lang={ptk.langOf(y)}>
  <span slot="start" class='btnparallel clickable showing'
  title={_(ptk.header.title,$tosim)}
   on:click={()=>onoff(false)} >{getCaption()}</span>
- <Hyperlink {side} {href}/>
+ <Hyperlink {side} {href} title={href}/>
 </svelte:component>
 {:else} 
 <span class='btnparallel clickable' 

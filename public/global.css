@@ -18,6 +18,7 @@ body {
 	--button-unselected : #666; 
 	--button-selected: #FFFFFF ; 
 	--panel-background: rgba(22,22,22,0.9);
+	--autocomplete-bacgkround : rgb(33,33,33);
 	--quotetext: limegreen;
 	--splitter: #131313;
 	--menubackground: rgba(43, 40, 29, 0.9);
