@@ -75,6 +75,9 @@
   export let hideArrow = true;
   // option to show clear selection button
   export let showClear = false;
+
+  export let showPaste = false;
+
   // option to show loading indicator when the async function is executed
   export let showLoadingIndicator = false;
   // text displayed when no items match the input text
@@ -151,7 +154,9 @@
       : null;
   $: showList =
     opened && ((items && items.length > 0) || filteredTextLength > 0);
-  $: clearable = showClear || ((lock || multiple) && selectedItem);
+  $: clearable = text.length && (showClear || ((lock || multiple) && selectedItem));
+  $: pastable = !text.length && !clearable;
+  
   // --- Functions ---
   function safeStringFunction(theFunction, argument) {
     if (typeof theFunction !== "function") {
@@ -737,6 +742,11 @@
       close();
     }
   }
+  async function paste() {
+    const t=await navigator.clipboard.readText();
+    text=t;
+    onInput&&onInput();
+  }
   function clear() {
     if (debug) {
       console.log("clear");
@@ -972,7 +982,7 @@
   class="
   {hideArrow || !items.length ? 'hide-arrow' : ''}
   {multiple ? 'is-multiple' : ''} autocomplete select is-fullwidth {uniqueId} {className ? className : ''}"
-  class:show-clear={clearable}
+  class:show-clear={clearable || pastable}
   class:is-loading={showLoadingIndicator && loading}>
   <select name={selectName} id={selectId} {multiple}>
     {#if !multiple && value}
@@ -1022,6 +1032,8 @@
       on:keypress={onKeyPress} />
     {#if clearable}
       <span on:click={clear} class="autocomplete-clear-button">&#10006;</span>
+    {:else if pastable}
+      <span on:click={paste} class="autocomplete-clear-button">&#10063;</span>
     {/if}
   </div>
   <div

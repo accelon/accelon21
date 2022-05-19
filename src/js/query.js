@@ -17,18 +17,18 @@ export const runquerycount=writable(0);
 export const queryhistory=(lang,getstore=false)=>{
     const history=queryhistories[lang]|| queryhistories[''];
     if (getstore) return history;
-    return get(history).split(QUERYSEP);
+    return get(history).split(QUERYSEP).filter(it=>!!it);;
 }
 
 export const editqueryhistory=(str,lang,adding=false,history)=>{
     history=history||queryhistory(lang,true);
-    const qhis=get(history).split(QUERYSEP);
+    const qhis=get(history).split(QUERYSEP).filter(it=>!!it);
     str=str.trim();
     const at=qhis.indexOf(str);
     
     if (at>-1) qhis.splice(at,1);
     
-    if (adding) qhis.unshift(str);
+    if (adding && str) qhis.unshift(str);
     if (qhis.length>MAXQUERYHISTORY) qhis.length=MAXQUERYHISTORY;
     history.set(qhis.join(QUERYSEP));
 }

@@ -55,7 +55,6 @@ const dosearch=()=>{
 }
 </script>
 <div bind:this={menuEle} class="selectionmenu" class:visible={!!selectedText}>
-<Btn icon="search"  onclick={dosearch}/>
 <Btn icon="copy" onclick={copy}/>
 {#each enumSearchSite(selectedText,lang) as site}
 <Btn icon={site.icon} onclick={()=>gourl(site.url)}/>

@@ -109,10 +109,11 @@ let selectedheadings={};     //搜尋後的選擇
 let selectedExcerptitems=[];
 
 $: refreshquery(parseAddress(address),$filtersResult);
-$: qhis=tofind.length?ptk.prefixLemma(tofind) : queryhistory(lang);
+$: qhis=queryhistory(lang,true);
+$: candidates=tofind.length?ptk.prefixLemma(tofind) : queryhistory(lang);
 $: lang=ptk.header.lang;
 $: selectedExcerptitems = filterExcerptByHeading($excerptitems, selectedheadings); 
-$: deletable=~queryhistory(lang).indexOf(tofind.trim()) && tofind.length;
+$: deletable=~ $qhis.indexOf(tofind) && tofind.length;
 $: addable = tofind.length>1 && !deletable && $excerptitems.length;
 $: searchable= ptk.header.fulltextsearch;
 </script>
@@ -128,7 +129,7 @@ $: searchable= ptk.header.fulltextsearch;
 {#if searchable}
     <AutoComplete className="tofind" showClear={true} 
     placeholder={_("檢索 Search")} {itemFilterFunction}
-    bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
+    bind:text={tofind} items={candidates}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
     {#if addable}<span title={_("加到搜尋記錄 add to history")} on:click={()=>addqueryhistory(tofind,lang)}>★</span>{:else if deletable}<span title={_("刪除搜尋記錄 remove from history")} on:click={()=>delqueryhistory(tofind,lang)}>☆</span>{/if}
 {/if}
     {#if showheading || !searchable}
