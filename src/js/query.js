@@ -19,20 +19,24 @@ export const queryhistory=(lang,getstore=false)=>{
     if (getstore) return history;
     return get(history).split(QUERYSEP);
 }
-export const addqueryhistory=(str,lang,history)=>{
+
+export const editqueryhistory=(str,lang,adding=false,history)=>{
     history=history||queryhistory(lang,true);
     const qhis=get(history).split(QUERYSEP);
     str=str.trim();
     const at=qhis.indexOf(str);
+    
     if (at>-1) qhis.splice(at,1);
-    qhis.unshift(str);
+    
+    if (adding) qhis.unshift(str);
     if (qhis.length>MAXQUERYHISTORY) qhis.length=MAXQUERYHISTORY;
     history.set(qhis.join(QUERYSEP));
 }
 
-export const addbookqueryhistory=(str,lang)=>{
-    addhistory(query,lang,bookqueryhistory);
-}
+export const addbookqueryhistory=(str,lang)=>editqueryhistory(str,lang,true, bookqueryhistory);
+export const addqueryhistory=(str,lang)=>editqueryhistory(str,lang,true);
+export const delqueryhistory=(str,lang)=>editqueryhistory(str,lang);
+
 
 queryhistory_en.subscribe(queryhistory_en=>updateSettings({queryhistory_en}));
 queryhistory_pl.subscribe(queryhistory_pl=>updateSettings({queryhistory_pl}));

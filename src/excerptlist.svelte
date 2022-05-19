@@ -4,8 +4,8 @@ import ExcerptLine from './render_excerpt.svelte';
 export let items=[];
 export let ptk;
 export let side;
-export let tofind='';
-export let posting=[];
+export let phrases=[];
+export let postings=[];
 export let onScroll;
 $: onScroll;
 </script>
@@ -17,10 +17,10 @@ $: onScroll;
         {#await ptk.prefetchLines(data.y,2)}
             <ExcerptLine {side} {ptk} {...data}  loading={true}/>
         {:then}
-            <ExcerptLine {side} {ptk} {...data} hits={ptk.hitPos(data.y,posting,tofind)} />
+            <ExcerptLine {side} {ptk} {...data} hits={ptk.hitPos(data.y,postings,phrases)} />
         {/await}
     {:else}
-        <ExcerptLine {side}  {ptk} {...data} hits={ptk.hitPos(data.y,posting,tofind)}/>
+        <ExcerptLine {side}  {ptk} {...data} hits={ptk.hitPos(data.y,postings,phrases)}/>
     {/if}
 </VirtualScroll>
 <style>

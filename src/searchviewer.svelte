@@ -12,7 +12,7 @@ import ExcerptList from './excerptlist.svelte'
 import {parseAddress,stringifyAddress } from 'pitaka/offtext';
 import {buildHeadingList} from './js/heading.js';
 import {searchbox,tosim, _} from './js/store.js';
-import {queryhistory,QUERYSEP,addqueryhistory} from './js/query.js'
+import {queryhistory,QUERYSEP,addqueryhistory,delqueryhistory} from './js/query.js'
 import {setAddress} from './js/addresses.js'
 import { setContext } from 'svelte';
 import {toSim} from 'lossless-simplified-chinese'
@@ -41,7 +41,7 @@ $: visible;
 
 let showheading=true;
 let addr={},refreshcount=0;
-let tofind='',scoredLine=[], posting=[];
+let tofind='',scoredLine=[], postings=[] , phrases=[];
 let booksOfItems=[];
 const refreshquery=async (_addr)=>{
     if (!_addr.basket) {
@@ -60,7 +60,8 @@ const refreshquery=async (_addr)=>{
             const ranges=ptk.getHeadingRanges($filtersResult);
             const res=await ptk.fulltextSearch(_addr.tf,{excerpt:true,tosim:$tosim,ranges});
             scoredLine=res.scoredLine;
-            posting=res.posting;
+            postings=res.postings;
+            phrases=res.phrases;
             scored=true;
             tofind=_addr.tf;
         } else scoredLine=[];
@@ -109,7 +110,8 @@ $: refreshquery(parseAddress(address),$filtersResult);
 $: qhis=tofind.length?ptk.prefixLemma(tofind) : queryhistory(lang);
 $: lang=ptk.header.lang;
 $: selectedExcerptitems = filterExcerptByHeading($excerptitems, selectedheadings); 
-$: addable = tofind.length>1 && queryhistory(lang).indexOf(tofind.trim())==-1 && $excerptitems.length;
+$: deletable=~queryhistory(lang).indexOf(tofind.trim()) && tofind.length;
+$: addable = tofind.length>1 && !deletable && $excerptitems.length;
 
 </script>
 
@@ -126,7 +128,7 @@ $: addable = tofind.length>1 && queryhistory(lang).indexOf(tofind.trim())==-1 &&
     <AutoComplete className="tofind" showClear={true} 
     placeholder={_("檢索 Search")} {itemFilterFunction}
     bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
-    {#if addable}<span title={_("加到搜尋記錄 add to history")} on:click={()=>addqueryhistory(tofind,lang)}>☆</span>{/if}
+    {#if addable}<span title={_("加到搜尋記錄 add to history")} on:click={()=>addqueryhistory(tofind,lang)}>★</span>{:else if deletable}<span title={_("刪除搜尋記錄 remove from history")} on:click={()=>delqueryhistory(tofind,lang)}>☆</span>{/if}
 
     {#if showheading}
     <HeadingMenu {scrollStart} {ptk} {booksOfItems}/>
@@ -137,7 +139,7 @@ $: addable = tofind.length>1 && queryhistory(lang).indexOf(tofind.trim())==-1 &&
     {#if showheading}
     <HeadingList {ptk} {side} items={filtersResult} {onKeyword} {onScroll}/>
     {:else}
-    <ExcerptList {ptk} {side} items={selectedExcerptitems} {tofind} {posting} {onScroll}/>
+    <ExcerptList {ptk} {side} items={selectedExcerptitems}  {postings} {phrases} {onScroll}/>
     {/if}
 {/if}
 </div>
