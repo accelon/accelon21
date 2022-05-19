@@ -38,8 +38,8 @@ export const getTextHook=(ptk,evt,lang,palitrans)=>{
     if (ele.tagName!=='T') return {};
 
     let oritext=ele.attributes.ori&&ele.attributes.ori.value||'';
-    const linetext=oritext || ele.innerText;
-    if (oritext.charAt(0)==' '&& ele.innerText.charAt(0)!==' ') oritext=oritext.slice(1); //workaround for leading space
+    const linetext=oritext || ele.innerHTML.replace(/<[^>]+>/g,'');
+    //if (oritext.charAt(0)==' '&& ele.innerText.charAt(0)!==' ') oritext=oritext.slice(1); //workaround for leading space
 
     let w=sel.length;
 
@@ -139,7 +139,7 @@ export const getCursorWord=()=>{
 
     const psib=sel.anchorNode.previousSibling ;
     if (psib && psib.dataset&& psib.dataset.offset) {
-        offset+=parseInt(psib.dataset.offset)+psib.innerText.length;
+        offset+=parseInt(psib.dataset.offset)+psib.innerHTML.replace(/<.+>/g,'').length;
     }
     const ori=sel.anchorNode.parentElement.dataset.ori
     if (!ori && !sel.anchorNode.data)return;

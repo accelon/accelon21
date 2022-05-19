@@ -5,6 +5,7 @@ import { get} from 'svelte/store';
 export let text='',side=0,loc='',ptk=null;
 export let from=0,to=0,y0=0;
 export let key=0,renderer=null,usernotes=null,linetofind='',bookmarks=null;
+export let master,activeline,lang
 $:text,side,loc,key,renderer,usernotes,linetofind,bookmarks;
 
 let _from=from,_to=to;
@@ -46,6 +47,7 @@ const morelower=()=>{
 <div class="collapse">
     {#if _from>1&&_to-2>_from}<span class="clickable moreline" on:click={moreupper}>:{_from}</span> ……{/if} 
     <span class="clickable moreline" on:click={morelower}>:{_to-1}</span>
+<slot></slot>
 </div>
 {/if}
 <style>
