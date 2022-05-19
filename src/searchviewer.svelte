@@ -14,7 +14,7 @@ import {buildHeadingList} from './js/heading.js';
 import {searchbox,tosim, _} from './js/store.js';
 import {queryhistory,QUERYSEP,addqueryhistory,delqueryhistory} from './js/query.js'
 import {setAddress} from './js/addresses.js'
-import { setContext } from 'svelte';
+import {setContext} from 'svelte';
 import {toSim} from 'lossless-simplified-chinese'
 export let side=0,address='',active=false;
 export let visible=false;
@@ -59,11 +59,13 @@ const refreshquery=async (_addr)=>{
         if (_addr.tf) {
             const ranges=ptk.getHeadingRanges($filtersResult);
             const res=await ptk.fulltextSearch(_addr.tf,{excerpt:true,tosim:$tosim,ranges});
-            scoredLine=res.scoredLine;
-            postings=res.postings;
-            phrases=res.phrases;
-            scored=true;
-            tofind=_addr.tf;
+           if (res) {
+                 scoredLine=res.scoredLine;
+                 postings=res.postings;
+                 phrases=res.phrases;
+                 scored=true;
+                 tofind=_addr.tf;
+            }
         } else scoredLine=[];
     } 
     if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime) {
@@ -112,31 +114,30 @@ $: lang=ptk.header.lang;
 $: selectedExcerptitems = filterExcerptByHeading($excerptitems, selectedheadings); 
 $: deletable=~queryhistory(lang).indexOf(tofind.trim()) && tofind.length;
 $: addable = tofind.length>1 && !deletable && $excerptitems.length;
-
+$: searchable= ptk.header.fulltextsearch;
 </script>
 
 <div class="container">
 {#if ptk}
     <ExcerptBar {showheading} {side} {ptk} excerpts={$excerptitems} bind:selectedheadings>
-    <HeadingCount count={$filtersResult.length} bind:showheading/>
-    
+    <HeadingCount count={$filtersResult.length} bind:showheading enable={searchable}/>
     <!-- <span class:displaynone={!showheading}>
     <svelte:component {onKeyword} this={$searchbox[ptk.format]||$searchbox.toc} {ptk} bind:keyvalue bind:keylabel/>
     </span> -->
 
-
+{#if searchable}
     <AutoComplete className="tofind" showClear={true} 
     placeholder={_("檢索 Search")} {itemFilterFunction}
     bind:text={tofind} items={qhis}  onInput={debounce(onTofind,250)} onChange={onTofind}/>
     {#if addable}<span title={_("加到搜尋記錄 add to history")} on:click={()=>addqueryhistory(tofind,lang)}>★</span>{:else if deletable}<span title={_("刪除搜尋記錄 remove from history")} on:click={()=>delqueryhistory(tofind,lang)}>☆</span>{/if}
-
-    {#if showheading}
+{/if}
+    {#if showheading || !searchable}
     <HeadingMenu {scrollStart} {ptk} {booksOfItems}/>
     {/if}
 
     </ExcerptBar>
 
-    {#if showheading}
+    {#if showheading || !searchable}
     <HeadingList {ptk} {side} items={filtersResult} {onKeyword} {onScroll}/>
     {:else}
     <ExcerptList {ptk} {side} items={selectedExcerptitems}  {postings} {phrases} {onScroll}/>

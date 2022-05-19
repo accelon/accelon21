@@ -5,6 +5,7 @@ import Btn from './comps/button.svelte'
 import {cursorAddress,getCursorAddress} from './js/address.js'
 import {saveNote} from './js/usernotes.js';
 import {enumSearchSite} from './js/searchsites.js';
+import {activetofind} from './js/query.js';
 let lang='';
 const onselectionchange=(evt)=>{
     const touches=evt.changedTouches;
@@ -48,9 +49,13 @@ const newnote=()=>{
 const gourl=(url)=>{
     window.open(url);
 }
+
+const dosearch=()=>{
+    activetofind.set(selectedText);
+}
 </script>
 <div bind:this={menuEle} class="selectionmenu" class:visible={!!selectedText}>
-<Btn icon="search"/>
+<Btn icon="search"  onclick={dosearch}/>
 <Btn icon="copy" onclick={copy}/>
 {#each enumSearchSite(selectedText,lang) as site}
 <Btn icon={site.icon} onclick={()=>gourl(site.url)}/>

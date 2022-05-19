@@ -2,7 +2,9 @@
 import {_} from '../js/store.js'
 export let count=0;
 export let showheading=true;
+export let enable=false;
 const toggleshow=()=>{
+    if (!enable) return;
     showheading=!showheading;
 }
 $: showexcerpt=!showheading;
