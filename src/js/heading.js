@@ -124,7 +124,7 @@ export const filteredByOption=filterOptionStore=>{
     // watching all filters, combine their result with intersection
     const filtered=derived( stores , Stores=>{
             const out=Stores.reduce((o,s,idx)=>{
-                console.log('options changed' ,s.name,s.res )
+                // console.log('options changed' ,s.name,s.res )
                 if (idx==0) return s.res;
                 const k=s.res.length?intersect(o,s.res):o;
                 return k;
