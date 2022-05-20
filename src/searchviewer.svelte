@@ -10,7 +10,7 @@ import HeadingMenu from './headingmenu.svelte'
 import HeadingList from './headinglist.svelte'
 import ExcerptList from './excerptlist.svelte'
 import {parseAddress,stringifyAddress } from 'pitaka/offtext';
-import {buildHeadingList} from './js/heading.js';
+import {buildHeadingList,createFilterOptionStore,filteredByOption} from './js/heading.js';
 import {searchbox,tosim, _} from './js/store.js';
 import {queryhistory,QUERYSEP,addqueryhistory,delqueryhistory} from './js/query.js'
 import {setAddress} from './js/addresses.js'
@@ -18,13 +18,21 @@ import {setContext} from 'svelte';
 import {toSim} from 'lossless-simplified-chinese'
 export let side=0,address='',active=false;
 export let visible=false;
-let ptk;
+let ptk,oldptk;
+
+// optionsStore.set(O);
 
 export const headings=writable([]);  
 export const filterings=writable([]);
 export const excerptitems=writable([]);
-export const filtersOptions=writable({});
+export const filtersOptions=writable([]);
 export const filtersResult=writable([]);
+
+let filteredStore;
+
+// $: console.log('filter result',$reducedFilteredStore)
+$: filteredStore &&  filtersResult.set(typeof $filteredStore=='number'?ptk.allHeadings(true):$filteredStore); 
+
 
 setContext('headings',headings); 
 setContext('filtersOptions',filtersOptions);
@@ -52,9 +60,12 @@ const refreshquery=async (_addr)=>{
     if (!ptk) { //first refresh
         showheading=!_addr.tf;
         firsttime=true;
-    }
+    } else oldptk=ptk;
+
     ptk=useBasket(_addr.basket);
+
     let scored=false;
+    // console.log('filterresult',$filtersResult.length,addr.tf,_addr.tf)
     if (addr.tf!==_addr.tf || $filtersResult.length) {
         if (_addr.tf) {
             const ranges=ptk.getHeadingRanges($filtersResult);
@@ -68,14 +79,18 @@ const refreshquery=async (_addr)=>{
             }
         } else scoredLine=[];
     } 
-    if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime) {
+    if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime || ptk!==oldptk) {
         booksOfItems=buildHeadingList(_addr,scoredLine,excerptitems);
-        // keylabel=_addr.kl;
-        // keyvalue=_addr.kv;
         selectedheadings={};
     }
     addr=_addr;
     refreshcount++;
+
+    if (oldptk!==ptk) {
+        filtersOptions.set(createFilterOptionStore(ptk));
+        filteredStore=filteredByOption(get(filtersOptions));
+    }
+    oldptk=ptk;
 }
 const onKeyword=(kl,kv)=>{
     const newaddr={...addr, kl,kv}
@@ -111,11 +126,11 @@ let selectedExcerptitems=[];
 $: refreshquery(parseAddress(address),$filtersResult);
 $: qhis=queryhistory(lang,true);
 $: candidates=tofind.length?ptk.prefixLemma(tofind) : queryhistory(lang);
-$: lang=ptk.header.lang;
+$: lang=ptk&&ptk.header.lang;
 $: selectedExcerptitems = filterExcerptByHeading($excerptitems, selectedheadings); 
 $: deletable=~ $qhis.indexOf(tofind) && tofind.length;
 $: addable = tofind.length>1 && !deletable && $excerptitems.length;
-$: searchable= ptk.header.fulltextsearch;
+$: searchable=ptk&& ptk.header.fulltextsearch;
 </script>
 
 <div class="container">

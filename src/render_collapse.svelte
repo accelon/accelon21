@@ -6,7 +6,7 @@ export let text='',side=0,loc='',ptk=null;
 export let from=0,to=0,y0=0;
 export let key=0,renderer=null,usernotes=null,linetofind='',bookmarks=null;
 export let master,activeline,lang
-$:text,side,loc,key,renderer,usernotes,linetofind,bookmarks;
+$:text,side,loc,key,renderer,usernotes,linetofind,bookmarks,master,activeline,lang;
 
 let _from=from,_to=to;
 const viewitems=getContext('viewitems');

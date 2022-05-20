@@ -76,8 +76,6 @@
   // option to show clear selection button
   export let showClear = false;
 
-  export let showPaste = false;
-
   // option to show loading indicator when the async function is executed
   export let showLoadingIndicator = false;
   // text displayed when no items match the input text

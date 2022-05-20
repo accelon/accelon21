@@ -1,7 +1,7 @@
 import {fromSim} from 'lossless-simplified-chinese';
 import {bsearch} from 'pitaka/utils'
 import {useBasket} from 'pitaka'
-import {get} from 'svelte/store';
+import {get,writable,derived} from 'svelte/store';
 const findHeadings=(ptk,str)=>{
     const cl=ptk.getChunkLabel();
     let nchunks=[];
@@ -106,4 +106,34 @@ export const buildHeadingList=(addr,scoredLine, excerptitems)=>{
     return books;
 }
 
-export default {buildHeadingList}
+export const createFilterOptionStore=(ptk)=>{
+    const filters=ptk.getHeadingFilters();
+    const O={};
+    for (let i=0;i<filters.length;i++) {
+        const F=filters[i];
+        const filterer=filtererOf(ptk,F)
+        if (! O[filterer] ) {
+            const {names}=ptk.getLabel(F.name);
+            O[filterer] = writable({name:filterer,opts:[], res:names.length }); 
+        }
+    }
+    return O;
+}
+export const filteredByOption=filterOptionStore=>{
+    const stores=Object.values(filterOptionStore);
+    // watching all filters, combine their result with intersection
+    const filtered=derived( stores , Stores=>{
+            const out=Stores.reduce((o,s,idx)=>{
+                console.log('options changed' ,s.name,s.res )
+                if (idx==0) return s.res;
+                const k=s.res.length?intersect(o,s.res):o;
+                return k;
+            },[]);
+        return out;
+    },[]);
+    return filtered;
+}
+export const filtererOf=(ptk,F)=>{
+    return (ptk.isDictionary()?'entry_':'heading_')+ptk.langOf();;
+}
+export default {buildHeadingList, createFilterOptionStore,filtererOf,filteredByOption}

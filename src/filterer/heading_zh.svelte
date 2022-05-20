@@ -5,19 +5,17 @@ import {filterEntry,allEntry} from 'pitaka/search';
 import {debounce} from 'pitaka/utils';
 import {_} from '../js/store.js';
 export let store;
-export let filter;
 export let ptk;
 export let name;
 let tofind=$store.opts.tofind||'';
 let mode=1;
 
-$: filter;
 let history=["三","如來"];
 const {names,caption} =ptk.getLabel(name);
 
 const inputSearch=(m)=>{
     if (!tofind) {
-        store.set(Object.assign($store,{ opts:{mode,tofind:''},res:allEntry(names)}))
+        store.set(Object.assign($store,{ opts:{mode,tofind:''},res:names.length})) //numeric res is all items
         return;
     }
     tofind=tofind.trim();
