@@ -29,7 +29,7 @@ let isvalid={};
     <span class="clickable name" on:click={()=>visit(data.ptk.header.homepage)}>{data.ptk.name}</span>
     <span class="title" on:click={evt=>settab(side,data.ptk.name+NAMESPACESEP)}>
         {_(data.ptk.header.title,$tosim)}</span>
-    <QueryResult items={getItems(data.ptk,$activetofind,$runquerycount)} />
+    <QueryResult items={getItems(data.ptk,$activetofind,$runquerycount)} {side}/>
     <div class="details">
     {#if !isvalid[data.ptk.name]}
         <span class="labeltext" label={_(data.ptk.chunkCount()?'冊':'條',$tosim)}>{data.ptk.contentCount()}</span>

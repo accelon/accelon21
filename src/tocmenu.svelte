@@ -10,6 +10,5 @@ $: showmode=$picked.word?2:1;
 $: ptk;
 </script>
 <Hamburgermenu {scrollStart} {showmode}>
-    TOCMENU {$picked.word}  {$picked.lexeme}
 <!-- <svelte:component this={$searchbox[ptk.format]||$searchbox.toc} {ptk}/> -->
 </Hamburgermenu>

@@ -22,17 +22,19 @@ const openAligner=evt=>{
     <div class="header">{ _("系統設置  System Configuration")}</div>
 
     <div class='clickable' on:click={openManual} >{_("操作說明 Instruction")}</div>
-    <div class='clickable' on:click={openAligner} >{_("對齊編輯器 Aligner")}</div>
 
+    {#if hasLang('zh')}
     <div>{_("漢字編碼")}
     <StateBtn states={{0:"原本",1:"简體",2:"简体"}} storeid={tosim}/>
     </div>
+    {/if}
 
     <div>{_("嵌入式字典 Embedded Dictionary ")}
     <StateBtn states={{0:"否 No",1:"是 Yes"}} storeid={edict}/>
     </div>
     
     {#if hasLang('pl')}
+    <div class='clickable' on:click={openAligner} >{_("對齊編輯器 Aligner")}</div>
     <div>{_("巴利字體 Pali Script")}
     <StateBtn states={{'':_("檢約 Provident"),'iast':_("國際梵文轉寫 IAST"),
     'my':_("緬文 ဗမာစာ"),'th':"泰文 ไทย",'lo':_("老撾文 ລາວ"),'km':"柬埔寨文 ភាសាខ្មែរ",
@@ -51,8 +53,7 @@ const openAligner=evt=>{
     <!-- <div>{_("製作資料籃 Build Pitaka")}</div> -->
 {/key}
 
-<a target="_new" href="https://accelon.github.io" class='endofcontent'>
-</a>
+<a target="_new" href="https://accelon.github.io" class='endofcontent'> </a>
 </div>
 
 <style>

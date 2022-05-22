@@ -40,7 +40,7 @@ const setshowmode=evt=>{
 $: showing = (scrollStart<AUTOMENULINE && showmode==1) || showmode==2;
 </script>
 <span class="hamburger" class:showing on:click={setshowmode}>☰</span>
-<LineFilter/>
+
 {#if showing }
 <div  class="dropdownpanel">
     {#key $tosim}

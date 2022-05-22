@@ -6,7 +6,7 @@ import _L from './js/labeler.js'; //maker sure labeler is loaded
 import HotKey from './js/hotkey.js';
 import MainView from './mainview.svelte';
 import LoadingAnimation from './comps/loading.svelte'
-import {_,tosim} from './js/store.js'
+import {_,tosim,fatalerror} from './js/store.js'
 import { onMount } from 'svelte';
 import { openBasket } from 'pitaka';
 let started=false;
@@ -38,7 +38,11 @@ onMount(async ()=>{
 	{/each}
 	</div>
 {:else if started}
+	{#if $fatalerror}
+	<span class="fatalerror">{$fatalerror}</span>
+	{:else}
 	<MainView/>
+	{/if}
 {/if}
 </div>
 

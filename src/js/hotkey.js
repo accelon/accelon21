@@ -9,7 +9,6 @@ window.onkeydown=evt=>{
         used=true;
     }
     if (evt.key=='F10') {
-        // toggleSideMenu();
         used=true;
     }
     if (used) evt.preventDefault();

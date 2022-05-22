@@ -18,14 +18,17 @@ export let onKeyword;
 export let onScroll;
 export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
 let vscroll;
-const displayItems=derived(items,(I,set)=>{
-    const {names,linepos,idarr} =ptk.getHeadingLabel();
-    let displayitems=I.filter(it=>names[it].trim()).map((it,idx)=>{
+
+// const displayItems=derived(items,(I,set)=>{
+
+const {names,linepos,idarr} =ptk.getHeadingLabel();
+$: displayitems=items.filter(it=>names[it].trim()).map((it,idx)=>{
         const y0=linepos[it];
         return {key:it,id:idarr[it], text:names[it], y0};
-    })
-    set(displayitems);
-},[]);
+})
+    // set(displayitems);
+// },[]);
+
 const bkstore=getContext('bkstore');
 
 $: langstyle=getLangstyle(lang,$palitrans);

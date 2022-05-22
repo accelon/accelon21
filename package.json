@@ -24,6 +24,6 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
-
+	"pitaka":"^0.1.8"
   }
 }

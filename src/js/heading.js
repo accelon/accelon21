@@ -1,5 +1,5 @@
 import {fromSim} from 'lossless-simplified-chinese';
-import {bsearch} from 'pitaka/utils'
+import {bsearch,intersect} from 'pitaka/utils'
 import {useBasket} from 'pitaka'
 import {get,writable,derived} from 'svelte/store';
 const findHeadings=(ptk,str)=>{
@@ -62,14 +62,17 @@ const chunkitemsById=(ptk,cl,idarr)=>{
     return {items,idmap,books : Object.keys(books)}    
 }
 
-export const buildHeadingList=(addr,scoredLine, excerptitems)=>{
+export const buildHeadingList=(addr,scoredLine, excerptitems ,headingStore)=>{
     const ptk=useBasket(addr.basket);
     const cl=ptk.getChunkLabel();
     let nchunks=null; //all chunk
     const keylabel=addr.kl, keyvalue=addr.kv;
 
     if (keylabel===ptk.header.chunk){
-        if (keyvalue) nchunks=findHeadings(ptk,keyvalue);
+        if (keyvalue) {
+            nchunks=findHeadings(ptk,keyvalue);
+            headingStore.set(nchunks);
+        }
     } else if (keylabel) {
         const lbl=ptk.getLabel(keylabel);
         const res=lbl.query(keyvalue);
@@ -80,8 +83,8 @@ export const buildHeadingList=(addr,scoredLine, excerptitems)=>{
         }
     }
     const {idmap,items,books}=chunkitemsById(ptk,cl,nchunks);
-    nchunks=idmap;
-    // headings.set(items);
+    // nchunks=idmap;
+    
 
     if (items.length == 0) {
         excerptitems.set([]);    
@@ -136,4 +139,5 @@ export const filteredByOption=filterOptionStore=>{
 export const filtererOf=(ptk,F)=>{
     return (ptk.isDictionary()?'entry_':'heading_')+ptk.langOf();;
 }
+
 export default {buildHeadingList, createFilterOptionStore,filtererOf,filteredByOption}

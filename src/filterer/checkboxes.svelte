@@ -1,9 +1,7 @@
 <script>
-// import {getContext} from 'svelte'
 import Buttons from '../comps/buttons.svelte';
 export let options=[]; //from pitaka.json
 export let ptk,caption,filter,attrname;
-// const filterings=getContext('filterings');
 export let store;
 
 $: ptk,caption,filter,attrname;

@@ -4,13 +4,14 @@ import StateBtn from '../comps/statebutton.svelte';
 import {filterEntry,allEntry} from 'pitaka/search';
 import {debounce} from 'pitaka/utils';
 import {_} from '../js/store.js';
+import {ENTRY_MATCH_ANY} from 'pitaka/search'
 export let store;
 export let ptk;
 export let name;
 let tofind=$store.opts.tofind||'';
-let mode=1;
+let mode=ENTRY_MATCH_ANY;
 
-let history=["三","如來"];
+let history=[];
 const {names,caption} =ptk.getLabel(name);
 
 const inputSearch=(m)=>{
@@ -20,6 +21,7 @@ const inputSearch=(m)=>{
     }
     tofind=tofind.trim();
     const res=filterEntry(tofind, names, m);
+
     store.set(Object.assign($store,{opts:{mode,tofind},res}));
 }
 $: inputSearch(mode);
@@ -41,6 +43,7 @@ const matchmodestyles=()=>{
 const goback=idx=>{
     tofind=history[idx];
     inputSearch(mode);
+    console.log(tofind)
     // matchCursorWord(cw);
 }
 const states={0:'begin',1:'middle','2':'end'};

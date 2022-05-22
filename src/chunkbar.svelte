@@ -25,13 +25,12 @@ $: address=($addresses && $addresses[0].address)||'';
     {#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
     <TabSelector {side}/>
     <span class="pitaka_tocbartitle">
-        <span class="closetab" title="close tab  and open pitaka home" on:click={()=>closetab(addresses)}>
+        <span class="closetab" title={_("關閉並回到文章列表 close tab and list article",$tosim)} on:click={()=>closetab(addresses)}>
             <div class="inlineblock">{ptk&&parseAddress(address).basket }</div>
-            <span title="close tab" >{ptk&&parseAddress(address).loc }</span> 
+            <span>{ptk&&parseAddress(address).loc }</span> 
         </span>
     </span>
-    <span class={"closetab "+langstyle} on:click={()=>closetab(addresses,true)}>{_(ptk.headingOf(y0).text,$tosim,lang==='pl'&&$palitrans) }</span>
-
+    <span class={"closetab "+langstyle} title={_("關閉頁籤 close tab",$tosim)} on:click={()=>closetab(addresses,true)}>{_(ptk.headingOf(y0).text,$tosim,lang==='pl'&&$palitrans) }</span>
 
     <TocBar {ptk} {loc} {side}/>
     {#if mulu&&mulu.length}

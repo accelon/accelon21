@@ -85,7 +85,7 @@ button:focus {	border-color: #666;}
 .separator {padding-top:6px;display:block;height:1px;border-bottom:2px dotted rgb(56, 90, 1)}
 .endofcontent{margin-top:1em;border-top:5px solid rgb(2, 56, 0);
 	display:block;height:1px;width:100%;text-align: center;}
-.endofcontent:after {content:"https://accelon.github.io";white-space: pre-wrap;}
+.endofcontent:after {content:"Accelon21";white-space: pre-wrap;}
 .tabs {--webkit-user-select: none; background:var(--panel-background);overflow:hidden}
 .tab-content {
 	position: absolute;
@@ -184,7 +184,7 @@ div.hr {height: 1px;}
 
 .userselectnone {--webkit-user-select: none}
 
-.bookcount {background:var(--button-unselected); border-radius: 5px;
+.articlecount {background:var(--button-unselected); border-radius: 5px;
 	color:black;display:inline-block;width:2.2em;align-items: center;text-align: center;}
 
 .linemenu {
@@ -208,3 +208,5 @@ div.hr {height: 1px;}
 .alignedName {border-radius:0.25em; border:1px #aaa dotted;}
 
 div.inlineblock {display:inline-block}
+
+span.fatalerror {font-size: 300% ; color: red}

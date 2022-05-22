@@ -21,7 +21,7 @@ export let visible=false;
 let ptk,oldptk;
 
 export const headings=writable([]);  
-export const filterings=writable([]);
+//export const filterings=writable([]);
 export const excerptitems=writable([]);
 export const filtersOptions=writable([]);
 export const filtersResult=writable([]);
@@ -31,7 +31,7 @@ let filteredStore;
 setContext('headings',headings); 
 setContext('filtersOptions',filtersOptions);
 setContext('filtersResult',filtersResult);
-setContext('filterings',filterings);
+//setContext('filterings',filterings);
 setContext('excerptitems',excerptitems);
 
 const bkstore=writable({aligned:[]});
@@ -44,7 +44,9 @@ let showheading=true;
 let addr={},refreshcount=0;
 let tofind='',scoredLine=[], postings=[] , phrases=[];
 let booksOfItems=[];
+//to 
 const refreshquery=async (_addr)=>{
+    console.log('refresh query'); //endless loop if kv , tf together, update url for kv input
     if (!_addr.basket) {
         _addr.basket=_addr.loc;
         _addr.loc='';
@@ -62,7 +64,7 @@ const refreshquery=async (_addr)=>{
     if (addr.tf!==_addr.tf || $filtersResult.length) {
         if (_addr.tf) {
             const ranges=ptk.getHeadingRanges($filtersResult);
-            const res=await ptk.fulltextSearch(_addr.tf,{excerpt:true,tosim:$tosim,ranges});
+            const res=await ptk.fulltextSearch(_addr.tf,{scoring:true,tosim:$tosim,ranges});
             if (res) {
                  scoredLine=res.scoredLine;
                  postings=res.postings;
@@ -72,10 +74,6 @@ const refreshquery=async (_addr)=>{
             }
         } else scoredLine=[];
     } 
-    if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime || ptk!==oldptk) {
-        booksOfItems=buildHeadingList(_addr,scoredLine,excerptitems);
-        selectedheadings={};
-    }
     addr=_addr;
     refreshcount++;
 
@@ -87,6 +85,14 @@ const refreshquery=async (_addr)=>{
         // res==100 equal to [0,1,2,3...99]
         filteredStore.subscribe(res=>filtersResult.set(typeof res=='number'?ptk.allHeadings(true):res));
     }
+
+    //so that it will not overwritten by filteredStore
+    if (_addr.kv!==addr.kv || _addr.kl!==addr.kl || scored ||firsttime || ptk!==oldptk) {
+        booksOfItems=buildHeadingList(_addr,scoredLine,excerptitems,filtersResult);
+        console.log('filter option',get(filtersOptions))
+        selectedheadings={};
+    }
+
     oldptk=ptk;
 }
 const onKeyword=(kl,kv)=>{
@@ -100,7 +106,8 @@ const onScroll=topline=>{
 }
 const onTofind=()=>{
     if (refreshcount<1) return;  //workaround for init update
-    const newaddr={...addr, tf:tofind}
+    const newaddr={...addr};
+    if (tofind) newaddr.tf=tofind;
     const address=stringifyAddress(newaddr);
     active&&setAddress(side,address);
     if (tofind&&showheading)showheading=false;

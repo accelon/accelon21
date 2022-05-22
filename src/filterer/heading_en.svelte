@@ -5,13 +5,11 @@ import {filterEntry,allEntry} from 'pitaka/search';
 import {debounce} from 'pitaka/utils';
 import {_} from '../js/store.js';
 export let store;
-export let filter;
 export let ptk;
 export let name;
 let tofind=$store.opts.tofind||'';
 let mode=1;
 
-$: filter;
 let history=[];
 const {names,caption} =ptk.getLabel(name);
 

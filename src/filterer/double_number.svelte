@@ -1,0 +1,30 @@
+<script>
+import DoubleRangeSlider from '../comps/double-range-slider.svelte'
+
+export let query;
+export let criterion;
+export let method;
+export let update;
+export let component;//unused
+const {label}=criterion;
+const ratioOf=num=>{
+	if (!num || num<lowbound) num=lowbound;
+	else if (num>highbound) num=highbound;
+	return (num-lowbound)/range;
+}
+$: component; 
+$: lowbound = parseInt(label.nums[0]);
+$: highbound = parseInt(label.nums[label.nums.length-1]);
+$: range=highbound-lowbound;
+$: start= ratioOf( parseInt(query.split('~')[0]) ) ;
+$: end=  ratioOf( parseInt(query.split('~')[1]||highbound )) ;
+$: console.log(formatQuery(start, end))
+const formatQuery=(start,end)=>{
+	let s=(start?Math.floor(start* range + lowbound):'')+'~'+(end<1?Math.floor(end*range + lowbound):'');
+	if (s=='~') s='';
+	return s;
+}
+$: update ( method, formatQuery(start,end) )
+
+</script>
+<DoubleRangeSlider bind:start bind:end {range} basenum={lowbound} caption={label.caption}/>

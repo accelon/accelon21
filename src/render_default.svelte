@@ -168,7 +168,7 @@ close.name 存在，則是該標籤的終點。屬性在 sntp.open
    on:update={update} on:close={closelabel} {ptk} text={transcript(snpt.text,$palitrans)} starty={y||key} {...snpt.open} />
 {/if}{/each}
 {#if master}
-<Bookmark {bookmarks} {dy} {ptk} {loc}/>
+{#if ptk.header.bookmarkable}<Bookmark {bookmarks} {dy} {ptk} {loc}/>{/if}
 {/if}
 <slot></slot>
 </div>

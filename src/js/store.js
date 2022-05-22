@@ -11,6 +11,7 @@ export const systemsetting=writable(false);
 export const aligning=writable(false);
 export const cursor=writable({});
 export const panepos=writable(settings.panepos);
+export const fatalerror=writable('');
 
 export const _=(text,sim,script)=>{
     if (typeof sim=='undefined') sim=get(tosim);

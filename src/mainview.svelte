@@ -1,4 +1,5 @@
 <script>
+import { onMount } from 'svelte';
 import SplitPane from './3rdparty/splitpane.svelte';
 import Btn from './comps/button.svelte';
 import Settings from './settings.svelte'
@@ -15,7 +16,10 @@ const togglealigning=()=>{
     aligning.set($aligning);
     if (!$aligning) $systemsetting=false;
 }
-
+onMount(()=>{ // remove message
+	const errdiv=document.querySelector("#booterrormessage")
+	if(errdiv) errdiv.innerHTML='';
+});
 </script>
 <div class="container">
 {#if $aligning}

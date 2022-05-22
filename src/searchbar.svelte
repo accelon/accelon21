@@ -21,7 +21,7 @@ const searchpitaka=async ()=>{
     $activetofind=validateTofind(cursorword);
     const qkey=ptk.name+':'+cursorword;
     if (!queries[qkey]) {
-        queries[qkey]=await ptk.runAllQuery(cursorword);
+        queries[qkey]=await ptk.runCriteria(cursorword);
         searchstore.set(queries);
         $runquerycount++;//force redraw of pitaka list
         await tick();
