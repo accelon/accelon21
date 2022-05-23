@@ -142,7 +142,7 @@
     filteredListItems = listItems;
     onChange(selectedItem);
   }
-  $: selectedItem, onSelectedItemChanged();
+  $: selectedItem && onSelectedItemChanged();
   $: highlightedItem =
     filteredListItems &&
     highlightIndex &&

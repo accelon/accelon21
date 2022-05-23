@@ -62,6 +62,7 @@ const chunkitemsById=(ptk,cl,idarr)=>{
     return {items,idmap,books : Object.keys(books)}    
 }
 
+
 export const buildHeadingList=(addr,scoredLine, excerptitems ,headingStore)=>{
     const ptk=useBasket(addr.basket);
     const cl=ptk.getChunkLabel();

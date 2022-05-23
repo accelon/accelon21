@@ -10,7 +10,7 @@ export let onScroll;
 $: onScroll;
 </script>
 
-<VirtualScroll start={-1}  keeps={40} data={items} key="key"  height="calc(100% - 1.5em)"
+<VirtualScroll start={-1}  keeps={40} data={items} key="y"  height="calc(100% - 1.5em)"
     let:data >
     <span class='excerptlinesep'></span>
     {#if typeof ptk.getLine(data.y)=='undefined'}

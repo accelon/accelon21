@@ -6,9 +6,9 @@ import { settab ,getOppositeAddresses} from './js/addresses';
 import Parallel from './renderer_parallel.svelte'
 
 export let key=0,y=0,loading=false;
-export let score=0,ncl=0,ptk,side=0,hits=[];
+export let score=0,ncl=0,ptk,side=0,hits=[],chunk=0;
 export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
-$: score,ncl,ptk;
+$: score,ncl,ptk,chunk;
 $: alignedPtk=ptk.aligned.map(it=>useBasket(it)).filter(it=>!!it);
 $: dy = ptk.dyOf(y);
 $: loc = ptk.locOf(y,true,true); //no pitaka name, no dy

@@ -279,7 +279,7 @@ t.y-:before {content:'音';
     border: 2px solid rgb(0, 88, 100)
 }
 
-t.hl {color:lightcoral}
+t.hl {color:var(--fulltext-hit)}
 t.embed {cursor:no-drop ;background:highlight;color:highlightText; padding-left:3px;border-radius: 0.25em;}
 t.se {border-bottom : solid 1px var(--highlight);cursor:pointer}
 t.pr[d]::before {

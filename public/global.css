@@ -9,6 +9,7 @@ body {
 	--svg-highlight-stroke-color :limegreen;
 	--button-highlight-color :limegreen;
 	--checkbox-checked-color :limegreen;
+	--fulltext-hit :lightcoral;
 	--highlight:rgb(99, 240, 99);
 	--highlightText:black;
 	--highlight0:limegreen;
@@ -212,3 +213,4 @@ div.hr {height: 1px;}
 div.inlineblock {display:inline-block}
 
 span.fatalerror {font-size: 300% ; color: red}
+span.fulltext-hit {color:  var(--fulltext-hit); font-family: Courier; font-size: 75% ;font-weight: bold;}

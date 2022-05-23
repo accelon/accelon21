@@ -10,10 +10,11 @@ import { unique } from 'pitaka/utils'
 import { getContext } from 'svelte';
 import { derived } from 'svelte/store';
 import Colorhr from './comps/colorhr.svelte';
-export let chunks;
+export let chunks=[];
 
 export let ptk;
 export let side=0;
+export let postings=[];
 export let fullname=true;
 export let onKeyword=null;
 export let onScroll=null;
@@ -29,13 +30,10 @@ const getHeadings= (chunks)=>unique(chunks.map(ck=>ptk.headingOf( ptk.chunkLinep
         const {at,y,text}=heading;
         const y0=linepos[at];
         const id=idarr[at];
-        return {key:y,id, text, y0};    
+        return {key:y,id, chunk:at,text, y0};    
 }));
 
 $: headings = getHeadings(chunks);
-
-// const bkstore=getContext('bkstore');
-
 $: langstyle=getLangstyle(lang,$palitrans);
 
 const getTitle=(heading,tosim,pltrans)=>{
@@ -64,10 +62,15 @@ let alignedPitaka=[];
 
 </script>
 <VirtualScroll bind:this={vscroll} start={-1}   on:scroll={scroll}
-keeps={50} data={headings} height="calc(100% - 1.5em)" let:data >
+keeps={50} data={headings} height="calc(100% - 1.5em)" let:data key="key">
 <div>
     <span class="bookid">{data.id}</span>
     <span class={"tocitem "+langstyle} on:click={()=>goitem(data.y0)}>{getTitle(data.text,$tosim,lang==='pl'&&$palitrans,$factorization)}</span>
+    
+    {#if postings.length}
+    <span class="fulltext-hit">{ptk.postingInChunk(postings,data.chunk).length}</span>
+    {/if}
+
     {#if data.keywords}
     {#each data.keywords as [label,keyid]}
     <t {label} class={"clickable "+ label}>
