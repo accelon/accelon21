@@ -1,7 +1,7 @@
 <script>
 import DoubleRangeSlider from '../comps/double-range-slider.svelte'
 
-export let query;
+export let query='';
 export let criterion;
 export let method;
 export let update;
@@ -18,9 +18,9 @@ $: highbound = parseInt(label.nums[label.nums.length-1]);
 $: range=highbound-lowbound;
 $: start= ratioOf( parseInt(query.split('~')[0]) ) ;
 $: end=  ratioOf( parseInt(query.split('~')[1]||highbound )) ;
-$: console.log(formatQuery(start, end))
+
 const formatQuery=(start,end)=>{
-	let s=(start?Math.floor(start* range + lowbound):'')+'~'+(end<1?Math.floor(end*range + lowbound):'');
+	let s=(start?Math.round(start* range + lowbound):'')+'~'+(end<1?Math.round(end*range + lowbound):'');
 	if (s=='~') s='';
 	return s;
 }

@@ -14,8 +14,8 @@ const statByHeading=()=>{
     const byBook={};
     for (let i=0;i<excerpts.length;i++) {
         const ex=excerpts[i];
-        if (!byBook[ex.ncl]) byBook[ex.ncl]=0;
-        byBook[ex.ncl]++;
+        if (!byBook[ex.chunk]) byBook[ex.chunk]=0;
+        byBook[ex.chunk]++;
     }
     const out=[];
     for (let bk in byBook) out.push([bk,byBook[bk]]);

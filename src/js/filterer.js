@@ -27,7 +27,7 @@ export const filtererOf=(ptk,criteria)=>{
  		if (!criterion.label) continue;
  		const criteriatype=criterion.constructor.name.replace(/^Criterion_/,'');
  		const component=filterers[criteriatype];
- 		out.push({component, method,criterion, query:namedqueries[method]})
+ 		out.push({component, method,criterion, query:namedqueries[method]||''})
  	}
  	return out;
 }

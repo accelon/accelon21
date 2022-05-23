@@ -4,12 +4,13 @@
   "type":"module",
   "scripts": {
     "build": "rollup -c",
-    "buildtoolbox": "rollup -c toolbox.config.js",
-    "start": "sirv public --no-clear --host --port 5001",
+    "debug": "rollup -c --environment DEBUG",
     "dev": "rollup -c -w",
+    "buildtoolbox": "rollup -c toolbox.config.js",
+    "toolbox": "rollup -c toolbox.config.js -w",
+    "start": "sirv public --no-clear --host --port 5001",
     "aligner": "rollup -c aligner.config.js -w",
     "provident": "rollup -c provident.config.js -w",
-    "toolbox": "rollup -c toolbox.config.js -w",
     "htll": "rollup -c htll.config.js -w",
     "extension": "rollup -c -w --environment CHROME_EXTENSION"
   },

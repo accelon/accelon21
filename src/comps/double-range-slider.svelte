@@ -3,7 +3,7 @@
 	//import { clamp } from 'yootils';
     const nice = d => {
 		if (!d && d !== 0) return '';
-		return Math.floor(d* range +basenum) ;
+		return Math.round(d* range +basenum) ;
 	}
 
     function clamp(num, min, max) {
@@ -54,15 +54,15 @@
 			}));
 			window.removeEventListener('mousemove', handleMousemove);
 			window.removeEventListener('mouseup', handleMouseup);
-			// window.removeEventListener('touchmove', handleMousemove);
-			// window.removeEventListener('touchend', handleMouseup);
+			window.removeEventListener('touchmove', handleMousemove);
+			window.removeEventListener('touchend', handleMouseup);
 		}
 		node.addEventListener('mousedown', handleMousedown);
-		// node.addEventListener('touchstart', handleMousedown);
+		node.addEventListener('touchstart', handleMousedown,{passive: true});
 		return {
 			destroy() {
 				node.removeEventListener('mousedown', handleMousedown);
-				// node.removeEventListener('touchstart', handleMousedown);
+				node.removeEventListener('touchstart', handleMousedown,{passive: true});
 			}
 		};
 	}
@@ -140,10 +140,10 @@
 	.slider {
 		position: relative;
 		width: 95%;
-		height: 6px;
+		height: 5px;
 		top: 50%;
 		transform: translate(0, -50%);
-		background-color: #e2e2e2;
+		background-color: var(--slider-background);
 		box-shadow: inset 0 7px 10px -5px #4a4a4a, inset 0 -1px 0px 0px #9c9c9c;
 		border-radius: 4px;
 	}
@@ -169,12 +169,12 @@
 	} */
 	.handle:active:after {
 		background-color: #ddd;
-		z-index: 9;
+		z-index: 100;
 	}
 	.body {
 		top: 0;
 		position: absolute;
-		background-color: #34a1ff;
+		background-color: var(--slider-background-selected);
 		bottom: 0;
 	}
 </style>

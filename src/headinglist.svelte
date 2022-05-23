@@ -6,30 +6,35 @@ import {getSeqColor,getLangstyle} from './js/decorate.js'
 import {_,tosim, factorization,palitrans} from './js/store.js'
 import { settab } from './js/addresses';
 import { parseOfftextLine,parseAddress ,stringifyAddress } from 'pitaka/offtext';
+import { unique } from 'pitaka/utils'
 import { getContext } from 'svelte';
 import { derived } from 'svelte/store';
 import Colorhr from './comps/colorhr.svelte';
-export let items;
+export let chunks;
 
 export let ptk;
 export let side=0;
 export let fullname=true;
-export let onKeyword;
-export let onScroll;
+export let onKeyword=null;
+export let onScroll=null;
 export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
 let vscroll;
 
 // const displayItems=derived(items,(I,set)=>{
 
 const {names,linepos,idarr} =ptk.getHeadingLabel();
-$: displayitems=items.filter(it=>names[it].trim()).map((it,idx)=>{
-        const y0=linepos[it];
-        return {key:it,id:idarr[it], text:names[it], y0};
-})
-    // set(displayitems);
-// },[]);
 
-const bkstore=getContext('bkstore');
+// $: console.log('chunklinepos',( chunks.map(ck=>ptk.chunkLinepos(ck)) ).map(line=>ptk.headingOf(line)) )
+const getHeadings= (chunks)=>unique(chunks.map(ck=>ptk.headingOf( ptk.chunkLinepos(ck) )).map(heading=>{
+        const {at,y,text}=heading;
+        const y0=linepos[at];
+        const id=idarr[at];
+        return {key:y,id, text, y0};    
+}));
+
+$: headings = getHeadings(chunks);
+
+// const bkstore=getContext('bkstore');
 
 $: langstyle=getLangstyle(lang,$palitrans);
 
@@ -42,7 +47,7 @@ const getTitle=(heading,tosim,pltrans)=>{
 }
 
 
-$: if(vscroll&&$items.length) { vscroll.scrollToOffset(0) } //scrolltotop when data is updated
+$: if(vscroll&&headings.length) { vscroll.scrollToOffset(0) } //scrolltotop when data is updated
 
 const scroll=(evt)=>{
     onScroll&&onScroll(evt.detail.index);
@@ -54,11 +59,12 @@ const goitem=(y0)=>{
     const addr=stringifyAddress(ptr);
     settab(side,addr,{newtab:true})
 }
-$: alignedPitaka=($bkstore.aligned||[]).map(n=>useBasket(n));
+let alignedPitaka=[];
+// $: alignedPitaka=($bkstore.aligned||[]).map(n=>useBasket(n));
 
 </script>
 <VirtualScroll bind:this={vscroll} start={-1}   on:scroll={scroll}
-keeps={50} data={$displayItems} key="key" height="calc(100% - 1.5em)" let:data >
+keeps={50} data={headings} height="calc(100% - 1.5em)" let:data >
 <div>
     <span class="bookid">{data.id}</span>
     <span class={"tocitem "+langstyle} on:click={()=>goitem(data.y0)}>{getTitle(data.text,$tosim,lang==='pl'&&$palitrans,$factorization)}</span>

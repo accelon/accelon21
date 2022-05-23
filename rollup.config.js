@@ -5,6 +5,7 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import css from "rollup-plugin-css-only";
 
+const debug =process.env.DEBUG;
 const production = !process.env.ROLLUP_WATCH;
 const chrome_extension=process.env.CHROME_EXTENSION;
 
@@ -37,21 +38,21 @@ export default [
   {
     input: "src/js/main.js",
     output: {
-      sourcemap: !production,
+      sourcemap: true,//!production || debug,
       format: "iife",
       name: "app",
       file: "public/main.js"
     },
     plugins: [
       svelte({
-        compilerOptions: {dev: !production && !chrome_extension},
+        compilerOptions: {dev: (!production && !chrome_extension )|| debug},
       }),
       css({ output: "main.css" }),
       resolve({ browser: true, dedupe: ["svelte"]}),
       commonjs(),
-      !production && !chrome_extension && serve(),
-      !production && !chrome_extension && livereload("public"),
-      production && terser(),
+      !production && !chrome_extension && !debug && serve(),
+      !production && !chrome_extension && !debug && livereload("public"),
+      production && !debug && terser(),
     ],
     watch: {
       clearScreen: false,
