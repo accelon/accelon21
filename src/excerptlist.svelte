@@ -20,10 +20,10 @@ const setActiveLine=y=> activeline=y;
         {#await ptk.prefetchLines(data.y,2)}
             <ExcerptLine {side} {ptk} {...data}  loading={true}/>
         {:then}
-            <ExcerptLine {side} {ptk} {...data} {parallels} activeline={activeline==data.y} hits={ptk.hitPos(data.y,postings,phrases)} />
+            <ExcerptLine {side} {ptk} {...data} bind:parallels activeline={activeline==data.y} hits={ptk.hitPos(data.y,postings,phrases)} />
         {/await}
     {:else}
-        <ExcerptLine {side}  {ptk} {...data} {parallels}  activeline={activeline==data.y} hits={ptk.hitPos(data.y,postings,phrases)}/>
+        <ExcerptLine {side}  {ptk} {...data} bind:parallels  activeline={activeline==data.y} hits={ptk.hitPos(data.y,postings,phrases)}/>
     {/if}
     </div>
 </VirtualScroll>

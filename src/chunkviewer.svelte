@@ -16,8 +16,7 @@ export let active=false;
 
 let vscroll,ptk='',basket,loc,hook,dy,y0,y,locattrs,topkey, loaded=false, initial=true,
 aligned='', alignedPitaka=[],optionalAlignedPitaka=[] ,mulu=[];
-let parallels={};
-let chunkTraits={};
+let parallels={}, chunkTraits={};
 $: viewitems=chunkTraits.items ||[];
 
 const init= async ()=>{
@@ -45,7 +44,6 @@ const init= async ()=>{
 
 $: init(address);
 
-// $: viewitems=filterItems(ptk,$vstore,$vstore.filterfunc)||[] ;
 $: if (viewitems[0] && topkey !== viewitems[0].key) { //initial scroll
     vscroll.scrollToOffset(0) ;
     topkey=viewitems[0].key;
@@ -71,17 +69,6 @@ $: if(active&&viewitems.length) {
         }
     },10)
 }
-
-/*
-$: if ((!loaded && ptk && vscroll) ) { 
-    if (initial) {
-        setTimeout(()=>{
-            scrollToY(y,true)
-        },250);
-    }
-    loaded=true;
-}
-*/
 
 let scrollStart=0;
 const scroll=(evt)=>{
@@ -111,12 +98,13 @@ const scrollToY=(y,force=false)=>{
     <VirtualScroll start={-1} bind:this={vscroll} keeps={30}  height="calc(100% - 1.5em)" data={viewitems} 
         key="key" let:data on:scroll={scroll}>
         <Render master=true {...data} {y0} activeline={data.key==y} lang={ptk.langOf(y)} {loc} {ptk} {side} >
-        {#if data.key===y}<LineMenu {y0} {side} {loc} 
-            lang={ptk.langOf(y)} y={data.y||data.key} {ptk} aligned={optionalAlignedPitaka}/>{/if}
+        {#if data.key===y}<LineMenu {y0} {side} {loc} activeline={data.key==y}
+            lang={ptk.langOf(y)} y={data.y||data.key} {ptk} bind:parallels aligned={optionalAlignedPitaka}/>{/if}
         </Render>            
+
         {#each alignedPitaka as aptk,idx}
         <Render y={aptk.alignedY(data.key,ptk)}  y0={aptk.alignedY(y0,ptk)} 
-            activeline={data.key==y } bind:parallels
+            activeline={data.key==y } 
             activelinecolor={data.key==y && idx+1}
             lang={aptk.langOf(aptk.alignedY(data.key,ptk))} ptk={aptk} {side}>
             <span slot='start' class='clickable alignedName' style={"color:"+getSeqColor(idx+1)} title={_(aptk.langOf(aptk.alignedY(data.key,ptk)),aptk.header.title,$tosim,$palitrans)}>{aptk.name}</span>

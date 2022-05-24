@@ -37,7 +37,9 @@ const getAddress=y=>{
 {#if !loading}<svelte:component this={$renderer.default} 
 setactiveline={false} {y} {ptk} {hits} loc={ptk.locOf(y)}
  >
+{#if activeline}
 {#each alignedPtk as aptk} <Parallel ptk={aptk} bind:parallels alignptk={ptk} {loc} {dy}/> {/each}
+{/if}
 </svelte:component>
 
  {/if}

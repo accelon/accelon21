@@ -5,13 +5,9 @@ import { parseAddress,stringifyAddress } from 'pitaka/offtext';
 import {getOppositeAddresses} from './js/addresses';
 import { getContext } from 'svelte';
 import {get } from 'svelte/store';
+import Render from './render_default.svelte'
 import Hyperlink from './comps/hyperlink.svelte';
-//const vstore=getContext('vstore');
-export let loc;
-export let ptk;
-export let alignptk;
-export let side=0;
-export let dy=0;
+export let loc, ptk, alignptk, side=0 , activeline=false,dy=0;
 export let lang=ptk.header.lang;
 export let parallels={};
 const paraname=ptk.header.name;
@@ -55,13 +51,13 @@ const onoff=(bool)=>{
 </script>
 {#if showing}
 {#key y}{#await fetchline()}{fetched++}{/await}{/key}
-<svelte:component nesting={1} this={$renderer.default} 
+<Render nesting={1} {activeline}
 {ptk} {text} {y} {y0} {loc} lang={ptk.langOf(y)}>
  <span slot="start" class='btnparallel clickable showing'
  title={_(lang,ptk.header.title,$tosim)}
   on:click={()=>onoff(false)} >{getCaption()}</span>
  <Hyperlink {side} {href} title={href}/>
-</svelte:component>
+</Render>
 {:else} 
 <span class='btnparallel clickable' 
 title={_(lang,ptk.header.title,$tosim)} on:click={()=>onoff(true)} >{getCaption()}</span>

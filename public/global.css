@@ -19,6 +19,8 @@ body {
 	--button-unselected : #666; 
 	--button-selected: #FFFFFF ; 
 	--panel-background: rgba(22,22,22,0.9);
+	--dropdownpanel-background: rgba(22,22,22,0.3) ;
+	--dropdownpanel-background-hover: rgba(22,22,22,0.9);
 	--autocomplete-bacgkround : rgb(33,33,33);
 	--quotetext: limegreen;
 	--splitter: #131313;
@@ -112,7 +114,12 @@ button:focus {	border-color: #666;}
 	margin-right:2.4rem; /* allow user to add bookmark*/
 	border-top-left-radius: 0.5em;
 	border-bottom-left-radius: 0.5em;
-	top:2em;right:0;max-width:15em;background:var(--panel-background)}
+	top:2em;right:0;max-width:15em;
+	background:var(--dropdownpanel-background)
+}
+.dropdownpanel:hover {
+	background:var(--dropdownpanel-background-hover)
+}
 .hamburger {float:right;padding-right:2rem}
 
 .lds-ring {	display: inline-block;	position: relative;	width: 1em; height: 1em;  }
@@ -162,6 +169,7 @@ div.hr {height: 1px;}
 	box-shadow: 1 5 10px ;min-height:5em;min-width:10em;max-height: 15em;overflow-y:scroll}  
 
 .linetext {padding-left:4px;padding-top:0.5em;line-height:1.8;padding-right:4px}
+.excerptlinetext {padding-left:4px;line-height:1.8;padding-right:4px}
 .activeline {padding-left:1px;border-left:3px solid gray;
 	padding-right:1px;border-right:3px solid gray}
 .excerptheader {background:#333333;display:inline-block;
@@ -205,7 +213,7 @@ div.hr {height: 1px;}
 .lang-pl- {font-family: "ProvidentPali" ; font-size:120%}
 .lang-pl-iast {font-family: "Segoe UI",Tahoma}
 .lang-pl-tb {font-size:120%}
-.lang-en {font-family: Georgia;}
+.lang-en {font-family: "Times New Roman", Georgia;}
 
 .cm-offtag {background:#3f3f3f;color:wheat}
 .alignedName {border-radius:0.25em; border:1px #aaa dotted;}
