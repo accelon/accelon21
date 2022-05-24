@@ -13,16 +13,22 @@ export const cursor=writable({});
 export const panepos=writable(settings.panepos);
 export const fatalerror=writable('');
 
-export const _=(text,sim,script)=>{
+export const _=(lang,text,sim,palitrans,maxlen)=>{
     if (typeof sim=='undefined') sim=get(tosim);
+    const script=lang=='pl' && palitrans;
     let t=text;
     if (script!==false && typeof script!=='undefined') {
         if (parseInt(get(factorization))>0) t=factorizeText(t, true ,script);
         t=offtext2indic(t,script);
     }
     else if (parseInt(sim)) t=toSim(t,sim);
+    t=t||'';
+    if (lang=='en' && maxlen) maxlen*=2;
+    if (maxlen&&t.length>maxlen) {
+        t=t.slice(0,maxlen)+'...';
+    }
 
-    return t;
+    return t||'';
 };
 
 

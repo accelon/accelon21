@@ -1,5 +1,5 @@
 <script>
-import { DEFAULT_LANGUAGE, useBasket} from 'pitaka';
+import { DEFAULT_LANGUAGE, ALIGNED_KEY,useBasket} from 'pitaka';
 import VirtualScroll from './3rdparty/virtualscroll'
 import Keywords from './comps/keywords.svelte';
 import {getSeqColor,getLangstyle} from './js/decorate.js'
@@ -12,19 +12,17 @@ import { derived } from 'svelte/store';
 import Colorhr from './comps/colorhr.svelte';
 export let chunks=[];
 
-export let ptk;
-export let side=0;
-export let postings=[];
+export let ptk, side=0, postings=[] , aligned='';
 export let fullname=true;
 export let onKeyword=null;
 export let onScroll=null;
 export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
+export let showChunkExcerpt=function(){};
 let vscroll;
 
 // const displayItems=derived(items,(I,set)=>{
 
 const {names,linepos,idarr} =ptk.getHeadingLabel();
-
 // $: console.log('chunklinepos',( chunks.map(ck=>ptk.chunkLinepos(ck)) ).map(line=>ptk.headingOf(line)) )
 const getHeadings= (chunks)=>unique(chunks.map(ck=>ptk.headingOf( ptk.chunkLinepos(ck) )).map(heading=>{
         const {at,y,text}=heading;
@@ -41,7 +39,7 @@ const getTitle=(heading,tosim,pltrans)=>{
     heading=heading.replace(/\]\^/g,'] ^');
     const [text,tags]=parseOfftextLine(heading);
     let s=fullname?text.replace(/\|.+/,''):text.replace(/.+\|/,'');
-    return _(s,tosim,pltrans);
+    return _(lang,s,tosim,pltrans);
 }
 
 
@@ -53,22 +51,23 @@ const scroll=(evt)=>{
 const goitem=(y0)=>{
     const loc=ptk.locOf(y0);
     const ptr=parseAddress(loc);
-    if (alignedPitaka.length) ptr.al=alignedPitaka.map(p=>p.name).join(',');
+    if (alignedPitaka.length) ptr[ALIGNED_KEY]=alignedPitaka.map(p=>p.name).join(',');
     const addr=stringifyAddress(ptr);
     settab(side,addr,{newtab:true})
 }
+
 let alignedPitaka=[];
-// $: alignedPitaka=($bkstore.aligned||[]).map(n=>useBasket(n));
+$: alignedPitaka=(aligned.split(',')||[]).map(n=>useBasket(n)).filter(it=>!!it);
 
 </script>
 <VirtualScroll bind:this={vscroll} start={-1}   on:scroll={scroll}
 keeps={50} data={headings} height="calc(100% - 1.5em)" let:data key="key">
 <div>
     <span class="bookid">{data.id}</span>
-    <span class={"tocitem "+langstyle} on:click={()=>goitem(data.y0)}>{getTitle(data.text,$tosim,lang==='pl'&&$palitrans,$factorization)}</span>
+    <span class={"clickable "+langstyle} on:click={()=>goitem(data.y0)}>{getTitle(data.text,$tosim,$palitrans,$factorization)}</span>
     
     {#if postings.length}
-    <span class="fulltext-hit">{ptk.postingInChunk(postings,data.chunk).length}</span>
+    <span on:click={()=>showChunkExcerpt(data.chunk)} class="fulltext-hit clickable hit-link">{ptk.postingInChunk(postings,data.chunk).length}</span>
     {/if}
 
     {#if data.keywords}
@@ -93,3 +92,6 @@ keeps={50} data={headings} height="calc(100% - 1.5em)" let:data key="key">
     {/key}
 </div>
 </VirtualScroll>
+<style>
+    .hit-link {font-size: 1em;padding-left: 5px;padding-right: 5px}
+</style>

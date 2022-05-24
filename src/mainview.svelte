@@ -23,7 +23,7 @@ onMount(()=>{ // remove message
 </script>
 <div class="container">
 {#if $aligning}
-    <div class="systemsetting" ><Btn title={_("對齊 setting",$tosim)} icon="align" 
+    <div class="systemsetting" ><Btn title={_("","對齊 setting",$tosim)} icon="align" 
         onclick={togglealigning} store={aligning}/>
     </div>
 {:else}

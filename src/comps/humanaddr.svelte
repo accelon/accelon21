@@ -7,7 +7,7 @@ export let caption='',showjuan=false, address='';
 export let loc='', locOnly=false; //no pitaka name
 export let c=''
 export let ptk=null;
-let lang='',script='';
+let lang='';
 $: caption,c,showjuan,locOnly;
 const click=(evt)=>{
     onclick&&onclick(evt)
@@ -21,13 +21,11 @@ $: if (address) {
 
     if (ptr) loc=ptr.loc;    
     lang=ptk.header.lang||DEFAULT_LANGUAGE;
-    script=lang==='pl'&&$palitrans;
-    
     heading=ptk.headingOf(loc);
 }
 </script>
 <span title={address}>
 <span class='clickable' on:click={click}>
-<span title={_(ptk.header.title,$tosim)}>{address.replace(/\/.+/,'')}</span>
+<span title={_(lang,ptk.header.title,$tosim,$palitrans)}>{address.replace(/\/.+/,'')}</span>
 </span>
 </span>

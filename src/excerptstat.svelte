@@ -1,14 +1,15 @@
 <script>
 import {writable } from "svelte/store";
 import VirtualScroll from './3rdparty/virtualscroll';
-import {_,tosim} from './js/store.js';
+import {_,tosim,palitrans} from './js/store.js';
 export let excerpts=[];
-export let ptk, side=0;
+export let ptk, side=0 ,lang;
 export let selectedheadings={};
+
 $: side;
 let showing=true;
-let stats=writable([]);
 
+$: stats=statByHeading(excerpts);
 const setshowmode=()=>showing=!showing;
 const statByHeading=()=>{
     const byBook={};
@@ -20,20 +21,20 @@ const statByHeading=()=>{
     const out=[];
     for (let bk in byBook) out.push([bk,byBook[bk]]);
     out.sort((a,b)=>b[1]-a[1]);
-    
+    const all=Object.keys(selectedheadings).length==0;
     const cl=ptk.getChunkLabel();
-    return out.map((it,idx)=> {return {idx,key:it[0],selected:true, name:cl.names[it[0]], count:it[1] }} )
+    return out.map(([at,count],idx)=> {return {idx,key:at,selected:selectedheadings[at]||all, name:cl.names[at], count }} )
 }
 const selectAll=(_stats,onoff)=>{
-    for (let i=0;i<_stats.length;i++) {
-        _stats[i].selected=onoff;
+    for (let i=0;i<stats.length;i++) {
+        stats[i].selected=onoff;
     }
 }
 
 let selectedBookCount=0;
 const updateFilter=()=>{
     selectedheadings={};
-    const books=$stats.filter(it=>it.selected).map(it=>it.key);
+    const books=stats.filter(it=>it.selected).map(it=>it.key);
     selectedBookCount=0;
     for (let i=0;i<books.length;i++) {
         selectedheadings[books[i]]=true;
@@ -41,35 +42,30 @@ const updateFilter=()=>{
     }
 }
 const toggleInclusive=evt=>{
-    const _stats=$stats;
     const idx=parseInt(evt.target.attributes.idx.value);
-    if (selectedBookCount==1 && _stats[idx].selected) {
-        selectAll(_stats,true);
+    if (selectedBookCount==1 && stats[idx].selected) {
+        selectAll(stats,true);
     } else {
-        selectAll(_stats,false);
+        selectAll(stats,false);
     }
-    _stats[idx].selected=!_stats[idx].selected;
-    stats.set(_stats);
+    stats[idx].selected=!stats[idx].selected;
     updateFilter();
 }
 const toggleSelect=evt=>{
-    const _stats=$stats;
     const idx=parseInt(evt.target.attributes.idx.value);
-    _stats[idx].selected=!_stats[idx].selected;
-    stats.set(_stats);
+    stats[idx].selected=!stats[idx].selected;
     updateFilter();
 }
-$: stats.set(statByHeading(excerpts));
 </script>
 <span class="hamburger" class:showing on:click={setshowmode}>☰</span>
 {#if showing}
 <div  class="dropdownpanel stats">
-<VirtualScroll keeps={30} data={$stats} key="key" let:data>
+<VirtualScroll keeps={30} data={stats} key="key" let:data>
 <div class="statitem">
     <span on:click={toggleInclusive} idx={data.idx} class="clickable" class:selected={data.selected}>
-        {_(data.name,$tosim)}
+        {_(lang,data.name,$tosim,$palitrans,12)}
     </span>
-    <span on:click={toggleSelect} idx={data.idx} class="clickable count">
+    <span on:click={toggleSelect} idx={data.idx} class="clickable fulltext-hit hit-button">
         {data.count}
     </span>
 </div>
@@ -80,5 +76,5 @@ $: stats.set(statByHeading(excerpts));
 .stats {height:25em}
 .statitem{padding-left:5px}
 .selected {color:var(--highlight)}
-.count {padding-left:5px;padding-right:5px;float:right}
+.hit-button {padding-left:5px;padding-right:10px;float:right;padding-top: 5px}
 </style>

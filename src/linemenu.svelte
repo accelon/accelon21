@@ -1,7 +1,7 @@
 <script>
 import { useBasket } from 'pitaka';
 import PaliMenu from './palimenu.svelte'
-import Parallel from './renderer_parallel.svelte'
+import Parallel from './parallel.svelte'
 export let y=0,side=0, ptk,loc='',y0=0,lang;
 export let aligned=[];
 

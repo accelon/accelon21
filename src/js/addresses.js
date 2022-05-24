@@ -27,13 +27,7 @@ export const loadAlignedLines=async (ptk,loc,dy)=>{
     if (!y0) return;
     await ptk.prefetchLines(y0,y0+page.linecount);
 }
-export const setLoc=async ({ptk,loc,y0,dy,aligned},store)=>{
-    const old=get(store);
-    if (!ptk) ptk=get(store).ptk;
-
-    if (get(store).loc==loc && get(store).ptk===ptk) {
-        return; //nothing to do
-    }
+export const loadChunkTraits=async ({ptk,loc,y0,dy,aligned})=>{
     const items=[];
 
     const page=chunkFromAddress(ptk,{loc,dy})
@@ -43,7 +37,6 @@ export const setLoc=async ({ptk,loc,y0,dy,aligned},store)=>{
     for (let i=y0;i<y0+page.linecount;i++) {
         items.push({key:i,notes:notes[i]});
     }
-    const criteria=get(store).criteria||{};
 
     await ptk.prefetchLines(y0,y0+items.length);
     const alignedPtk=aligned.map(n=>n&&useBasket(n)).filter(it=>!!it);
@@ -74,8 +67,7 @@ export const setLoc=async ({ptk,loc,y0,dy,aligned},store)=>{
     y0 is the first line of cluster, dy is delta from y0
     loc is the nearest locator
     */
-    const out=Object.assign(old,{items,backlinks,ptk,loc,mulu,y0,criteria,usernotes,bookmarks,dy});
-    store.set(out);
+    return {items,backlinks,ptk,loc,mulu,y0,usernotes,bookmarks,dy};
 }
 const packAddresses=arr=>{
     let prevbasket='';
@@ -131,9 +123,9 @@ export const isParallel=(address1,address2)=>{
     if (!ptk1 || !ptk2) return false;
     if (!ptk1.aligned.includes(ptk2.header.name)) return;
 
-    const ck1=ptk1.chunkOf(addr1.loc );
-    const ck2=ptk2.chunkOf(addr2.loc );
-    return ck1.id==ck2.id;
+    const ck1=ptk1.chunkOf(addr1.loc);
+    const ck2=ptk2.chunkOf(addr2.loc);
+    return ck1&&ck2 && ck1.id==ck2.id;
 
     /*
     const ptk=useBasket(addr1.basket);
@@ -218,7 +210,7 @@ export const newopposite=(addresses_side,address)=>{
     const opposite=getOppositeAddresses(addresses_side);
     const oaddrs=get(opposite);
     if (!oaddrs.length || !sameChunk(address,oaddrs[0].address)) settab(opposite,address,{newtab:true});
-    else if (oaddrs.length) settab(opposite,address);
+    else if (oaddrs.length) settab(opposite,address,opts);
 }
 export const settab=(addresses_side,address,{newtab=false}={})=>{
     let addresses=addresses_side;

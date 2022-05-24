@@ -8,10 +8,10 @@ import MainView from './mainview.svelte';
 import LoadingAnimation from './comps/loading.svelte'
 import {_,tosim,fatalerror} from './js/store.js'
 import { onMount } from 'svelte';
-import { openBasket } from 'pitaka';
+import { openBasket,DEFAULT_LANGUAGE } from 'pitaka';
 let started=false;
 let PitakaStatus=[];
-
+let lang;
 onMount(async ()=>{
 	PitakaStatus=loadaddress().map(basket=>[basket,null]);
 	for (let i=0;i<PitakaStatus.length;i++){
@@ -29,7 +29,7 @@ onMount(async ()=>{
 	{#each PitakaStatus as ptk,idx (idx)}
 		<div class='pitaka'>
 		{#if ptk[1]}
-		<span class='title'>{_(ptk[1].header.title,$tosim)}</span>
+		<span class='title'>{_('',ptk[1].header.title,$tosim)}</span>
 		<!-- <span class='loadtime'>{JSON.stringify(ptk[1].loadtime)}ms</span> -->
 		{:else}
 		<LoadingAnimation/>{ptk[0]}

@@ -3,7 +3,7 @@ import {diffCJK,trimPunc} from 'pitaka/utils';
 import {parseHook, posPin} from 'pitaka/align';
 import {fromSim, toSim } from 'lossless-simplified-chinese';
 export const getLangstyle=(l,trans)=>'lang-'+l+(l==='pl'?'-'+(trans||''):'');
-export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes,hits})=>{
+export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,notes,hits})=>{
     const extra=[];
     if (!ptk || !linetext) return extra;
     if (backlinks && backlinks.length) { //convert backlink hook to tag
@@ -36,6 +36,7 @@ export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes,hi
             } else x+=d.count;
         })
     }
+    /*
     if (linetofind) {
         const regex=new RegExp(linetofind,'ig');
         
@@ -49,6 +50,7 @@ export const decoratePage=(ptk,linetext,{backlinks,q, y,hook,linetofind,notes,hi
             extra.push(new OffTag('linetofind', {},0,i.index, i[0].length));
         }
     }
+    */
     if (notes) {
         notes.forEach(note=>{
             let [pin,val,id]=note.split('\t');

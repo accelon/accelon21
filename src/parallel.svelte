@@ -6,13 +6,14 @@ import {getOppositeAddresses} from './js/addresses';
 import { getContext } from 'svelte';
 import {get } from 'svelte/store';
 import Hyperlink from './comps/hyperlink.svelte';
-const vstore=getContext('vstore');
+//const vstore=getContext('vstore');
 export let loc;
 export let ptk;
 export let alignptk;
 export let side=0;
 export let dy=0;
-
+export let lang=ptk.header.lang;
+export let parallels={};
 const paraname=ptk.header.name;
 const getCaption=()=>{
     const at=paraname.indexOf(alignptk.name+'-');
@@ -26,7 +27,7 @@ const getCaption=()=>{
 }
 
 let fetched=0;
-let showing=vstore && !!$vstore.parallels[paraname];
+$: showing=!!parallels[paraname];
 $: [y0] = ptk.getPageRange(loc); 
 $: y=y0+dy;
 let text,href='';
@@ -48,11 +49,7 @@ const getParallelHref=()=>{
 }
 $: getParallelHref(side,dy,loc);
 const onoff=(bool)=>{
-    if (vstore) {
-        const {parallels}=$vstore;
-        parallels[paraname]=bool;
-        $vstore.parallels=parallels;
-    }
+    parallels[paraname]=bool;
     showing=bool;
 }
 </script>
@@ -61,11 +58,11 @@ const onoff=(bool)=>{
 <svelte:component nesting={1} this={$renderer.default} 
 {ptk} {text} {y} {y0} {loc} lang={ptk.langOf(y)}>
  <span slot="start" class='btnparallel clickable showing'
- title={_(ptk.header.title,$tosim)}
+ title={_(lang,ptk.header.title,$tosim)}
   on:click={()=>onoff(false)} >{getCaption()}</span>
  <Hyperlink {side} {href} title={href}/>
 </svelte:component>
 {:else} 
 <span class='btnparallel clickable' 
-title={_(ptk.header.title,$tosim)} on:click={()=>onoff(true)} >{getCaption()}</span>
+title={_(lang,ptk.header.title,$tosim)} on:click={()=>onoff(true)} >{getCaption()}</span>
 {/if}

@@ -1,15 +1,16 @@
 <script>
 import { getContext } from 'svelte';
 import { settab,setActiveLine } from './js/addresses';
-import {_,tosim,picked} from './js/store.js';
-import LineFilter from './linefilter.svelte';
+import {_,tosim,palitrans,picked} from './js/store.js';
 /* todo , use comps/hamburgermenu  */
-const vstore=getContext('vstore');
+//const vstore=getContext('vstore');
 export let mulu=[];
 export let scrollStart=0;
 export let y0=0;
 export let side=0;
 export let ptk;
+export let scrollToY=()=>{};
+export let lang=ptk.header.lang;
 let color=(level,external)=>'hsl('+((level)*40) +' ,80%,'+(external?'35%)':'50%)') ;
 let caption=(lnk)=>{
     const chunk=lnk[1];
@@ -24,7 +25,8 @@ const scrolltotocitem=evt=>{
     const y=parseInt(evt.target.attributes.itemy.value);
     // throw 'ptk not accessible yet'
     setActiveLine(ptk,side, y,y0);
-    $vstore.scrollToY(y,true);
+    //$vstore.scrollToY(y,true);
+   scrollToY && scrollToY(y,true);
 }
 let showmode=1; //0 = always off , 1=auto on , 2=always on
 
@@ -48,11 +50,11 @@ $: showing = (scrollStart<AUTOMENULINE && showmode==1) || showmode==2;
         <div class:upper={y0+scrollStart>itemy} class="item" 
             style={"padding-left:"+((level-1)*3)+"px;color:"+color(level,addr)}>
         {#if addr}
-        <span class="external" lnk={addr} on:click={golink}>{_(name,$tosim)}
+        <span class="external" lnk={addr} on:click={golink}>{_(lang,name,$tosim,$palitrans,20)}
         →{caption(addr)}</span>
         {:else}
         <span 
-        {itemy} on:click={scrolltotocitem}>{_(name)}</span>
+        {itemy} on:click={scrolltotocitem}>{_(lang,name,$tosim,$palitrans,20)}</span>
         {/if}
         </div>
     {/each}

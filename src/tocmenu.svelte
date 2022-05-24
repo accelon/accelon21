@@ -1,7 +1,6 @@
 <script>
 import Hamburgermenu from './comps/hamburgermenu.svelte';
-import sb from './js/searchbox.js';
-import {searchbox,picked} from './js/store.js'
+import {picked} from './js/store.js'
 import InputNumber from './comps/inputnumber.svelte';
 /* todo , use comps/hamburgermenu  */
 export let ptk=null;

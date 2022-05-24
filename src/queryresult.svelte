@@ -21,7 +21,7 @@ const openexcerpt=sres=>{
 <span>
 {#each items as sres}
 {#if sres.count}
-    <span class="clickable labeltext_query" on:click={()=>openexcerpt(sres)} label={_(sres.caption,$tosim)} >
+    <span class="clickable labeltext_query" on:click={()=>openexcerpt(sres)} label={_('',sres.caption,$tosim)} >
     {sres.count} </span>
 {/if}
 {/each}

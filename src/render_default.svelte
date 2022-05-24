@@ -24,7 +24,6 @@ export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
 export let notes=null;
 $: langstyle='lang-'+lang+(lang==='pl'?'-'+($palitrans||''):'')
 export let activeline=false;
-export let linetofind='';
 export let nesting=0,text='',loc='',side=0,id='',hits=[];
 export let activelinecolor=0;
 export let backlinks=[];
@@ -32,7 +31,7 @@ export let usernotes=null; // this is a store created by addresses.js
 export let bookmarks=null; // this is a store created by addresses.js
 $: id,hits;
 
-$: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,linetofind,notes,hits});
+$: extra=decoratePage(ptk,onlytext, {backlinks,hook,y,q,notes,hits});
 
 $: lineText=()=>{
     let s=text||(ptk&&ptk.getLine(y||key))||''

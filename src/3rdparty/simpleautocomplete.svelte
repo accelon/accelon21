@@ -43,6 +43,7 @@
   export let onFocus = function() {};
   export let onBlur = function() {};
   export let onInput = function(){};
+  export let onEscape = function(){};
   export let onCreate = function(text) {
     if (debug) {
       console.log("onCreate: " + text);
@@ -469,6 +470,7 @@
     if (debug) {
       console.log("selectItem", highlightIndex);
     }
+    if (!filteredListItems)return;
     const listItem = filteredListItems[highlightIndex];
     if (selectListItem(listItem)) {
       close();
@@ -631,7 +633,7 @@
     if (opened) {
       input.focus();
       close();
-    }
+    } else if (onEscape) onEscape();
   }
   function onBackspace(e) {
     if (debug) {

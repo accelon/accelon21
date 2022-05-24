@@ -7,6 +7,7 @@ import ExcerptStat from './excerptstat.svelte';
 import {closetab} from './js/addresses';
 export let ptk;
 export let side=0;
+export let lang;
 export let excerpts=[];
 export let selectedheadings={};
 export let showheading;
@@ -18,11 +19,11 @@ const onclick=()=>{
 <div class="controlbar">
     {#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
     <TabSelector {side}/>
-    <span title={_(ptk.header.title,$tosim)} class="closetabbutton" 
+    <span title={_(lang,ptk.header.title,$tosim)} class="closetabbutton" 
         on:click={onclick}>{ptk.header.name}</span>
     <slot></slot>
     {#if ptk && excerpts.length && !showheading}
-    <ExcerptStat {ptk} {side} {excerpts} bind:selectedheadings />
+    <ExcerptStat {ptk} {side} {excerpts}  {lang} bind:selectedheadings />
     {/if}
 </div>
 <style>

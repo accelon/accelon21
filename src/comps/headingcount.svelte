@@ -9,7 +9,8 @@ const toggleshow=()=>{
 }
 $: showexcerpt=!showheading;
 </script>
-<span class="articlecount" class:showexcerpt on:click={toggleshow} title={_("符合篇數 Article Count")}>{count}</span>
+<span class="articlecount" class:showexcerpt on:click={toggleshow} 
+title={_("符合篇數 Article Count (ESC)")}>{count}</span>
 <style>
     .showexcerpt {background:var(--highlight)}
 </style>
