@@ -2,9 +2,9 @@
 import { readLines } from 'pitaka';
 import { useBasket } from 'pitaka/basket';
 import {dereferencing,makeAddress} from 'pitaka/offtext';
-import { renderer } from './js/store';
-import Hyperlink from './comps/hyperlink.svelte';
-import Colorhr from './comps/colorhr.svelte'
+import { renderer } from '../js/store';
+import Hyperlink from '../comps/hyperlink.svelte';
+import Colorhr from '../comps/colorhr.svelte'
 export let attrs={},text='',opening=0,closing=0;
 export let name='',w=0,starty=0,ptk=null,i=0,clss='',side=0,x=0,y=0,nesting=0; //just for hidding the warning
 $: text,name,w,starty,closing;

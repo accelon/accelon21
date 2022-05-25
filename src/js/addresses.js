@@ -204,13 +204,13 @@ export const sameChunk=(addr1,addr2)=>{
     if (!ptk1|| !ptk2) return false;
     const c1=ptk1.chunkOf(ptr1.loc);
     const c2=ptk2.chunkOf(ptr2.loc);
-    return c1.address===c2.address;
+    return c1&& c2&&c1.address===c2.address;
 }
 export const newopposite=(addresses_side,address)=>{
     const opposite=getOppositeAddresses(addresses_side);
     const oaddrs=get(opposite);
     if (!oaddrs.length || !sameChunk(address,oaddrs[0].address)) settab(opposite,address,{newtab:true});
-    else if (oaddrs.length) settab(opposite,address,opts);
+    else if (oaddrs.length) settab(opposite,address);
 }
 export const settab=(addresses_side,address,{newtab=false}={})=>{
     let addresses=addresses_side;

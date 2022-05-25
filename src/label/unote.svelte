@@ -1,7 +1,7 @@
 <script>
 import { createEventDispatcher } from 'svelte';
-import Btn from './comps/button.svelte'
-import {renderer} from './js/store.js'
+import Btn from '../comps/button.svelte'
+import {renderer} from '../js/store.js'
 
 const dispatch=createEventDispatcher();
 

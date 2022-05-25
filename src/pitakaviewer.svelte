@@ -32,15 +32,26 @@ const refreshQuery=async _addr=>{
 	addr=_addr;
 	await updateCriteria();
 }
-const updateCriteria=async updateurl=>{
-	const cobj=updateurl?updateURL():ptk.parseCriteria(criteria);
+const updateTofind=()=>{
+	const cobj=ptk.parseCriteria(criteria);
+	cobj[FULLTEXT_KEY]=tofind;
+	criteria=ptk.stringifyCriteria(cobj);
+}
+const updateCriteria=async (updateurl)=>{
 	[books,chunks,excerpts]=await ptk.cascadeCriteria(criteria, {scoring:true});
 
-	if (cobj[FULLTEXT_KEY]) {
+	if (ptk.criteria[FULLTEXT_KEY]) {
 		const r=ptk.criteria[FULLTEXT_KEY].result; //r.scores contains all excerpts
-		postings=r.postings;
-		phrases=r.phrases;
+		if (r) {
+			postings=r.postings;
+			phrases=r.phrases;
+		}
+	} else {
+		postings=[];
+		phrases=[];
 	}
+	selectedheadings={}
+	if (updateurl) updateURL();
 }
 const updateURL=()=>{
 	const cobj=ptk.parseCriteria(criteria);
@@ -64,6 +75,7 @@ const showChunkExcerpt=chunk=>{
 	selectedheadings={[chunk]:true}
 }
 $: refreshQuery(parseAddress(address));
+$: updateTofind(tofind);
 $: updateCriteria(true,criteria);
 $: updateURL(aligned);
 

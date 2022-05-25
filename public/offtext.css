@@ -34,22 +34,6 @@
 }
 
 
-t.fn.highlight:after{
-    background-color: rgb(255, 150, 150,0.5);
-}
-
-t.fn[id]:after{
-    /*position: absolute;*/
-    cursor: pointer;
-    /*margin-top:-1.0em;*/
-    /*margin-left:-1em;*/
-    /*font-size:0.6rem;*/
-    font-weight: bold;
-    /*color:gray;*/
-    /*font-family: monospace; */
-    /*padding:2px; */
-    content: attr(id) "☛"
-}
 t.note:after{
 	content:"⚉";
     display:inline-block;
@@ -313,13 +297,17 @@ span.marker5 {font-family:宋体,新細明體;border-top:var(--marker5) 2px soli
 t.ad:after {color:orange;content:attr(n)}
 t.linetofind {color:orangered;}
 
-.footnote {display:inline-block;
+.footmark {display:inline-block;
 	width:0px;
 	margin-top:-1em;
 	vertical-align:top;
 	font-size:50%;
 	font-family: "Tahoma"; color:greenyellow
- }
+}
+.footnote {
+	font-family: "Tahoma"; color:greenyellow
+}
+
 
 t.sandhi {border-bottom: brown 1px  solid }
 t.sandhi:hover {cursor: pointer;color:rgba(0,0,0,0)}

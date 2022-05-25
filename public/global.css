@@ -19,8 +19,7 @@ body {
 	--button-unselected : #666; 
 	--button-selected: #FFFFFF ; 
 	--panel-background: rgba(22,22,22,0.9);
-	--dropdownpanel-background: rgba(22,22,22,0.3) ;
-	--dropdownpanel-background-hover: rgba(22,22,22,0.9);
+	--dropdownpanel-background: rgba(22,22,22,0.9) ;
 	--autocomplete-bacgkround : rgb(33,33,33);
 	--quotetext: limegreen;
 	--splitter: #131313;
@@ -115,10 +114,11 @@ button:focus {	border-color: #666;}
 	border-top-left-radius: 0.5em;
 	border-bottom-left-radius: 0.5em;
 	top:2em;right:0;max-width:15em;
-	background:var(--dropdownpanel-background)
+	background:var(--dropdownpanel-background);
+	opacity: 0.2 ;
 }
 .dropdownpanel:hover {
-	background:var(--dropdownpanel-background-hover)
+	opacity:0.9;
 }
 .hamburger {float:right;padding-right:2rem}
 
@@ -178,6 +178,13 @@ div.hr {height: 1px;}
 	-user-select: none; border-radius: 5px; padding-top:5px; padding-left:5px;
 	background:var(--menubackground);visibility: hidden;}
 
+.linemenu {
+	float: right;
+	display:inline-block;
+  vertical-align:top;
+}
+
+
 .hidden {visibility: hidden;}
 .displaynone {display: none;}
 
@@ -198,11 +205,6 @@ div.hr {height: 1px;}
 .articlecount {background:var(--button-unselected); border-radius: 5px;
 	color:black;display:inline-block;width:2.2em;align-items: center;text-align: center;}
 
-.linemenu {
-	float: right;
-	display:inline-block;
-    vertical-align:top;
-}
 .btnparallel{
 	border-radius: 5px; border:1px solid darkgreen; 
 }

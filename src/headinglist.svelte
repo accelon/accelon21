@@ -27,7 +27,7 @@ const {names,linepos,idarr} =ptk.getHeadingLabel();
 const getHeadings= (chunks)=>unique(chunks.map(ck=>ptk.headingOf( ptk.chunkLinepos(ck) )).map(heading=>{
         const {at,y,text}=heading;
         const y0=linepos[at];
-        const id=idarr[at];
+        const id=idarr?idarr[at]:at+1;
         return {key:y,id, chunk:at,text, y0};    
 }));
 

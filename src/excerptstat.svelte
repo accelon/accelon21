@@ -63,7 +63,7 @@ const toggleSelect=evt=>{
 <VirtualScroll keeps={30} data={stats} key="key" let:data>
 <div class="statitem">
     <span on:click={toggleInclusive} idx={data.idx} class="clickable" class:selected={data.selected}>
-        {_(lang,data.name,$tosim,$palitrans,12)}
+        {_(lang,data.name,$tosim,$palitrans,10)}
     </span>
     <span on:click={toggleSelect} idx={data.idx} class="clickable fulltext-hit hit-button">
         {data.count}

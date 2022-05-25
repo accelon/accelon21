@@ -1,7 +1,7 @@
 <script>
 import {fetchHooks} from 'pitaka';
-import {renderer} from './js/store.js';
-import Colorhr from './comps/colorhr.svelte'
+import {renderer} from '../js/store.js';
+import Colorhr from '../comps/colorhr.svelte'
 
 export let opening,text='';
 export let nesting=0,attrs={};

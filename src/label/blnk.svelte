@@ -1,8 +1,8 @@
 <script>
 
 import {fetchHooks} from 'pitaka';
-import {markSelection} from './js/selection.js';
-import { renderer } from './js/store';
+import {markSelection} from '../js/selection.js';
+import { renderer } from '../js/store.js';
 
 export let starty=0,w=0,side=0,name='',nesting=0; //just for hidding the warning
 export let text='',clss='',ptk=null;
