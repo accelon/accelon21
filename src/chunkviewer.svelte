@@ -37,6 +37,7 @@ const init= async ()=>{
         optionalAlignedPitaka= (ptk.aligned&&ptk.aligned.filter( it=>!aligned.includes(it)&&useBasket(it).locY(loc)))||[];
     }
     chunkTraits = await loadChunkTraits({ptk,loc,hook,y0,dy,aligned});
+    mulu=chunkTraits.mulu;
     setTimeout(()=>{
         scrollToY(y,true)
     },250);

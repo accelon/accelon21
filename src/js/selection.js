@@ -35,7 +35,7 @@ export const getTextHook=(ptk,evt,lang,palitrans)=>{
             offset--;
         }
     } else ele=an.parentElement;
-    if (ele.tagName!=='T') return {};
+    if (!ele || ele.tagName!=='T') return {};
 
     let oritext=ele.attributes.ori&&ele.attributes.ori.value||'';
     const linetext=oritext || ele.innerHTML.replace(/<[^>]+>/g,'');

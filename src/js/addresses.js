@@ -74,7 +74,7 @@ const packAddresses=arr=>{
     let prevbasket='';
     const out=[];
     for (let i=0;i<arr.length;i++) {
-        if (!arr[i]||parseAddress(arr[i])) continue;
+        if (!arr[i]||!parseAddress(arr[i])) continue;
         const {basket}=parseAddress(arr[i]);
         if (!basket) continue;
         if (prevbasket!==basket) out.push(arr[i]); 
@@ -227,7 +227,7 @@ export const settab=(addresses_side,address,{newtab=false}={})=>{
         addrs[0].address=address;
     }
     addresses.set(addrs);
-    showFrontPage.set(false)
+    showFrontPage.set(false);
 }
 
 export const getSide=address=>{

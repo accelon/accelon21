@@ -6,7 +6,6 @@ export let criteria, aligned , aptk=[];
 export let ptk;
 export let scrollStart=0;
 
-let showmode=2;//display for whole page
 $: criteriaObj=ptk.parseCriteria(criteria);
 let values=aligned.split(',').filter(it=>!!it);
 const updateQuery=(method,query)=>{
@@ -18,7 +17,7 @@ const updateQuery=(method,query)=>{
 }
 $: aligned=values.filter(it=>!!it).join(',');
 </script>
-<Hamburgermenu {scrollStart} {showmode}>
+<Hamburgermenu {scrollStart}>
     <Buttons bind:values items={aptk} />
     {#if aptk.length}<hr/>{/if}
     <CriteriaPanel {ptk} {criteria} {updateQuery} />

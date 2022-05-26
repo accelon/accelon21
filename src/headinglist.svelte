@@ -53,7 +53,7 @@ const goitem=(y0)=>{
     const ptr=parseAddress(loc);
     if (alignedPitaka.length) ptr[ALIGNED_KEY]=alignedPitaka.map(p=>p.name).join(',');
     const addr=stringifyAddress(ptr);
-    settab(side,addr,{newtab:true})
+    settab(side,addr,{newtab:true});
 }
 
 let alignedPitaka=[];

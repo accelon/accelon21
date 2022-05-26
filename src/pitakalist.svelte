@@ -30,8 +30,8 @@ const openPitaka=(ptk)=>{
 <VirtualScroll  start={-1} 
     keeps={20} data={pitakas} key="key" height="calc(100% - 1.5em)"  let:data >
 <div class="pitaka">
-    <span class="clickable name" on:click={()=>visit(data.ptk.header.homepage)}>{data.ptk.name}</span>
-    <span class="title" on:click={()=>openPitaka(data.ptk)}>
+    <span class="clickable name" on:click={()=>visit(data.ptk.header.homepage)}>{data.ptk.name}🏠</span>
+    <span class="clickable title" on:click={()=>openPitaka(data.ptk)}>
         {_("",data.ptk.header.title,$tosim)}</span>
     <QueryResult items={getItems(data.ptk,$activetofind,$runquerycount)} {side}/>
     <div class="details">
@@ -41,7 +41,9 @@ const openPitaka=(ptk)=>{
         <span class="labeltext" label='文段'>{data.ptk.header.lastTextLine}</span>
         <span class="labeltext" label='建立'>{data.ptk.header.buildtime.replace(/T.+$/,'')}</span>
         {#if data.ptk.header.description}<br/><span class="labeltext" label={_('','說明',$tosim)}>{_('',data.ptk.header.description,$tosim)}</span>{/if}
+
     {/if}
+
     <span class='separator'></span>
     </div>
 </div>
