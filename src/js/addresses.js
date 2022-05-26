@@ -16,7 +16,8 @@ export const chunkFromAddress=(ptk,{loc,dy})=>{
     if (typeof dy!=='number') dy=parseInt(dy)||0;
     const range=ptk.getPageRange(loc);
     const chunk=ptk.chunkOf(range[0]+dy);
-    const [y0,y1]=ptk.getPageRange(ptk.pageLoc(chunk.address));
+    
+    const [y0,y1]=ptk.getPageRange(ptk.pageLoc(range[0]+dy));
     dy=range[0]+dy - y0;
 
     return {y0,dy,linecount:y1-y0};
@@ -73,6 +74,7 @@ const packAddresses=arr=>{
     let prevbasket='';
     const out=[];
     for (let i=0;i<arr.length;i++) {
+        if (!arr[i]||parseAddress(arr[i])) continue;
         const {basket}=parseAddress(arr[i]);
         if (!basket) continue;
         if (prevbasket!==basket) out.push(arr[i]); 
@@ -204,7 +206,7 @@ export const sameChunk=(addr1,addr2)=>{
     if (!ptk1|| !ptk2) return false;
     const c1=ptk1.chunkOf(ptr1.loc);
     const c2=ptk2.chunkOf(ptr2.loc);
-    return c1&& c2&&c1.address===c2.address;
+    return c1&& c2&&c1.at===c2.at;
 }
 export const newopposite=(addresses_side,address)=>{
     const opposite=getOppositeAddresses(addresses_side);

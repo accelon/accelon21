@@ -1,4 +1,5 @@
 <script>
+import {useBasket} from "pitaka"
 import {stringifyAddress} from "pitaka/offtext";
 import {_,tosim} from "./js/store.js";
 import {addqueryhistory,activetofind} from "./js/query.js";
@@ -8,12 +9,14 @@ export let ptkname='';
 export let side=0;
 $: ptkname;
 const openexcerpt=sres=>{
-    const {basket,tofind,method}=sres;
+    const {basket,query,method}=sres;
+    const ptk=useBasket(basket);
+    ptk.resetCriteria();
     if (method=='*') {//full text search
-        const addr=stringifyAddress({basket,tf:tofind})
+        const addr=stringifyAddress({basket,'*':query})
         settab(side, addr,{newtab:true} )
     } else {
-        const addr=stringifyAddress({basket,kl:method,kv:tofind})
+        const addr=stringifyAddress({basket,[method]:query});
         settab(side, addr,{newtab:true} )
     }
 }

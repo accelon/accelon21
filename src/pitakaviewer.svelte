@@ -4,16 +4,17 @@ import {debounce} from 'pitaka/utils'
 import {parseAddress,stringifyAddress } from 'pitaka/offtext';
 import ExcerptBar from './excerptbar.svelte'
 import AutoComplete from './3rdparty/simpleautocomplete.svelte'
+import SearchHistoryButton from './searchhistorybutton.svelte'
 import ExcerptList from './excerptlist.svelte'
 import HeadingCount from './comps/headingcount.svelte'
 import HeadingMenu from './headingmenu.svelte'
 import HeadingList from './headinglist.svelte'
 import {setAddress} from './js/addresses.js'
 import {fatalerror,tosim,_} from './js/store.js';
-import {queryhistory,QUERYSEP,addqueryhistory,delqueryhistory} from './js/query.js'
+import {queryhistory} from './js/query.js'
 
 export let side=0,address='',active=false ;
-let ptk, showheading , criteria , addr ,tofind='', aligned='',scrollStart=0 , qhis;
+let ptk, showheading , criteria , addr ,tofind='', aligned='',scrollStart=0 ;
 let excerpts=[], alignedPitaka=[] ,selectedheadings={},
  chunks=[] , books=[], phrases=[], postings=[], candidates=[] ;
 const refreshQuery=async _addr=>{
@@ -85,11 +86,9 @@ $: aptk=alignedPitaka.filter(it=>it.hasBook( ptk.getBook(books).map(i=>i.id) )).
 $: excerptItems= excerpts.map(([y,score,chunk],idx )=>{ return { y, chunk, score ,idx}})
 $: selectedExcerptitems = filterExcerptByHeading(excerptItems, selectedheadings); 
 $: lang=ptk&&ptk.header.lang||DEFAULT_LANGUAGE;
-$: qhis=queryhistory(lang,true);
 $: candidates=tofind.length?ptk&&ptk.prefixLemma(tofind) : queryhistory(lang);
 $: searchable=ptk && ptk.header.fulltextsearch;
-$: deletable= qhis && ~$qhis.indexOf(tofind) && tofind.length;
-$: addable = tofind.length>1 && !deletable && excerpts.length;
+
 
 </script>
 <div class="container">
@@ -100,7 +99,7 @@ $: addable = tofind.length>1 && !deletable && excerpts.length;
     {#if searchable}
 	    <AutoComplete className="tofind" showClear={true} placeholder={_(lang,"檢索 Search")}
 	    bind:text={tofind} items={candidates} {onEscape} onInput={debounce(onTofind,250)} onChange={onTofind}/>
-	    {#if addable}<span title={_(lang,"加到搜尋記錄 add to history")} on:click={()=>addqueryhistory(tofind,lang)}>★</span>{:else if deletable}<span title={_(lang,"刪除搜尋記錄 remove from history")} on:click={()=>delqueryhistory(tofind,lang)}>☆</span>{/if}
+	    <SearchHistoryButton {lang} {tofind} hasResult={!!excerpts.length}/>
     {/if}
     </ExcerptBar>
 

@@ -21,13 +21,17 @@ const getAlignment=ptk=>{
     return (ptk.header.alignment.includes(ptk.header.name)?'':ptk.header.alignment)
 }
 let isvalid={};
+const openPitaka=(ptk)=>{
+    ptk.resetCriteria();
+    settab(side,ptk.name+NAMESPACESEP)
+}
 </script>
 
 <VirtualScroll  start={-1} 
     keeps={20} data={pitakas} key="key" height="calc(100% - 1.5em)"  let:data >
 <div class="pitaka">
     <span class="clickable name" on:click={()=>visit(data.ptk.header.homepage)}>{data.ptk.name}</span>
-    <span class="title" on:click={evt=>settab(side,data.ptk.name+NAMESPACESEP)}>
+    <span class="title" on:click={()=>openPitaka(data.ptk)}>
         {_("",data.ptk.header.title,$tosim)}</span>
     <QueryResult items={getItems(data.ptk,$activetofind,$runquerycount)} {side}/>
     <div class="details">
