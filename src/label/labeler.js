@@ -6,6 +6,8 @@ import unote from './unote.svelte';
 import f from './f.svelte';
 import fn from './fn.svelte';
 import k from './k.svelte';
+import github from './url.svelte';
+import url from './url.svelte';
 import {labeler} from '../js/store.js'
 export default {};
-labeler.set({ t,cs:cite, unote, f,fn,k, blnk ,embed});
+labeler.set({ t,cs:cite, unote, f,fn,k, blnk ,embed,github,url});

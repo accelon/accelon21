@@ -34,6 +34,8 @@ body {
 	--booktitle: rgb(131, 145, 72);
 	--slider-background: rgb(64,64,64);
 	--slider-background-selected:  rgb(127,192,127);
+	--external-link:  #0969da;
+	--github-link: #0969da;
 }
 
 html {
