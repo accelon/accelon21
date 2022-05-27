@@ -62,17 +62,17 @@ t.z[id="7"] {border-radius: 5px;border:2px dashed hsl(280,80%,35%)}
 t.z[id="8"] {border-radius: 5px;border:2px dashed hsl(320,80%,35%)}
 t.z[id="9"] {border-radius: 5px;border:2px dashed hsl(360,80%,35%)}
 
-t.za:after {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(40,80%,35%)}
-t.zb:after {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(80,80%,35%)}
-t.zc:after {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(120,80%,35%)}
-t.zd:after  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(160,80%,35%)}
-t.ze:after  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(200,80%,35%)}
-t.zf:after  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(240,80%,35%)}
-t.zg:after  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(280,80%,35%)}
-t.zh:after  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(320,80%,35%)}
-t.zi:after  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(360,80%,35%)}
+t.za:before {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(40,80%,35%)}
+t.zb:before {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(80,80%,35%)}
+t.zc:before {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(120,80%,35%)}
+t.zd:before  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(160,80%,35%)}
+t.ze:before  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(200,80%,35%)}
+t.zf:before  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(240,80%,35%)}
+t.zg:before  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(280,80%,35%)}
+t.zh:before  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(320,80%,35%)}
+t.zi:before  {content:attr(id) ;border-radius: 5px;border:2px dashed hsl(360,80%,35%)}
 
-
+t.translator {color:var(--booktitle)}
 t.k:hover {color:var(--highlight)}
 t.pg{
     display:inline-block;width:0px;padding-top:3em;height:0px;
@@ -318,7 +318,7 @@ t.linetofind {color:orangered;}
 .footnote {
 	font-family: "Tahoma"; color:greenyellow
 }
-
+t.editor {font-size:80%;color:brown}
 
 t.sandhi {border-bottom: brown 1px  solid }
 t.sandhi:hover {cursor: pointer;color:rgba(0,0,0,0)}
