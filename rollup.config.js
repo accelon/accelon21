@@ -38,7 +38,7 @@ export default [
   {
     input: "src/js/main.js",
     output: {
-      sourcemap: true,//!production || debug,
+      sourcemap: !production || debug,
       format: "iife",
       name: "app",
       file: "public/main.js"

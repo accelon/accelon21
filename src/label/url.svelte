@@ -8,7 +8,7 @@ export let opening,text='';
 export let nesting=0,attrs={};
 export let closing=0;
 export let ptk=null,i=0,clss='',starty=0,x=0,y=0,w=0,name='',side=0; //just for hidding the warning
-$: text,ptk,i,clss,x,y,w,name,side,starty,closing;
+$: text,ptk,i,clss,x,y,w,name,side,starty,closing,nesting;
 let lines=[],R, error='';
 const visit=()=>{
     let url=attrs['@'];

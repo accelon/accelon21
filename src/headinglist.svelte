@@ -6,6 +6,7 @@ import {getSeqColor,getLangstyle} from './js/decorate.js'
 import {_,tosim, factorization,palitrans} from './js/store.js'
 import { settab } from './js/addresses';
 import { parseOfftextLine,parseAddress ,stringifyAddress } from 'pitaka/offtext';
+import ChildChunkView from './childchunkview.svelte'
 import { unique } from 'pitaka/utils'
 import { getContext } from 'svelte';
 import { derived } from 'svelte/store';
@@ -18,20 +19,14 @@ export let onKeyword=null;
 export let onScroll=null;
 export let lang=ptk.header.lang||DEFAULT_LANGUAGE;
 export let showChunkExcerpt=function(){};
-let vscroll;
+let vscroll, activeline;
 
 // const displayItems=derived(items,(I,set)=>{
 
 const {names,linepos,idarr} =ptk.getHeadingLabel();
-// $: console.log('chunklinepos',( chunks.map(ck=>ptk.chunkLinepos(ck)) ).map(line=>ptk.headingOf(line)) )
-const getHeadings= (chunks)=>unique(chunks.map(ck=>ptk.headingOf( ptk.chunkLinepos(ck) )).map(heading=>{
-        const {at,y,text}=heading;
-        const y0=linepos[at];
-        const id=idarr?idarr[at]:at+1;
-        return {key:y,id, chunk:at,text, y0};    
-}));
 
-$: headings = getHeadings(chunks);
+
+$: headings = ptk.headingsFromChunks(chunks);
 $: langstyle=getLangstyle(lang,$palitrans);
 
 const getTitle=(heading,tosim,pltrans)=>{
@@ -43,7 +38,7 @@ const getTitle=(heading,tosim,pltrans)=>{
 }
 
 
-$: if(vscroll&&headings.length) { vscroll.scrollToOffset(0) } //scrolltotop when data is updated
+$: if(vscroll&&headings.length) { vscroll.scrollToOffset(0) ; activeline=headings[0].key } //scrolltotop when data is updated
 
 const scroll=(evt)=>{
     onScroll&&onScroll(evt.detail.index);
@@ -55,19 +50,23 @@ const goitem=(y0)=>{
     const addr=stringifyAddress(ptr);
     settab(side,addr,{newtab:true});
 }
-
+const setactiveline=key=>{
+    activeline=key;
+}
 let alignedPitaka=[];
 $: alignedPitaka=(aligned.split(',')||[]).map(n=>useBasket(n)).filter(it=>!!it);
 
 </script>
 <VirtualScroll bind:this={vscroll} start={-1}   on:scroll={scroll}
 keeps={50} data={headings} height="calc(100% - 1.5em)" let:data key="key">
-<div>
+<div  on:click={()=>setactiveline(data.key)}>
     <span class="bookid">{data.id}</span>
     <span class={"clickable "+langstyle} on:click={()=>goitem(data.y0)}>{getTitle(data.text,$tosim,$palitrans,$factorization)}</span>
     
-    {#if postings.length}
-    <span on:click={()=>showChunkExcerpt(data.chunk)} class="fulltext-hit clickable hit-link">{ptk.postingInChunk(postings,data.chunk).length}</span>
+    {#if data.children && activeline==data.key}
+        <ChildChunkView items={data.children} {postings} {lang} on:go={({detail})=>goitem(detail)}/>
+    {:else if postings.length}
+        <span on:click={()=>showChunkExcerpt(data.chunk)} class="fulltext-hit clickable hit-link">{ptk.postingInChunk(postings,data.chunk).length}</span>
     {/if}
 
     {#if data.keywords}
