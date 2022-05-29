@@ -207,7 +207,7 @@ div.hr {height: 1px;}
 .userselectnone {--webkit-user-select: none}
 
 .articlecount {background:var(--button-unselected); border-radius: 5px;
-	color:black;display:inline-block;width:2.2em;align-items: center;text-align: center;}
+	color:black;display:inline-block;min-width:2.2em;align-items: center;text-align: center;}
 
 .btnparallel{
 	border-radius: 5px; border:1px solid darkgreen; 

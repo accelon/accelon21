@@ -7,7 +7,7 @@ export let lang;
 import {filtererOf} from './js/filterer.js'
 $: filterers=filtererOf(ptk,criteria);
 
-const update=debounce((method,query)=>updateQuery&&updateQuery(method,query),250);
+const update=debounce((method,query,opts)=>updateQuery&&updateQuery(method,query,opts),250);
 
 </script>
 

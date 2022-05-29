@@ -25,8 +25,8 @@ let vscroll, activeline;
 
 const {names,linepos,idarr} =ptk.getHeadingLabel();
 
+$: headings = ptk.headingsFromChunks(chunks,3000);
 
-$: headings = ptk.headingsFromChunks(chunks);
 $: langstyle=getLangstyle(lang,$palitrans);
 
 const getTitle=(heading,tosim,pltrans)=>{

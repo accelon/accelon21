@@ -1,8 +1,8 @@
 import {filterer} from './store.js'
 import default_filter from '../filterer/default.svelte'
-import entry_zh from '../filterer/entry_zh.svelte'
-import entry_pl from '../filterer/entry_pl.svelte'
-import entry_en from '../filterer/entry_en.svelte'
+import entry from '../filterer/entry.svelte'
+// import entry_pl from '../filterer/entry_pl.svelte'
+// import entry_en from '../filterer/entry_en.svelte'
 import heading_zh from '../filterer/heading_zh.svelte'
 import heading_pl from '../filterer/heading_pl.svelte'
 import heading_en from '../filterer/heading_en.svelte'
@@ -17,7 +17,7 @@ import range_multiple from '../filterer/range_multiple.svelte'
 import substring from '../filterer/substring.svelte'
 import double_number from '../filterer/double_number.svelte';
 
-const filterers={range_multiple,substring,double_number};
+const filterers={range_multiple,substring,double_number,entry};
 
 export const filtererOf=(ptk,criteria)=>{
 	const out=[];

@@ -49,7 +49,7 @@ onMount(()=>{ // remove message
 </div>
 <style>
     .hide {display:none;}
-    .container {height:100vh}
+    .container {height:100vh;}
     /* strange right:0px doesn't work*/
 	.systemsetting {position:absolute;z-index: 9999;top:0px;right:0}
 </style>

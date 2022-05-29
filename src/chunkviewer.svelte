@@ -34,6 +34,7 @@ const init= async ()=>{
         locattrs=res.attrs||{};
         aligned=(res[ALIGNED_KEY]||'').split(',');
         alignedPitaka=aligned.map(n=>useBasket(n)).filter(it=>!!it);
+
         optionalAlignedPitaka= (ptk.aligned&&ptk.aligned.filter( it=>!aligned.includes(it)&&useBasket(it).locY(loc)))||[];
     }
     chunkTraits = await loadChunkTraits({ptk,loc,hook,y0,dy,aligned});

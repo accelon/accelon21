@@ -8,6 +8,7 @@ import TabSelector from './tabselector.svelte';
 import {getLangstyle} from './js/decorate.js'
 import {closetab} from './js/addresses';
 import {showFrontPage,_,tosim,palitrans,factorization} from './js/store.js';
+import {TITLESEP} from 'pitaka'
 import { parseAddress } from 'pitaka/offtext';
 export let ptk,scrollStart=0,side=0,y0,loc,mulu=[],scrollToY=()=>{};
 const addresses=getContext('addresses');
@@ -15,6 +16,14 @@ let lang=ptk.header.lang;
 $: langstyle=getLangstyle(lang,$palitrans);
 
 $: address=($addresses && $addresses[0].address)||'';
+const getTitle=y0=>{
+    const heading=_(lang,ptk.headingOf(y0).text,$tosim,lang==='pl'&&$palitrans,20); //return sub heading
+    let chunk=''
+    if (ptk.header.chunk!==ptk.header.heading) {
+        chunk=TITLESEP+_(lang,ptk.chunkOf(y0).name,$tosim,lang==='pl'&&$palitrans,20);
+    }
+    return heading+chunk;
+}
 </script>
 <div class="controlbar">
     {#if side===0}<Btn icon="search" store={showFrontPage} />{/if}
@@ -25,7 +34,7 @@ $: address=($addresses && $addresses[0].address)||'';
             <span>{ptk&&parseAddress(address).loc }</span> 
         </span>
     </span>
-    <span class={"closetab "+langstyle} title={_(lang,"關閉頁籤 close tab",$tosim)} on:click={()=>closetab(addresses,true)}>{_(lang,ptk.headingOf(y0).text,$tosim,lang==='pl'&&$palitrans,20) }</span>
+    <span class={"closetab "+langstyle} title={_(lang,"關閉頁籤 close tab",$tosim)} on:click={()=>closetab(addresses,true)}>{getTitle(y0)}</span>
 
     <TocBar {ptk} {loc} {side}/>
     {#if mulu&&mulu.length}
